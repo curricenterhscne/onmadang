@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#DAF2FC">
+<title>공지사항 · 온마당</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<!-- marked.js: 마크다운 → HTML 변환 (CDN, 빌드 불필요) -->
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<style>
+  :root{
+    --bg:#DAF2FC; --brand:#4F6EBE; --brand-d:#3a539b; --brand-l:#6d8ad6;
+    --accent:#7BCE7C; --accent-d:#5fb260; --online:#7EC8E3; --online-d:#2a8db5;
+    --ink:#1f2b44; --ink-soft:#51607d; --ink-faint:#8597ad;
+    --line:#c5dcef; --surface:#fff; --soft:#eef7fc;
+    --radius:18px; --radius-sm:12px; --radius-pill:999px;
+    --shadow:0 6px 24px rgba(79,110,190,.13);
+    --shadow-sm:0 2px 10px rgba(79,110,190,.10);
+    --maxw:860px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .clover{display:inline-block;vertical-align:middle}
+
+  /* 헤더 */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(255,255,255,.88);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;gap:16px;height:68px;max-width:1180px;margin:0 auto;padding:0 24px}
+  .brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+  .brand-txt b{font-size:18px;color:var(--brand);font-weight:800;display:block;letter-spacing:-.4px;line-height:1.1}
+  .brand-txt span{font-size:10.5px;color:var(--ink-soft);font-weight:500}
+  .nav-links{display:flex;gap:4px;margin-left:20px;flex:1}
+  .nav-links a{
+    font-size:14px;font-weight:600;color:var(--ink-soft);
+    padding:8px 14px;border-radius:var(--radius-pill);transition:.18s;
+  }
+  .nav-links a:hover{background:var(--soft);color:var(--brand)}
+  .nav-links a.active{background:var(--brand);color:#fff}
+  .head-cta{
+    display:flex;align-items:center;gap:6px;flex-shrink:0;
+    background:var(--accent);color:#1c3d1d;font-weight:700;font-size:14px;
+    padding:10px 18px;border-radius:var(--radius-pill);transition:.18s;
+  }
+  .head-cta:hover{background:var(--accent-d)}
+
+  /* 페이지 헤더 */
+  .page-hero{background:linear-gradient(135deg,var(--brand),var(--brand-l));color:#fff;padding:52px 0 44px}
+  .page-hero .breadcrumb{font-size:13px;opacity:.75;margin-bottom:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .page-hero .breadcrumb a{color:#fff;opacity:.75}
+  .page-hero .breadcrumb a:hover{opacity:1}
+  .page-hero h1{font-size:clamp(20px,3vw,28px);font-weight:800;letter-spacing:-.6px;margin-bottom:8px;word-break:keep-all}
+  .page-hero .meta{font-size:13.5px;opacity:.8;display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+
+  /* 배지 */
+  .nb{font-size:11px;font-weight:800;padding:4px 10px;border-radius:8px;white-space:nowrap}
+  .nb.imp{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4)}
+  .nb.new{background:rgba(123,206,124,.3);color:#fff;border:1px solid rgba(123,206,124,.5)}
+  .nb.on{background:rgba(126,200,227,.3);color:#fff;border:1px solid rgba(126,200,227,.5)}
+
+  /* 본문 */
+  .notice-wrap{padding:40px 0 80px}
+  .notice-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
+
+  /* 마크다운 본문 스타일 */
+  .notice-body{padding:36px 40px;min-height:200px;font-size:15.5px;line-height:1.85;color:var(--ink)}
+  .notice-body h1,.notice-body h2,.notice-body h3{
+    font-weight:800;letter-spacing:-.4px;margin:28px 0 12px;color:var(--ink);
+  }
+  .notice-body h1{font-size:22px;border-bottom:2px solid var(--line);padding-bottom:10px}
+  .notice-body h2{font-size:19px}
+  .notice-body h3{font-size:16.5px}
+  .notice-body p{margin-bottom:14px}
+  .notice-body ul,.notice-body ol{padding-left:22px;margin-bottom:14px}
+  .notice-body li{margin-bottom:5px}
+  .notice-body a{color:var(--brand);text-decoration:underline;word-break:break-all}
+  .notice-body a:hover{color:var(--brand-d)}
+  .notice-body strong{font-weight:700}
+  .notice-body em{font-style:italic}
+  .notice-body blockquote{
+    border-left:4px solid var(--accent);margin:16px 0;padding:14px 18px;
+    background:var(--soft);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+    color:var(--ink-soft);
+  }
+  .notice-body code{
+    font-family:monospace;font-size:13.5px;background:var(--soft);
+    padding:1px 6px;border-radius:5px;color:var(--brand-d);
+  }
+  .notice-body pre{background:var(--soft);border-radius:var(--radius-sm);padding:18px;overflow-x:auto;margin-bottom:14px}
+  .notice-body pre code{background:none;padding:0}
+  .notice-body hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+  .notice-body table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:14px}
+  .notice-body th,.notice-body td{border:1px solid var(--line);padding:9px 13px;text-align:left}
+  .notice-body th{background:var(--soft);font-weight:700}
+
+  /* 이미지 */
+  .notice-body img{
+    max-width:100%;height:auto;border-radius:var(--radius-sm);margin:10px 0;
+    box-shadow:var(--shadow-sm);
+  }
+
+  /* 첨부파일 영역 (GitHub 업로드 파일 링크 모음) */
+  .attach-section{border-top:1px solid var(--line);padding:24px 40px;background:var(--soft)}
+  .attach-section h2{font-size:14px;font-weight:700;color:var(--ink-soft);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+  .attach-list{display:flex;flex-direction:column;gap:8px}
+  .attach-item{
+    display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);
+    border-radius:10px;padding:12px 16px;font-size:14px;color:var(--ink);
+    transition:.15s;
+  }
+  .attach-item:hover{border-color:var(--brand);color:var(--brand)}
+  .attach-icon{font-size:18px;flex-shrink:0}
+  .attach-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .attach-dl{font-size:12px;color:var(--ink-faint);flex-shrink:0}
+
+  /* 하단 네비 */
+  .notice-nav{border-top:1px solid var(--line);display:grid;grid-template-columns:1fr auto 1fr;gap:8px;padding:16px 24px;align-items:center}
+  .nav-adj{display:flex;flex-direction:column;gap:3px;overflow:hidden}
+  .nav-adj .label{font-size:11.5px;color:var(--ink-faint);font-weight:600}
+  .nav-adj a{font-size:14px;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:.15s}
+  .nav-adj a:hover{color:var(--brand)}
+  .nav-adj.next{text-align:right}
+  .back-btn{
+    display:inline-flex;align-items:center;gap:6px;background:var(--brand);color:#fff;
+    font-size:14px;font-weight:700;padding:11px 22px;border-radius:var(--radius-pill);transition:.18s;
+    white-space:nowrap;
+  }
+  .back-btn:hover{background:var(--brand-d)}
+
+  /* 로딩·에러 */
+  .state-box{padding:80px 24px;text-align:center;color:var(--ink-faint)}
+  .state-box .ico{font-size:44px;margin-bottom:16px}
+  .state-box p{font-size:16px;margin-bottom:8px}
+  .state-box small{font-size:13px}
+  .spinner{width:38px;height:38px;border:3px solid var(--line);border-top-color:var(--brand);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 18px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* 푸터 */
+  footer{background:var(--brand-d);color:rgba(255,255,255,.7);padding:32px 0;text-align:center;font-size:13px}
+  footer a{color:rgba(255,255,255,.7)}
+  footer a:hover{color:#fff}
+
+  @media(max-width:640px){
+    .nav-links,.head-cta{display:none}
+    .notice-body{padding:24px 20px}
+    .attach-section{padding:18px 20px}
+    .notice-nav{grid-template-columns:1fr;gap:12px}
+    .nav-adj.next{text-align:left}
+  }
+</style>
+</head>
+<body>
+
+<!-- 클로버 SVG 심볼 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="clv" viewBox="0 0 100 100">
+    <circle cx="50" cy="32" r="17" fill="#7BCE7C"/>
+    <circle cx="32" cy="50" r="17" fill="#7BCE7C"/>
+    <circle cx="68" cy="50" r="17" fill="#7BCE7C"/>
+    <circle cx="50" cy="68" r="17" fill="#5fb260"/>
+    <circle cx="50" cy="50" r="8.5" fill="#4F6EBE"/>
+    <path d="M50 66 Q53 82 59 90" stroke="#5fb260" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </symbol>
+</defs></svg>
+
+<!-- 헤더 -->
+<header>
+  <div class="nav">
+    <a href="../index.html" class="brand">
+      <svg class="clover" width="38" height="38"><use href="#clv"/></svg>
+      <span class="brand-txt"><b>온마당</b><span>충남 고교학점제 종합지원</span></span>
+    </a>
+    <nav class="nav-links" aria-label="주 메뉴">
+      <a href="../index.html#about">고교학점제 안내</a>
+      <a href="../index.html#design">진로·학업 설계</a>
+      <a href="../index.html#safety">4대 안전망</a>
+      <a href="./index.html" class="active">알림·소통 마당</a>
+    </nav>
+    <a href="https://curricenterhscne.github.io/course_selector_cne/" target="_blank" rel="noopener" class="head-cta">
+      <svg class="clover" width="16" height="16"><use href="#clv"/></svg> 과목 선택 실습
+    </a>
+  </div>
+</header>
+
+<!-- 페이지 헤더 (JS로 채워짐) -->
+<div class="page-hero" id="page-hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="이동 경로">
+      <a href="../index.html">홈</a> ›
+      <a href="./index.html">공지사항</a> ›
+      <strong id="hero-title">불러오는 중…</strong>
+    </nav>
+    <h1 id="hero-h1"></h1>
+    <div class="meta" id="hero-meta"></div>
+  </div>
+</div>
+
+<!-- 공지 본문 -->
+<main class="notice-wrap">
+  <div class="wrap">
+    <div class="notice-card" id="notice-card">
+      <div class="state-box">
+        <div class="spinner" role="status" aria-label="불러오는 중"></div>
+        <p>공지사항을 불러오는 중입니다…</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- 푸터 -->
+<footer>
+  <p>© 2026 충청남도교육청 중등교육과 · <a href="../index.html">온마당 홈으로</a></p>
+</footer>
+
+<script>
+const REPO = 'curricenterhscne/onmadang';
+const BASE = `https://api.github.com/repos/${REPO}/issues`;
+
+/* ── 라벨 → 배지 ────────────────────────────── */
+const BADGE_MAP = {
+  '중요': '<span class="nb imp">중요</span>',
+  '신규': '<span class="nb new">신규</span>',
+  '온라인': '<span class="nb on">온라인</span>',
+};
+
+function getBadges(labels) {
+  return labels.filter(l => BADGE_MAP[l.name]).map(l => BADGE_MAP[l.name]).join(' ');
+}
+
+/* ── 날짜 포맷 ───────────────────────────────── */
+function fmtDate(iso) {
+  const d = new Date(iso);
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+}
+
+/* ── 첨부파일 링크 추출 (마크다운 본문에서) ──── */
+function extractAttachments(body) {
+  if (!body) return [];
+  const items = [];
+  // GitHub user-attachments CDN 파일
+  const re = /\[([^\]]+)\]\((https:\/\/github\.com\/user-attachments\/[^\s)]+)\)/g;
+  let m;
+  while ((m = re.exec(body)) !== null) {
+    items.push({ name: m[1], url: m[2] });
+  }
+  // 구 방식 user-images (이미지 제외, 파일만)
+  const re2 = /\[([^\]]+)\]\((https:\/\/user-images\.githubusercontent\.com\/[^\s)]+)\)/g;
+  while ((m = re2.exec(body)) !== null) {
+    // 이미지 확장자는 제외 (본문에 이미 img로 표시됨)
+    if (!/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(m[2])) {
+      items.push({ name: m[1], url: m[2] });
+    }
+  }
+  return items;
+}
+
+/* ── 파일 아이콘 ─────────────────────────────── */
+function fileIcon(name) {
+  const ext = (name.split('.').pop() || '').toLowerCase();
+  const map = { pdf:'📄', hwp:'📝', hwpx:'📝', doc:'📝', docx:'📝',
+                xls:'📊', xlsx:'📊', ppt:'📊', pptx:'📊',
+                zip:'🗜️', '7z':'🗜️', rar:'🗜️',
+                png:'🖼️', jpg:'🖼️', jpeg:'🖼️', gif:'🖼️', webp:'🖼️' };
+  return map[ext] || '📎';
+}
+
+/* ── marked.js 설정 (XSS 방어: sanitize는 별도 처리) ── */
+marked.setOptions({ breaks: true, gfm: true });
+
+/* ── 본문 렌더 ───────────────────────────────── */
+function renderNotice(issue, prev, next) {
+  // 1. 페이지 헤더 채우기
+  document.title = `${issue.title} · 온마당 공지사항`;
+  document.getElementById('hero-title').textContent = issue.title;
+  document.getElementById('hero-h1').textContent   = issue.title;
+  document.getElementById('hero-meta').innerHTML =
+    `${getBadges(issue.labels)}
+     <span>작성일 <time datetime="${issue.created_at}">${fmtDate(issue.created_at)}</time></span>
+     ${issue.updated_at !== issue.created_at
+       ? `<span>수정일 <time datetime="${issue.updated_at}">${fmtDate(issue.updated_at)}</time></span>`
+       : ''}`;
+
+  // 2. 마크다운 렌더링
+  const rawHtml = issue.body ? marked.parse(issue.body) : '<p><em>(본문 없음)</em></p>';
+  // 외부 링크 target=_blank 처리 + rel 보안
+  const safeHtml = rawHtml.replace(/<a\s+href="(https?:\/\/[^"]+)"/g,
+    '<a href="$1" target="_blank" rel="noopener noreferrer"');
+
+  // 3. 첨부파일 목록
+  const attachments = extractAttachments(issue.body);
+  const attachHtml = attachments.length
+    ? `<div class="attach-section" aria-label="첨부파일">
+        <h2>📎 첨부파일 (${attachments.length}개)</h2>
+        <div class="attach-list">
+          ${attachments.map(a =>
+            `<a class="attach-item" href="${escUrl(a.url)}" target="_blank" rel="noopener noreferrer" download>
+              <span class="attach-icon" aria-hidden="true">${fileIcon(a.name)}</span>
+              <span class="attach-name">${escHtml(a.name)}</span>
+              <span class="attach-dl">다운로드 ↓</span>
+            </a>`
+          ).join('')}
+        </div>
+       </div>`
+    : '';
+
+  // 4. 이전/다음 네비
+  const prevHtml = prev
+    ? `<div class="nav-adj prev">
+        <span class="label">◀ 이전 글</span>
+        <a href="./notice.html?id=${prev.number}">${escHtml(prev.title)}</a>
+       </div>`
+    : `<div></div>`;
+  const nextHtml = next
+    ? `<div class="nav-adj next">
+        <span class="label">다음 글 ▶</span>
+        <a href="./notice.html?id=${next.number}">${escHtml(next.title)}</a>
+       </div>`
+    : `<div></div>`;
+
+  document.getElementById('notice-card').innerHTML = `
+    <div class="notice-body" aria-label="공지 본문">${safeHtml}</div>
+    ${attachHtml}
+    <nav class="notice-nav" aria-label="인접 공지">
+      ${prevHtml}
+      <a class="back-btn" href="./index.html">목록으로</a>
+      ${nextHtml}
+    </nav>`;
+}
+
+/* ── 이슈 번호 파싱 ──────────────────────────── */
+function getIssueId() {
+  const params = new URLSearchParams(location.search);
+  const id = parseInt(params.get('id'), 10);
+  return isNaN(id) || id < 1 ? null : id;
+}
+
+/* ── 인접 공지 조회 (공지 라벨 기준 전후) ──── */
+async function fetchAdjacentIssues(currentId) {
+  try {
+    // 공지 라벨 이슈 전체 목록 (번호순, 최대 100)
+    const res = await fetch(`${BASE}?state=open&labels=공지&per_page=100&direction=desc`);
+    const list = await res.json();
+    const idx  = list.findIndex(i => i.number === currentId);
+    return {
+      prev: idx < list.length - 1 ? list[idx + 1] : null,  // 더 오래된 글
+      next: idx > 0               ? list[idx - 1] : null,  // 더 최신 글
+    };
+  } catch {
+    return { prev: null, next: null };
+  }
+}
+
+/* ── 메인 로드 ───────────────────────────────── */
+async function load() {
+  const id = getIssueId();
+  if (!id) {
+    showError('잘못된 접근입니다.', '공지 번호가 올바르지 않습니다.');
+    return;
+  }
+
+  try {
+    const [issueRes, adjacent] = await Promise.all([
+      fetch(`${BASE}/${id}`),
+      fetchAdjacentIssues(id),
+    ]);
+    if (!issueRes.ok) {
+      if (issueRes.status === 404) throw new Error('해당 공지를 찾을 수 없습니다.');
+      throw new Error(`GitHub API 오류: ${issueRes.status}`);
+    }
+    const issue = await issueRes.json();
+    // 공지 라벨 없는 이슈 차단
+    if (!issue.labels.some(l => l.name === '공지')) {
+      throw new Error('해당 공지를 찾을 수 없습니다.');
+    }
+    renderNotice(issue, adjacent.prev, adjacent.next);
+  } catch (err) {
+    showError('공지사항을 불러오지 못했습니다.', err.message);
+  }
+}
+
+function showError(msg, detail) {
+  document.getElementById('hero-title').textContent = '오류';
+  document.getElementById('hero-h1').textContent    = msg;
+  document.getElementById('notice-card').innerHTML  = `
+    <div class="state-box">
+      <div class="ico">⚠️</div>
+      <p>${escHtml(msg)}</p>
+      <small>${escHtml(detail || '')}</small>
+      <p style="margin-top:20px"><a href="./index.html" style="color:var(--brand)">← 목록으로 돌아가기</a></p>
+    </div>`;
+}
+
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+function escUrl(s){ try{ return new URL(s).href }catch{ return '#' } }
+
+load();
+</script>
+
+</body>
+</html>
