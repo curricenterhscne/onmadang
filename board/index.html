@@ -46,12 +46,31 @@
   }
   .nav-links a:hover{background:var(--soft);color:var(--brand)}
   .nav-links a.active{background:var(--brand);color:#fff}
+  .nav-disabled{
+    font-size:14px;font-weight:600;color:#bbc5d4;
+    padding:8px 13px;border-radius:var(--radius-pill);
+    cursor:default;pointer-events:none;user-select:none;
+  }
+  .head-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .head-link{
+    display:flex;align-items:center;gap:5px;flex-shrink:0;
+    background:#fff;color:var(--brand);font-weight:700;font-size:13.5px;
+    padding:9px 16px;border-radius:var(--radius-pill);
+    border:1.5px solid var(--brand);transition:.18s;
+  }
+  .head-link:hover{background:var(--soft)}
   .head-cta{
     display:flex;align-items:center;gap:6px;flex-shrink:0;
-    background:var(--accent);color:#1c3d1d;font-weight:700;font-size:14px;
-    padding:10px 18px;border-radius:var(--radius-pill);transition:.18s;
+    background:var(--accent);color:#1c3d1d;font-weight:700;font-size:13.5px;
+    padding:9px 16px;border-radius:var(--radius-pill);transition:.18s;
   }
   .head-cta:hover{background:var(--accent-d)}
+  /* 리뉴얼 배너 */
+  .renewal-banner{
+    background:#e8edf8;border-bottom:1px solid #c0cce8;
+    color:var(--brand-d);text-align:center;
+    font-size:13.5px;font-weight:600;padding:11px 20px;line-height:1.6;
+  }
 
   /* 페이지 헤더 */
   .page-hero{background:linear-gradient(135deg,var(--brand),var(--brand-l));color:#fff;padding:52px 0 44px}
@@ -125,7 +144,7 @@
   footer a:hover{color:#fff}
 
   @media(max-width:640px){
-    .nav-links,.head-cta{display:none}
+    .nav-links,.nav-disabled,.head-tools{display:none}
     .notice-table thead th.col-num,
     .notice-table td.col-num{display:none}
     .notice-table td{padding:14px 12px}
@@ -146,6 +165,11 @@
   </symbol>
 </defs></svg>
 
+<!-- 리뉴얼 안내 배너 -->
+<div class="renewal-banner" role="note">
+  ＜충남 고교학점제 종합지원 포털 온마당＞ 현재 리뉴얼 작업 중입니다.&ensp;(2026. 7. 1. ~ 7. 31.)
+</div>
+
 <!-- 헤더 -->
 <header>
   <div class="nav">
@@ -154,14 +178,21 @@
       <span class="brand-txt"><b>온마당</b><span>충남 고교학점제 종합지원</span></span>
     </a>
     <nav class="nav-links" aria-label="주 메뉴">
-      <a href="../index.html#about">고교학점제 안내</a>
-      <a href="../index.html#design">진로·학업 설계</a>
-      <a href="../index.html#safety">4대 안전망</a>
+      <span class="nav-disabled" aria-disabled="true" title="준비 중">고교학점제 안내</span>
+      <span class="nav-disabled" aria-disabled="true" title="준비 중">진로·학업 설계</span>
+      <span class="nav-disabled" aria-disabled="true" title="준비 중">4대 안전망</span>
       <a href="./index.html" class="active">알림·소통 마당</a>
     </nav>
-    <a href="https://curricenterhscne.github.io/course_selector_cne/" target="_blank" rel="noopener" class="head-cta">
-      <svg class="clover" width="16" height="16"><use href="#clv"/></svg> 과목 선택 실습
-    </a>
+    <div class="head-tools">
+      <a href="https://curricenterhscne.github.io/2022-curriculum-majors/" target="_blank" rel="noopener" class="head-link">
+        <svg class="clover" width="15" height="15"><use href="#clv"/></svg>
+        <span>대학 학과 안내</span> ↗
+      </a>
+      <a href="https://curricenterhscne.github.io/course_selector_cne/" target="_blank" rel="noopener" class="head-cta">
+        <svg class="clover" width="15" height="15"><use href="#clv"/></svg>
+        과목 선택 실습 ↗
+      </a>
+    </div>
   </div>
 </header>
 
