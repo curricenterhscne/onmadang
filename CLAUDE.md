@@ -48,19 +48,19 @@
 3. **4대 안전망** (`safety/`) — 학교 교육과정 / 충남온라인학교 / 공동교육과정 / 학교 밖 교육
 4. **알림·소통 마당** (`board/`) — 공지사항 / 자료실
 
-## 기존 자산 연동 (새로 만들지 말 것 — 링크만)
+## 자산 연동
 
-자세한 명세는 `ASSETS.md` 참조. 형제 레포로 운영되며 본체는 링크/임베드만 한다.
+자세한 명세는 `ASSETS.md` 참조.
 
-| 자산 | URL | 연동 위치 |
+| 자산 | 위치 | 연동 방식 |
 |---|---|---|
-| ① 대학 학과·권장 과목 | https://curricenterhscne.github.io/2022-curriculum-majors/ | `design/practice.html` |
-| ② 과목 선택 실습 | https://curricenterhscne.github.io/course_selector_cne/ | `design/practice.html` |
-| ③ 공동교육과정 수강신청 | ~~https://gongdong-enrollment.vercel.app/~~ (폐쇄, 신규 개발 중) → 현재 `safety/enrollment-closed.html`로 안내 | `safety/jointcurricula.html` |
-| ⓪ 디자인 시스템 | https://curricenterhscne.github.io/cne-design-system/ | 전역 CSS |
+| ① 대학 학과·권장 과목 | `design/majors/` (폴더 통합) | 내부 상대경로 |
+| ② 과목 선택 실습 | `design/selector/` (폴더 통합) | 내부 상대경로 |
+| ③ 공동교육과정 수강신청 | 외부 (신규 개발 중) → 현재 `safety/enrollment-closed.html`로 안내 | 외부 링크 |
+| ⓪ 디자인 시스템 | CDN (`curricenterhscne/cne-design-system`) | CDN 참조 |
 
 **①↔② 브리지**: 학과 모달 → `?want=&core=&majorId=` 파라미터 → selector 자동선택 → 토스트.
-이 로직은 자산이 이미 보유. 본체는 **링크만 정확히 연결**하고 건드리지 않는다.
+이 로직은 ①②가 이미 보유. 브리지 URL은 상대경로(`../selector/`)로 연결.
 
 ## 작업 방식
 
@@ -71,7 +71,7 @@
 
 ## 하지 말 것
 
-- 자산(①②③) 내부 로직 재구현 ❌ → 링크로 연결
+- ①② 자산의 핵심 로직(데이터 로드, 브리지 파라미터 처리 등) 재구현 ❌ → 기존 코드 유지
 - 절대경로 내부 링크 ❌
 - 권리 미확보 캐릭터 이미지 사용 ❌
 - 빌드 도구·프레임워크 임의 도입 ❌

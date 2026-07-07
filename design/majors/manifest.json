@@ -1,0 +1,99 @@
+{
+  "title": "2022 개정 교육과정 계열별 학과 안내",
+  "publisher": "충청남도교육청",
+  "version": "1.0.0",
+  "lastUpdated": "2026-05-19",
+  "sourceDocument": "2022_개정_교육과정_계열별_학과_안내.pdf",
+  "categories": [
+    {
+      "id": "humanities",
+      "name": "인문학",
+      "order": 1,
+      "color": "#b794c4",
+      "file": "01-humanities.json",
+      "count": 11,
+      "status": "complete"
+    },
+    {
+      "id": "social",
+      "name": "사회",
+      "order": 2,
+      "color": "#e08fb5",
+      "file": "02-social.json",
+      "count": 14,
+      "status": "complete"
+    },
+    {
+      "id": "business",
+      "name": "경상",
+      "order": 3,
+      "color": "#d4a946",
+      "file": "03-business.json",
+      "count": 8,
+      "status": "complete"
+    },
+    {
+      "id": "education",
+      "name": "사범",
+      "order": 4,
+      "color": "#6fa86f",
+      "file": "04-education.json",
+      "count": 27,
+      "status": "complete"
+    },
+    {
+      "id": "natural",
+      "name": "자연과학",
+      "order": 5,
+      "color": "#e87a5d",
+      "file": "05-natural.json",
+      "count": 9,
+      "status": "complete"
+    },
+    {
+      "id": "engineering",
+      "name": "공학",
+      "order": 6,
+      "color": "#8a7355",
+      "file": "06-engineering.json",
+      "count": 26,
+      "status": "complete"
+    },
+    {
+      "id": "agriculture",
+      "name": "농생명과학",
+      "order": 7,
+      "color": "#4a90b8",
+      "file": "07-agriculture.json",
+      "count": 12,
+      "status": "complete"
+    },
+    {
+      "id": "arts",
+      "name": "예체능",
+      "order": 8,
+      "color": "#6fb3b8",
+      "file": "08-arts.json",
+      "count": 5,
+      "status": "complete"
+    },
+    {
+      "id": "future",
+      "name": "융합미래분야",
+      "order": 9,
+      "color": "#c25450",
+      "file": "09-future.json",
+      "count": 5,
+      "status": "complete"
+    },
+    {
+      "id": "medical",
+      "name": "의료보건",
+      "order": 10,
+      "color": "#4eb09a",
+      "file": "10-medical.json",
+      "count": 13,
+      "status": "complete"
+    }
+  ]
+}
