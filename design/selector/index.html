@@ -1,0 +1,2005 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>충남 고교 과목 선택 실습 — 고교학점제 시뮬레이션</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<!-- 꾸꾸클럽 디자인 시스템 v1.0 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/tokens/design-tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/components/components.css">
+<style>
+  :root {
+    /* ── 꾸꾸클럽 디자인 시스템 브리지 레이어 ──────────────────────────────
+       기존 변수명을 디자인 시스템 토큰으로 리매핑.
+       design-tokens.css 가 먼저 로드되므로 var() 참조가 정상 동작함.
+       --shadow-sm / --shadow-lg 는 동일 이름으로 정의되어 자동 상속 (자기참조 방지).
+       ─────────────────────────────────────────────────────────────────── */
+
+    /* 표면 */
+    --bg:           var(--color-bg);          /* #DAF2FC 라이트블루 */
+    --bg-2:         var(--color-bg-subtle);
+    --panel:        var(--color-surface);
+
+    /* 텍스트 */
+    --ink:          var(--color-text);
+    --ink-2:        var(--color-text-muted);
+    --ink-3:        var(--color-text-muted);
+    --ink-4:        var(--color-text-subtle);
+
+    /* 경계선 */
+    --line:         var(--color-border);
+    --line-soft:    var(--color-border-subtle);
+
+    /* 브랜드 — 진블루 (#4F6EBE) */
+    --brand:        var(--color-brand);
+    --brand-2:      var(--kkuk-blue-600);
+    --brand-3:      var(--kkuk-blue-400);
+    --brand-soft:   var(--kkuk-blue-50);
+    --brand-softer: var(--kkuk-sky-50);
+
+    /* 상태 색 */
+    --ok:           var(--kkuk-success);      /* green-500 */
+    --ok-soft:      var(--kkuk-green-50);
+    --warn:         var(--kkuk-warning);
+    --warn-soft:    var(--kkuk-cream-100);
+    --danger:       var(--kkuk-danger);
+    --danger-soft:  #fee2e2;
+
+    /* 반경 */
+    --r-sm:         var(--radius-sm);
+    --r:            var(--radius-md);
+    --r-lg:         var(--radius-lg);
+    --r-xl:         var(--radius-xl);
+
+    /* 그림자 — sm/lg 는 동일 이름이므로 생략하고 design-tokens 상속 */
+    --shadow:       var(--shadow-md);
+    --shadow-up:    0 -8px 24px -6px rgba(30,42,69,.10);
+    --shadow-brand: 0 8px 24px -8px rgba(79,110,190,.40); /* 진블루 기준 */
+
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+    /* 기능적 색상 — 과목 유형 구분 (디자인 시스템 미정의, 유지) */
+    --type-gongtong: #475569;
+    --type-ilban:    #3b82f6;
+    --type-jinro:    #ec4899;
+    --type-yunghap:  #10b981;
+
+    /* 하위 호환 alias (JS fill.style.background 등에서 참조) */
+    --accent:        var(--brand);
+    --accent-soft:   var(--brand-soft);
+    --ink-soft:      var(--ink-3);
+    --line-strong:   var(--ink-2);
+    --row-1:         var(--line-soft);
+    --row-2:         var(--bg-2);
+  }
+  /* design-tokens.css 의 body { font-size: 16px } 는 아래 body 블록에서 14px 로 오버라이드됨 */
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+  body {
+    font-family: 'Pretendard', -apple-system, system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    font-feature-settings: 'tnum';
+    -webkit-font-smoothing: antialiased;
+  }
+  .num { font-feature-settings: 'tnum'; font-variant-numeric: tabular-nums; }
+
+  /* ── 헤더 — .kk-header (진블루 상단바 + 팬꾸미) ────────────────────────── */
+  /* 배경·sticky·shadow 는 components.css .kk-header 가 처리 */
+  /* 툴바 행: 헤더 아래 흰 배경 영역 */
+  .h-subnav {
+    background: var(--color-surface);
+    border-top: 1px solid rgba(255,255,255,0.18);
+    padding: 0;
+  }
+  .h-subnav__inner { max-width: 1600px; margin-inline: auto; padding: 4px 28px 2px; }
+  .h-site-link { padding: 4px 0 6px; border-bottom: 1px solid var(--color-border); margin-bottom: 6px; }
+  .h-site-link a { font-size: 12px; font-weight: 600; color: var(--color-text-brand); text-decoration: none; }
+  .h-site-link a:hover { text-decoration: underline; }
+  /* 진블루 헤더 위 아이콘·가이드 버튼을 흰 톤으로 오버라이드 */
+  .kk-header .icon-btn {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.28);
+    color: #fff;
+  }
+  .kk-header .icon-btn:hover {
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(255,255,255,0.45);
+    color: #fff;
+  }
+  .kk-header .guide-btn {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.35);
+    color: #fff;
+  }
+  .kk-header .guide-btn:hover {
+    background: rgba(255,255,255,0.28);
+    border-color: rgba(255,255,255,0.50);
+    color: #fff; text-decoration: none;
+  }
+  .icon-btn {
+    width: 34px; height: 34px;
+    border: 1px solid var(--line); background: var(--panel); border-radius: var(--r);
+    cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+    transition: all .15s; color: var(--ink-2); position: relative;
+  }
+  .icon-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-soft); }
+  a.icon-btn { text-decoration: none; color: var(--ink-2); }
+  a.icon-btn:hover { text-decoration: none; }
+  /* .guide-btn → kk-btn kk-btn--secondary 추가됨. 크기·굵기만 오버라이드. */
+  .guide-btn { font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .h-toolbar {
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    margin-bottom: 2px;
+  }
+  .year-pills {
+    display: inline-flex; background: var(--line-soft); padding: 3px;
+    border-radius: 99px; flex-shrink: 0;
+  }
+  .year-pill {
+    padding: 5px 13px; border-radius: 99px; border: 0;
+    background: transparent; font: inherit; font-size: 12px;
+    color: var(--ink-3); cursor: pointer; font-weight: 600; transition: all .15s;
+  }
+  .year-pill.active { background: var(--panel); color: var(--ink); box-shadow: var(--shadow-sm); }
+
+  .search-wrap { position: relative; flex: 1; max-width: 380px; min-width: 200px; }
+  .search-icon {
+    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--ink-4); pointer-events: none;
+  }
+  /* .search-input → kk-input 추가됨. 높이·아이콘용 좌측 패딩만 오버라이드. */
+  .search-input { height: 36px; padding: 0 12px 0 36px; font-size: 13px; }
+
+  #finder-dropdown {
+    position: absolute; top: calc(100% + 4px); left: 0; z-index: 200;
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
+    list-style: none; margin: 0; padding: 0; min-width: 100%; max-height: 280px;
+    overflow-y: auto; box-shadow: var(--shadow-lg);
+  }
+  #finder-dropdown li { padding: 8px 14px; cursor: pointer; font-size: 13px; border-bottom: 1px solid var(--line-soft); white-space: nowrap; color: var(--color-text); }
+  #finder-dropdown li:last-child { border-bottom: none; }
+  #finder-dropdown li:hover, #finder-dropdown li.kbd-active { background: var(--brand-soft); color: var(--brand); }
+  .finder-region { color: var(--ink-4); font-size: 11.5px; margin-left: 6px; }
+  .finder-tick { color: var(--brand); margin-left: 3px; }
+
+  .school-meta:not(:empty) {
+    display: inline-flex; align-items: center;
+    background: var(--brand); color: #fff;
+    padding: 5px 12px; border-radius: 99px;
+    font-size: 12.5px; font-weight: 600;
+  }
+  .school-meta:empty { display: none; }
+  /* #dept-sel → kk-select 추가됨 */
+  #dept-sel { height: 36px; font-size: 12.5px; min-width: 130px; }
+
+  .reco-row {
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px dashed var(--line);
+    display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+  }
+  .reco-label {
+    font-size: 11px; color: var(--ink-3); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em; margin-right: 4px; flex-shrink: 0;
+  }
+  /* .reco-btn → kk-btn kk-btn--secondary kk-btn--sm 추가됨. 필 반경·활성 상태만 오버라이드. */
+  .reco-btn { border-radius: var(--radius-pill); font-size: 12.5px; }
+  .reco-btn.active {
+    background: var(--color-brand); color: #fff; border-color: var(--color-brand);
+    box-shadow: 0 4px 12px -4px rgba(79,110,190,.5);
+  }
+  .reco-btn.active::before { content: '✓ '; }
+  .right-tools { margin-left: auto; display: flex; gap: 6px; }
+  /* .tool-btn → kk-btn kk-btn--secondary kk-btn--sm 추가됨 */
+  .tool-btn { font-size: 12.5px; }
+
+  main {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 24px;
+    padding: 20px 28px 80px;
+    max-width: 1600px; margin: 0 auto;
+  }
+  @media (max-width: 1100px) and (min-width: 769px) {
+    main { grid-template-columns: 1fr; }
+    aside.counter-panel { position: static !important; }
+  }
+  /* ── 모바일 도크 ── */
+  .mobile-dock { display: none; }
+  .sheet-backdrop {
+    display: none; position: fixed; inset: 0;
+    background: rgba(15,23,42,.45); z-index: 88;
+  }
+  .sheet-backdrop.show { display: block; }
+  @media (max-width: 768px) {
+    /* 시트 열릴 때 backdrop이 헤더(200)까지 덮도록 z-index 올림 */
+    .sheet-backdrop.show { z-index: 250; }
+  }
+  /* ── 모바일 그레이드 아코디언 ── */
+  .changche-card {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .changche-icon { font-size: 22px; line-height: 1; }
+  .changche-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .changche-detail { display: flex; align-items: center; gap: 8px; }
+  .changche-num { font-size: 15px; font-weight: 700; color: var(--brand); }
+  .changche-sub { font-size: 11px; color: var(--ink-3); }
+  /* .grade-card → kk-card 추가됨 */
+  .grade-card { padding: 0; margin-bottom: 12px; overflow: hidden; }
+  .grade-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px; cursor: pointer; user-select: none;
+  }
+  .grade-head.open .chevron { transform: rotate(0deg); }
+  .chevron { transition: transform .2s; transform: rotate(-90deg); color: var(--ink-4); flex-shrink: 0; }
+  .grade-num {
+    width: 30px; height: 30px; flex-shrink: 0;
+    background: var(--ink); color: #fff;
+    border-radius: var(--r); display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+  }
+  .grade-title-block { flex: 1; }
+  .grade-title { font-size: 14px; font-weight: 700; }
+  .grade-status { display: flex; align-items: center; gap: 8px; }
+  .grade-credit { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .grade-credit .unit { font-size: 11px; font-weight: 500; color: var(--ink-3); margin-left: 1px; }
+  .sem-tabs {
+    display: flex; border-bottom: 1px solid var(--line-soft);
+    background: var(--bg-2);
+  }
+  .sem-tab {
+    flex: 1; padding: 10px 12px; border: 0; background: transparent;
+    font: inherit; font-size: 13px; font-weight: 600; color: var(--ink-3);
+    cursor: pointer; display: flex; align-items: center;
+    justify-content: center; gap: 5px; transition: all .15s;
+    border-bottom: 2px solid transparent;
+  }
+  .sem-tab.active { color: var(--brand); border-bottom-color: var(--brand); background: var(--panel); }
+  .sem-sub { font-size: 10.5px; font-weight: 400; color: var(--ink-4); }
+  .sem-tab.active .sem-sub { color: var(--brand-3); }
+  .grade-content { padding: 4px 0; }
+  .subject-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; border-bottom: 1px solid var(--line-soft);
+    gap: 10px; min-height: 52px;
+  }
+  .subject-row:last-child { border-bottom: 0; }
+  .subject-row--selectable { cursor: pointer; transition: background .12s; }
+  .subject-row--selectable:hover { background: var(--brand-softer); }
+  .subject-row--fixed { background: var(--brand-softer); }
+  .subject-row--selected { background: var(--brand-soft); }
+  .subject-row--soonjeung { background: var(--warn-soft); cursor: pointer; }
+  .sr-main { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; }
+  .sr-name { font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .subject-row--selected .sr-name { font-weight: 700; color: var(--brand); }
+  .sr-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .sr-group { font-size: 11px; color: var(--ink-3); }
+  .sr-credit { font-size: 13px; font-weight: 600; }
+  .sr-unit { font-size: 10.5px; font-weight: 400; color: var(--ink-3); margin-left: 1px; }
+  .sr-check { color: var(--brand); font-weight: 700; font-size: 13px; }
+  .mobile-empty { padding: 20px 16px; font-size: 13px; color: var(--ink-3); font-style: italic; }
+  /* ── @media 768px ── */
+  @media (max-width: 768px) {
+    main { display: block; padding: 14px; padding-bottom: 88px; }
+    .kk-header .kk-header__inner { padding: 8px 14px; }
+    .h-subnav { padding: 0; }
+    .h-subnav__inner { padding: 6px 14px 2px; }
+    .h-toolbar { gap: 8px; }
+    .kk-header__subtitle { display: none; }
+    .search-wrap { max-width: 100%; flex: 1 1 100%; order: 3; }
+    .reco-row {
+      flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+      -ms-overflow-style: none;
+      margin: 8px -14px 0; padding: 8px 14px 6px;
+      border-top: 1px dashed var(--line);
+    }
+    .reco-row::-webkit-scrollbar { display: none; }
+    .reco-btn { flex-shrink: 0; }
+    .reco-label { display: none; }
+    .right-tools { margin-left: 0; flex-shrink: 0; }
+    .guide-btn span { display: none; }
+    .guide-btn { padding: 0; width: 34px; height: 34px; justify-content: center; }
+    .legend { display: none; }
+    aside.counter-panel {
+      position: fixed !important;
+      bottom: 0; left: 0; right: 0; top: auto !important;
+      max-height: 62px; overflow: hidden;
+      background: #ffffff !important;
+      box-shadow: 0 -4px 24px rgba(15,23,42,.18); z-index: 90;
+      border-radius: 18px 18px 0 0;
+      border-top: 2px solid var(--line);
+      transition: max-height .32s cubic-bezier(.22,.6,.32,1), border-radius .32s;
+      flex-direction: column; gap: 0; padding: 0; color: var(--ink);
+    }
+    aside.counter-panel.sheet-open {
+      max-height: 78vh; overflow: hidden; border-radius: 22px 22px 0 0;
+      z-index: 300; /* 헤더(200) 위로 올려 mobile-dock(닫기 버튼)이 가려지지 않도록 */
+    }
+    .sheet-scroll {
+      overflow-y: auto; flex: 1;
+      -webkit-overflow-scrolling: touch;
+      display: none;
+    }
+    aside.counter-panel.sheet-open .sheet-scroll { display: block; }
+    .mobile-dock {
+      display: flex !important; align-items: center;
+      justify-content: space-between;
+      padding: 0 18px; height: 62px; flex-shrink: 0;
+      cursor: pointer; color: var(--ink);
+    }
+    /* 시트 열린 상태에서 mobile-dock 하단 구분선 */
+    aside.counter-panel.sheet-open .mobile-dock {
+      border-bottom: 1px solid var(--line);
+    }
+    .md-label { font-size: 11px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.04em; }
+    .md-value { font-size: 22px; font-weight: 800; color: var(--ink); }
+    .md-of { font-size: 13px; font-weight: 500; color: var(--ink-3); }
+    .md-expand {
+      font-size: 13px; font-weight: 700; color: var(--brand); white-space: nowrap;
+      background: var(--brand-soft); padding: 5px 12px; border-radius: var(--r-pill);
+    }
+    .counter-panel .progress-card { border-radius: 0; margin: 0; flex-shrink: 0; }
+    .counter-panel .progress-card::after { display: none; }
+    #soonjeung-row, #changche-row { padding: 0 12px; }
+    .counter-panel .summary-card { margin: 12px; flex-shrink: 0; }
+    body.printing aside.counter-panel { position: static !important; max-height: none !important; border-radius: 0; }
+  }
+  /* .group-card → kk-card 추가됨. padding 0 오버라이드 (내용은 group-head·table 내부). */
+  .group-card { padding: 0; margin-bottom: 16px; overflow: hidden; }
+  .group-card:hover { border-color: var(--color-border-strong); }
+  .group-card.fixed { background: linear-gradient(180deg, var(--kkuk-sky-50) 0%, var(--color-surface) 60%); }
+  .group-head {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .group-mark {
+    width: 28px; height: 28px; flex-shrink: 0;
+    background: var(--ink); color: #fff;
+    border-radius: var(--r);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+  }
+  .group-card.fixed .group-mark { background: var(--brand); }
+  .group-title { font-size: 13px; font-weight: 700; margin: 0; letter-spacing: 0.01em; color: var(--ink); }
+  .group-meta { font-size: 11px; color: var(--ink-3); }
+  /* kk-badge warn/err — 디자인 시스템 미정의 의미 색 로컬 확장 */
+  .kk-badge--warn { background: var(--warn-soft); color: var(--warn); }
+  .kk-badge--err  { background: var(--danger-soft); color: var(--danger); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th, td {
+    padding: 5px 7px;
+    border-bottom: 1px solid var(--line);
+    text-align: center; vertical-align: middle;
+  }
+  th {
+    background: var(--line-soft); font-weight: 600; font-size: 11px;
+    letter-spacing: 0.02em; color: var(--ink-3);
+    border-bottom: 1px solid var(--line);
+  }
+  td.subject-name {
+    text-align: left;
+    font-size: 13.5px; padding-left: 14px; min-width: 180px;
+  }
+  td.group-cell { font-size: 11.5px; color: var(--ink-soft); width: 62px; }
+  td.sem-cell {
+    width: 40px;
+    font-size: 13px; font-weight: 600;
+  }
+  td.sem-cell.has-credit { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+  td.sem-cell.selectable { cursor: pointer; transition: background 0.1s; }
+  td.sem-cell.selectable:hover { background: var(--brand-softer); }
+  td.sem-cell.selected { background: var(--accent); color: #fff; font-weight: 700; }
+  td.sem-cell.disabled-sem {
+    background: repeating-linear-gradient(45deg, transparent, transparent 4px, var(--line) 4px, var(--line) 5px);
+    cursor: not-allowed;
+  }
+
+  .type-dot {
+    display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; margin-right: 6px;
+    vertical-align: middle; flex-shrink: 0;
+  }
+  .type-공통 { background: #475569; }
+  .type-일반 { background: #3b82f6; }
+  .type-진로 { background: #ec4899; }
+  .type-융합 { background: #10b981; }
+  /* .pill → kk-badge kk-badge--neutral 로 대체됨 */
+
+  aside.counter-panel {
+    position: sticky; top: 130px; align-self: start;
+    max-height: calc(100vh - 150px); overflow-y: auto;
+    display: flex; flex-direction: column; gap: 12px;
+    padding: 0; background: transparent; border: none;
+  }
+  .progress-card {
+    padding: 22px;
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+    color: #fff;
+    border-radius: var(--r-lg);
+    position: relative; overflow: hidden;
+  }
+  .progress-card::after {
+    content: ''; position: absolute;
+    right: -30px; top: -30px;
+    width: 140px; height: 140px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+  .progress-card.achieved {
+    background: linear-gradient(135deg, var(--ok) 0%, #10b981 100%);
+  }
+  .pc-label { font-size: 11px; font-weight: 700; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .pc-value { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; margin-bottom: 14px; position: relative; z-index: 1; }
+  .pc-value .of { font-size: 16px; font-weight: 500; opacity: 0.7; }
+  .pc-bar { height: 6px; background: rgba(255,255,255,0.25); border-radius: 99px; overflow: hidden; position: relative; z-index: 1; }
+  .pc-bar > div { height: 100%; background: rgba(255,255,255,0.9) !important; border-radius: 99px; transition: width 0.3s ease; }
+  .pc-achieved-msg { display: none; font-size: 12px; font-weight: 700; margin-top: 10px; position: relative; z-index: 1; }
+  .progress-card.achieved .pc-achieved-msg { display: block; }
+  .summary-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+  }
+  .panel-section { padding: 14px 16px; }
+  .panel-section + .panel-section { border-top: 1px solid var(--line-soft); }
+  .panel-section h3 {
+    margin: 0 0 8px;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--ink-3);
+  }
+  .group-summary {
+    font-size: 12px; padding: 4px 0;
+    display: flex; justify-content: space-between; gap: 6px;
+    color: var(--ink-2);
+  }
+  .group-summary .label { flex: 0 0 auto; }
+  .group-summary .val { text-align: right; flex: 1 1 auto; font-weight: 600; }
+  .group-summary.violated { color: var(--danger); }
+  .group-summary.warned { color: var(--warn); }
+  .group-summary.satisfied { color: var(--ok); }
+  #soonjeung-row:not(:empty) {
+    background: var(--warn-soft); border: 1px solid var(--warn);
+    border-radius: var(--r); padding: 8px 12px;
+  }
+  #changche-row:not(:empty) {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--r); padding: 8px 12px;
+  }
+  /* .eval-badge → kk-badge kk-badge--unit 추가됨. 소형 크기·위치만 오버라이드. */
+  .eval-badge { font-size: 9px; padding: 1px 4px; margin-left: 4px; vertical-align: middle; display: inline-block; }
+  td.sem-cell.soonjeung { background: var(--warn-soft); color: var(--warn); cursor: pointer; font-size: 11px; }
+  td.sem-cell.soonjeung.selected-soonjeung { background: var(--warn); color: #fff; font-weight: 700; font-size: 11px; }
+  td.sem-cell.soonjeung:hover:not(.selected-soonjeung) { opacity: 0.75; }
+
+  .legend {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    margin: 0 0 16px; padding: 9px 13px;
+    background: var(--row-1); border: 1px solid var(--line);
+    font-size: 11px; color: var(--ink-soft);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 4px; }
+  .legend .sample {
+    display: inline-block; width: 13px; height: 13px;
+    border: 1px solid var(--line); vertical-align: middle;
+  }
+
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: var(--bg);
+    padding: 11px 18px; font-size: 13px; border-radius: 2px;
+    z-index: 100; opacity: 0; transition: opacity 0.2s;
+    pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  }
+  .toast.show { opacity: 1; }
+
+  /* 저장 드롭다운 */
+  .save-wrap { position: relative; }
+  .save-dropdown {
+    position: absolute; top: calc(100% + 6px); right: 0; z-index: 300;
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
+    list-style: none; margin: 0; padding: 4px;
+    min-width: 200px; box-shadow: var(--shadow-lg);
+  }
+  .save-dropdown li {
+    padding: 9px 14px; cursor: pointer; font-size: 13px; font-weight: 500;
+    border-radius: var(--r-sm); white-space: nowrap; color: var(--ink-2);
+  }
+  .save-dropdown li:hover { background: var(--brand-soft); color: var(--brand); }
+
+  /* 인쇄 / PDF 내보내기 스타일 */
+  body.printing .kk-header__inner,
+  body.printing .h-subnav,
+  body.printing .legend { display: none !important; }
+  body.printing header { position: static !important; background: #fff; border-bottom: 2px solid #000; }
+  body.printing td.sem-cell.selected {
+    background: transparent !important; color: var(--ink) !important; font-weight: 700;
+  }
+  body.printing td.sem-cell.selected::before { content: '✓ '; }
+  body.printing aside.counter-panel { position: static !important; max-height: none !important; }
+  @media print {
+    .kk-header__inner, .h-subnav, .legend { display: none !important; }
+    header { position: static !important; background: #fff; }
+    td.sem-cell.selected { background: transparent !important; color: #000 !important; font-weight: 700; }
+    td.sem-cell.selected::before { content: '✓ '; }
+    aside.counter-panel { position: static !important; max-height: none !important; }
+    @page { size: A4 landscape; margin: 10mm; }
+  }
+
+  /* ── 온마당 공통 헤더/푸터/배너 ── */
+  .clover{display:inline-block;vertical-align:middle}
+  .renewal-banner{
+    background:#e8edf8;border-bottom:1px solid #c0cce8;
+    color:#3a539b;text-align:center;
+    font-size:13.5px;font-weight:600;padding:11px 20px;line-height:1.6;
+  }
+  .onmadang-header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line, #c5dcef);
+  }
+  .onmadang-nav{
+    display:flex;align-items:center;gap:16px;height:68px;
+    max-width:1180px;margin:0 auto;padding:0 24px;
+  }
+  .om-brand{display:flex;align-items:center;gap:11px;flex-shrink:0;text-decoration:none}
+  .brand-txt b{font-size:18px;color:#4F6EBE;font-weight:800;display:block;letter-spacing:-.4px;line-height:1.1}
+  .brand-txt span{font-size:10.5px;color:#51607d;font-weight:500}
+  .nav-links{display:flex;gap:4px;margin-left:20px;flex:1}
+  .nav-links a{
+    font-size:14px;font-weight:600;color:#51607d;
+    padding:8px 14px;border-radius:999px;transition:.18s;text-decoration:none;
+  }
+  .nav-links a:hover{background:#eef7fc;color:#4F6EBE}
+  .nav-links a.active{background:#4F6EBE;color:#fff}
+  .nav-disabled{
+    font-size:14px;font-weight:600;color:#bbc5d4;
+    padding:8px 13px;border-radius:999px;
+    cursor:default;pointer-events:none;user-select:none;
+  }
+  .head-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .head-link{
+    display:flex;align-items:center;gap:5px;flex-shrink:0;
+    background:#fff;color:#4F6EBE;font-weight:700;font-size:13.5px;
+    padding:9px 16px;border-radius:999px;
+    border:1.5px solid #4F6EBE;transition:.18s;text-decoration:none;
+  }
+  .head-link:hover{background:#eef7fc}
+  .hamburger{
+    display:none;background:none;border:none;font-size:26px;
+    color:#4F6EBE;cursor:pointer;margin-left:auto;padding:4px;
+  }
+  .mobile-menu{
+    display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;
+    background:rgba(0,0,0,.4);opacity:0;transition:opacity .25s;
+  }
+  .mobile-menu.open{display:block;opacity:1}
+  .mobile-menu-panel{
+    position:absolute;top:0;right:0;width:min(320px,85vw);height:100%;
+    background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,.15);
+    padding:24px;overflow-y:auto;transform:translateX(100%);transition:transform .25s;
+  }
+  .mobile-menu.open .mobile-menu-panel{transform:translateX(0)}
+  .mobile-menu-close{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:none;background:#eef7fc;border-radius:50%;font-size:20px;cursor:pointer;margin-left:auto;margin-bottom:20px}
+  .mobile-menu-nav{display:flex;flex-direction:column;gap:4px}
+  .mobile-menu-nav a{display:block;font-size:15px;font-weight:600;color:#51607d;padding:12px 16px;border-radius:12px;transition:.15s;text-decoration:none}
+  .mobile-menu-nav a:hover{background:#eef7fc;color:#4F6EBE}
+  .mobile-menu-nav a.active{background:#4F6EBE;color:#fff}
+  .mobile-menu-nav .disabled{color:#bbc5d4;padding:12px 16px;font-size:15px;font-weight:600}
+  .mobile-menu-divider{height:1px;background:#c5dcef;margin:12px 0}
+  .mobile-menu-shortcuts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+  .mobile-menu-shortcuts a{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#4F6EBE;padding:10px 14px;background:#eef7fc;border-radius:12px;transition:.15s;text-decoration:none}
+  .mobile-menu-shortcuts a:hover{background:#c5dcef}
+
+  .om-breadcrumb{background:#fff;border-bottom:1px solid #c5dcef;padding:10px 0;font-size:13px;color:#51607d}
+  .om-breadcrumb-inner{max-width:1180px;margin:0 auto;padding:0 28px}
+  .om-breadcrumb a{color:#4F6EBE;text-decoration:none}
+  .om-breadcrumb a:hover{text-decoration:underline}
+
+  .onmadang-footer{background:#3a539b;color:rgba(255,255,255,.7);padding:32px 0;text-align:center;font-size:13px}
+  .onmadang-footer a{color:rgba(255,255,255,.7);text-decoration:none}
+  .onmadang-footer a:hover{color:#fff}
+
+  @media(max-width:900px){
+    .head-link span{display:none}
+  }
+  @media(max-width:680px){
+    .nav-links,.nav-disabled,.head-tools{display:none}
+    .hamburger{display:block}
+  }
+</style>
+</head>
+<body>
+
+<!-- ── 클로버 SVG 심볼 ── -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="clv" viewBox="0 0 100 100">
+    <circle cx="50" cy="32" r="17" fill="#7BCE7C"/>
+    <circle cx="32" cy="50" r="17" fill="#7BCE7C"/>
+    <circle cx="68" cy="50" r="17" fill="#7BCE7C"/>
+    <circle cx="50" cy="68" r="17" fill="#5fb260"/>
+    <circle cx="50" cy="50" r="8.5" fill="#4F6EBE"/>
+    <path d="M50 66 Q53 82 59 90" stroke="#5fb260" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </symbol>
+</defs></svg>
+
+<!-- ── 리뉴얼 안내 배너 ── -->
+<div class="renewal-banner" role="note">
+  ＜충남 고교학점제 종합지원 포털 온마당＞ 현재 리뉴얼 작업 중입니다.&ensp;(2026. 7. 1. ~ 7. 31.)
+</div>
+
+<!-- ── 온마당 헤더 ── -->
+<header class="onmadang-header">
+  <div class="onmadang-nav">
+    <a href="../../index.html" class="om-brand">
+      <svg class="clover" width="38" height="38"><use href="#clv"/></svg>
+      <span class="brand-txt"><b>온마당</b><span>충남 고교학점제 종합지원</span></span>
+    </a>
+    <nav class="nav-links" aria-label="주 메뉴">
+      <span class="nav-disabled" aria-disabled="true" title="준비 중">고교학점제 안내</span>
+      <a href="../">진로·학업 설계</a>
+      <a href="../../safety/">4대 안전망</a>
+      <a href="../../index.html">알림·소통 마당</a>
+    </nav>
+    <div class="head-tools">
+      <a href="../majors/" class="head-link">
+        <svg class="clover" width="15" height="15"><use href="#clv"/></svg>
+        <span>대학 학과 안내</span> →
+      </a>
+      <a href="guide.html" class="guide-btn kk-btn kk-btn--secondary" id="guide-link" title="사용 설명서">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>사용 설명서</span>
+      </a>
+      <div class="save-wrap">
+        <button class="icon-btn" id="save-menu-btn" title="저장">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        </button>
+        <ul class="save-dropdown" id="save-dropdown" style="display:none;">
+          <li data-action="json">JSON으로 저장 (재작업용)</li>
+          <li data-action="pdf">PDF로 저장 (인쇄·제출용)</li>
+          <li data-action="xlsx">Excel로 저장 (재가공용)</li>
+        </ul>
+      </div>
+      <label class="icon-btn" for="load-input" title="불러오기" style="cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </label>
+      <input type="file" id="load-input" accept=".json" style="display:none;">
+      <button class="icon-btn" id="share-btn" title="공유 링크 복사">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+    </div>
+    <button class="hamburger" aria-label="메뉴 열기">☰</button>
+  </div>
+</header>
+
+<!-- 모바일 메뉴 -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-panel">
+    <button class="mobile-menu-close" aria-label="메뉴 닫기">✕</button>
+    <nav class="mobile-menu-nav" aria-label="모바일 메뉴">
+      <span class="disabled">고교학점제 안내</span>
+      <a href="../">진로·학업 설계</a>
+      <a href="../../safety/">4대 안전망</a>
+      <a href="../../index.html">알림·소통 마당</a>
+    </nav>
+    <div class="mobile-menu-divider"></div>
+    <div class="mobile-menu-shortcuts">
+      <a href="../majors/">
+        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 대학 학과 안내 →
+      </a>
+      <a href="guide.html">
+        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 사용 설명서
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- breadcrumb -->
+<div class="om-breadcrumb">
+  <div class="om-breadcrumb-inner">
+    <a href="../../index.html">홈</a> › <a href="../">진로·학업 설계</a> › <strong>과목 선택 실습</strong>
+  </div>
+</div>
+
+<div class="kk-header-toolbar">
+  <div class="h-subnav">
+  <div class="h-subnav__inner">
+  <div class="h-site-link">
+    <a href="../majors/">대학 학과와 권장 과목 안내 →</a>
+  </div>
+  <div class="h-toolbar">
+    <div class="year-pills">
+      <button class="year-pill" data-year="2025">2025</button>
+      <button class="year-pill active" data-year="2026">2026</button>
+    </div>
+    <div class="search-wrap">
+      <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="school-finder" class="search-input kk-input" placeholder="학교명·지역으로 검색 (예: 천안, 외고)" autocomplete="off" />
+      <ul id="finder-dropdown" style="display:none;"></ul>
+    </div>
+    <div class="school-meta" id="school-meta"></div>
+    <select id="dept-sel" class="kk-select" style="display:none;"></select>
+  </div>
+
+  <div class="reco-row" id="presets" style="display:none;">
+    <span class="reco-label">계열별 추천 과목</span>
+    <button class="reco-btn kk-btn kk-btn--secondary kk-btn--sm" data-preset="science">이공·자연</button>
+    <button class="reco-btn kk-btn kk-btn--secondary kk-btn--sm" data-preset="engineering">공학·IT</button>
+    <button class="reco-btn kk-btn kk-btn--secondary kk-btn--sm" data-preset="commerce">경상·사회</button>
+    <button class="reco-btn kk-btn kk-btn--secondary kk-btn--sm" data-preset="humanities">인문·어문</button>
+    <button class="reco-btn kk-btn kk-btn--secondary kk-btn--sm" data-preset="arts">예술</button>
+    <button class="reco-btn kk-btn kk-btn--secondary kk-btn--sm" data-preset="sports">체육</button>
+    <div class="right-tools">
+      <button class="tool-btn kk-btn kk-btn--secondary kk-btn--sm" id="clear-btn">선택 비우기</button>
+    </div>
+  </div>
+  </div><!-- /.h-subnav__inner -->
+  </div><!-- /.h-subnav -->
+</div><!-- /.kk-header-toolbar -->
+
+<main>
+  <section id="curriculum-area">
+    <div class="kk-empty" id="placeholder">
+      <img class="kk-empty__char" src="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/assets/characters/paenkkumi.svg" alt="팬꾸미">
+      <p class="kk-empty__title">학교를 선택해 주세요</p>
+      <p class="kk-empty__body">좌측 상단에서 학교를 검색하면 3개년 교육과정 편제표가 표시됩니다.<br>과목 셀을 클릭해 선택을 시뮬레이션할 수 있습니다.</p>
+      <a href="guide.html" class="kk-btn kk-btn--primary">사용 설명서 보기 →</a>
+    </div>
+  </section>
+
+  <aside class="counter-panel" id="counter-panel" style="display: none;">
+    <div class="mobile-dock" onclick="toggleSheet()">
+      <div>
+        <div class="md-label">이수학점</div>
+        <div class="md-value"><span id="m-total" class="num">0</span><span class="md-of"> / 192</span></div>
+      </div>
+      <span class="md-expand">상세 ▴</span>
+    </div>
+    <div class="sheet-scroll">
+    <div class="progress-card" id="progress-card">
+      <div class="pc-label">총 이수학점</div>
+      <div class="pc-value">
+        <span class="num" id="total-credits">0</span><span class="of"> / 192</span>
+      </div>
+      <div class="pc-bar"><div id="progress-fill" style="width: 0%;"></div></div>
+      <div class="pc-achieved-msg">🎉 졸업 학점 달성!</div>
+    </div>
+
+    <div id="soonjeung-row" style="display:none;"></div>
+    <div id="changche-row" style="display:none;"></div>
+
+    <div class="summary-card">
+      <div class="panel-section">
+        <h3>교과군별</h3>
+        <div id="group-breakdown"></div>
+      </div>
+      <div class="panel-section">
+        <h3>선택 그룹 충족 현황</h3>
+        <div id="group-status"></div>
+      </div>
+    </div>
+    </div><!-- /.sheet-scroll -->
+  </aside>
+</main>
+
+<div class="sheet-backdrop" id="sheet-bg" onclick="toggleSheet()"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const PRESETS = {
+  science: {
+    name: '이공·자연',
+    priority: ['미적분Ⅰ','미적분Ⅱ','기하','고급 미적분','고급 기하',
+      '물리학','화학','생명과학','지구과학',
+      '역학과 에너지','전자기와 양자','물질과 에너지','화학 반응의 세계',
+      '세포와 물질대사','생물의 유전','행성우주과학','지구시스템과학',
+      '물리학 실험','화학 실험','생명과학 실험','지구과학 실험',
+      '고급 물리학','고급 화학','고급 생명과학','고급 지구과학',
+      '융합과학 탐구','과학과제 연구','전문 수학','실용 통계',
+      '인공지능 수학','인공지능 기초'],
+  },
+  engineering: {
+    name: '공학·IT',
+    priority: ['미적분Ⅰ','미적분Ⅱ','기하','확률과 통계',
+      '물리학','화학','전자기와 양자','역학과 에너지',
+      '인공지능 기초','인공지능 수학','데이터 과학','정보과학',
+      '프로그래밍','소프트웨어와 생활','로봇과 공학세계','창의 공학 설계',
+      '응용 프로그래밍 개발','빅 데이터 분석','사물 인터넷과 센서 제어',
+      '지식 재산 일반'],
+  },
+  commerce: {
+    name: '경상·사회',
+    priority: ['확률과 통계','경제 수학','실용 통계',
+      '경제','사회와 문화','정치','법과 사회',
+      '금융과 경제생활','세계시민과 지리','한국지리 탐구',
+      '국제 관계의 이해','세계사','동아시아 역사 기행',
+      '도시의 미래 탐구','사회문제 탐구','현대사회와 윤리',
+      '데이터 과학','심화 영어','심화 영어 독해와 작문','영어 발표와 토론'],
+  },
+  humanities: {
+    name: '인문·어문',
+    priority: ['문학','화법과 언어','독서와 작문','주제 탐구 독서',
+      '문학과 영상','독서 토론과 글쓰기','매체 의사소통','언어생활 탐구',
+      '세계사','동아시아 역사 기행','역사로 탐구하는 현대 세계',
+      '인문학과 윤리','윤리와 사상','현대사회와 윤리','윤리문제 탐구',
+      '영어 독해와 작문','심화 영어','영미 문학 읽기','심화 영어 독해와 작문',
+      '세계 문화와 영어','일본어','중국어','한문',
+      '일본 문화','중국 문화','언어생활과 한자','한문 고전 읽기',
+      '일본어 회화','중국어 회화','심화 일본어','심화 중국어'],
+  },
+  arts: {
+    name: '예술',
+    priority: ['음악','미술','음악 연주와 창작','미술 창작',
+      '음악 감상과 비평','미술 감상과 비평','음악과 미디어','미술과 매체',
+      '문학과 영상','매체 의사소통','독서 토론과 글쓰기'],
+  },
+  sports: {
+    name: '체육',
+    priority: ['체육1','체육2','스포츠 생활1','스포츠 생활2',
+      '스포츠 문화','스포츠 과학','스포츠 개론',
+      '기초 체육 전공 실기','심화 체육 전공 실기','고급 체육 전공 실기',
+      '스포츠 경기 체력','보건','인간과 심리'],
+  },
+};
+
+const state = {
+  year: '2026',
+  schools: [],
+  curriculum: null,
+  selectedCode: null,
+  selectedBaseCode: null,
+  selectedDept: null,
+  userSelections: new Set(),
+  activePreset: null,
+  pendingSubjects: [],   // want/core 이름 목록 (majors에서 넘어온 경우)
+  pendingMajorId: '',
+  isMobile: window.matchMedia('(max-width: 768px)').matches,
+};
+window.matchMedia('(max-width: 768px)').addEventListener('change', e => {
+  state.isMobile = e.matches;
+  if (state.curriculum) render();
+});
+
+const SEMESTER_LABELS = ['1-1', '1-2', '2-1', '2-2', '3-1', '3-2'];
+
+// 특목고(외국어고·예술고) 여부 — 예술·기·정·외·한·교 필수학점이 다름
+function isSpecialSchool() {
+  const school = state.schools.find(s => s.학교코드 === state.selectedBaseCode);
+  if (!school) return false;
+  const name = school.학교명 || '';
+  return name.includes('외국어고') || name.includes('예술고');
+}
+// 교과(군)별 필수 이수학점: [일반고] 국어8·수학8·영어8·한국사6·사회8·과학10·체육10·예술10
+//                         [특목고] 동일, 단 예술5
+function getRequiredCredits() {
+  const sp = isSpecialSchool();
+  return {
+    '국어': 8, '수학': 8, '영어': 8, '한국사': 6, '사회': 8,
+    '과학': 10, '체육': 10, '예술': sp ? 5 : 10,
+  };
+}
+const GROUPED_CATEGORY = {
+  label: '기·정·외·한·교',
+  members: ['기술·가정', '정보', '정보과학', '제2외국어', '한문', '교양', '정보·통신'],
+};
+// 기·정·외·한·교 합산 필수학점: [일반고] 16, [특목고] 12
+function getGroupedRequired() { return isSpecialSchool() ? 12 : 16; }
+
+function serializeStateToUrl() {
+  const p = new URLSearchParams();
+  p.set('y', state.year);
+  if (state.selectedBaseCode) p.set('s', state.selectedBaseCode);
+  if (state.selectedDept) p.set('d', state.selectedDept);
+  if (state.userSelections.size > 0) {
+    const picks = [...state.userSelections]
+      .map(k => k.replace('-s','s').replace('-sem','i'))
+      .join(',');
+    p.set('p', picks);
+  }
+  return '?' + p.toString();
+}
+function deserializeUrl() {
+  const p = new URLSearchParams(window.location.search);
+  const parseCsv = key => p.get(key) ? p.get(key).split(',').map(s => s.trim()).filter(Boolean) : [];
+  const out = { year: p.get('y') || '2026', schoolBase: p.get('s'), dept: p.get('d'), picks: [],
+                pendingSubjects: [...parseCsv('want'), ...parseCsv('core')],
+                pendingMajorId: decodeURIComponent(p.get('majorId') || '') };
+  if (p.get('p')) {
+    out.picks = p.get('p').split(',').map(s => {
+      const m = s.match(/^g(\d+)s(\d+)i(\d+)$/);
+      return m ? `g${m[1]}-s${m[2]}-sem${m[3]}` : null;
+    }).filter(Boolean);
+  }
+  return out;
+}
+function pushUrl() {
+  window.history.replaceState(null, '', window.location.pathname + serializeStateToUrl());
+}
+
+async function loadSchools() {
+  const res = await fetch('data/schools.json');
+  state.schools = await res.json();
+
+  const url = deserializeUrl();
+  state.year = url.year;
+  state.pendingSubjects = url.pendingSubjects;
+  state.pendingMajorId = url.pendingMajorId;
+  document.querySelectorAll('.year-pill').forEach(b => b.classList.toggle('active', b.dataset.year === state.year));
+
+  // majors에서 넘어온 경우 플레이스홀더를 토꾸미 안내로 교체
+  if (state.pendingSubjects.length) {
+    const label = state.pendingMajorId ? `<strong>${state.pendingMajorId}</strong> 관련 ` : '';
+    document.getElementById('placeholder').innerHTML = `
+      <img class="kk-empty__char" src="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/assets/characters/tokkumi.svg" alt="토꾸미">
+      <p class="kk-empty__title">학교를 선택해 주세요</p>
+      <p class="kk-empty__body">학교를 선택하면, 학교의 교육과정에서 ${label}추천 과목이 자동 선택되어요.</p>`;
+  }
+
+  if (url.schoolBase) {
+    const school = state.schools.find(s => s.학교코드 === url.schoolBase);
+    if (school) document.getElementById('school-finder').value = school.학교명;
+    state.selectedBaseCode = url.schoolBase;
+    onSchoolChange(url.schoolBase, url.dept, url.picks);
+  }
+}
+
+const SCHOOL_ABBREV = {
+  '외고': '외국어고', '과고': '과학고', '예고': '예술고',
+  '체고': '체육고', '자사고': '자율형사립', '디예고': '디자인예술고',
+};
+
+function getFinderMatches(query) {
+  const q = query.trim();
+  if (!q) return [];
+  const expanded = SCHOOL_ABBREV[q] || q;
+  const seen = new Set();
+  const prefix = [], contains = [], regionMatch = [];
+  state.schools.forEach(s => {
+    const name = s.학교명 || '';
+    const reg = s.지역 || '';
+    const hasDept = (s[`departments_${state.year}`] || []).length > 0;
+    const item = { code: s.학교코드, name, region: reg, hasDept };
+    if (seen.has(s.학교코드)) return;
+    const targets = expanded !== q ? [q, expanded] : [q];
+    let matched = false;
+    for (const t of targets) {
+      if (name.startsWith(t)) { prefix.push(item); seen.add(s.학교코드); matched = true; break; }
+      if (name.includes(t))   { contains.push(item); seen.add(s.학교코드); matched = true; break; }
+    }
+    if (!matched && targets.some(t => reg.includes(t))) {
+      regionMatch.push(item); seen.add(s.학교코드);
+    }
+  });
+  return [...prefix, ...contains, ...regionMatch].slice(0, 10);
+}
+
+function renderFinderDropdown(matches) {
+  const ul = document.getElementById('finder-dropdown');
+  if (!matches.length) { ul.style.display = 'none'; return; }
+  ul.innerHTML = matches.map((m, i) =>
+    `<li data-code="${escapeHtml(m.code)}" data-name="${escapeHtml(m.name)}" data-idx="${i}">
+      ${escapeHtml(m.name)}<span class="finder-region">${escapeHtml(m.region)}</span>${m.hasDept ? '<span class="finder-tick">✦</span>' : ''}
+    </li>`
+  ).join('');
+  ul.style.display = '';
+}
+
+function selectFinderSchool(code, name) {
+  document.getElementById('school-finder').value = name;
+  document.getElementById('finder-dropdown').style.display = 'none';
+  finderHighlight = -1;
+  onSchoolChange(code, null, null);
+}
+
+let finderHighlight = -1;
+
+function populateDeptSelect(baseCode, preselectDept) {
+  const school = state.schools.find(s => s.학교코드 === baseCode);
+  const deptSel = document.getElementById('dept-sel');
+  const depts = (school && school[`departments_${state.year}`]) || [];
+  if (!depts.length) { deptSel.style.display = 'none'; deptSel.innerHTML = ''; return null; }
+  deptSel.style.display = '';
+  deptSel.innerHTML = depts.map(d =>
+    `<option value="${d.dept}">${d.dept}</option>`
+  ).join('');
+  if (preselectDept && depts.some(d => d.dept === preselectDept)) deptSel.value = preselectDept;
+  return deptSel.value;
+}
+
+async function onSchoolChange(baseCode, preselectDept, preselectPicks) {
+  state.selectedBaseCode = baseCode;
+  const dept = populateDeptSelect(baseCode, preselectDept);
+  let code;
+  if (dept) {
+    const school = state.schools.find(s => s.학교코드 === baseCode);
+    const matched = (school[`departments_${state.year}`] || []).find(d => d.dept === dept);
+    code = matched ? matched.code : baseCode;
+    state.selectedDept = dept;
+  } else {
+    code = baseCode;
+    state.selectedDept = null;
+  }
+  await loadCurriculum(code, preselectPicks);
+}
+
+async function loadCurriculum(code, preselectPicks) {
+  const url = `data/curriculum_${state.year}/${encodeURIComponent(code)}.json`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('not found');
+    state.curriculum = await res.json();
+    state.selectedCode = code;
+    state.userSelections = new Set(preselectPicks || []);
+    state.activePreset = null;
+
+    // majors에서 want/core 이름으로 넘어온 경우 커리큘럼에서 과목 이름 매칭
+    if (state.pendingSubjects.length) {
+      const nameSet = new Set(state.pendingSubjects);
+      state.curriculum.groups.forEach((group, gi) => {
+        const isFixed = group.division === '지정' || group.isSoonjeung;
+        group.subjects.forEach((subj, si) => {
+          const clean = subj.name.replace('*', '').trim();
+          const hit = nameSet.has(clean) || [...nameSet].some(n => clean === n || clean.includes(n) || n.includes(clean));
+          if (!hit) return;
+          if (isFixed) {
+            (subj.semCredits || []).forEach((c, semIdx) => { if (c) state.userSelections.add(`g${gi}-s${si}-sem${semIdx}`); });
+          } else if (group.semesters) {
+            group.semesters.forEach((active, semIdx) => { if (active) state.userSelections.add(`g${gi}-s${si}-sem${semIdx}`); });
+          }
+        });
+      });
+      const n = state.userSelections.size;
+      if (n > 0) setTimeout(() => showToast(`${state.pendingMajorId ? state.pendingMajorId + ' 관련 ' : ''}추천 과목 ${n}개가 자동 선택됐어요. 직접 조정해 보세요`), 400);
+    }
+
+    render();
+    pushUrl();
+  } catch (e) {
+    document.getElementById('curriculum-area').innerHTML =
+      `<div class="kk-empty"><p class="kk-empty__title">편제표를 불러오지 못했습니다</p><p class="kk-empty__body">해당 학교의 ${state.year}학년도 데이터를 찾지 못했습니다.<br><small>code: ${code}</small></p></div>`;
+    document.getElementById('counter-panel').style.display = 'none';
+    document.getElementById('presets').style.display = 'none';
+  }
+}
+
+function applyPreset(presetKey) {
+  if (!state.curriculum) return;
+  const preset = PRESETS[presetKey];
+  if (!preset) return;
+
+  state.userSelections.clear();
+  state.activePreset = presetKey;
+
+  state.curriculum.groups.forEach((group, gi) => {
+    if (group.division === '지정') return;
+    const m = (group.selectCount || '').match(/택\s*(\d+)/);
+    const required = m ? parseInt(m[1]) : 0;
+    if (!required) return;
+    const activeSems = (group.semesters || []).map((s, i) => s ? i : -1).filter(i => i >= 0);
+
+    const scored = group.subjects.map((subj, si) => {
+      let score = -1;
+      const idx = preset.priority.indexOf(subj.name);
+      if (idx >= 0) score = 1000 - idx;
+      else {
+        for (let pi = 0; pi < preset.priority.length; pi++) {
+          const p = preset.priority[pi];
+          const clean = subj.name.replace('*','').trim();
+          if (subj.name.includes(p) || p.includes(clean)) { score = 500 - pi; break; }
+        }
+      }
+      return { si, subj, score };
+    });
+
+    // 그룹 내 중복 이수 방지: 학기를 순서대로 돌며 아직 선택 안 된 과목 우선
+    const pickedSis = new Set();
+    activeSems.forEach(semIdx => {
+      const unpicked = scored.filter(x => !pickedSis.has(x.si));
+      const candidates = [
+        ...unpicked.filter(x => x.score >= 0).sort((a, b) => b.score - a.score),
+        ...unpicked.filter(x => x.score < 0),
+      ];
+      const picked = candidates.slice(0, required);
+      if (picked.length < required) {
+        console.warn(`[preset] g${gi} "${group.division}" ${SEMESTER_LABELS[semIdx]}: 후보 부족 (${picked.length}/${required})`);
+      }
+      picked.forEach(x => {
+        state.userSelections.add(`g${gi}-s${x.si}-sem${semIdx}`);
+        pickedSis.add(x.si);
+      });
+    });
+  });
+  render();
+  pushUrl();
+  showToast(`'${preset.name}' 추천 과목을 적용했습니다. 직접 수정할 수 있어요`);
+}
+
+function render() {
+  if (!state.curriculum) return;
+  const area = document.getElementById('curriculum-area');
+  const school = state.schools.find(s => s.학교코드 === state.selectedBaseCode);
+
+  const metaParts = [];
+  if (school) {
+    metaParts.push(`<strong>${school.학교명}</strong>`);
+    if (state.selectedDept) metaParts.push(`<span style="color:var(--accent);">[${state.selectedDept}]</span>`);
+    metaParts.push(school.지역);
+  } else {
+    metaParts.push(state.selectedCode);
+  }
+  document.getElementById('school-meta').innerHTML = metaParts.join(' · ');
+
+  document.getElementById('presets').style.display = '';
+  document.querySelectorAll('.reco-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.preset === state.activePreset);
+  });
+
+  if (state.isMobile) {
+    area.innerHTML = renderMobile();
+    area.querySelectorAll('.subject-row[data-key]').forEach(row => {
+      row.addEventListener('click', onMobileRowClick);
+    });
+  } else {
+    let html = `
+      <div class="legend">
+        <span><span class="type-dot type-공통"></span> 공통</span>
+        <span><span class="type-dot type-일반"></span> 일반선택</span>
+        <span><span class="type-dot type-진로"></span> 진로선택</span>
+        <span><span class="type-dot type-융합"></span> 융합선택</span>
+        <span style="margin-left:auto;"><span class="sample" style="background:var(--brand-soft);"></span> 학교 지정</span>
+        <span><span class="sample" style="background:var(--brand);"></span> 내가 선택</span>
+        <span><span class="sample" style="background:repeating-linear-gradient(45deg,transparent,transparent 4px,var(--line) 4px,var(--line) 5px);"></span> 미운영 학기</span>
+      </div>
+    `;
+    state.curriculum.groups.forEach((group, gi) => { html += renderGroup(group, gi); });
+    area.innerHTML = html;
+    area.querySelectorAll('td.sem-cell.selectable, td.sem-cell.soonjeung').forEach(cell => {
+      cell.addEventListener('click', onCellClick);
+    });
+  }
+
+  document.getElementById('counter-panel').style.display = '';
+  updateCounter();
+}
+
+function renderGroup(group, gi) {
+  const isFixed = group.division === '지정';
+
+  let headerPills = '';
+  if (isFixed) {
+    headerPills = '<span class="kk-badge kk-badge--neutral">학교 지정 — 전 학생 이수</span>';
+  } else if (group.isSoonjeung) {
+    const activeSjSems = [...new Set(
+      group.subjects.flatMap(s => (s.semCredits || []).map((c, i) => c ? i : -1).filter(i => i >= 0))
+    )].sort((a, b) => a - b);
+    const perSem = [0,0,0,0,0,0];
+    group.subjects.forEach((subj, si) => {
+      for (let i = 0; i < 6; i++) {
+        if (state.userSelections.has(`g${gi}-s${si}-sem${i}`)) perSem[i]++;
+      }
+    });
+    const anySelected = activeSjSems.some(i => perSem[i] > 0);
+    const statusPill = anySelected
+      ? `<span class="kk-badge kk-badge--warn">✓ 희망과목 선택됨</span>`
+      : '';
+    headerPills = `
+      <span class="kk-badge kk-badge--warn">순증 — 희망자 수강</span>
+      ${statusPill}
+      <span class="kk-badge kk-badge--neutral">운영: ${activeSjSems.map(i => SEMESTER_LABELS[i]).join(', ') || '-'}</span>
+    `;
+  } else {
+    const sc = group.selectCount || '';
+    const m = sc.match(/택\s*(\d+)/);
+    const required = m ? parseInt(m[1]) : null;
+    const activeSems = (group.semesters || []).map((s, i) => s ? i : -1).filter(i => i >= 0);
+    const perSem = [0,0,0,0,0,0];
+    group.subjects.forEach((subj, si) => {
+      for (let i = 0; i < 6; i++) {
+        if (state.userSelections.has(`g${gi}-s${si}-sem${i}`)) perSem[i]++;
+      }
+    });
+    let cls = 'kk-badge kk-badge--neutral';
+    let txt = sc;
+    if (required) {
+      const issues = activeSems.filter(i => perSem[i] !== required);
+      if (issues.length === 0 && activeSems.length > 0) {
+        cls = 'kk-badge kk-badge--recommend'; txt = `✓ ${sc} 충족`;
+      } else if (activeSems.some(i => perSem[i] > required)) {
+        cls = 'kk-badge kk-badge--err'; txt = `초과: ${activeSems.map(i=>`${SEMESTER_LABELS[i]}=${perSem[i]}`).join(' ')}`;
+      } else if (activeSems.some(i => perSem[i] > 0)) {
+        cls = 'kk-badge kk-badge--warn'; txt = `진행중: ${activeSems.map(i=>`${SEMESTER_LABELS[i]} ${perSem[i]}/${required}`).join(' · ')}`;
+      }
+    }
+    headerPills = `
+      <span class="${cls}">${escapeHtml(txt)}</span>
+      <span class="kk-badge kk-badge--neutral">과목당 ${group.groupCredit || group.subjects[0]?.opCredit || '?'}학점</span>
+      <span class="kk-badge kk-badge--neutral">운영: ${activeSems.map(i => SEMESTER_LABELS[i]).join(', ') || '-'}</span>
+    `;
+  }
+
+  let html = `
+    <div class="group-card kk-card${isFixed ? ' fixed' : ''}" data-group-idx="${gi}">
+      <div class="group-head">
+        <span class="group-mark">${escapeHtml(group.division)}</span>
+        <h2 class="group-title">${isFixed ? '공통·필수 이수 과목' : '선택 과목 그룹'}</h2>
+        <div class="group-meta">${headerPills}</div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left; padding-left:12px;">과목명</th>
+            <th>교과군</th>
+            ${SEMESTER_LABELS.map(l => `<th>${l}</th>`).join('')}
+            <th>학점</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+
+  group.subjects.forEach((subj, si) => {
+    const semCredits = subj.semCredits || [];
+    const credit = subj.opCredit || group.groupCredit || subj.basic || '';
+    let total = 0;
+    let cells = '';
+    for (let i = 0; i < 6; i++) {
+      if (isFixed) {
+        const c = semCredits[i] || '';
+        if (c) total += parseFloat(c) || 0;
+        cells += `<td class="sem-cell ${c ? 'has-credit' : ''}">${c || ''}</td>`;
+      } else if (group.isSoonjeung) {
+        const c = semCredits[i] || '';
+        if (!c) {
+          cells += `<td class="sem-cell"></td>`;
+        } else {
+          const key = `g${gi}-s${si}-sem${i}`;
+          const selected = state.userSelections.has(key);
+          if (selected) total += parseFloat(c) || 0;
+          cells += `<td class="sem-cell soonjeung${selected ? ' selected-soonjeung' : ''}" data-key="${key}" title="희망자 수강 과목입니다">(${c})</td>`;
+        }
+      } else {
+        const semOk = group.semesters && group.semesters[i];
+        if (!semOk) {
+          cells += `<td class="sem-cell disabled-sem"></td>`;
+        } else {
+          const key = `g${gi}-s${si}-sem${i}`;
+          const selected = state.userSelections.has(key);
+          if (selected) total += parseFloat(credit) || 0;
+          cells += `<td class="sem-cell selectable ${selected ? 'selected' : ''}" data-key="${key}">${selected ? credit : ''}</td>`;
+        }
+      }
+    }
+    const achMap = { '5단계': '5단', '3단계': '3단', 'P': 'P/F' };
+    const achVal = subj.achievement || '';
+    const evalBadge = achVal
+      ? `<span class="eval-badge kk-badge kk-badge--unit">${achMap[achVal] || achVal}</span>`
+      : '';
+    html += `
+      <tr>
+        <td class="subject-name">
+          ${subj.type ? `<span class="type-dot type-${subj.type}"></span>` : ''}
+          ${escapeHtml(subj.name)}${evalBadge}
+        </td>
+        <td class="group-cell">${escapeHtml(subj.group || '')}</td>
+        ${cells}
+        <td style="color: var(--ink-3); font-weight: 600;">${isFixed ? (total || '') : credit}</td>
+      </tr>
+    `;
+  });
+
+  html += `</tbody></table></div>`;
+  return html;
+}
+
+function renderMobile() {
+  const { curriculum } = state;
+  const groups = curriculum.groups;
+  const GRADE_SEMS = [[0,1],[2,3],[4,5]];
+  const fmtC = n => n % 1 === 0 ? String(n) : n.toFixed(1);
+  let html = '';
+
+  // 창체 카드
+  const cc = curriculum.changche;
+  if (cc) {
+    let ccTotal = 0;
+    for (let i = 0; i < 6; i++) {
+      ccTotal += Object.values(cc).reduce((a, arr) => a + (parseFloat(arr[i]) || 0), 0) / 16;
+    }
+    html += `<div class="changche-card">
+      <div class="changche-icon">⭐</div>
+      <div class="changche-main">
+        <div class="changche-title">창의적 체험활동</div>
+        <div class="changche-detail">
+          <span class="changche-num num">${fmtC(ccTotal)}학점</span>
+          <span class="changche-sub">학기별 자동 이수</span>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  GRADE_SEMS.forEach(([sem1, sem2], gradeIdx) => {
+    const grade = gradeIdx + 1;
+    const semItems = { [sem1]: [], [sem2]: [] };
+
+    groups.forEach((group, gi) => {
+      const isFixed = group.division === '지정';
+      [sem1, sem2].forEach(si => {
+        group.subjects.forEach((subj, subjIdx) => {
+          const semCredits = subj.semCredits || [];
+          if (isFixed) {
+            const c = semCredits[si];
+            if (c) semItems[si].push({ subj, subjIdx, gi, isFixed: true, credit: c, isSoonjeung: false });
+          } else if (group.isSoonjeung) {
+            const c = semCredits[si];
+            if (c) semItems[si].push({ subj, subjIdx, gi, isFixed: false, credit: c, isSoonjeung: true });
+          } else if (group.semesters?.[si]) {
+            const c = subj.opCredit || group.groupCredit || subj.basic || '';
+            semItems[si].push({ subj, subjIdx, gi, isFixed: false, credit: c, isSoonjeung: false });
+          }
+        });
+      });
+    });
+
+    let gradeCredits = 0;
+    [sem1, sem2].forEach(si => {
+      semItems[si].forEach(({ subjIdx, gi, isFixed, credit }) => {
+        if (isFixed) { gradeCredits += parseFloat(credit) || 0; }
+        else if (state.userSelections.has(`g${gi}-s${subjIdx}-sem${si}`)) {
+          gradeCredits += parseFloat(credit) || 0;
+        }
+      });
+    });
+
+    html += `<div class="grade-card kk-card" id="grade-card-${grade}">
+      <div class="grade-head open" onclick="toggleGrade(${grade})">
+        <span class="grade-num">${grade}</span>
+        <div class="grade-title-block"><div class="grade-title">${grade}학년</div></div>
+        <div class="grade-status">
+          <span class="grade-credit num">${fmtC(gradeCredits)}<span class="unit">학점</span></span>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="grade-body-wrap" id="grade-body-${grade}">
+        <div class="sem-tabs">
+          <button class="sem-tab active" id="sem-tab-${grade}-${sem1}" onclick="switchSem(${grade},${sem1})">1학기<span class="sem-sub">${SEMESTER_LABELS[sem1]}</span></button>
+          <button class="sem-tab" id="sem-tab-${grade}-${sem2}" onclick="switchSem(${grade},${sem2})">2학기<span class="sem-sub">${SEMESTER_LABELS[sem2]}</span></button>
+        </div>
+        <div class="grade-content" id="grade-content-${grade}-${sem1}">${renderMobileSem(semItems[sem1], sem1)}</div>
+        <div class="grade-content" id="grade-content-${grade}-${sem2}" style="display:none;">${renderMobileSem(semItems[sem2], sem2)}</div>
+      </div>
+    </div>`;
+  });
+
+  return html;
+}
+
+function renderMobileSem(items, semIdx) {
+  if (!items.length) return '<div class="mobile-empty">해당 학기 과목 없음</div>';
+  return items.map(({ subj, subjIdx, gi, isFixed, credit, isSoonjeung }) => {
+    const key = `g${gi}-s${subjIdx}-sem${semIdx}`;
+    const selected = !isFixed && state.userSelections.has(key);
+    let cls = 'subject-row';
+    if (isFixed) cls += ' subject-row--fixed';
+    else if (isSoonjeung) cls += ' subject-row--soonjeung';
+    else if (selected) cls += ' subject-row--selected';
+    else cls += ' subject-row--selectable';
+    const dataKey = !isFixed ? `data-key="${key}"` : '';
+    return `<div class="${cls}" ${dataKey}>
+      <div class="sr-main">
+        ${subj.type ? `<span class="type-dot type-${subj.type}"></span>` : ''}
+        <span class="sr-name">${escapeHtml(subj.name)}</span>
+      </div>
+      <div class="sr-right">
+        ${subj.group ? `<span class="sr-group">${escapeHtml(subj.group)}</span>` : ''}
+        <span class="sr-credit num">${isSoonjeung ? `(${credit})` : credit}<span class="sr-unit">학점</span></span>
+        ${selected ? '<span class="sr-check">✓</span>' : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleGrade(grade) {
+  const body = document.getElementById(`grade-body-${grade}`);
+  const head = document.querySelector(`#grade-card-${grade} .grade-head`);
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : '';
+  head.classList.toggle('open', !isOpen);
+}
+
+function switchSem(grade, semIdx) {
+  const GRADE_SEMS = [[0,1],[2,3],[4,5]];
+  const [s1, s2] = GRADE_SEMS[grade - 1];
+  document.getElementById(`sem-tab-${grade}-${s1}`)?.classList.toggle('active', semIdx === s1);
+  document.getElementById(`sem-tab-${grade}-${s2}`)?.classList.toggle('active', semIdx === s2);
+  const c1 = document.getElementById(`grade-content-${grade}-${s1}`);
+  const c2 = document.getElementById(`grade-content-${grade}-${s2}`);
+  if (c1) c1.style.display = semIdx === s1 ? '' : 'none';
+  if (c2) c2.style.display = semIdx === s2 ? '' : 'none';
+}
+
+function onMobileRowClick(e) {
+  const row = e.currentTarget;
+  const key = row.dataset.key;
+  if (!key) return;
+  if (state.userSelections.has(key)) state.userSelections.delete(key);
+  else state.userSelections.add(key);
+  state.activePreset = null;
+  render();
+  pushUrl();
+}
+
+function toggleSheet() {
+  const panel = document.getElementById('counter-panel');
+  const bg = document.getElementById('sheet-bg');
+  if (!panel || !bg) return;
+  const isOpen = panel.classList.contains('sheet-open');
+  panel.classList.toggle('sheet-open', !isOpen);
+  bg.classList.toggle('show', !isOpen);
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+  const expand = panel.querySelector('.md-expand');
+  if (expand) expand.textContent = isOpen ? '상세 ▴' : '닫기 ▾';
+}
+
+function onCellClick(e) {
+  const cell = e.currentTarget;
+  const key = cell.dataset.key;
+  if (state.userSelections.has(key)) state.userSelections.delete(key);
+  else state.userSelections.add(key);
+  state.activePreset = null;
+  render();
+  pushUrl();
+}
+
+document.getElementById('clear-btn').addEventListener('click', () => {
+  state.userSelections.clear();
+  state.activePreset = null;
+  render();
+  pushUrl();
+});
+
+document.querySelectorAll('.reco-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
+});
+
+document.getElementById('share-btn').addEventListener('click', async () => {
+  const url = window.location.origin + window.location.pathname + serializeStateToUrl();
+  try {
+    await navigator.clipboard.writeText(url);
+    showToast('공유 링크가 복사되었습니다');
+  } catch (e) {
+    prompt('아래 링크를 복사하세요:', url);
+  }
+});
+
+function updateCounter() {
+  if (!state.curriculum) return;
+  let total = 0;
+  let soonjeungTotal = 0;
+  const groupTotals = {};
+  const groupStatus = [];
+
+  state.curriculum.groups.forEach((group, gi) => {
+    const isFixed = group.division === '지정';
+    if (group.isSoonjeung) {
+      group.subjects.forEach((subj, si) => {
+        for (let i = 0; i < 6; i++) {
+          if (state.userSelections.has(`g${gi}-s${si}-sem${i}`)) {
+            soonjeungTotal += parseFloat((subj.semCredits || [])[i]) || 0;
+          }
+        }
+      });
+      return;
+    }
+    if (isFixed) {
+      group.subjects.forEach(subj => {
+        (subj.semCredits || []).forEach(c => {
+          const n = parseFloat(c) || 0;
+          total += n;
+          // 한국사1·한국사2는 JSON group이 '사회'로 저장되어 있으므로 별도 리매핑
+          const g = (subj.name || '').startsWith('한국사') ? '한국사' : (subj.group || '기타');
+          groupTotals[g] = (groupTotals[g] || 0) + n;
+        });
+      });
+    } else {
+      const perSemester = [0,0,0,0,0,0];
+      group.subjects.forEach((subj, si) => {
+        for (let i = 0; i < 6; i++) {
+          const key = `g${gi}-s${si}-sem${i}`;
+          if (state.userSelections.has(key)) {
+            const credit = parseFloat(subj.opCredit || group.groupCredit || 0) || 0;
+            total += credit;
+            const g = (subj.name || '').startsWith('한국사') ? '한국사' : (subj.group || '기타');
+            groupTotals[g] = (groupTotals[g] || 0) + credit;
+            perSemester[i]++;
+          }
+        }
+      });
+      const requiredText = group.selectCount || '';
+      const m = requiredText.match(/택\s*(\d+)/);
+      const required = m ? parseInt(m[1]) : null;
+      const activeSems = (group.semesters || []).map((s, i) => s ? i : -1).filter(i => i >= 0);
+      let status = 'ok';
+      let msg = '';
+      if (required != null) {
+        const issues = [];
+        activeSems.forEach(i => {
+          if (perSemester[i] !== required) issues.push(`${SEMESTER_LABELS[i]} ${perSemester[i]}/${required}`);
+        });
+        if (issues.length === 0) { msg = `✓ ${required}과목씩 충족`; status = 'satisfied'; }
+        else { msg = issues.join(' · '); status = activeSems.some(i => perSemester[i] > required) ? 'violated' : 'warned'; }
+      } else {
+        msg = activeSems.map(i => `${SEMESTER_LABELS[i]} ${perSemester[i]}`).join(' · ') || '-';
+      }
+      groupStatus.push({ division: group.division, msg, status });
+    }
+  });
+
+  // 순증 (희망자) 행 표시 — 192 진행률에 포함하지 않음
+  const fmtC = n => n % 1 === 0 ? String(n) : n.toFixed(1);
+  const sjRow = document.getElementById('soonjeung-row');
+  if (soonjeungTotal > 0) {
+    sjRow.style.display = '';
+    sjRow.innerHTML =
+      `<div class="group-summary" style="color:var(--warn);">
+        <span class="label">순증 (희망자)</span>
+        <span class="val">${fmtC(soonjeungTotal)}학점</span>
+      </div>`;
+  } else {
+    sjRow.style.display = 'none';
+  }
+
+  // 창의적 체험활동 학점 계산 (changche: {"0":[...], "1":[...], "2":[...]} → 학기별 합/16)
+  const cc = state.curriculum.changche;
+  let changcheTotal = 0;
+  const changcheSems = [0, 0, 0, 0, 0, 0];
+  if (cc) {
+    for (let i = 0; i < 6; i++) {
+      const sum = Object.values(cc).reduce((acc, arr) => acc + (parseFloat(arr[i]) || 0), 0);
+      changcheSems[i] = sum / 16;
+    }
+    changcheTotal = changcheSems.reduce((a, b) => a + b, 0);
+    total += changcheTotal;
+  }
+
+  document.getElementById('total-credits').textContent = fmtC(total);
+  const fill = document.getElementById('progress-fill');
+  fill.style.width = `${Math.min(100, total / 192 * 100)}%`;
+  fill.style.background = total >= 192 ? 'var(--ok)' : 'var(--accent)';
+  document.getElementById('progress-card')?.classList.toggle('achieved', total >= 192);
+
+  // 창체 행 표시
+  const ccRow = document.getElementById('changche-row');
+  if (cc) {
+    const semDetail = SEMESTER_LABELS.map((lbl, i) => `${lbl}: ${fmtC(changcheSems[i])}`).join(' · ');
+    ccRow.style.display = '';
+    ccRow.innerHTML =
+      `<div class="group-summary">
+        <span class="label">창의적 체험활동</span>
+        <span class="val">${fmtC(changcheTotal)}학점</span>
+      </div>
+      <div style="font-size:11px; color:var(--ink-soft); padding: 0 2px 4px; line-height:1.6;">${semDetail}</div>`;
+  } else {
+    ccRow.style.display = 'none';
+  }
+
+  // 교과군별 표시 (필수 이수학점 충족 여부 포함)
+  const REQUIRED_CREDITS = getRequiredCredits();
+  const ord = ['국어','수학','영어','한국사','사회','과학','체육','예술','기술·가정','제2외국어','한문','교양','정보·통신','기타'];
+  const labelMap = {};
+
+  // 합산 그룹(기·정·외·한·교) 집계
+  let groupedSum = 0;
+  const groupedKeys = new Set(GROUPED_CATEGORY.members);
+
+  const mainBreakdown = Object.entries(groupTotals)
+    .filter(([k]) => !groupedKeys.has(k) && !groupedKeys.has(labelMap[k]))
+    .sort((a, b) => {
+      const ai = ord.indexOf(a[0]); const bi = ord.indexOf(b[0]);
+      return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi);
+    });
+
+  Object.entries(groupTotals).forEach(([k, v]) => {
+    if (groupedKeys.has(k)) groupedSum += v;
+  });
+
+  function renderCreditRow(displayLabel, earned, required) {
+    if (required == null) {
+      return `<div class="group-summary"><span class="label">${escapeHtml(displayLabel)}</span><span class="val">${fmtC(earned)}</span></div>`;
+    }
+    const met = earned >= required;
+    const cls = met ? 'satisfied' : 'violated';
+    const icon = met ? '✓' : '✗';
+    return `<div class="group-summary ${cls}">
+      <span class="label">${icon} ${escapeHtml(displayLabel)}</span>
+      <span class="val">${fmtC(earned)} / ${required}</span>
+    </div>`;
+  }
+
+  let breakdownHtml = mainBreakdown.map(([k, v]) =>
+    renderCreditRow(labelMap[k] || k, v, REQUIRED_CREDITS[k] ?? null)
+  ).join('');
+
+  if (groupedSum > 0) {
+    breakdownHtml += renderCreditRow(GROUPED_CATEGORY.label, groupedSum, getGroupedRequired());
+  }
+
+  document.getElementById('group-breakdown').innerHTML =
+    breakdownHtml || '<div class="group-summary" style="font-style:italic;">(아직 없음)</div>';
+
+  document.getElementById('group-status').innerHTML = groupStatus.length
+    ? groupStatus.map(g =>
+        `<div class="group-summary ${g.status}">
+          <span class="label">${escapeHtml(g.division)}</span><span class="val">${escapeHtml(g.msg)}</span>
+        </div>`
+      ).join('')
+    : '<div class="group-summary" style="font-style:italic;">선택 그룹 없음</div>';
+  const mTot = document.getElementById('m-total');
+  if (mTot) mTot.textContent = fmtC(total);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+
+document.querySelectorAll('.year-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.dataset.year === state.year) return;
+    state.year = btn.dataset.year;
+    document.querySelectorAll('.year-pill').forEach(b => b.classList.toggle('active', b === btn));
+    if (state.selectedBaseCode) onSchoolChange(state.selectedBaseCode, state.selectedDept, null);
+    else pushUrl();
+  });
+});
+
+(function initFinder() {
+  const input = document.getElementById('school-finder');
+  const ul = document.getElementById('finder-dropdown');
+
+  input.addEventListener('input', () => {
+    finderHighlight = -1;
+    renderFinderDropdown(getFinderMatches(input.value));
+  });
+
+  input.addEventListener('keydown', e => {
+    const items = ul.querySelectorAll('li');
+    if (!items.length) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      finderHighlight = Math.min(finderHighlight + 1, items.length - 1);
+      items.forEach((li, i) => li.classList.toggle('kbd-active', i === finderHighlight));
+      items[finderHighlight].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      finderHighlight = Math.max(finderHighlight - 1, 0);
+      items.forEach((li, i) => li.classList.toggle('kbd-active', i === finderHighlight));
+      items[finderHighlight].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const active = finderHighlight >= 0 ? items[finderHighlight] : items[0];
+      if (active) selectFinderSchool(active.dataset.code, active.dataset.name);
+    } else if (e.key === 'Escape') {
+      ul.style.display = 'none';
+      finderHighlight = -1;
+    }
+  });
+
+  ul.addEventListener('click', e => {
+    const li = e.target.closest('li');
+    if (li) selectFinderSchool(li.dataset.code, li.dataset.name);
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search-wrap')) ul.style.display = 'none';
+  });
+})();
+document.getElementById('dept-sel').addEventListener('change', e => {
+  const dept = e.target.value;
+  state.selectedDept = dept;
+  const school = state.schools.find(s => s.학교코드 === state.selectedBaseCode);
+  const matched = (school[`departments_${state.year}`] || []).find(d => d.dept === dept);
+  if (matched) loadCurriculum(matched.code, null);
+});
+
+// ── 저장/불러오기 ────────────────────────────────────────────────────────────
+
+async function ensureLibrary(globalName, url) {
+  if (window[globalName]) return;
+  await new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = url;
+    s.onload = res;
+    s.onerror = () => rej(new Error('라이브러리 로드 실패: ' + url));
+    document.head.appendChild(s);
+  });
+}
+
+function _buildSummary() {
+  const fmtC = n => n % 1 === 0 ? n : parseFloat(n.toFixed(1));
+  let totalCredits = 0, changcheCredits = 0;
+  const groupBreakdown = {};
+  const cc = state.curriculum.changche;
+  if (cc) {
+    for (let i = 0; i < 6; i++) {
+      changcheCredits += Object.values(cc).reduce((a, arr) => a + (parseFloat(arr[i]) || 0), 0) / 16;
+    }
+    totalCredits += changcheCredits;
+  }
+  state.curriculum.groups.forEach((group, gi) => {
+    if (group.isSoonjeung) return;
+    if (group.division === '지정') {
+      group.subjects.forEach(subj => {
+        (subj.semCredits || []).forEach(c => {
+          const n = parseFloat(c) || 0;
+          totalCredits += n;
+          const g = subj.group || '기타';
+          groupBreakdown[g] = (groupBreakdown[g] || 0) + n;
+        });
+      });
+    } else {
+      group.subjects.forEach((subj, si) => {
+        for (let i = 0; i < 6; i++) {
+          if (state.userSelections.has(`g${gi}-s${si}-sem${i}`)) {
+            const credit = parseFloat(subj.opCredit || group.groupCredit || 0) || 0;
+            totalCredits += credit;
+            const g = subj.group || '기타';
+            groupBreakdown[g] = (groupBreakdown[g] || 0) + credit;
+          }
+        }
+      });
+    }
+  });
+  return {
+    totalCredits: fmtC(totalCredits),
+    changcheCredits: fmtC(changcheCredits),
+    groupBreakdown,
+  };
+}
+
+function exportToJSON() {
+  if (!state.curriculum) return showToast('먼저 학교를 선택하세요');
+  const school = state.schools.find(s => s.학교코드 === state.selectedBaseCode);
+  const kst = new Date(Date.now() + 9 * 3600000);
+  const exportedAt = kst.toISOString().replace('Z', '+09:00');
+  const d = kst.toISOString().slice(0, 16).replace('T', '_').replace(/:/g, '');
+  const deptPart = state.selectedDept ? `_${state.selectedDept}` : '';
+  const baseName = (school?.학교명 || state.selectedBaseCode).replace(/[\\/:*?"<>|]/g, '_');
+
+  const payload = {
+    schema: 'cne_course_selector/v1',
+    exportedAt,
+    year: state.year,
+    schoolCode: state.selectedBaseCode,
+    schoolName: school ? school.학교명 : state.selectedBaseCode,
+    department: state.selectedDept || null,
+    selections: [...state.userSelections],
+    preset: state.activePreset || null,
+    summary: _buildSummary(),
+  };
+
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `과목선택_${baseName}${deptPart}_${d}.json`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  showToast('JSON 파일로 저장했습니다');
+}
+
+async function importFromJSON(file) {
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if (data.schema !== 'cne_course_selector/v1') {
+      return showToast('지원하지 않는 파일입니다 (schema 오류)');
+    }
+    if (!data.schoolCode) return showToast('파일에 학교 정보가 없습니다');
+
+    if (data.year && data.year !== state.year) {
+      state.year = data.year;
+      document.querySelectorAll('.year-pill').forEach(b => b.classList.toggle('active', b.dataset.year === state.year));
+    }
+    const school = state.schools.find(s => s.학교코드 === data.schoolCode);
+    if (!school) return showToast(`학교를 찾을 수 없습니다: ${data.schoolCode}`);
+
+    document.getElementById('school-finder').value = school.학교명;
+    state.selectedBaseCode = data.schoolCode;
+
+    await onSchoolChange(data.schoolCode, data.department || null, data.selections || []);
+
+    if (data.preset) {
+      state.activePreset = data.preset;
+      document.querySelectorAll('.reco-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.preset === data.preset);
+      });
+    }
+    showToast('시뮬레이션 상태를 복원했습니다');
+  } catch (e) {
+    showToast('파일 읽기 오류: ' + e.message);
+  }
+}
+
+async function exportToPDF() {
+  if (!state.curriculum) return showToast('먼저 학교를 선택하세요');
+  showToast('PDF 생성 중...');
+  try {
+    await ensureLibrary('html2pdf', 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');
+    const school = state.schools.find(s => s.학교코드 === state.selectedBaseCode);
+    const schoolName = school ? school.학교명 : state.selectedBaseCode;
+    const deptStr = state.selectedDept ? `_${state.selectedDept}` : '';
+    const kst = new Date(Date.now() + 9 * 3600000);
+    const d = kst.toISOString().slice(0, 16).replace('T', '_').replace(/:/g, '');
+    const fname = `과목선택_${schoolName}${deptStr}_${d}.pdf`.replace(/[\\/:*?"<>|]/g, '_');
+
+    document.body.classList.add('printing');
+    await window.html2pdf().from(document.querySelector('main')).set({
+      margin: [8, 8, 8, 8],
+      filename: fname,
+      image: { type: 'jpeg', quality: 0.9 },
+      html2canvas: { scale: 1.4, useCORS: true, letterRendering: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+    }).save();
+    document.body.classList.remove('printing');
+    showToast('PDF 저장 완료');
+  } catch (e) {
+    document.body.classList.remove('printing');
+    showToast('PDF 저장 실패: ' + e.message);
+  }
+}
+
+async function exportToXLSX() {
+  if (!state.curriculum) return showToast('먼저 학교를 선택하세요');
+  showToast('Excel 생성 중...');
+  try {
+    await ensureLibrary('XLSX', 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+    const school = state.schools.find(s => s.학교코드 === state.selectedBaseCode);
+    const schoolName = school ? school.학교명 : state.selectedBaseCode;
+    const deptStr = state.selectedDept ? `_${state.selectedDept}` : '';
+    const kst = new Date(Date.now() + 9 * 3600000);
+    const d = kst.toISOString().slice(0, 16).replace('T', '_').replace(/:/g, '');
+    const fname = `과목선택_${schoolName}${deptStr}_${d}.xlsx`.replace(/[\\/:*?"<>|]/g, '_');
+
+    const wb = window.XLSX.utils.book_new();
+
+    // Sheet 1: 편제표
+    const rows1 = [['구분', '교과군', '과목명', ...SEMESTER_LABELS, '학점', '선택여부']];
+    state.curriculum.groups.forEach((group, gi) => {
+      const isFixed = group.division === '지정';
+      group.subjects.forEach((subj, si) => {
+        const semCredits = subj.semCredits || [];
+        const credit = subj.opCredit || group.groupCredit || subj.basic || '';
+        const semCells = [];
+        let picked = false;
+        for (let i = 0; i < 6; i++) {
+          if (isFixed) {
+            semCells.push(semCredits[i] || '');
+          } else if (group.isSoonjeung) {
+            const c = semCredits[i] || '';
+            const sel = c && state.userSelections.has(`g${gi}-s${si}-sem${i}`);
+            if (sel) picked = true;
+            semCells.push(c ? (sel ? `○(${c})` : `(${c})`) : '');
+          } else {
+            const ok = group.semesters && group.semesters[i];
+            const sel = ok && state.userSelections.has(`g${gi}-s${si}-sem${i}`);
+            if (sel) picked = true;
+            semCells.push(!ok ? '-' : (sel ? '○' : ''));
+          }
+        }
+        rows1.push([group.division || '', subj.group || '', subj.name || '', ...semCells, credit, picked ? '○' : '']);
+      });
+    });
+    window.XLSX.utils.book_append_sheet(wb, window.XLSX.utils.aoa_to_sheet(rows1), '편제표');
+
+    // Sheet 2: 요약
+    const sum = _buildSummary();
+    const fmtC = n => n % 1 === 0 ? String(n) : String(parseFloat(n.toFixed(1)));
+    const rows2 = [
+      ['항목', '이수학점', '필수학점'],
+      ['총 이수학점', fmtC(sum.totalCredits), 192],
+      ['창의적 체험활동', fmtC(sum.changcheCredits), ''],
+      [],
+      ['교과군', '이수학점', '필수학점'],
+    ];
+    Object.entries(sum.groupBreakdown).forEach(([k, v]) => {
+      rows2.push([k, fmtC(v), getRequiredCredits()[k] ?? '']);
+    });
+    window.XLSX.utils.book_append_sheet(wb, window.XLSX.utils.aoa_to_sheet(rows2), '요약');
+
+    // Sheet 3: 선택 그룹 현황
+    const rows3 = [['그룹', '운영학기', '내가 선택한 과목']];
+    state.curriculum.groups.forEach((group, gi) => {
+      if (group.division === '지정') return;
+      const activeSems = (group.semesters || []).map((s, i) => s ? SEMESTER_LABELS[i] : null).filter(Boolean);
+      const pickedNames = [];
+      group.subjects.forEach((subj, si) => {
+        for (let i = 0; i < 6; i++) {
+          if (state.userSelections.has(`g${gi}-s${si}-sem${i}`)) {
+            pickedNames.push(`${subj.name}(${SEMESTER_LABELS[i]})`);
+          }
+        }
+      });
+      rows3.push([group.division || '', activeSems.join(', '), pickedNames.join(', ') || '(없음)']);
+    });
+    window.XLSX.utils.book_append_sheet(wb, window.XLSX.utils.aoa_to_sheet(rows3), '선택그룹');
+
+    window.XLSX.writeFile(wb, fname);
+    showToast('Excel 저장 완료');
+  } catch (e) {
+    showToast('Excel 저장 실패: ' + e.message);
+  }
+}
+
+// 저장 드롭다운 토글
+(function initSaveLoad() {
+  const saveBtn = document.getElementById('save-menu-btn');
+  const saveDropdown = document.getElementById('save-dropdown');
+  saveBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    saveDropdown.style.display = saveDropdown.style.display === 'block' ? 'none' : 'block';
+  });
+  saveDropdown.addEventListener('click', e => {
+    const li = e.target.closest('li[data-action]');
+    if (!li) return;
+    saveDropdown.style.display = 'none';
+    const action = li.dataset.action;
+    if (action === 'json') exportToJSON();
+    else if (action === 'pdf') exportToPDF();
+    else if (action === 'xlsx') exportToXLSX();
+  });
+  document.addEventListener('click', () => { saveDropdown.style.display = 'none'; });
+
+  // 파일 불러오기
+  document.getElementById('load-input').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) importFromJSON(file);
+    e.target.value = '';
+  });
+
+  // 드래그앤드롭
+  document.addEventListener('dragover', e => e.preventDefault());
+  document.addEventListener('drop', e => {
+    e.preventDefault();
+    const file = [...(e.dataTransfer.files || [])].find(f => f.name.endsWith('.json'));
+    if (file) importFromJSON(file);
+  });
+})();
+
+loadSchools();
+</script>
+
+<!-- ── 푸터 ── -->
+<footer class="onmadang-footer">
+  <p>© 2026 충청남도교육청</p>
+</footer>
+
+<script>
+// 모바일 메뉴 토글
+(function(){
+  var menu=document.getElementById('mobileMenu');
+  var openBtn=document.querySelector('.hamburger');
+  var closeBtn=menu.querySelector('.mobile-menu-close');
+  function open(){menu.classList.add('open');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
+  function close(){menu.classList.remove('open');menu.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+  openBtn.addEventListener('click',open);
+  closeBtn.addEventListener('click',close);
+  menu.addEventListener('click',function(e){if(e.target===menu)close()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open'))close()});
+})();
+</script>
+</body>
+</html>
