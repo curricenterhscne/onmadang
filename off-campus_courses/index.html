@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026학년도 2학기 고교-대학 연계 학점 인정 학교 밖 교육 과목 심의 자료</title>
+<meta name="description" content="충청남도교육청 · 고교-대학 연계 학점 인정 학교 밖 교육 과목별 교육과정 문서 모음">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4f2ec; --paper-2:#ece7db; --card:#fbfaf5;
+  --ink:#1f2d44; --ink-2:#57617a; --ink-3:#8a90a1;
+  --line:#dcd6c8; --line-2:#e7e2d6;
+  --accent:#2f6a5c; --accent-deep:#234e44; --accent-soft:#e5efe9;
+  --gold:#a8792f; --gold-soft:#f1e7d2;
+  --shadow:0 1px 2px rgba(31,45,68,.04), 0 12px 34px -18px rgba(31,45,68,.22);
+  --serif:"Nanum Myeongjo", "Noto Serif KR", serif;
+  --sans:"Noto Sans KR", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-weight:400; line-height:1.75;
+  font-size:16.5px; letter-spacing:-.003em;
+  -webkit-font-smoothing:antialiased;
+}
+@media (max-width:640px){ body{font-size:15.5px} }
+
+/* progress */
+.progress{position:fixed; top:0; left:0; height:3px; width:0;
+  background:linear-gradient(90deg,var(--accent),var(--gold)); z-index:60;
+  transition:width .12s linear}
+
+/* cover */
+.cover{min-height:100svh; display:flex; flex-direction:column; justify-content:center;
+  padding:8vh clamp(24px,6vw,80px) 7vh; position:relative; overflow:hidden;
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(47,106,92,.08), transparent 55%),
+    radial-gradient(110% 70% at 0% 100%, rgba(168,121,47,.09), transparent 55%),
+    var(--paper);
+  border-bottom:1px solid var(--line)}
+.cover-topline{display:flex; align-items:center; gap:14px; margin-bottom:auto;
+  font-size:.8rem; letter-spacing:.22em; color:var(--accent-deep); font-weight:700;
+  text-transform:uppercase}
+.cover-topline .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.cover-center{margin:clamp(28px,7vh,64px) 0}
+.cover-year{font-family:var(--serif); font-weight:800; color:var(--gold);
+  font-size:clamp(3.4rem,12vw,7rem); line-height:.9; letter-spacing:-.02em}
+.cover-year span{display:block; font-size:.42em; color:var(--accent-deep); letter-spacing:.02em}
+.cover-title{font-family:var(--serif); font-weight:800; color:var(--ink);
+  font-size:clamp(1.7rem,4.6vw,3.05rem); line-height:1.28; margin:.5em 0 .1em;
+  letter-spacing:-.01em; max-width:20ch}
+.cover-sub{font-size:clamp(1rem,2vw,1.18rem); color:var(--ink-2); max-width:44ch;
+  line-height:1.6}
+.cover-rule{height:1px; background:var(--line); margin:clamp(28px,6vh,52px) 0 22px;
+  max-width:640px}
+.cover-meta{display:flex; flex-wrap:wrap; gap:10px 30px; align-items:baseline}
+.cover-stat{display:flex; align-items:baseline; gap:9px}
+.cover-stat b{font-family:var(--serif); font-weight:800; font-size:1.5rem; color:var(--accent)}
+.cover-stat span{font-size:.82rem; color:var(--ink-2); letter-spacing:.02em}
+.cover-org{margin-top:clamp(26px,5vh,44px); font-size:.86rem; color:var(--ink-3);
+  letter-spacing:.04em}
+.cover-org b{color:var(--ink-2); font-weight:700}
+
+/* TOC */
+.toc{max-width:1080px; margin:0 auto; padding:clamp(60px,9vh,110px) clamp(24px,6vw,64px)}
+.toc-eyebrow{font-size:.76rem; letter-spacing:.24em; color:var(--gold);
+  font-weight:700; text-transform:uppercase; margin-bottom:10px}
+.toc-h{font-family:var(--serif); font-weight:800; font-size:clamp(1.8rem,4vw,2.6rem);
+  margin:0 0 6px; letter-spacing:-.01em}
+.toc-desc{color:var(--ink-2); margin:0 0 clamp(34px,5vh,52px); max-width:52ch}
+.toc-group{margin-bottom:36px}
+.toc-univ{display:flex; align-items:center; gap:12px; font-family:var(--serif);
+  font-weight:800; font-size:1.18rem; color:var(--accent-deep);
+  padding-bottom:12px; margin-bottom:14px; border-bottom:1px solid var(--line)}
+.toc-univ-mark{width:10px;height:10px;background:var(--accent); border-radius:2px;
+  transform:rotate(45deg)}
+.toc-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:10px}
+.toc-item{display:flex; align-items:center; gap:16px; text-decoration:none;
+  color:var(--ink); background:var(--card); border:1px solid var(--line-2);
+  border-radius:12px; padding:15px 18px; transition:.2s ease; box-shadow:var(--shadow)}
+.toc-item:hover{border-color:var(--accent); transform:translateY(-2px)}
+.toc-item:hover .toc-num{color:var(--accent)}
+.toc-num{font-family:var(--serif); font-weight:800; font-size:1.35rem; color:var(--gold);
+  min-width:1.6em; transition:.2s}
+.toc-name{font-weight:500; line-height:1.4; font-size:.98rem}
+
+/* chapter */
+.chapter{max-width:1080px; margin:0 auto; padding:clamp(56px,9vh,104px) clamp(24px,6vw,64px);
+  position:relative; border-top:1px solid var(--line)}
+.chapter-rail{position:absolute; left:clamp(24px,6vw,64px); top:clamp(56px,9vh,104px);
+  bottom:clamp(40px,6vh,80px); width:2px;
+  background:linear-gradient(var(--accent), transparent 92%); opacity:.28; display:none}
+@media (min-width:1000px){ .chapter-rail{display:block} }
+.chapter-head{margin-bottom:clamp(30px,5vh,52px)}
+.chapter-eyebrow{display:flex; align-items:center; justify-content:space-between;
+  gap:16px; flex-wrap:wrap; margin-bottom:18px}
+.chapter-univ{font-size:.8rem; letter-spacing:.18em; color:var(--accent-deep);
+  font-weight:700; text-transform:uppercase}
+.chapter-count{font-size:.78rem; letter-spacing:.1em; color:var(--ink-3); font-weight:600}
+.chapter-count .sep{margin:0 5px; color:var(--gold)}
+.chapter-titleblock{display:flex; align-items:baseline; gap:clamp(14px,3vw,28px)}
+.chapter-bignum{font-family:var(--serif); font-weight:800; line-height:.86;
+  font-size:clamp(3rem,9vw,5.4rem); color:var(--gold-soft);
+  -webkit-text-stroke:1.4px var(--gold); color:transparent; flex:none}
+@supports not (-webkit-text-stroke:1px red){ .chapter-bignum{color:var(--gold-soft)} }
+.chapter-title{font-family:var(--serif); font-weight:800; margin:0;
+  font-size:clamp(1.6rem,4.4vw,2.75rem); line-height:1.18; letter-spacing:-.012em}
+.chapter-subtitle{margin:.5em 0 0; color:var(--ink-2); font-style:italic;
+  font-size:clamp(.92rem,1.8vw,1.06rem); letter-spacing:.01em}
+.epigraph{margin:clamp(22px,4vh,34px) 0 0; padding:16px 22px; border-left:3px solid var(--gold);
+  background:var(--gold-soft); border-radius:0 10px 10px 0;
+  font-family:var(--serif); font-weight:700; color:var(--accent-deep);
+  font-size:1.05rem; line-height:1.6}
+
+.chapter-body{display:flex; flex-direction:column; gap:clamp(34px,5vh,54px)}
+.block{position:relative}
+.sec-head{display:flex; align-items:center; gap:14px; margin-bottom:20px}
+.sec-num{font-family:var(--serif); font-weight:800; font-size:1rem; color:#fff;
+  background:var(--accent); width:32px; height:32px; border-radius:9px;
+  display:grid; place-items:center; flex:none; box-shadow:0 4px 12px -4px rgba(47,106,92,.5)}
+.sec-title{font-family:var(--serif); font-weight:800; margin:0; font-size:1.32rem;
+  letter-spacing:-.01em; color:var(--ink)}
+.block-inner{padding-left:46px}
+@media (max-width:640px){ .block-inner{padding-left:0} }
+
+.overview{margin:0 0 22px; color:var(--ink); line-height:1.85;
+  font-size:1.02rem}
+.lead-mini{margin:0 0 16px; color:var(--ink-2); line-height:1.75}
+.goal-list{list-style:none; margin:0; padding:0; display:grid; gap:11px}
+.goal-list li{position:relative; padding:2px 0 2px 26px; line-height:1.65}
+.goal-list li::before{content:""; position:absolute; left:2px; top:.72em;
+  width:8px; height:8px; border:2px solid var(--gold); border-radius:50%}
+
+.core-idea{background:var(--accent-soft); border:1px solid #cfe1d8;
+  border-radius:14px; padding:20px 22px; margin-bottom:20px; position:relative}
+.core-tag{display:inline-block; font-size:.72rem; letter-spacing:.14em; font-weight:800;
+  color:var(--accent-deep); text-transform:uppercase; margin-bottom:8px}
+.core-idea p{margin:0; color:#25453c; line-height:1.8}
+.core-list{margin:0; padding-left:20px; display:grid; gap:8px}
+.core-list li{color:#25453c; line-height:1.7}
+
+.table-wrap{overflow-x:auto; border-radius:14px; border:1px solid var(--line);
+  box-shadow:var(--shadow); background:var(--card); margin:0 0 4px;
+  -webkit-overflow-scrolling:touch}
+table{border-collapse:collapse; width:100%; font-size:.94rem}
+thead th{background:var(--accent-soft); color:var(--accent-deep); font-weight:700;
+  text-align:left; padding:13px 16px; border-bottom:2px solid #cfe1d8;
+  white-space:nowrap; font-size:.86rem; letter-spacing:.02em}
+tbody td, tbody th{padding:12px 16px; border-bottom:1px solid var(--line-2);
+  vertical-align:top; line-height:1.62}
+tbody tr:last-child td, tbody tr:last-child th{border-bottom:none}
+tbody tr:nth-child(even){background:rgba(236,231,219,.34)}
+
+/* content-system table */
+.cs-table th.cs-cat{width:120px}
+.cs-cat{white-space:nowrap}
+.cs-table tbody th.cs-cat{font-weight:700; color:var(--accent-deep);
+  background:rgba(47,106,92,.06); font-size:.9rem}
+.cs-body{color:var(--ink)}
+
+/* schedule table */
+.sched-table .col-ch{width:64px; white-space:nowrap; font-weight:700;
+  color:var(--gold); font-family:var(--serif); font-size:.98rem}
+.sched-table .col-topic{width:24%; font-weight:500; color:var(--ink)}
+.sched-table .col-detail{color:var(--ink-2)}
+.sched-table .col-bigo{width:15%; color:var(--ink-3); font-size:.86rem}
+.sched-table thead .col-ch,.sched-table thead .col-topic,
+.sched-table thead .col-detail,.sched-table thead .col-bigo{color:var(--accent-deep)}
+
+/* eval table */
+.eval-table td:first-child{font-weight:700; color:var(--ink); white-space:nowrap}
+.eval-table td:last-child{color:var(--ink-3); font-size:.88rem}
+
+.ref-list{margin:0; padding-left:20px; display:grid; gap:8px}
+.ref-list li{color:var(--ink-2); line-height:1.6; font-size:.94rem}
+.notes{margin-top:18px; padding:16px 20px; background:var(--paper-2);
+  border-radius:12px; border:1px solid var(--line)}
+.notes-tag{display:inline-block; font-size:.72rem; letter-spacing:.14em; font-weight:800;
+  color:var(--gold); text-transform:uppercase; margin-bottom:7px}
+.notes p{margin:0; color:var(--ink-2); line-height:1.7; font-size:.94rem}
+
+/* footer */
+.footer{text-align:center; padding:clamp(56px,9vh,96px) 24px clamp(70px,10vh,110px);
+  border-top:1px solid var(--line); color:var(--ink-3)}
+.footer .f-mark{font-family:var(--serif); font-weight:800; color:var(--gold);
+  font-size:1.7rem; margin-bottom:12px}
+.footer p{margin:4px 0; font-size:.86rem; letter-spacing:.02em}
+
+/* floating controls */
+.fab{position:fixed; z-index:50; border:none; cursor:pointer; font-family:var(--sans);
+  box-shadow:0 8px 24px -8px rgba(31,45,68,.4)}
+.fab-toc{right:22px; bottom:22px; background:var(--ink); color:#fff;
+  border-radius:999px; padding:13px 20px; font-weight:600; font-size:.9rem;
+  display:flex; align-items:center; gap:9px; transition:.2s}
+.fab-toc:hover{background:var(--accent-deep)}
+.fab-toc svg{width:16px;height:16px}
+.fab-top{right:22px; bottom:82px; width:44px; height:44px; border-radius:50%;
+  background:var(--card); color:var(--ink); border:1px solid var(--line);
+  display:grid; place-items:center; opacity:0; pointer-events:none; transition:.25s}
+.fab-top.show{opacity:1; pointer-events:auto}
+.fab-top svg{width:18px;height:18px}
+
+/* drawer */
+.drawer-scrim{position:fixed; inset:0; background:rgba(20,26,38,.5); z-index:70;
+  opacity:0; pointer-events:none; transition:.28s; backdrop-filter:blur(2px)}
+.drawer-scrim.open{opacity:1; pointer-events:auto}
+.drawer{position:fixed; top:0; right:0; height:100svh; width:min(400px,86vw);
+  background:var(--paper); z-index:71; transform:translateX(100%);
+  transition:transform .32s cubic-bezier(.4,0,.15,1); display:flex; flex-direction:column;
+  box-shadow:-20px 0 50px -20px rgba(20,26,38,.5)}
+.drawer.open{transform:translateX(0)}
+.drawer-head{display:flex; align-items:center; justify-content:space-between;
+  padding:22px 22px 16px; border-bottom:1px solid var(--line)}
+.drawer-head h4{font-family:var(--serif); font-weight:800; margin:0; font-size:1.2rem}
+.drawer-close{background:none; border:none; cursor:pointer; color:var(--ink-2);
+  width:36px;height:36px; border-radius:8px; display:grid; place-items:center}
+.drawer-close:hover{background:var(--paper-2)}
+.drawer-close svg{width:20px;height:20px}
+.drawer-body{overflow-y:auto; padding:12px 14px 30px}
+.drawer-item{display:flex; align-items:center; gap:14px; text-decoration:none;
+  color:var(--ink); padding:11px 12px; border-radius:10px; transition:.15s}
+.drawer-item:hover{background:var(--card)}
+.drawer-item.active{background:var(--accent-soft)}
+.drawer-item.active .drawer-num{color:var(--accent)}
+.drawer-num{font-family:var(--serif); font-weight:800; color:var(--gold);
+  font-size:1.1rem; min-width:1.7em}
+.drawer-meta{display:flex; flex-direction:column; line-height:1.3}
+.drawer-title{font-weight:500; font-size:.95rem}
+.drawer-univ{font-size:.76rem; color:var(--ink-3); letter-spacing:.03em}
+
+/* reveal animation */
+.reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease}
+.reveal.in{opacity:1; transform:none}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1; transform:none; transition:none}
+  .fab-toc,.fab-top,.drawer,.drawer-scrim{transition:none}
+}
+:focus-visible{outline:2.5px solid var(--accent); outline-offset:3px; border-radius:4px}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header class="cover">
+  <div class="cover-topline"><span class="dot"></span>충청남도교육청 · 심의위원회 심의 자료</div>
+  <div class="cover-center">
+    <div class="cover-year">2026<span>학년도 2학기</span></div>
+    <h1 class="cover-title">고교-대학 연계 학점 인정<br>학교 밖 교육 과목별 교육과정</h1>
+    <p class="cover-sub">5개 대학이 제안한 14개 학점 인정 과목의 개관·내용 체계·교수학습·평가·참고 문헌을 한자리에 모았습니다.</p>
+  </div>
+  <div class="cover-rule"></div>
+  <div class="cover-meta">
+    <div class="cover-stat"><b>14</b><span>개 과목</span></div>
+    <div class="cover-stat"><b>5</b><span>개 대학</span></div>
+    <div class="cover-stat"><b>32</b><span>차시 기준 편성</span></div>
+  </div>
+  <div class="cover-org"><b>참여 대학</b> · 국립공주대학교 · 단국대학교 · 백석대학교 · 순천향대학교 · 충남대학교</div>
+</header>
+
+<nav class="toc" id="toc">
+  <div class="toc-eyebrow">Contents · 목차</div>
+  <h2 class="toc-h">과목 한눈에 보기</h2>
+  <p class="toc-desc">과목명을 누르면 해당 교육과정 문서로 이동합니다. 대학별로 묶어 정리했습니다.</p>
+  <div class="toc-group"><div class="toc-univ"><span class="toc-univ-mark"></span>국립공주대학교</div><div class="toc-list"><a class="toc-item" href="#course-1"><span class="toc-num">01</span><span class="toc-name">교육과 심리학의 이해</span></a></div></div><div class="toc-group"><div class="toc-univ"><span class="toc-univ-mark"></span>단국대학교</div><div class="toc-list"><a class="toc-item" href="#course-2"><span class="toc-num">02</span><span class="toc-name">몽골학으로 읽는 AI 시대</span></a><a class="toc-item" href="#course-3"><span class="toc-num">03</span><span class="toc-name">아랍어와 아랍문화</span></a><a class="toc-item" href="#course-4"><span class="toc-num">04</span><span class="toc-name">베트남 이해와 탐구 프로젝트</span></a><a class="toc-item" href="#course-5"><span class="toc-num">05</span><span class="toc-name">포르투갈·브라질 언어와 문화의 이해</span></a><a class="toc-item" href="#course-6"><span class="toc-num">06</span><span class="toc-name">글로벌 이슈 탐구와 영어 학술 연구 실제</span></a><a class="toc-item" href="#course-7"><span class="toc-num">07</span><span class="toc-name">미적분학 핵심 개념 탐구</span></a><a class="toc-item" href="#course-8"><span class="toc-num">08</span><span class="toc-name">화학분석기기의 이해 및 실습</span></a></div></div><div class="toc-group"><div class="toc-univ"><span class="toc-univ-mark"></span>백석대학교</div><div class="toc-list"><a class="toc-item" href="#course-9"><span class="toc-num">09</span><span class="toc-name">보건과 건강관리</span></a><a class="toc-item" href="#course-10"><span class="toc-num">10</span><span class="toc-name">베이킹과 조리 실습</span></a></div></div><div class="toc-group"><div class="toc-univ"><span class="toc-univ-mark"></span>순천향대학교</div><div class="toc-list"><a class="toc-item" href="#course-11"><span class="toc-num">11</span><span class="toc-name">사건으로 읽는 법과학</span></a><a class="toc-item" href="#course-12"><span class="toc-num">12</span><span class="toc-name">호텔리어의 이해</span></a><a class="toc-item" href="#course-13"><span class="toc-num">13</span><span class="toc-name">예술활용 심리상담</span></a></div></div><div class="toc-group"><div class="toc-univ"><span class="toc-univ-mark"></span>충남대학교</div><div class="toc-list"><a class="toc-item" href="#course-14"><span class="toc-num">14</span><span class="toc-name">네 가지 시선으로 탐험하는 생명과학</span></a></div></div>
+</nav>
+
+
+<section class="chapter" id="course-1" data-num="01">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">국립공주대학교</span>
+      <span class="chapter-count">과목 01<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">01</span>
+      <div>
+        <h2 class="chapter-title">교육과 심리학의 이해</h2>
+        
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">「교육과 상담심리학의 이해」는 고등학교 단위 학교에서 일반적으로 깊이 다루기 어려운 교육심리학과 상담심리학의 핵심 내용을 고등학생의 삶과 연결하여 탐구하는 고교-대학 학점 연계 과목이다. 학생들은 성격, 발달, 학습, 동기, 정서, 스트레스, 부적응, 상담기법 등 교육·상담심리의 기본 개념을 학습하고, 이를 학교생활·친구관계·학업동기·SNS 문화·시험불안·외모스트레스 등 실제 청소년 사례에 적용한다. 특히 사범대학, 교육학, 상담심리, 심리학, 청소년지도, 사회복지 등 관련 계열 진학을 희망하는 학생들이 전공 적합성을 탐색하고, 인간 행동을 이론적으로 이해하며, 타인을 돕는 윤리적 태도와 상담적 의사소통 역량을 기르도록 설계하였다.</p>
+        <ul class="goal-list"><li>교육심리학과 상담심리학의 기본 개념을 이해하고, 인간 행동과 학습자의 특성을 설명할 수 있다.</li><li>성격, 발달, 학습, 동기, 정서, 스트레스, 부적응 등 청소년의 학교생활 문제를 심리학 이론으로 분석할 수 있다.</li><li>경청, 공감, 반영, 질문, I-Message 등 기초 상담기법을 익히고 또래 지원 상황에 적용할 수 있다.</li><li>관심 있는 청소년 문제를 선정하여 교육·상담심리 이론에 근거한 지원 방안을 탐구보고서로 제안할 수 있다.</li><li>자기이해와 타인이해를 바탕으로 건강한 관계 형성, 자기주도적 학습, 사회정서 역량을 기른다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><p>교육과 상담심리학은 인간의 행동, 학습, 정서, 관계를 이해하고 개인의 성장과 적응을 돕는 학문이다. 학습자는 교육심리학과 상담심리학의 주요 이론을 바탕으로 청소년기의 자기이해, 학습동기, 대인관계, 스트레스 및 부적응 문제를 탐구하고, 이를 실제 학교생활과 사회 현상에 적용하여 자신과 타인의 성장을 지원하는 방안을 모색한다.</p></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">교육과 심리의 관계, 인간 발달과 교육의 의미, 청소년기의 인지·정서·성격 발달 특성을 이해한다. 행동주의, 인지주의, 사회학습이론, 동기이론, 지능이론, 창의성, 자기효능감, 성장 마인드셋 등 교육심리학의 주요 개념을 학습한다. 또한 프로이트, 융, 에릭슨, 로저스, 엘리스, 벡 등의 이론을 통해 성격 발달, 방어기제, 애착, 인간중심 상담, 인지적 상담, 스트레스와 적응, 부적응 행동, 사회정서학습, 상담의 기본 원리를 이해한다.</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">심리학 이론을 실제 청소년 사례와 연결하여 분석하고 해석한다. MBTI 과몰입, SNS 관계, 또래 갈등, 시험 불안, 외모 스트레스, 무기력, 학습동기 저하 등 생활 속 문제를 교육·상담심리학 개념으로 설명하고 해결 방안을 탐색한다. 토의·토론, 사례 분석, 역할극, 상담 시연 분석, 또래 상담 연습을 통해 경청, 공감, 반영, 나-전달법, 문제 해결, 보고서 작성 및 발표 능력을 기른다.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">자신과 타인의 심리적 특성을 존중하고, 인간 행동을 발달적·교육적·환경적 맥락에서 이해하려는 태도를 기른다. 상담 과정에서 공감, 존중, 수용, 비밀보장 등 윤리적 태도의 중요성을 인식한다. 자신의 성장 가능성을 믿고 자기조절과 사회정서적 역량을 함양하며, 타인의 어려움에 민감하게 반응하고 건강한 관계와 공동체 형성에 기여하려는 태도를 기른다.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th><th class="col-bigo">비고</th></tr></thead><tbody><tr><td class="col-ch">1</td><td class="col-topic">오리엔테이션</td><td class="col-detail">과목 목표, 수업 규칙, 평가 방식, 라포 형성</td><td class="col-bigo">나를 이해하는 심리학</td></tr><tr><td class="col-ch">2</td><td class="col-topic">교육과 심리의 관계</td><td class="col-detail">교육학·심리학·상담심리학의 차이와 연결</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">3</td><td class="col-topic">성격과 나의 이해</td><td class="col-detail">프로이트의 마음 구조, 융의 성격 이해</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">4</td><td class="col-topic">사례 적용: MBTI 과몰입</td><td class="col-detail">SNS에서 소비되는 MBTI 현상의 장단점 분석</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">5</td><td class="col-topic">인간발달과 교육</td><td class="col-detail">발달을 바라보는 관점과 교육적 개입의 의미</td><td class="col-bigo">인간의 발달</td></tr><tr><td class="col-ch">6</td><td class="col-topic">피아제의 인지발달</td><td class="col-detail">청소년 사고의 특징, 추상적 사고와 논리</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">7</td><td class="col-topic">비고츠키의 사회문화이론</td><td class="col-detail">협동학습, 도움의 적정 수준</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">8</td><td class="col-topic">정체성과 도덕성발달</td><td class="col-detail">에릭슨의 청소년기, 콜버그의 도덕성 발달</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">9</td><td class="col-topic">행동주의 학습이론</td><td class="col-detail">행동은 어떻게 학습되고 유지되는가</td><td class="col-bigo">행동과 학습</td></tr><tr><td class="col-ch">10</td><td class="col-topic">행동수정과 디지털 환경</td><td class="col-detail">게임 보상, SNS 알림 구조가 행동에 미치는 영향</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">11</td><td class="col-topic">사회학습이론</td><td class="col-detail">반두라 관찰학습, 인플루언서나 숏폼 챌린지 문화</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">12</td><td class="col-topic">자기효능감</td><td class="col-detail">학습된 무기력</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">13</td><td class="col-topic">지능을 바라보는 관점</td><td class="col-detail">공부를 잘한다는 말의 다양한 의미</td><td class="col-bigo">지능과 창의성</td></tr><tr><td class="col-ch">14</td><td class="col-topic">창의성과 학업성취</td><td class="col-detail">창의성과 성격은 어떤 관계인가</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">15</td><td class="col-topic">동기와 마인드셋</td><td class="col-detail">동기의 다양한 관점</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">16</td><td class="col-topic">자기주도 학습 플랜</td><td class="col-detail">동기이론을 활용한 학습전략</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">17</td><td class="col-topic">정서와 스트레스</td><td class="col-detail">정서이론과 스트레스의 기능</td><td class="col-bigo">정서와 부적응</td></tr><tr><td class="col-ch">18</td><td class="col-topic">부적응의 심리</td><td class="col-detail">부적응의 원인(지각, 회피, 공격성 등)</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">19</td><td class="col-topic">사회정서학습(SEL)</td><td class="col-detail">자기인식, 자기관리, 사회적 인식, 관계기술 등</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">20</td><td class="col-topic">학교적응 지원 방안</td><td class="col-detail">정서조절, 스트레스 대처, 관계회복 등</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">21</td><td class="col-topic">상담심리학 입문</td><td class="col-detail">상담의 한계와 윤리</td><td class="col-bigo">상담심리의 기초</td></tr><tr><td class="col-ch">22</td><td class="col-topic">로저스 인간중심상담</td><td class="col-detail">좋은 상담자는 어떻게 듣고 반응하는가</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">23</td><td class="col-topic">기초 상담기법</td><td class="col-detail">경청, 공감, 반영, 명료화 등</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">24</td><td class="col-topic">경청 실습</td><td class="col-detail">상담기법의 실제 적용과 피드백</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">25</td><td class="col-topic">엘리스의 REBT</td><td class="col-detail">ABC모형, 비합리적 신념</td><td class="col-bigo">인지상담과 실습</td></tr><tr><td class="col-ch">26</td><td class="col-topic">벡의 인지상담</td><td class="col-detail">자동적 사고, 인지왜곡</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">27</td><td class="col-topic">사례별 상담 적용</td><td class="col-detail">인지상담과 인간중심상담의 통합적 활용</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">28</td><td class="col-topic">사례별 상담 적용</td><td class="col-detail">시험불안, 외모스트레스, 친구관계 갈등 사례</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">29</td><td class="col-topic">최종 탐구 주제 선정</td><td class="col-detail">이론 선택과 현실 문제 연결</td><td class="col-bigo">통합 탐구와 발표</td></tr><tr><td class="col-ch">30</td><td class="col-topic">탐구 보고서 작성</td><td class="col-detail">문제 분석, 이론적 설명, 교육 상담적 지원</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">31</td><td class="col-topic">발표와 피드백</td><td class="col-detail">탐구 결과 공유, 동료 피드백, 질문하기</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">32</td><td class="col-topic">마무리 성찰</td><td class="col-detail">과목 전체 개념 통합, 자기성장 성찰</td><td class="col-bigo">&mdash;</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th></tr></thead><tbody><tr><td>관찰평가, 과정중심평가</td><td>전체 수업의 출석 상황과 수업 준비도, 수업 중 집중도, 과제 수행 태도, 타인의 의견을 존중하는 태도 등을 종합적으로 평가</td><td>출석 및 수업태도</td></tr><tr><td>수행평가, 참여평가</td><td>자신의 의견을 논리적으로 제시하고, 타인의 의견을 경청하며, 배운 이론을 실제 청소년 사례에 적용하려는 태도를 중심으로 평가</td><td>토의 실습 참여</td></tr><tr><td>프로젝트 평가, 발표평가</td><td>주제 선정의 적절성, 이론 이해도, 사례 분석력, 해결 방안의 타당성, 자기성찰 내용, 발표 구성 및 전달력을 종합적으로 평가</td><td>최종 탐구보고서 및 발표</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <ul class="ref-list"><li>권석만(2012). 현대 심리치료와 상담 이론. 학지사.</li><li>김서윤(2018). 토요일의 심리클럽. 서울: 창비.</li><li>박일수(2023). 개념 기반 교육과정 수업 설계의 이론과 실제. 박영스토리.</li><li>배움의 숲 나무학교 PBL센터(2023). 우당퉁탕 프로젝트 수업: 5가지 주제로 만나는 15편의 살아있는 프로젝트 수업. 에듀니티.</li><li>배움의 숲 나무학교(2025). 2022 개정 교육과정과 깊이 있는 수업. 교육과학사.</li><li>윤가현, 권석만, 김경일 외 공저(2019). 심리학의 이해. 서울: 학지사.</li><li>조윤화, 김기환, 권승희, 최현정 공역(2022). DBT, 학교에 가다. 서울: 학지사.</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-2" data-num="02">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">단국대학교</span>
+      <span class="chapter-count">과목 02<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">02</span>
+      <div>
+        <h2 class="chapter-title">몽골학으로 읽는 AI 시대</h2>
+        
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">AI 시대에는 기술의 발전뿐만 아니라 다양한 문화와 가치에 대한 이해, 그리고 공존의 자세가 더욱 중요해지고 있다. 이에 유목문명에 담긴 공존과 적응의 지혜를 바탕으로 AI 시대를 새로운 관점에서 성찰하고, 몽골학을 통해 다양한 문화에 대한 이해와 세계시민의식을 함양하기 위해 본 과목을 개설하고자 한다.</p>
+        <p class="lead-mini">상호문화적·인문학적 관점에서 몽골의 언어와 유목문명을 이해하고 이를 바탕으로 AI 시대를 성찰하며, 세계시민으로서의 태도와 공존의 가치를 실천할 수 있도록 하는 데 목표를 둔다.</p><ul class="goal-list"><li>몽골의 언어, 문화, 유목문명의 특징과 가치를 이해하고 공존과 적응의 의미를 설명할 수 있다.</li><li>몽골의 언어와 문화를 탐색·해석하고, 다양한 문화 현상을 비교·분석하여 자신의 생각을 논리적으로 표현할 수 있다.</li><li>몽골학 관점에서 인간과 AI의 관계 및 소통 방식을 인문학적으로 성찰하고, AI 시대를 재해석할 수 있다.</li><li>문화 다양성을 존중하고 세계시민의식을 함양하며, 유목문명의 공존과 적응의 가치를 바탕으로 책임 있는 시민으로서의 태도를 기를 수 있다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><ul class="core-list"><li>몽골의 언어와 문화, 유목문명의 삶과 지혜에 대한 이해는 AI 시대의 인간과 기술 관계를 인문학적으로 성찰하는 데 중요한 기반이 된다.</li><li>몽골학 관점에서 공존과 적응의 가치를 탐구하는 것은 문화 다양성 존중과 세계시민의식 형성에 기여한다.</li><li>몽골의 언어·문화와 AI 사회의 문제를 연결하여 사고하는 활동은 비판적 사고력과 미래 사회 역량을 기르는 데 도움이 된다.</li></ul></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">몽골어 문자(차강털거이), 기본 발음과 알파벳, 숫자, 형용사·의문사 등 기초 표현, 기본 어휘(초원, 가축, 명절, 음식 등). 몽골의 지리와 역사, 수도 울란바타르의 형성, 유목 생활과 직업, 오축(五畜), 몽골 예술(음악·무용·복식), 명절(차강사르), 음식 문화와 예절, 숫자 문화(짝수·홀수), 공존과 적응의 가치.</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">몽골의 언어·문화 자료 탐색, 텍스트·사진·영상 자료 해석, 문화 현상 의미 파악, 유목문명과 정주문명 비교·분석, 인간과 AI의 소통 방식 사례 조사.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">조사 결과 발표, 토론, 논리적 글쓰기, 몽골어 기초 표현을 활용한 자기소개·질문·묘사 활동.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th></tr></thead><tbody><tr><td class="col-ch">1~4</td><td class="col-topic">몽골 초원, 우리가 몰랐던 이야기</td><td class="col-detail">언어: 차강털거이(알파벳) / 문화: 몽골 국가 개요 및 역사</td></tr><tr><td class="col-ch">5~8</td><td class="col-topic">붉은 영웅의 발자취를 따라서</td><td class="col-detail">언어: 차강털거이(모음법칙) / 문화: 수도 울란바타르의 역사</td></tr><tr><td class="col-ch">9~12</td><td class="col-topic">유목민이 들려주는 생존과 공존의 법칙</td><td class="col-detail">언어: 의문사(1) / 문화: 몽골 직업</td></tr><tr><td class="col-ch">13~16</td><td class="col-topic">몽골의 또 다른 언어, ‘자연의 소리’</td><td class="col-detail">언어: 의문사(2) / 문화: 몽골 예술</td></tr><tr><td class="col-ch">17~20</td><td class="col-topic">색깔로 이해하는 차강사르</td><td class="col-detail">언어: 묘사 및 표현 / 문화: 몽골 명절</td></tr><tr><td class="col-ch">21~24</td><td class="col-topic">한 그릇에 담긴 초원의 맛</td><td class="col-detail">언어: 형용사(1) / 문화: 몽골 음식 문화 및 예절</td></tr><tr><td class="col-ch">25~28</td><td class="col-topic">인간과 가축이 소통하는 방법</td><td class="col-detail">언어: 형용사(2) / 문화: 오축(五畜)</td></tr><tr><td class="col-ch">29~32</td><td class="col-topic">숫자 9의 숨겨진 비밀</td><td class="col-detail">언어: 숫자 / 문화: 몽골 짝수/홀수의 법칙</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th></tr></thead><tbody><tr><td>수행평가</td><td>참여 기반 활동지</td><td>차시별 언어·문화 체험 활동 기록, 활동 과정에서의 참여도·협력도·성찰 내용</td></tr><tr><td>수행평가</td><td>프로젝트(보고서·발표)</td><td>몽골–한국 문화 비교 탐구, 유목문명과 AI 시대 공존·적응 가치 분석 보고서 및 발표</td></tr><tr><td>수행평가</td><td>포트폴리오</td><td>조사 자료 모음, 차시별 과제, 자기 평가 및 성찰 일지(학기 동안의 성장 과정 포함)</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <ul class="ref-list"><li>박환영(2002), 『몽골의 유목문화와 민속 읽기』, 민속원.</li><li>박환영(2010), 『몽골 유목문화 연구』, 역락.</li><li>이안나(2014), 『몽골의 생활과 전통』, 민속원.</li><li>최윤서 외 3(2023), 『몽골어 A1』, 단국대학교 외국어대학 아시아중동학부 몽골학전공.</li><li>최윤서 외 3(2024), 『몽골어 A1(심화)』, 단국대학교 외국어대학 아시아중동학부 몽골학전공.</li><li>최해율(2008), 『유목민의 꽃: 몽골 여자복식의 흐름』, 민속원.</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-3" data-num="03">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">단국대학교</span>
+      <span class="chapter-count">과목 03<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">03</span>
+      <div>
+        <h2 class="chapter-title">아랍어와 아랍문화</h2>
+        
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">아랍어는 전 세계 22개 아랍 국가에서 모국어 또는 공용어로 사용되며, 전 세계 16억에 달하는 무슬림들이 모어와 국적에 관계없이 예배할 때 사용하는 종교어이기도 하다. 또한 아랍 세계는 풍부한 역사와 문화를 바탕으로 오늘날 국제사회에서 중요한 역할을 하고 있으며, 우리나라와의 교류 또한 다방면에서 지속적으로 증가하고 있다. 이러한 언어적 중요성과 국제적 위상에 발맞추어 본 교과목은 아랍어를 처음 접하는 고등학생들을 대상으로 아랍어의 문자 체계와 기초 의사소통 표현을 학습하고, 아랍 세계의 종교·역사·음식·예술·일상생활 등 다양한 문화적 요소를 함께 탐구할 수 있도록 구성하였다. 이를 통해 학생들이 아랍어에 대한 기초적인 언어 능력을 함양하고, 아랍·이슬람에 대한 올바른 이해를 바탕으로 문화적 다양성을 존중하는 세계 시민으로서의 소양과 국제적 의사소통 역량을 기를 수 있도록 한다.</p>
+        <ul class="goal-list"><li>아랍어의 문자 체계와 기초 표현을 이해하고 일상생활에서 활용할 수 있다.</li><li>아랍·이슬람 세계의 역사, 종교, 예술, 생활문화 등에 대한 기초 지식을 함양할 수 있다.</li><li>한국과 아랍문화의 공통점과 차이점을 비교·분석하며 문화적 다양성을 이해하고 존중하는 태도를 기를 수 있다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><ul class="core-list"><li>아랍어의 문자 체계와 기초 의사소통 표현을 익힘으로써 아랍 세계의 언어와 문화를 이해할 수 있는 기초가 된다.</li><li>아랍·이슬람 세계는 다양한 역사적·지리적·종교적 배경을 지닌 문화권으로, 단일한 이미지나 관점이 아닌 다양성과 복합성의 관점에서 이해할 필요가 있다.</li><li>음식, 종교, 결혼, 예술, 일상생활 등의 문화 현상은 해당 사회의 역사적 배경과 가치관을 반영하며, 다른 문화와의 비교를 통해 그 의미를 더욱 깊이 이해할 수 있다.</li><li>아랍·이슬람 세계에 관한 자료를 탐색하고 비교·분석하는 과정은 문화적 이해도를 제고하고, 문화적 다양성을 존중하는 글로벌 시민 역량을 기르는 데 기여한다.</li></ul></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">아랍어 문자 모양, 문자 결합 방식, 오른쪽→왼쪽 표기 방향 등 문자 체계의 기본 특징. 인사·자기소개, 음식 주문, 날씨, 교통수단 이용, 취미, 물건 구입 등 일상생활 관련 기초 어휘·표현. 아랍·중동·이슬람의 개념과 차이, 아랍·이슬람 세계의 다양한 문화와 특징.</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">아랍어 문자를 구별해 읽고 쓰며, 학습한 문자를 활용해 기초 어휘·간단한 문장을 읽고 쓰기. 인사, 자기소개, 음식 주문, 날씨 설명, 길 묻기, 취미 소개, 물건 구입 등 기본 상황에서 적절한 표현 사용. 종교·음식·결혼·예술·일상생활 등 문화 요소를 탐색하고 한국 문화와 비교하여 공통점·차이점 분석. 아랍·이슬람 세계 관련 주제를 능동적으로 탐구하고 자료 수집·선별·분석 후 결과를 체계적으로 구성·발표.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">낯선 언어 학습에 호기심과 자신감을 가지고 적극적으로 참여. 아랍·이슬람 세계를 단편적 이미지·고정관념이 아닌 다양한 자료와 관점으로 객관적으로 이해. 이슬람·무슬림에 대한 편견과 오해를 성찰하고, 사실에 근거해 올바로 이해하며 서로 다른 문화를 존중. 프로젝트 과정에서 맡은 역할을 책임감 있게 수행하고, 구성원 의견을 경청·존중하며 함께 과제를 해결.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th><th class="col-bigo">비고</th></tr></thead><tbody><tr><td class="col-ch">1~4</td><td class="col-topic">아랍어와 아랍 세계의 이해</td><td class="col-detail">[언어] 아랍어의 특징과 아랍 문자(1) — 표기 방향과 문자 체계, 기본 형태와 발음 익히고 써보기 / [문화] 아랍·중동·이슬람의 개념적 이해 — 아랍·중동·이슬람의 개념과 차이 구분, 지도로 대표 아랍 국가의 위치·특징, 아랍 세계 내부의 언어적·종교적·문화적 다양성 이해</td><td class="col-bigo">강의 PPT 자료 및 유인물</td></tr><tr><td class="col-ch">5~8</td><td class="col-topic">아랍어 인사와 이슬람의 이해</td><td class="col-detail">[언어] 아랍 문자(2) &amp; 인사 표현과 자기소개 — 문자 형태와 결합 방식, 만남·헤어짐 인사, 이름·국적·거주지 활용 자기소개 / [문화] 무슬림의 종교, 이슬람 — 이슬람 태동의 역사적·사회적 배경, 기본 신앙과 종교생활, 오늘날 이슬람에 대한 오해와 진실</td><td class="col-bigo">강의 PPT 자료 및 유인물</td></tr><tr><td class="col-ch">9~12</td><td class="col-topic">아랍어 음식 및 식당 주문 표현과 아랍의 음식 문화</td><td class="col-detail">[언어] 아랍 문자(3) &amp; 음식·맛·식당 주문 표현 — 결합 형태와 발음, 음식·맛 기초 어휘, 식당 주문 기초 표현 / [문화] 아랍의 음식 문화 — 발달 과정, ‘할랄’과 ‘하람’의 개념과 대표 음식, 일상 음식과 축제 음식</td><td class="col-bigo">강의 PPT 자료 및 유인물</td></tr><tr><td class="col-ch">13~16</td><td class="col-topic">날씨 표현과 아랍 국가 탐구</td><td class="col-detail">[언어] 아랍 문자(4) &amp; 날씨 표현 — 종합 기초 단어 읽고 쓰기, 날씨·기온 어휘, 날씨 묻고 답하기 / [발표 프로젝트1] 아랍 국가 관광 가이드 프로젝트 — 아랍 국가 한 곳 선정·조사, 관광 가이드 관점의 발표</td><td class="col-bigo">강의 PPT 자료 및 유인물</td></tr><tr><td class="col-ch">17~20</td><td class="col-topic">이동 관련 표현과 아랍의 결혼 문화</td><td class="col-detail">[언어] 길 묻기와 교통수단 이용 표현 — 장소·방향·교통수단 기초 어휘, 위치·이동 묻고 답하기, 대중교통 기초 표현 / [문화] 아랍의 결혼 문화 — 결혼의 사회적·문화적 의미, 결혼 준비·가족 역할·의상·음식·양육·이혼</td><td class="col-bigo">강의 PPT 자료 및 유인물</td></tr><tr><td class="col-ch">21~24</td><td class="col-topic">취미 표현과 아랍의 예술 문화</td><td class="col-detail">[언어] 취미와 관심사 묻고 답하기 — 취미·여가·선호 어휘, 취미 묻고 답하기, 좋아하는 활동 표현 / [문화] 아랍의 예술 문화 — 아랍·이슬람 건축과 모스크 구성, 아랍 서예와 기하학적 문양, 대표 음악·영화·미술·문학</td><td class="col-bigo">강의 PPT 자료 및 유인물</td></tr><tr><td class="col-ch">25~28</td><td class="col-topic">물건 구매 표현과 한국·아랍 교류의 역사</td><td class="col-detail">[언어] 물건 구입 및 교환 표현 — 상품·가격·수량·색상 어휘, 가격·상품 정보 묻고 답하기, 구입·교환 표현 / [문화] 한국과 아랍 간 교류의 역사 — 중세 한반도와 아랍·이슬람 세계의 교류 사례, 상호 교류의 의미와 발전 가능성</td><td class="col-bigo">강의 PPT 자료 및 유인물</td></tr><tr><td class="col-ch">29~32</td><td class="col-topic">아랍의 속담 표현과 한국-아랍의 문화 비교</td><td class="col-detail">[언어] 아랍의 속담 표현 — 대표 속담, 속담에 담긴 가치관·문화, 유사한 한국 속담 비교 / [발표 프로젝트2] 한국과 아랍의 문화 비교 — 비교 주제 선정, 자료 수집, 공통점·차이점 비교·분석 발표</td><td class="col-bigo">강의 PPT 자료 및 유인물</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th></tr></thead><tbody><tr><td>수행평가</td><td>발표 프로젝트1</td><td>발표 프로젝트를 통해 자료 수집 및 분석 능력, 발표 내용의 정확성 및 완성도, 발표 태도, 참여도 등을 종합적으로 평가한다.</td></tr><tr><td>수행평가</td><td>발표 프로젝트2</td><td>발표 프로젝트를 통해 자료 수집 및 분석 능력, 발표 내용의 정확성 및 완성도, 발표 태도, 참여도 등을 종합적으로 평가한다.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <ul class="ref-list"><li>공일주(2012), 『한국인과 소통을 위한 아랍 문화』, 세창.</li><li>박재원 外 3인(2025), 『전공 기초 아랍어』, 울산광역시 교육청.</li><li>엄익란(2007), 『이슬람의 결혼문화와 젠더』, 한울아카데미.</li><li>엄익란(2011), 『할랄, 신이 허락한 음식만 먹는다: 아랍음식과 문화코드 탐험』, 한울아카데미.</li><li>엄익란(2018), 『금기, 무슬림 여성을 엿보다』, 한울아카데미.</li><li>엄익란(2018), 『무슬림 마음속에는 무엇이 있을까?』, 한울아카데미.</li><li>엄익란(2024), 『중동 이슬람 문화여행: 편견과 오해를 넘어』, 한울아카데미.</li><li>윤은경(2017), 『아랍어 첫걸음』, 한국외국어대학교 지식출판원.</li><li>이인섭 外 3인(2020), 『초급아랍어A1』, 단국대·청운대 특수외국어 컨소시엄.</li><li>임병필 外 5인(2018), 『아랍과 이슬람: 그 문명의 역사와 사상』, 모시는사람들.</li><li>조희선(2015), 『변화하는 무슬림 여성』, 세창.</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-4" data-num="04">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">단국대학교</span>
+      <span class="chapter-count">과목 04<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">04</span>
+      <div>
+        <h2 class="chapter-title">베트남 이해와 탐구 프로젝트</h2>
+        
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">본 교과목은 베트남의 역사, 사회, 문화, 정치, 경제, 언어 등을 종합적으로 이해하고, 지역학적 관점에서 베트남을 탐구하는 프로젝트 기반 학습(Project-Based Learning, PBL) 교과목이다. 학생들은 베트남어 기초와 지역연구방법론을 학습하고, 사회과학적 질문을 바탕으로 스스로 탐구 주제를 설정하여 자료 조사, 현장 조사, 생성형 AI 활용, 팀 토론 및 발표를 수행한다. 이를 통해 단순히 베트남에 관한 지식을 습득하는 데 그치지 않고, 다양한 사회·문화 현상을 분석하고 문제를 해결하는 지역학적 사고력과 글로벌 역량을 함양하는 것을 목표로 한다. 또한 본 교과목은 언어 기능 습득을 중심으로 하는 교과와 달리, 사회과학적 사고와 탐구 방법을 바탕으로 지역학과 베트남학을 이해하기 위한 기초 및 선행 학습의 성격을 지닌다. 따라서 수강생들의 적극적인 참여와 주도적인 탐구, 협력적 학습 태도가 필수적으로 요구된다.</p>
+        <p class="lead-mini">상호문화적·지역학적 관점에서 베트남 사회를 깊이 이해하고, 프로젝트 기반 학습을 통해 탐구·분석·문제 해결 역량과 글로벌 시민 역량을 기르는 데 목표를 둔다.</p><ul class="goal-list"><li>베트남의 역사, 사회, 문화, 정치, 경제 및 언어에 대한 기초 지식을 이해한다.</li><li>지역학적 관점과 사회과학적 사고를 바탕으로 베트남 사회를 분석하는 능력을 기른다.</li><li>베트남어 기초 표현과 문화적 맥락을 이해하고, 언어와 사회의 관계를 탐구한다.</li><li>프로젝트 기반 학습을 통해 스스로 질문을 설정하고 자료를 수집·분석하여 문제 해결 역량을 함양한다.</li><li>생성형 AI와 다양한 디지털 도구를 활용하여 정보를 탐색하고, 창의적인 결과물을 도출하는 능력을 기른다.</li><li>개별 혹은 팀 프로젝트 수행과 발표를 통해 의사소통 능력, 협업 능력, 글로벌 시민 역량을 강화한다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><p>언어와 지역학은 특정 지역과 사회를 이해하는 중요한 도구이며, 베트남의 역사·사회·문화·정치·경제를 통합적으로 탐구하고 프로젝트를 수행하는 과정을 통해 글로벌 시민으로서의 문제 해결 역량과 지역 이해 역량을 함양한다.</p></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">베트남의 역사, 지리, 인구, 언어, 문화, 정치, 경제, 대외관계의 주요 특징을 이해한다. 지역학과 베트남학의 개념 및 연구 대상을 이해한다. 사회과학적 탐구 방법과 지역연구방법론의 기초를 이해한다. 베트남어 문자, 발음 및 기초 문법을 이해한다. 베트남 사회의 가치관과 지역별 특성을 이해한다.</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">베트남 관련 자료를 탐색하고 수집·분석할 수 있다. 사회과학적 질문을 설정하고 탐구 계획을 수립할 수 있다. 현장조사, 인터뷰, 참여관찰 등 기초 연구 방법을 활용할 수 있다. 생성형 AI와 디지털 도구를 활용하여 정보를 분석하고 결과물을 제작할 수 있다. 팀 프로젝트를 수행하며 협업, 의사소통, 발표 및 성찰 능력을 기를 수 있다.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">다양한 문화와 사회를 존중하고 이해하려는 개방적 태도를 기른다. 베트남과 동남아시아에 대한 균형 잡힌 시각과 세계시민 의식을 함양한다. 타문화에 대한 공감과 상호존중의 자세를 갖는다. 주도적으로 탐구하고 문제를 해결하려는 자기주도적 학습 태도를 기른다. 협력과 책임감을 바탕으로 공동의 과제를 수행하는 태도를 함양한다.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th></tr></thead><tbody><tr><td class="col-ch">1</td><td class="col-topic">오리엔테이션(OT)</td><td class="col-detail">과목 소개, 운영 방식 안내, 사회학적 상상력과 사회학적 사고</td></tr><tr><td class="col-ch">2</td><td class="col-topic">왜 베트남인가?</td><td class="col-detail">한국과 베트남의 연결성, 베트남의 성장과 변화, 베트남학 전공과 진로 탐색</td></tr><tr><td class="col-ch">3</td><td class="col-topic">베트남어 문자와 발음 1</td><td class="col-detail">베트남 문자(모음, 자음)와 성조 학습</td></tr><tr><td class="col-ch">4</td><td class="col-topic">베트남어 문자와 발음 2</td><td class="col-detail">베트남 문자(이중자음, 첫 자음, 끝자음) 학습</td></tr><tr><td class="col-ch">5</td><td class="col-topic">지역학, 베트남학의 이해</td><td class="col-detail">지역학이란 무엇인가, 글로벌 환경에서의 지역학과 베트남학</td></tr><tr><td class="col-ch">6</td><td class="col-topic">사회과학적 질문, 방법 이해</td><td class="col-detail">좋은 질문 만들기, 원인과 결과 이해, 사회과학적 연구방법, 양적연구와 질적 연구</td></tr><tr><td class="col-ch">7</td><td class="col-topic">지역연구방법론</td><td class="col-detail">외국어와 세상을 바라보는 방법, 현장조사와 참여관찰, AI 활용 조사 방법, 현지화 전략 이해</td></tr><tr><td class="col-ch">8</td><td class="col-topic">탐구 주제 선정</td><td class="col-detail">프로젝트 과제 주제 선정(개별 혹은 팀별, 수강 인원에 따라)</td></tr><tr><td class="col-ch">9</td><td class="col-topic">베트남 개관</td><td class="col-detail">지형, 기후, 종족, 언어, 베트남 지역별 특징 조사</td></tr><tr><td class="col-ch">10</td><td class="col-topic">베트남 생활풍경</td><td class="col-detail">호칭, 생활방식, 의식주, 명절과 기념일, 결혼과 장례, 베트남인의 하루 상상하기</td></tr><tr><td class="col-ch">11</td><td class="col-topic">베트남어 주요 어법1</td><td class="col-detail">평서문, 의문문, 부정문</td></tr><tr><td class="col-ch">12</td><td class="col-topic">베트남어 주요 어법2</td><td class="col-detail">시제, 수식어, 피수식어, 분류사, 수 개념</td></tr><tr><td class="col-ch">13</td><td class="col-topic">베트남 문화1</td><td class="col-detail">음식과 의복, 베트남 음식 문화 비교, 지역별 음식 지도 만들기</td></tr><tr><td class="col-ch">14</td><td class="col-topic">베트남 문화2</td><td class="col-detail">종교와 예술, 베트남인의 종교생활 조사, 전통예술 영상 분석</td></tr><tr><td class="col-ch">15</td><td class="col-topic">키워드 베트남1</td><td class="col-detail">언어로 읽는 소비문화: 광고 속 베트남어, 소비 트렌드</td></tr><tr><td class="col-ch">16</td><td class="col-topic">키워드 베트남2</td><td class="col-detail">노래로 읽는 베트남 사회와 문화: 대중가요와 청년문화, 세대 변화 이해</td></tr><tr><td class="col-ch">17</td><td class="col-topic">지역별 차이</td><td class="col-detail">베트남 북부와 남부의 차이</td></tr><tr><td class="col-ch">18</td><td class="col-topic">베트남인의 가치관</td><td class="col-detail">가족, 공동체, 체면, 인간관계 탐구</td></tr><tr><td class="col-ch">19</td><td class="col-topic">AI 기반 베트남 페르소나 설계</td><td class="col-detail">생성형 AI 활용법, 프로젝트 주제별 가상 인터뷰</td></tr><tr><td class="col-ch">20</td><td class="col-topic">중간 발표</td><td class="col-detail">프로젝트 중간 발표 및 피드백</td></tr><tr><td class="col-ch">21</td><td class="col-topic">베트남 역사1</td><td class="col-detail">고대, 중국 지배 시기, 봉건왕조</td></tr><tr><td class="col-ch">22</td><td class="col-topic">베트남 역사2</td><td class="col-detail">프랑스 식민지, 미국과의 전쟁, 통일사회주의</td></tr><tr><td class="col-ch">23</td><td class="col-topic">프로젝트 워크숍1</td><td class="col-detail">자료 공유 및 문제 정의</td></tr><tr><td class="col-ch">24</td><td class="col-topic">프로젝트 워크숍2</td><td class="col-detail">분석 및 해결방안 도출</td></tr><tr><td class="col-ch">25</td><td class="col-topic">베트남 정치</td><td class="col-detail">국가기관, 베트남 공산당</td></tr><tr><td class="col-ch">26</td><td class="col-topic">베트남 경제</td><td class="col-detail">도이머이 정책, 발전전략과 계획, 투자, 교역</td></tr><tr><td class="col-ch">27</td><td class="col-topic">베트남 대외관계</td><td class="col-detail">한국, 미국, 중국, 러시아, 일본, EU 등과의 관계, 미·중 경쟁 속 베트남 외교</td></tr><tr><td class="col-ch">28</td><td class="col-topic">프로젝트 워크숍3</td><td class="col-detail">결과 정리</td></tr><tr><td class="col-ch">29</td><td class="col-topic">프로젝트 워크숍4</td><td class="col-detail">발표 준비 및 피드백</td></tr><tr><td class="col-ch">30</td><td class="col-topic">최종 프로젝트 발표회 1</td><td class="col-detail">(개별 혹은 팀) 발표</td></tr><tr><td class="col-ch">31</td><td class="col-topic">최종 프로젝트 발표회 2</td><td class="col-detail">(개별 혹은 팀) 발표</td></tr><tr><td class="col-ch">32</td><td class="col-topic">성과 공유 및 성찰</td><td class="col-detail">나의 베트남 이해 변화, 진로 설계, 프로젝트 평가 및 포트폴리오 작성</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th></tr></thead><tbody><tr><td>수행평가</td><td>세미나</td><td>토론 등 세미나 형태 수업 참여도, 질문·피드백·협업 정도</td></tr><tr><td>수행평가</td><td>과제·탐구 활동</td><td>베트남 관련 자료 조사, 보고서 및 탐구 활동 결과물</td></tr><tr><td>수행평가</td><td>포트폴리오</td><td>프로젝트 전 과정 기록, 자기 성찰, 최종 정리물</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <ul class="ref-list"><li>이강우 외. 베트남어듣기말하기 A1. 단국대·청운대 특수외국어컨소시엄.</li><li>배양수(2018). 『베트남 문화의 즐거움』, 스토리하우스.</li><li>배양수(2024). 『이것이 베트남이다』, 도서출판 다해.</li></ul><div class="notes"><span class="notes-tag">기타 사항</span><p>강의자료는 pdf 파일로 배포한다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-5" data-num="05">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">단국대학교</span>
+      <span class="chapter-count">과목 05<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">05</span>
+      <div>
+        <h2 class="chapter-title">포르투갈·브라질 언어와 문화의 이해</h2>
+        
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">포르투갈어는 전 세계 약 2억 8천만 명이 사용하는 언어로, 포르투갈어를 공용어로 사용하는 국가로는 대표적으로 남미의 브라질과 유럽의 포르투갈이 있다. 브라질은 남미 최대의 영토와 인구를 가진 국가이자 세계 주요 경제국으로 중남미를 대표하며, 포르투갈은 대항해시대를 열어 유럽과 세계를 잇고 오늘날까지 포르투갈어권 문화의 뿌리가 되어 온 나라이다. 본 과목은 포르투갈어 기초 의사소통 능력을 기르는 어학 수업과, 브라질과 포르투갈의 지리·역사·음식·음악·스포츠 등을 깊이 있게 살펴보는 문화 수업을 나란히 운영한다. 포르투갈어와 함께 두 나라의 문화를 들여다봄으로써, 낯선 특수외국어에 한 걸음 다가가고 국제 사회에서 두 나라의 다양한 모습을 폭넓게 이해한다.</p>
+        <ul class="goal-list"><li>포르투갈어의 알파벳과 발음, 기초 표현을 이해하고 인사·자기소개·일상 대화 등 기본적인 의사소통 상황에서 활용할 수 있다.</li><li>브라질과 포르투갈의 지리·역사·음식·음악·축제·스포츠 등 생활 문화에 대한 기초 지식을 습득하고, 두 나라의 사회적 배경과 국제 사회 속 위상을 이해한다.</li><li>브라질과 포르투갈의 문화를 한국 및 다른 문화와 비교하며, 문화 다양성을 이해하고 존중하는 태도를 기를 수 있다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><ul class="core-list"><li>포르투갈어의 발음과 기초 표현을 듣고 말하며 익히는 것은, 일상적인 상황에서 포르투갈어권 국가의 사람들과 소통하며 자신의 생각을 전달하는 출발점이 된다.</li><li>브라질과 포르투갈은 같은 언어를 공유하면서도 서로 다른 자연환경·역사·생활 문화를 발전시켜 왔으며, 두 나라의 문화와 사회를 국제적 맥락에서 살펴봄으로써 문화의 다양성과 세계를 폭넓게 이해할 수 있다.</li></ul></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">포르투갈어 알파벳과 발음 체계 / 인사·국적·가족·직업·시간·날씨·취미 등 기초 의사소통 표현 / 두 나라의 지리와 역사 / 두 나라의 음식·음악·축제·스포츠 등 생활 문화 / 두 나라의 사회적 배경과 국제 사회 속 모습.</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">포르투갈어 소리를 식별하고 정확하게 발음하기 / 기초 표현을 듣고 말하며 간단한 대화 나누기 / 자기소개·가족·직업 소개 등 상황에 맞게 의사소통하기 / 두 나라의 문화 자료를 조사하고 비교하기 / 사회 이슈를 탐구하여 발표하고 토론하기.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">새로운 언어 학습에 대한 흥미와 적극적인 참여 / 낯선 언어와 문화를 존중하는 열린 태도 / 문화의 다양성에 대한 이해와 포용 / 서로 협력하며 소통하는 학습 태도 / 국제 사회에 대한 관심과 폭넓은 시야.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th><th class="col-bigo">비고</th></tr></thead><tbody><tr><td class="col-ch">1</td><td class="col-topic">발음</td><td class="col-detail">포르투갈어 알파벳, 모음·자음 발음, 강세</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">2</td><td class="col-topic">인사</td><td class="col-detail">만남과 헤어짐의 인사, 안부 묻고 답하기, 감사·사과 표현</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">3</td><td class="col-topic">포르투갈 개관</td><td class="col-detail">포르투갈 지리, 인구 등 개요</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">4</td><td class="col-topic">브라질 개관</td><td class="col-detail">브라질 지리, 인구 등 개요</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">5</td><td class="col-topic">이름</td><td class="col-detail">이름 묻고 답하기, 자기 이름 소개하기, Ser &amp; Estar 동사 구분</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">6</td><td class="col-topic">국적</td><td class="col-detail">나라·국적 표현, 출신 말하기, 형용사</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">7</td><td class="col-topic">포르투갈 대항해시대</td><td class="col-detail">엔히크 왕자와 항로 개척, 바스쿠 다 가마의 인도 항로 발견</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">8</td><td class="col-topic">포르투갈 해상제국</td><td class="col-detail">아프리카 식민지 건설과 브라질 발견, 동양 해상 제국의 형성</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">9</td><td class="col-topic">가족</td><td class="col-detail">가족 구성원 어휘, 함께 사는 가족 소개하기</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">10</td><td class="col-topic">좋아하는 것</td><td class="col-detail">좋아하는 대상 표현하기, 직설법 현재형 규칙 동사</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">11</td><td class="col-topic">포르투갈 3F 정책</td><td class="col-detail">살라자르 정권의 3F(축구·파두·파티마) 정책과 카네이션 혁명</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">12</td><td class="col-topic">포르투갈 파두</td><td class="col-detail">파두의 정서(사우다드)와 대표 가수, 리스본 파두와 코임브라 파두 비교</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">13</td><td class="col-topic">직업</td><td class="col-detail">직업 묻고 답하기, 직업 어휘, 직설법 현재형 불규칙 동사</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">14</td><td class="col-topic">나이</td><td class="col-detail">나이 묻고 답하기, 숫자 표현, 생일 묻고 답하기, Estar com 표현</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">15</td><td class="col-topic">포르투갈 건축 예술</td><td class="col-detail">아줄레주 타일 장식의 역사와 마누엘 양식 건축의 특징</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">16</td><td class="col-topic">포르투갈 와인</td><td class="col-detail">포트와인·비뉴 베르드 등 포르투갈 와인의 종류와 산지</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">17</td><td class="col-topic">취미</td><td class="col-detail">취미 묻고 답하기, 스포츠 및 경기 관련 표현, 빈도 표현</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">18</td><td class="col-topic">하루 일과</td><td class="col-detail">하루 일과 표현, Poder·Querer 동사 표현</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">19</td><td class="col-topic">브라질 5개 권역</td><td class="col-detail">북부·북동부·중서부·남동부·남부의 지리와 기후, 권역별 특색과 생활 모습</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">20</td><td class="col-topic">중남미 속 브라질</td><td class="col-detail">중남미에서 브라질의 경제 규모·위상</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">21</td><td class="col-topic">식당 예약</td><td class="col-detail">식당 예약 표현, 식당·식품 관련 어휘</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">22</td><td class="col-topic">식당 주문</td><td class="col-detail">식당 주문 표현, 음식·음료·과일 어휘, 계산 표현</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">23</td><td class="col-topic">브라질 카니발</td><td class="col-detail">리우 카니발과 삼바 학교, 거리 축제의 역사와 의미</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">24</td><td class="col-topic">브라질 축구</td><td class="col-detail">브라질 축구의 역사, 월드컵, 펠레·호나우두 등 유명 축구 선수</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">25</td><td class="col-topic">패션</td><td class="col-detail">의류, 신발, 액세서리 어휘, 색깔 어휘</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">26</td><td class="col-topic">쇼핑</td><td class="col-detail">쇼핑 관련 표현, 감탄문, 상점 어휘, 결제 관련 표현</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">27</td><td class="col-topic">브라질 커피</td><td class="col-detail">세계 최대 커피 생산국 브라질, 커피의 역사와 식문화</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">28</td><td class="col-topic">브라질 음악</td><td class="col-detail">보사노바·세르타네주·MPB 등 브라질의 다채로운 음악과 배경</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">29</td><td class="col-topic">작문 연습</td><td class="col-detail">핵심 표현 정리 및 말하기 발표를 위한 작문 연습</td><td class="col-bigo">&mdash;</td></tr><tr><td class="col-ch">30</td><td class="col-topic">포르투갈어 말하기</td><td class="col-detail">자기소개·가족·취미 등 학습한 표현으로 말하기 발표</td><td class="col-bigo">평가</td></tr><tr><td class="col-ch">31</td><td class="col-topic">문화 주제 발표</td><td class="col-detail">브라질·포르투갈 문화 관련 개인 발표</td><td class="col-bigo">평가</td></tr><tr><td class="col-ch">32</td><td class="col-topic">종합 피드백</td><td class="col-detail">발표에 대한 토론과 강사 종합 피드백</td><td class="col-bigo">&mdash;</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th></tr></thead><tbody><tr><td>수행평가</td><td>포르투갈어 말하기</td><td>인사·이름·국적·가족·직업·취미 표현을 활용하여 자기소개</td></tr><tr><td>수행평가</td><td>문화 주제 발표</td><td>브라질·포르투갈의 역사·음식·음악·축제·스포츠 등 수업에서 다룬 문화 주제와 관련된 신문기사를 조사하여 발표하기</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <ul class="ref-list"><li>김한철(2019). 『브라질·포르투갈어 첫걸음: 평등한 언어 세상을 위한 시작』. 언어평등.</li></ul><div class="notes"><span class="notes-tag">기타 사항</span><p>어학 수업은 위 교재를 주교재로 사용하며, 문화 수업은 별도의 단일 교재 없이 강사가 제작한 강의 자료를 활용하고, 브라질과 포르투갈의 역사·지리·예술·음악·축제·스포츠 등 각 주제와 관련된 도서, YouTube 영상자료, 신문기사 등을 참고 자료로 한다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-6" data-num="06">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">단국대학교</span>
+      <span class="chapter-count">과목 06<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">06</span>
+      <div>
+        <h2 class="chapter-title">글로벌 이슈 탐구와 영어 학술 연구 실제</h2>
+        <p class="chapter-subtitle">Global Issues and English Academic Research Practice</p>
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">본 과목은 대학 수준의 학술 영어(Academic English) 문해력을 기르고 이를 자신의 진로 분야와 융합하는 고교-대학 연계 심화 과목이다. 지식의 단순 수용을 넘어, 글로벌 이슈를 스스로 발굴하고 학술적 글쓰기(Academic Writing)의 전 과정을 체계적으로 수행함으로써 주도적 연구 역량을 함양하고자 개설되었다. 특히 2022 개정 교육과정의 [학교 밖 교육] 취지에 맞추어, 대학의 전문 교수 인프라를 활용한 1:1 맞춤형 피드백을 제공한다. 학생들은 영어 학술 텍스트의 구조적 특징과 핵심 구문 및 어휘를 익히는 동시에, 연구 제안서(Proposal)부터 소논문(Short Research Paper) 완성에 이르는 연구 전반을 경험하며 글로벌 학문 공동체의 일원으로서 요구되는 학술적 소통 능력을 기른다.</p>
+        <ul class="goal-list"><li>대학 수준의 영어 학술 텍스트를 비판적으로 분석하고, 핵심 어법, 구문, 어휘를 실제 학술적 글쓰기에 올바르게 적용할 수 있다.</li><li>자신의 진로 및 관심 분야와 연계된 글로벌 이슈를 주도적으로 발굴하고, 이를 해결하기 위한 연구 질문(Research Question)을 구체화할 수 있다.</li><li>연구 제안서, 문헌 연구, 소논문 등 다양한 형태의 학술적 및 공적 글쓰기 양식을 이해하고 이를 모두 영어로 작성할 수 있다.</li><li>연구 프로세스의 각 단계(서론-문헌 연구-연구 방법-결과 도출-논의-결론)에 맞추어 소논문을 체계적으로 구조화하고, 피드백을 수용하여 논리적으로 수정 및 보완할 수 있다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><p>학술 영어 문해력과 연구 방법론의 융합을 통해 글로벌 이슈를 탐구하고, 체계적인 영어 학술 글쓰기를 통해 융합적 연구 역량과 학술적 소통 능력을 함양한다.</p></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">학술 영어(Academic English) 핵심 어법, 구문 및 필수 학술 어휘 / 영어 학술 텍스트의 구조적 특징과 논리적 전개 방식 / 학술적 글쓰기 양식(Academic Proposal, Abstract, Literature Review, Short Research Paper) / 기타 학술 및 공적 글쓰기 양식(Annotated Bibliography, Book Review, Public Writing).</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">진로 연계 글로벌 이슈 발굴 및 연구 질문(Research Question) 설정하기 / 영어 학술 DB 및 문헌 검색, 비판적 읽기 및 요약하기 / 소논문 각 체계(Intro-Lit Review-Method-Results-Discussion-Conclusion) 구성 및 집필하기 / 교수자 피드백을 반영한 지속적인 수정, 보완 및 상호 릴레이 편집 기능.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">연구 윤리(표절 방지, 올바른 인용 및 출처 표기)를 준수하는 태도 / 피드백을 적극적으로 수용하고 자신의 글을 끝까지 개선하려는 정교성 지향 태도 / 글로벌 사회의 문제에 관심을 갖고 학술적으로 기여하려는 도전 의식 및 책임감.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th><th class="col-bigo">비고</th></tr></thead><tbody><tr><td class="col-ch">1</td><td class="col-topic">[대면] 오리엔테이션 및 학술 영어의 기초</td><td class="col-detail">강좌 소개, 고교-대학 연계 과정의 이해, 학술 영어: 어휘, 어법, 구문</td><td class="col-bigo">1주차</td></tr><tr><td class="col-ch">2</td><td class="col-topic">[대면] 학술 영어 이해</td><td class="col-detail">학술 영어: Academic Reading 이해 (The Reading Process)</td><td class="col-bigo">1주차</td></tr><tr><td class="col-ch">3</td><td class="col-topic">[대면] 학술 영어 이해</td><td class="col-detail">학술 영어: Academic Writing 이해 (The Writing Process)</td><td class="col-bigo">1주차</td></tr><tr><td class="col-ch">4</td><td class="col-topic">[대면] 학술 영어 이해</td><td class="col-detail">TED 영상 시청: Academic Reading &amp; Writing</td><td class="col-bigo">1주차</td></tr><tr><td class="col-ch">5</td><td class="col-topic">[온라인] 학술 텍스트 독해와 핵심 구문-1</td><td class="col-detail">실제 학술 논문 분석을 통한 빈출 어법 및 문장 구조분석 익히기: 영어 순해 기법 1</td><td class="col-bigo">2주차</td></tr><tr><td class="col-ch">6</td><td class="col-topic">[온라인] 학술 텍스트 독해와 핵심 구문-2</td><td class="col-detail">실제 학술 논문 분석을 통한 빈출 어법 및 문장 구조분석 익히기: 영어 순해 기법 2</td><td class="col-bigo">2주차</td></tr><tr><td class="col-ch">7</td><td class="col-topic">[온라인] Academic Writing 종류-1</td><td class="col-detail">Academic Paragraphs &amp; Essays</td><td class="col-bigo">2주차</td></tr><tr><td class="col-ch">8</td><td class="col-topic">[온라인] Academic Writing 종류-2</td><td class="col-detail">Abstract, Proposal, Short Research Paper</td><td class="col-bigo">2주차</td></tr><tr><td class="col-ch">9</td><td class="col-topic">[온라인] 글로벌 이슈 발굴과 진로 융합</td><td class="col-detail">자신의 진로와 연계된 글로벌 이슈 탐색, 연구 주제 선정을 위한 브레인스토밍</td><td class="col-bigo">3주차</td></tr><tr><td class="col-ch">10</td><td class="col-topic">[온라인] 학술 문헌 검색 및 연구 윤리</td><td class="col-detail">영어 학술 DB 활용법, 자료 탐색 방법, 연구 윤리 및 표절(Plagiarism) 방지, 인용법 학습</td><td class="col-bigo">3주차</td></tr><tr><td class="col-ch">11</td><td class="col-topic">[온라인] Summary 및 Annotated Bibliography 개념</td><td class="col-detail">Summary 및 Annotated Bibliography의 개념 이해</td><td class="col-bigo">3주차</td></tr><tr><td class="col-ch">12</td><td class="col-topic">[온라인] Summary 및 Annotated Bibliography 실제</td><td class="col-detail">선정한 주제에 대한 문헌 검색 및 쓰기 (In-class Writing)</td><td class="col-bigo">3주차</td></tr><tr><td class="col-ch">13</td><td class="col-topic">[온라인] Summary 및 Annotated Bibliography 피드백</td><td class="col-detail">학생들이 제출한 Summary 및 Annotated Bibliography 피드백 및 보완점 논의</td><td class="col-bigo">4주차</td></tr><tr><td class="col-ch">14</td><td class="col-topic">[온라인] Proposal</td><td class="col-detail">작성한 AB를 바탕으로 소논문 Research Proposal 구상 및 작성: Research Question 포함</td><td class="col-bigo">4주차</td></tr><tr><td class="col-ch">15</td><td class="col-topic">[온라인] 서론(Introduction)</td><td class="col-detail">소논문 서론의 구조, 연구의 필요성 및 목적을 영어로 진술하는 방법</td><td class="col-bigo">4주차</td></tr><tr><td class="col-ch">16</td><td class="col-topic">[온라인] 문헌 연구(Literature Review) 기초</td><td class="col-detail">문헌 연구(Literature Review) 기초</td><td class="col-bigo">4주차</td></tr><tr><td class="col-ch">17</td><td class="col-topic">[대면] 서론(Introduction)</td><td class="col-detail">서론 작성하기 (In-class Writing)</td><td class="col-bigo">5주차</td></tr><tr><td class="col-ch">18</td><td class="col-topic">[대면] 문헌 연구(Literature Review) 기초</td><td class="col-detail">문헌 연구(Literature Review) 작성하기 (In-class Writing)</td><td class="col-bigo">5주차</td></tr><tr><td class="col-ch">19</td><td class="col-topic">[대면] 서론(Introduction) 피드백</td><td class="col-detail">서론(Introduction) 개별 피드백</td><td class="col-bigo">5주차</td></tr><tr><td class="col-ch">20</td><td class="col-topic">[대면] 문헌 연구(Literature Review) 피드백</td><td class="col-detail">문헌 연구(Literature Review) 개별 피드백</td><td class="col-bigo">5주차</td></tr><tr><td class="col-ch">21</td><td class="col-topic">[대면] 연구 방법(Method) 설계</td><td class="col-detail">연구 방법론의 기초, 본인 연구의 데이터 수집 및 분석 계획을 영어로 기술하기</td><td class="col-bigo">6주차</td></tr><tr><td class="col-ch">22</td><td class="col-topic">[대면] 연구 결과(Results) 제시</td><td class="col-detail">연구를 통해 도출된 데이터나 내용을 객관적으로 제시하는 표현 및 시각 자료 설명 어휘 학습</td><td class="col-bigo">6주차</td></tr><tr><td class="col-ch">23</td><td class="col-topic">[대면] 논의(Discussion) 및 결론(Conclusion)</td><td class="col-detail">결과의 학술적 의미 해석, 연구의 한계점 및 향후 제언, 결론 요약 작문법</td><td class="col-bigo">6주차</td></tr><tr><td class="col-ch">24</td><td class="col-topic">[대면] 소논문 쓰기-1</td><td class="col-detail">소논문 쓰기 (In-class Writing)</td><td class="col-bigo">6주차</td></tr><tr><td class="col-ch">25</td><td class="col-topic">[대면] 소논문 쓰기-2</td><td class="col-detail">작성 및 학생별 개별 피드백 (In-class Writing)</td><td class="col-bigo">7주차</td></tr><tr><td class="col-ch">26</td><td class="col-topic">[대면] 소논문 쓰기-3</td><td class="col-detail">작성 및 학생별 개별 피드백 (In-class Writing)</td><td class="col-bigo">7주차</td></tr><tr><td class="col-ch">27</td><td class="col-topic">[대면] 초록(Abstract) 및 제목 작성</td><td class="col-detail">Abstract 및 Title 작성 (In-class Writing)</td><td class="col-bigo">7주차</td></tr><tr><td class="col-ch">28</td><td class="col-topic">[대면] Draft 전체 점검</td><td class="col-detail">Short Research Paper 전체 구성(Intro to Conclusion)의 유기적 흐름 1:1 온라인 점검</td><td class="col-bigo">7주차</td></tr><tr><td class="col-ch">29</td><td class="col-topic">[대면] 글로벌 융합 리서치 콘퍼런스 I</td><td class="col-detail">학생별 최종 연구 결과물(Short Research Paper) 발표 및 질의응답</td><td class="col-bigo">8주차</td></tr><tr><td class="col-ch">30</td><td class="col-topic">[대면] 글로벌 융합 리서치 콘퍼런스 II</td><td class="col-detail">학생별 최종 연구 결과물 발표 및 종합 토론</td><td class="col-bigo">8주차</td></tr><tr><td class="col-ch">31</td><td class="col-topic">[대면] 종합 성찰 및 글로벌 에세이 작성</td><td class="col-detail">연구 과정을 통해 배운 점 성찰, 학문적 성장 방향성을 담은 대중적 공적 글쓰기 마무리</td><td class="col-bigo">8주차</td></tr><tr><td class="col-ch">32</td><td class="col-topic">[대면] 수료식 및 교육과정 평가</td><td class="col-detail">개별 연구 성과 피드백지 전달, 과정 수료 및 최종 평가 마무리</td><td class="col-bigo">8주차</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th><th>비고</th></tr></thead><tbody><tr><td>수행평가</td><td>소논문 누적 포트폴리오</td><td>연구 질문(RQ)의 명확성 및 진로/글로벌 이슈 연계성 / 소논문 핵심 체제의 유기적 논리 구조 / 학술 영어 어휘, 구문, 어법의 정확한 활용 / 연구 윤리(인용법) 준수 여부 및 피드백 반영 성실도</td><td>40%</td></tr><tr><td>과정평가</td><td>자기성찰 및 참여</td><td>온라인/대면 수업에서의 적극적인 참여도 및 토론 태도</td><td>20%</td></tr><tr><td>출석</td><td>출석</td><td>출석 주당 5점 (총 8주 수업 기준)</td><td>40%</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <p class="lead-mini">별도의 참고 문헌이 제시되지 않았습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-7" data-num="07">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">단국대학교</span>
+      <span class="chapter-count">과목 07<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">07</span>
+      <div>
+        <h2 class="chapter-title">미적분학 핵심 개념 탐구</h2>
+        
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">대학 미적분학의 핵심 개념을 탐구하여 고교-대학 수학의 연계성을 높이고, 수학적 사고력과 문제 해결 능력을 신장하여 심화 학습 및 진로 탐색의 기초를 마련하고자 한다.</p>
+        <ul class="goal-list"><li>함수의 미분, 적분 등 대학 미적분학의 핵심 개념을 이해하고 설명할 수 있다.</li><li>미적분 개념을 활용하여 다양한 수학적 문제를 탐구하고 해결하는 능력을 기를 수 있다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><p>미적분 개념은 다양한 문제 상황을 수학적으로 모델링하고 해결하는 데 활용한다.</p></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">함수의 극한 개념과 연속성의 의미를 이해한다. 미분의 개념과 기하학적, 물리적 의미를 이해한다. 적분의 개념과 넓이 및 부피의 의미를 이해한다. 미적분 개념이 자연현상과 다양한 학문 분야에 활용됨을 이해한다.</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">함수의 변화를 관찰하고 분석한다. 극한, 미분, 적분의 개념을 수학적으로 표현하고 설명한다. 다양한 문제 상황을 미적분 개념으로 모델링한다. 미적분을 활용하여 문제를 해결하고 결과를 해석한다.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">수학적 탐구에 대한 호기심과 적극적인 태도를 가진다. 논리적 사고와 합리적 의사결정의 가치를 인정한다. 문제 해결 과정에서 성실성과 끈기를 기른다. 미적분의 활용 가치를 이해하고 수학 학습에 대한 자신감을 가진다.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th></tr></thead><tbody><tr><td class="col-ch">1</td><td class="col-topic">소개</td><td class="col-detail">소개</td></tr><tr><td class="col-ch">2</td><td class="col-topic">극한(1)</td><td class="col-detail">함수의 극한(1)</td></tr><tr><td class="col-ch">3</td><td class="col-topic">극한(2)</td><td class="col-detail">함수의 극한(2)</td></tr><tr><td class="col-ch">4</td><td class="col-topic">연속</td><td class="col-detail">함수의 연속</td></tr><tr><td class="col-ch">5</td><td class="col-topic">미분 계수(1)</td><td class="col-detail">미분 계수(1)</td></tr><tr><td class="col-ch">6</td><td class="col-topic">미분 계수(2)</td><td class="col-detail">미분 계수(2)</td></tr><tr><td class="col-ch">7</td><td class="col-topic">도함수(1)</td><td class="col-detail">여러 함수들의 도함수 구하기(1)</td></tr><tr><td class="col-ch">8</td><td class="col-topic">도함수(2)</td><td class="col-detail">여러 함수들의 도함수 구하기(2)</td></tr><tr><td class="col-ch">9</td><td class="col-topic">연쇄법칙</td><td class="col-detail">연쇄법칙</td></tr><tr><td class="col-ch">10</td><td class="col-topic">음함수 미분</td><td class="col-detail">음함수 미분법</td></tr><tr><td class="col-ch">11</td><td class="col-topic">미분법(1)</td><td class="col-detail">여러 가지 미분법(1)</td></tr><tr><td class="col-ch">12</td><td class="col-topic">미분법(2)</td><td class="col-detail">여러 가지 미분법(2)</td></tr><tr><td class="col-ch">13</td><td class="col-topic">미분의 응용(1)</td><td class="col-detail">미분의 응용(최대값, 최솟값, 극값)(1)</td></tr><tr><td class="col-ch">14</td><td class="col-topic">미분의 응용(2)</td><td class="col-detail">미분의 응용(최대값, 최솟값, 극값)(2)</td></tr><tr><td class="col-ch">15</td><td class="col-topic">미분의 응용(3)</td><td class="col-detail">미분의 응용(그래프 그리기)(1)</td></tr><tr><td class="col-ch">16</td><td class="col-topic">미분의 응용(4)</td><td class="col-detail">미분의 응용(그래프 그리기)(2)</td></tr><tr><td class="col-ch">17</td><td class="col-topic">정적분</td><td class="col-detail">정적분</td></tr><tr><td class="col-ch">18</td><td class="col-topic">부정적분</td><td class="col-detail">부정적분</td></tr><tr><td class="col-ch">19</td><td class="col-topic">기본정리(1)</td><td class="col-detail">미적분학의 기본정리(1)</td></tr><tr><td class="col-ch">20</td><td class="col-topic">기본정리(2)</td><td class="col-detail">미적분학의 기본정리(2)</td></tr><tr><td class="col-ch">21</td><td class="col-topic">치환적분</td><td class="col-detail">치환적분</td></tr><tr><td class="col-ch">22</td><td class="col-topic">부분적분</td><td class="col-detail">부분적분</td></tr><tr><td class="col-ch">23</td><td class="col-topic">삼각 치환 적분</td><td class="col-detail">삼각 치환 적분</td></tr><tr><td class="col-ch">24</td><td class="col-topic">유리함수 적분</td><td class="col-detail">유리함수 적분</td></tr><tr><td class="col-ch">25</td><td class="col-topic">수치적분(1)</td><td class="col-detail">수치적분(1)</td></tr><tr><td class="col-ch">26</td><td class="col-topic">수치적분(2)</td><td class="col-detail">수치적분(2)</td></tr><tr><td class="col-ch">27</td><td class="col-topic">넓이</td><td class="col-detail">정적분의 응용(넓이)</td></tr><tr><td class="col-ch">28</td><td class="col-topic">길이</td><td class="col-detail">곡선의 길이</td></tr><tr><td class="col-ch">29</td><td class="col-topic">부피(1)</td><td class="col-detail">정적분의 응용(부피)(1)</td></tr><tr><td class="col-ch">30</td><td class="col-topic">부피(2)</td><td class="col-detail">정적분의 응용(부피)(2)</td></tr><tr><td class="col-ch">31</td><td class="col-topic">겉넓이</td><td class="col-detail">정적분의 응용(겉넓이)</td></tr><tr><td class="col-ch">32</td><td class="col-topic">이상적분</td><td class="col-detail">이상적분</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th></tr></thead><tbody><tr><td>이수여부</td><td>P(pass) / F(fail)</td><td>2/3 이상 출석 시 이수 가능</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <p class="lead-mini">별도의 참고 문헌이 제시되지 않았습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-8" data-num="08">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">단국대학교</span>
+      <span class="chapter-count">과목 08<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">08</span>
+      <div>
+        <h2 class="chapter-title">화학분석기기의 이해 및 실습</h2>
+        
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">현대 사회에서 화학 분석 기술은 환경, 의약·바이오, 식품, 신소재, 반도체 등 다양한 산업 분야에서 핵심적인 역할을 수행하고 있다. 특히 첨단 산업의 발전과 함께 물질의 성분을 정확하게 확인(정성분석)하고 정량화(정량분석)하는 분석 기술의 중요성이 더욱 커지고 있으며, 이를 위해 다양한 화학 분석기기의 원리와 활용 능력이 요구되고 있다. 본 과목은 고등학교 교육과정에서 접하기 어려운 고급 분석화학 분야를 대학의 전문 인력과 첨단 분석 장비를 활용하여 학습할 수 있도록 개설한 고교-대학 연계 학점 인정 과목이다. 학생들은 크로마토그래피와 분광학의 기본 원리를 이해하고, HPLC(고성능 액체 크로마토그래피), GC(기체 크로마토그래피), UV-Vis 분광광도계, FT-IR 분광분석기 등 실제 연구 및 산업 현장에서 활용되는 대표적인 분석기기를 직접 운용하며 다양한 시료의 정성·정량 분석 과정을 경험하게 된다. 이를 통해 학생들은 과학적 탐구 능력과 데이터 해석 능력을 함양하고, 화학·화학공학·생명과학·제약·환경·신소재·반도체 등 다양한 이공계 분야의 진로를 탐색하며 대학 전공 학습에 필요한 기초 역량을 기를 수 있다.</p>
+        <ul class="goal-list"><li>화학 분석의 필요성과 분석화학의 기본 개념을 이해하고 설명할 수 있다.</li><li>크로마토그래피와 분광학의 기본 원리를 이해하고 분석기기의 작동 원리를 설명할 수 있다.</li><li>HPLC와 GC를 활용하여 다양한 시료의 정성 및 정량 분석 과정을 수행할 수 있다.</li><li>UV-Vis와 FT-IR 분석기기를 활용하여 물질의 특성을 확인하고 분석 결과를 해석할 수 있다.</li><li>분석 데이터를 수집·처리하고 검량선 작성, 결과 해석 등을 통해 과학적 문제 해결 능력을 기를 수 있다.</li><li>화학, 바이오, 환경, 식품, 제약 및 첨단소재 산업 분야에서 활용되는 분석 기술을 이해하고 관련 진로를 탐색할 수 있다.</li><li>실험 활동과 프로젝트 수행을 통해 협업 능력, 의사소통 능력 및 자기주도적 탐구 역량을 함양할 수 있다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><p>화학 분석기기의 원리와 활용을 이해하고 다양한 시료의 정성·정량 분석을 수행하여 과학적 탐구 능력과 문제 해결 역량을 함양한다.</p></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">크로마토그래피의 기본 원리와 이동상·고정상의 역할을 이해하고 HPLC 및 GC의 구성과 분석 원리를 설명한다. 전자기파와 물질의 상호작용을 이해하고 UV-Vis 및 FT-IR의 측정 원리를 설명한다. 표준물법을 이용한 검정곡선, 농도 계산 및 정성·정량 분석의 개념을 이해한다. 분석화학이 화학, 바이오, 환경, 식품, 제약 및 첨단산업 분야에서 활용되는 사례를 이해한다.</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">HPLC와 GC를 활용하여 시료를 분석하고 크로마토그램을 해석하며 정성·정량 분석을 수행한다. 스펙트럼을 측정하고 분석하여 물질의 특성을 확인하며 정성·정량 분석을 수행한다. 분석 결과를 정리하고 데이터를 처리하여 결론을 도출한다. 실제 산업 및 연구 분야의 분석 사례를 탐색하고 분석 결과를 활용한다.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">객관적 자료에 근거하여 결과를 해석하고 정확한 실험 수행 태도를 기른다. 과학적 근거를 바탕으로 결과를 해석하고 탐구 과정의 중요성을 인식한다. 분석 결과를 객관적으로 기록하고 논리적으로 설명하는 태도를 기른다. 과학기술의 사회적 가치를 이해하고 진로 설계 역량을 함양한다.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th><th class="col-bigo">비고</th></tr></thead><tbody><tr><td class="col-ch">1</td><td class="col-topic">크로마토그래피의 서론</td><td class="col-detail">크로마토그래피의 역사, 종류</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">2</td><td class="col-topic">크로마토그래피의 서론</td><td class="col-detail">크로마토그램, 표준물법</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">3</td><td class="col-topic">고성능액체크로마토그래피(HPLC)의 system</td><td class="col-detail">HPLC system : pump, injector</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">4</td><td class="col-topic">고성능크로마토그래피(HPLC)의 system</td><td class="col-detail">HPLC system : column, TCC, detector</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">5</td><td class="col-topic">액체 크로마토그래피(LC)</td><td class="col-detail">LC와 GC의 비교, LC의 분류, 극성 결합, 전기음성도</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">6</td><td class="col-topic">액체 크로마토그래피(LC)</td><td class="col-detail">순상크로마토그래피, 역상크로마토그래피, 이온교환크로마토그래피, 크기배제크로마토그래피</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">7</td><td class="col-topic">HPLC 기기 실습</td><td class="col-detail">HPLC 기기 software 설명</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">8</td><td class="col-topic">HPLC 기기 실습</td><td class="col-detail">HPLC를 이용한 카페인의 정성 및 정량 분석 실험</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">9</td><td class="col-topic">기체 크로마토그래피(GC)</td><td class="col-detail">기체 크로마토그래피(GC)의 분류, 크로마토그래피의 속도이론</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">10</td><td class="col-topic">기체 크로마토그래피(GC)</td><td class="col-detail">기체 크로마토그래피의 구성 : carrier gas, inlet (split/splitless)</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">11</td><td class="col-topic">기체 크로마토그래피(GC)의 system</td><td class="col-detail">GC 기기 설명</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">12</td><td class="col-topic">기체 크로마토그래피(GC)의 system</td><td class="col-detail">GC software 설명</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">13</td><td class="col-topic">기체 크로마토그래피(GC)</td><td class="col-detail">기체 크로마토그래피의 구성 : column</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">14</td><td class="col-topic">기체 크로마토그래피(GC)</td><td class="col-detail">기체 크로마토그래피의 구성 : FID detector</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">15</td><td class="col-topic">GC 기기 실습</td><td class="col-detail">메탄올 정성분석 실험</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">16</td><td class="col-topic">GC 기기 실습</td><td class="col-detail">외부 표준물법을 이용한 메탄올의 정량 분석 실험</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">17</td><td class="col-topic">분광학 서론</td><td class="col-detail">빛의 원리, 빛의 흡수 이론 : 전자전이, 원자의 궤도 이론</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">18</td><td class="col-topic">분광학 서론</td><td class="col-detail">양자수와 전자 배치, 원자가 결합 이론(VBT), 분자 궤도 함수 이론(MOT)</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">19</td><td class="col-topic">UV-Vis spectrophotometer 기기 실습</td><td class="col-detail">UV-Vis spectrophotometer software 설명</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">20</td><td class="col-topic">UV-Vis spectrophotometer 기기 실습</td><td class="col-detail">UV-Vis spectrophotometer를 이용한 vitamin C의 정성분석 실험</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">21</td><td class="col-topic">자외선 가시광선 분광기(UV-Vis)</td><td class="col-detail">분자 스펙트럼의 띠 넓힘 현상, 유기물의 전자전이</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">22</td><td class="col-topic">자외선 가시광선 분광기(UV-Vis)</td><td class="col-detail">발색단, 조색단, Lambert-Beer의 법칙</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">23</td><td class="col-topic">UV-Vis spectrophotometer 기기 실습</td><td class="col-detail">Beer 법칙을 이용한 vitamin B12 정량 분석 실험</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">24</td><td class="col-topic">UV-Vis spectrophotometer 기기 실습</td><td class="col-detail">외부 표준물법을 이용한 vitamin B12 정량 분석 실험</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">25</td><td class="col-topic">적외선 분광기(FT-IR)</td><td class="col-detail">IR의 빛의 영역, FT의 이해</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">26</td><td class="col-topic">적외선 분광기(FT-IR)</td><td class="col-detail">분자 진동의 종류 및 spectrum 이해</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">27</td><td class="col-topic">FT-IR spectrometer 기기 실습</td><td class="col-detail">FT-IR spectrometer software 설명</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">28</td><td class="col-topic">FT-IR spectrometer 기기 실습</td><td class="col-detail">고체 시료 분석을 위한 pellet 제작 실습</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">29</td><td class="col-topic">적외선 분광기(FT-IR)</td><td class="col-detail">FT-IR spectrometer system</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">30</td><td class="col-topic">적외선 분광기(FT-IR)</td><td class="col-detail">Sampling techniques</td><td class="col-bigo">이론</td></tr><tr><td class="col-ch">31</td><td class="col-topic">FT-IR spectrometer 기기 실습</td><td class="col-detail">ATR 방법을 이용한 고분자 필름 정성분석</td><td class="col-bigo">실습</td></tr><tr><td class="col-ch">32</td><td class="col-topic">FT-IR spectrometer 기기 실습</td><td class="col-detail">Transmission 방법을 이용한 aspirin 정성분석</td><td class="col-bigo">실습</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th></tr></thead><tbody><tr><td>출석</td><td>출석률 기준에 따른 과목 이수</td><td>수업 시수의 2/3 이상 출석 시 이수 처리</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <p class="lead-mini">별도의 참고 문헌이 제시되지 않았습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-9" data-num="09">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">백석대학교</span>
+      <span class="chapter-count">과목 09<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">09</span>
+      <div>
+        <h2 class="chapter-title">보건과 건강관리</h2>
+        
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">본 과목은 고등학교 1~2학년 학생을 대상으로 건강과 보건의 기본 개념을 이해하고, 생활 속 건강 문제를 스스로 관리할 수 있는 역량을 기르기 위해 개설한다. 청소년기 건강관리, 생활습관과 질병 예방, 감염병 예방, 구강건강관리, 응급상황 대처, 건강정보 활용을 중심으로 학습하며, 구강건강·눈 건강·작업치료·응급구조 등 보건의료 분야 전공 체험을 통해 진로 탐색 기회를 제공한다. 모든 실습은 고등학생이 안전하게 참여할 수 있도록 모형·활동지·시연 중심으로 운영한다.</p>
+        <ul class="goal-list"><li>건강과 보건의 개념을 이해하고 청소년기 건강관리의 중요성을 설명할 수 있다.</li><li>생활습관, 감염병 예방, 구강건강관리, 기도폐쇄 응급처치 등 일상생활 속 보건지식을 실천으로 연결할 수 있다.</li><li>신뢰할 수 있는 건강정보를 탐색하고 올바른 보건정보 활용 태도를 기를 수 있다.</li><li>구강건강, 눈 건강, 작업치료, 응급구조 등 보건의료 분야의 기초 역할과 관련 진로를 이해할 수 있다.</li><li>개인과 공동체의 건강 증진을 위한 실천계획과 보건의료 진로 포트폴리오를 작성할 수 있다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><ul class="core-list"><li>건강은 개인의 생활 습관, 환경, 보건의료 자원과 상호 관련되며, 청소년기 건강관리 습관은 성인기 건강에 영향을 미친다.</li><li>생활 습관은 질병 예방과 건강 증진의 기초가 되며, 수면·영양·운동·스트레스 관리는 청소년기 건강생활에 중요하다.</li><li>감염병과 응급상황은 개인의 실천과 공동체의 협력을 통해 예방하고 대처할 수 있으며, 기도 폐쇄와 같은 응급상황에서는 신속한 판단과 기본 응급처치가 중요하다.</li><li>보건의료 분야는 다양한 전공과 직업으로 구성되며, 건강정보를 바르게 활용하고 자신의 흥미와 역량에 맞는 진로 탐색이 필요하다.</li></ul></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">건강 증진과 생활 속 건강관리 — 건강 개념, 건강 영향 요인, 건강 신호, 청소년기 건강관리. 생활습관과 질병 예방 — 생활습관과 건강, 영양과 비만 예방, 수면과 스트레스 관리. 보건안전과 응급처치 — 감염병 예방, 개인위생, 기도폐쇄 증상과 징후, 하임리히법, 전문기도관리 기초. 보건의료 전공 체험과 건강정보 — 구강건강, 눈 건강, 작업치료, 응급구조의 기초, 건강정보 신뢰도, 보건의료 직업군.</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">자가점검, 건강목표 설정, 건강생활 체크리스트 작성. 생활습관 분석, 건강한 하루 설계, 건강 실천 루틴 작성. 손 위생 실습, 예방 캠페인 제작, 기도폐쇄 응급처치 모형 실습, 전문기도관리 시연 관찰. 전공 체험, 건강정보 팩트체크, 진로 포트폴리오 작성 및 발표.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">자기 건강관리 책임감, 건강생활 실천 의지. 예방 중심의 건강관리 태도, 자기조절 능력. 생명 존중, 공동체 안전 의식, 협력적 태도. 진로 탐색 태도, 합리적 정보 활용, 공동체 건강 관심.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th></tr></thead><tbody><tr><td class="col-ch">1</td><td class="col-topic">건강과 보건의 학문적 이해</td><td class="col-detail">건강의 신체적·정신적·사회적 의미, 보건의 역할과 건강관리의 필요성 이해</td></tr><tr><td class="col-ch">2</td><td class="col-topic">건강결정요인과 보건의료 자원</td><td class="col-detail">생활 습관, 환경, 사회적 요인, 보건의료 자원이 건강에 미치는 영향 분석</td></tr><tr><td class="col-ch">3</td><td class="col-topic">청소년기 건강 신호와 건강 평가</td><td class="col-detail">몸과 마음의 건강 신호 이해, 건강생활 체크리스트 작성 및 해석</td></tr><tr><td class="col-ch">4</td><td class="col-topic">개인 건강 목표 설정과 건강관리 계획</td><td class="col-detail">개인 건강 목표 설정, 실천 전략 수립, 건강관리 계획서 작성</td></tr><tr><td class="col-ch">5</td><td class="col-topic">생활습관 의학의 기초</td><td class="col-detail">수면, 영양, 신체활동, 스트레스와 건강의 관련성 이해</td></tr><tr><td class="col-ch">6</td><td class="col-topic">청소년기 영양과 비만 예방 전략</td><td class="col-detail">식습관 점검, 비만 위험요인 탐색, 건강한 식사와 간식 선택 방안 설계</td></tr><tr><td class="col-ch">7</td><td class="col-topic">수면과 정서·스트레스 관리</td><td class="col-detail">수면 위생, 스트레스 반응, 정서 조절, 회복탄력성 이해</td></tr><tr><td class="col-ch">8</td><td class="col-topic">생활습관과 건강관리 루틴 설계</td><td class="col-detail">생활습관 점검표를 바탕으로 건강한 하루 루틴 작성 및 피드백</td></tr><tr><td class="col-ch">9</td><td class="col-topic">감염병과 면역의 기초</td><td class="col-detail">감염병의 개념, 감염 경로, 면역의 기본 원리 이해</td></tr><tr><td class="col-ch">10</td><td class="col-topic">감염병 예방과 건강수칙</td><td class="col-detail">손 위생, 기침 예절, 예방접종의 의미와 개인위생 실천</td></tr><tr><td class="col-ch">11</td><td class="col-topic">학교와 지역사회 감염병 대응체계</td><td class="col-detail">학교 감염병 예방 사례, 지역사회 보건안전과 공동체 대응 절차 탐구</td></tr><tr><td class="col-ch">12</td><td class="col-topic">감염병 예방 전략 설계</td><td class="col-detail">감염병 예방 포스터, 카드뉴스 또는 캠페인 카드 제작 활동</td></tr><tr><td class="col-ch">13</td><td class="col-topic">눈의 구조와 기능 이해</td><td class="col-detail">눈의 주요 구조(각막, 수정체, 망막, 시신경 등)의 역할 이해</td></tr><tr><td class="col-ch">14</td><td class="col-topic">시력의 개념과 시력검사 실습</td><td class="col-detail">시력의 의미와 측정 원리 이해 / 다양한 검사 장비를 활용한 시력검사 방법 실습 / 검사 결과 해석 및 시력 관리의 중요성 이해</td></tr><tr><td class="col-ch">15</td><td class="col-topic">비정시의 종류와 시력 교정 원리</td><td class="col-detail">근시·원시·난시의 특징과 발생 원인 이해 / 안경·콘택트렌즈를 이용한 시력 교정 원리 탐구 / 올바른 안경 및 콘택트렌즈 사용 방법 학습</td></tr><tr><td class="col-ch">16</td><td class="col-topic">눈 건강과 올바른 시력 관리</td><td class="col-detail">디지털 기기 사용이 눈 건강에 미치는 영향 이해 / 눈 건강을 위한 생활 습관 실천 방법 탐색 / 시력 저하 예방과 정기적인 시력검사의 중요성 인식</td></tr><tr><td class="col-ch">17</td><td class="col-topic">응급상황의 이해</td><td class="col-detail">기도폐쇄 환자의 증상 및 징후 이해</td></tr><tr><td class="col-ch">18</td><td class="col-topic">기도폐쇄 응급처치</td><td class="col-detail">성인·영아 기도폐쇄 대처법 모형 실습</td></tr><tr><td class="col-ch">19</td><td class="col-topic">전문기도관리 장비 이해 Ⅰ</td><td class="col-detail">BVM, LMA의 목적과 사용 원리 이해 및 모형 시연</td></tr><tr><td class="col-ch">20</td><td class="col-topic">전문기도관리 장비 이해 Ⅱ</td><td class="col-detail">기관삽관과 비디오후두경의 원리 이해 및 시연/관찰</td></tr><tr><td class="col-ch">21</td><td class="col-topic">구강건강의 의미와 청소년기 구강건강 문제</td><td class="col-detail">치아와 구강의 기본 구조, 청소년기 구강질환 이해</td></tr><tr><td class="col-ch">22</td><td class="col-topic">치아우식증과 잇몸 건강관리</td><td class="col-detail">치아우식증·치주질환 예방의 기초, 식습관과 구강위생의 관계</td></tr><tr><td class="col-ch">23</td><td class="col-topic">올바른 칫솔질과 구강관리용품 사용 방법</td><td class="col-detail">모형 또는 활동지를 활용한 칫솔질, 치실·치간칫솔 사용법 익히기</td></tr><tr><td class="col-ch">24</td><td class="col-topic">나의 구강건강 실천계획 세우기</td><td class="col-detail">구강건강 자가점검, 개인별 실천계획 작성, 치위생 분야 진로 이해</td></tr><tr><td class="col-ch">25</td><td class="col-topic">보건의료 전문가로서의 작업치료사 이해</td><td class="col-detail">작업치료사의 개념과 역할 이해 / 병원·지역사회·학교·재활기관 등 활동 분야 탐색 / 대상자의 일상생활 독립과 삶의 질 향상을 돕는 작업치료의 필요성 이해</td></tr><tr><td class="col-ch">26</td><td class="col-topic">작업치료 평가도구 체험</td><td class="col-detail">신체·인지기능 및 일상생활활동 평가를 중심으로</td></tr><tr><td class="col-ch">27</td><td class="col-topic">작업치료사의 치료도구 탐색</td><td class="col-detail">보조공학 및 스마트재활기기를 중심으로</td></tr><tr><td class="col-ch">28</td><td class="col-topic">작업치료 분야 진로 탐색 및 설계</td><td class="col-detail">작업치료사의 역할, 활동 분야, 진학 및 진로 경로 탐색</td></tr><tr><td class="col-ch">29</td><td class="col-topic">건강정보의 올바른 탐색</td><td class="col-detail">공공기관 건강정보와 온라인 건강정보의 신뢰도 이해</td></tr><tr><td class="col-ch">30</td><td class="col-topic">건강정보 팩트체크 활동</td><td class="col-detail">건강정보 사례 분석, 신뢰할 수 있는 정보 구분</td></tr><tr><td class="col-ch">31</td><td class="col-topic">보건의료 진로 포트폴리오 작성</td><td class="col-detail">관심 전공과 직업 탐색, 진로 포트폴리오 구성</td></tr><tr><td class="col-ch">32</td><td class="col-topic">진로 포트폴리오 발표와 수업 성찰</td><td class="col-detail">개인별 발표, 수업 성찰문 작성, 학습 내용 종합</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th><th>비고</th></tr></thead><tbody><tr><td>출석 및 참여</td><td>출석 확인, 수업 참여 관찰</td><td>전체 수업시수의 2/3 이상 출석 여부, 토의·실습 참여도</td><td>이수 기준 반영</td></tr><tr><td>실습 활동</td><td>활동지 및 실습 결과 확인</td><td>손 위생 활동, 구강관리 방법 익히기, 기도 폐쇄 응급처치 모형 실습, 전문기도관리 시연 관찰, 보건의료 전공 체험 활동</td><td>과정 중심 평가</td></tr><tr><td>포트폴리오</td><td>개인 결과물 확인 및 발표</td><td>건강생활 실천 계획, 건강정보 팩트체크, 보건의료 진로 포트폴리오</td><td>과정 중심 평가</td></tr><tr><td>성찰 활동</td><td>성찰문 작성</td><td>수업 후 배운 점, 건강관리 실천 다짐, 진로 관심 분야 정리</td><td>학교생활기록부 기재 참고 가능</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <ul class="ref-list"><li>유인숙 외, 「고등학교 보건 지도서」, 천재교과서.</li><li>질병관리청, 건강보험심사평가원, 식품의약품안전처 등 공공 보건정보 자료.</li></ul><div class="notes"><span class="notes-tag">기타 사항</span><p>수업은 고등학교 1~2학년 수준에 맞추어 운영하며, 교재 구입 없이 대학 제공 활동지와 실습자료를 중심으로 진행한다. 전문기도관리 관련 내용은 자격 취득이나 의료행위 수행을 목적으로 하지 않고, 응급구조학 전공 이해와 안전한 모형·시연 중심의 진로 체험으로 운영한다. 고교 학교생활기록부에는 성적을 기재하지 않고, 과목명·이수학점·객관적 학습 내용 중심으로 기재할 수 있도록 운영한다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-10" data-num="10">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">백석대학교</span>
+      <span class="chapter-count">과목 10<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">10</span>
+      <div>
+        <h2 class="chapter-title">베이킹과 조리 실습</h2>
+        
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">최근 외식 및 식품산업은 제과·제빵과 조리 분야의 융합 역량을 갖춘 실무형 인재를 요구하고 있다. 또한 개인 베이커리, 디저트 카페, 브런치 카페, 푸드 콘텐츠 산업의 성장으로 인해 학생들은 빵과 디저트뿐만 아니라 간단한 조리 및 메뉴 개발 능력까지 갖출 필요가 있다. 본 교과목은 베이킹과 조리 실습을 통해 식품·외식산업 분야에 대한 이해를 높이고, 학생들이 자신의 적성과 흥미를 탐색하여 진로를 설계할 수 있도록 하는 데 목적이 있다.</p>
+        <ul class="goal-list"><li>베이킹과 조리 실습을 통해 자신의 진로 적성을 탐색할 수 있다.</li><li>제과제빵·조리·외식산업 관련 직업을 이해할 수 있다.</li><li>창의적인 메뉴 제작 경험을 통해 전공 및 직업 세계를 체험할 수 있다.</li><li>대학 실습환경을 경험하며 진학 동기를 강화할 수 있다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><p>베이킹과 조리 실습 체험을 통해 식품·외식산업 분야의 다양한 직업과 전공을 이해하고, 자신의 적성과 진로를 탐색한다.</p></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">제과·제빵 및 조리 분야의 기본 개념 이해 / 식재료의 특성과 활용 방법 이해 / 식품·외식산업 관련 직업 및 진로 분야 이해 / 대학 전공(제과제빵, 조리, 외식경영 등)과 연계된 진로 정보 이해 / 식품 위생 및 안전관리의 중요성 이해.</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">베이킹 및 조리 기초 기술 체험하기 / 다양한 식재료를 활용하여 메뉴 제작하기 / 실습 과정을 통해 문제 해결 및 창의적 사고 적용하기 / 팀 활동을 통해 협업 및 의사소통 능력 향상하기 / 진로 탐색 활동을 통해 자신의 적성과 흥미 분석하기.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">식품 및 외식산업 분야에 대한 긍정적 관심과 진로 의식 함양 / 위생과 안전을 준수하는 책임감 있는 태도 형성 / 다양한 직업과 전공에 대한 개방적 태도 함양 / 실습 활동에 적극적으로 참여하고 협력하는 태도 함양 / 자신의 미래 진로를 주도적으로 설계하려는 태도 함양.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th><th class="col-bigo">비고</th></tr></thead><tbody><tr><td class="col-ch">1</td><td class="col-topic">오리엔테이션</td><td class="col-detail">강의계획 소개, 조리실 안전교육, 위생교육</td><td class="col-bigo">안전교육</td></tr><tr><td class="col-ch">2</td><td class="col-topic">조리 기초 이론</td><td class="col-detail">조리이론 및 기초칼질 실습, 식재료 전처리</td><td class="col-bigo">칼질법, 재료 손질, 실습</td></tr><tr><td class="col-ch">3</td><td class="col-topic">카나페 실습</td><td class="col-detail">쉬림프 카나페 조리법 및 실습</td><td class="col-bigo">카나페 실습</td></tr><tr><td class="col-ch">4</td><td class="col-topic">살리스베리 스테이크 실습</td><td class="col-detail">살리스버리 스테이크 조리법 설명 및 실습</td><td class="col-bigo">살리스베리 실습</td></tr><tr><td class="col-ch">5</td><td class="col-topic">오리엔테이션</td><td class="col-detail">강의 소개, 실습실 안전 수칙 및 위생 교육, 조리 도구 사용법 안내</td><td class="col-bigo">개인 위생 점검</td></tr><tr><td class="col-ch">6</td><td class="col-topic">베이킹 기초 이론</td><td class="col-detail">제과 제빵의 원리 이해, 식재료 계량법 및 전처리 실습</td><td class="col-bigo">비스코티 재료 계량</td></tr><tr><td class="col-ch">7</td><td class="col-topic">비스코티 실습 (1)</td><td class="col-detail">비스코티 반죽 및 성형, 1차 굽기 과정 실습</td><td class="col-bigo">견과류 활용</td></tr><tr><td class="col-ch">8</td><td class="col-topic">비스코티 실습 (2)</td><td class="col-detail">2차 굽기 및 냉각, 결과물 평가 및 애플펜슬 활용 실습 일지 작성</td><td class="col-bigo">카페 디저트 이해</td></tr><tr><td class="col-ch">9</td><td class="col-topic">전체요리 이론</td><td class="col-detail">에피타이저 이해 및 조리 재료 썰기 설명</td><td class="col-bigo">에피타이저 이해</td></tr><tr><td class="col-ch">10</td><td class="col-topic">에피 및 메인요리 재료 준비</td><td class="col-detail">메인요리의 이해 및 재료 준비</td><td class="col-bigo">메인요리 이해 및 만들기</td></tr><tr><td class="col-ch">11</td><td class="col-topic">에피타이저 실습</td><td class="col-detail">채소로 속을 채운 훈제연어롤 조리법 설명 및 실습</td><td class="col-bigo">훈제연어롤 만들기</td></tr><tr><td class="col-ch">12</td><td class="col-topic">서로인 조리 실습</td><td class="col-detail">서로인 스테이크 조리법 설명 및 실습</td><td class="col-bigo">서로인스테이크 만들기</td></tr><tr><td class="col-ch">13</td><td class="col-topic">구움과자의 이해</td><td class="col-detail">파운드케이크와 쿠키의 배합 원리 학습 및 재료 계량</td><td class="col-bigo">베이크 2일차 시작</td></tr><tr><td class="col-ch">14</td><td class="col-topic">미니 파운드케이크</td><td class="col-detail">크림법을 활용한 반죽 제조 및 미니 틀 팬닝, 오븐 베이킹</td><td class="col-bigo">2인 1실습</td></tr><tr><td class="col-ch">15</td><td class="col-topic">스모어 쿠키 제작</td><td class="col-detail">마시멜로를 활용한 쿠키 성형 및 토핑 데코레이션 실습</td><td class="col-bigo">디자인 창의성</td></tr><tr><td class="col-ch">16</td><td class="col-topic">굽기관리</td><td class="col-detail">제품별 굽기관리 및 완성된 구움과자 정리</td><td class="col-bigo">품목별 굽기</td></tr><tr><td class="col-ch">17</td><td class="col-topic">샐러드의 정의</td><td class="col-detail">샐러드의 이해 및 재료 준비</td><td class="col-bigo">샐러드의 이해</td></tr><tr><td class="col-ch">18</td><td class="col-topic">드레싱의 정의</td><td class="col-detail">드레싱의 이해 및 기본 조리법</td><td class="col-bigo">드레싱의 이해 및 실습</td></tr><tr><td class="col-ch">19</td><td class="col-topic">샐러드 조리법</td><td class="col-detail">월드포 샐러드 조리법 및 실습</td><td class="col-bigo">월드포 샐러드 만들기</td></tr><tr><td class="col-ch">20</td><td class="col-topic">커틀렛 조리법</td><td class="col-detail">치킨 커틀렛 조리법 및 실습</td><td class="col-bigo">치킨 커틀렛 만들기</td></tr><tr><td class="col-ch">21</td><td class="col-topic">쌀 베이킹 이론</td><td class="col-detail">쌀가루와 밀가루의 특성 비교, 글루텐 프리 및 건강 베이킹 교육</td><td class="col-bigo">베이크 3일차 시작</td></tr><tr><td class="col-ch">22</td><td class="col-topic">쉬폰 카스테라 (1)</td><td class="col-detail">달걀 흰자 머랭 만들기(쉬폰법) 실습 및 반죽 혼합 기술 습득</td><td class="col-bigo">머랭 안정성 교육</td></tr><tr><td class="col-ch">23</td><td class="col-topic">쉬폰 카스테라 (2)</td><td class="col-detail">쌀 쉬폰 카스테라 굽기 및 냉각(역립), 식감 확인</td><td class="col-bigo">쌀가루 활용</td></tr><tr><td class="col-ch">24</td><td class="col-topic">품평회 및 정리</td><td class="col-detail">완성품 시식 및 평가</td><td class="col-bigo">품평</td></tr><tr><td class="col-ch">25</td><td class="col-topic">수프의 정의</td><td class="col-detail">수프의 이해 및 허브의 사용법</td><td class="col-bigo">수프의 이해 및 설명</td></tr><tr><td class="col-ch">26</td><td class="col-topic">수프 만들기</td><td class="col-detail">포테이토 크림수프 조리법 및 실습</td><td class="col-bigo">포테이토 크림수프 만들기</td></tr><tr><td class="col-ch">27</td><td class="col-topic">파스타의 특성</td><td class="col-detail">파스타의 특성 및 이해 실습</td><td class="col-bigo">파스타의 특성 및 만들기</td></tr><tr><td class="col-ch">28</td><td class="col-topic">종합 평가</td><td class="col-detail">토마토 소스를 이용한 해산물 스파게티 실습 평가 및 마무리</td><td class="col-bigo">해산물 스파게티 만들기 및 마무리</td></tr><tr><td class="col-ch">29</td><td class="col-topic">제빵 기초 이론</td><td class="col-detail">이스트와 발효의 원리, 소금빵(시오빵)의 유래와 특징 학습</td><td class="col-bigo">베이크 4일차 시작</td></tr><tr><td class="col-ch">30</td><td class="col-topic">소금빵 반죽 및 발효</td><td class="col-detail">소금빵 반죽 배합 및 1차 발효 공정 실습</td><td class="col-bigo">조리 온도 준수</td></tr><tr><td class="col-ch">31</td><td class="col-topic">소금빵 성형 및 굽기</td><td class="col-detail">가염 버터 충전물 성형, 말기 기법 숙달, 소금 토핑 후 굽기</td><td class="col-bigo">전문 성형 기술</td></tr><tr><td class="col-ch">32</td><td class="col-topic">종합 평가</td><td class="col-detail">소금빵 결과물 평가, 16차시 실습 내용 총정리 및 수료 소감 공유</td><td class="col-bigo">베이크 과정 마무리</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th></tr></thead><tbody><tr><td>직무 기초</td><td>실기 평가</td><td>위생 및 안전 관리 — 조리복 착용 및 개인 위생 상태, 조리 도구의 안전한 사용 및 정리 정돈</td></tr><tr><td>전공 실무</td><td>결과물 평가</td><td>기초 제과 실습(쿠키/머핀 등) — 레시피의 정확한 이해 및 계량, 반죽의 농도 및 성형 상태, 최종 결과물의 맛·식감·완성도</td></tr><tr><td>진로 역량</td><td>자기 성찰지</td><td>직업 세계의 이해 — 제과제빵사/요리사 직무에 대한 이해도, 실습 과정을 통한 적성 파악 및 소감문 작성</td></tr><tr><td>태도 평가</td><td>관찰 평가</td><td>협력 및 문제 해결 — 모둠별 협력 태도 및 원활한 의사소통, 실습 중 발생하는 문제에 대한 대처 능력</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <ul class="ref-list"><li>NCS 제과제빵 및 한국조리 표준 교재, 월간 파티시에 등 관련 전문지.</li></ul><div class="notes"><span class="notes-tag">기타 사항</span><p>학생들의 알레르기 유무(견과류, 유제품 등)를 사전에 파악하여 대체 재료 준비. 완성된 음식은 당일 시식을 원칙으로 하며, 남은 음식은 위생 용기에 담아 안전하게 보관 및 배부.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-11" data-num="11">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">순천향대학교</span>
+      <span class="chapter-count">과목 11<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">11</span>
+      <div>
+        <h2 class="chapter-title">사건으로 읽는 법과학</h2>
+        
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">이 과목은 법의학과 과학수사의 역사적 발전 과정을 실제 사건과 사례를 중심으로 탐구하는 융합형 교과이다. 중국 송대의 법의학서 『무원록』과 조선 후기의 『증수무원록』에 나타난 전통 검시 기법을 출발점으로 하여, 해방 이후 대한민국 과학수사의 제도적·기술적 발전 과정을 역사적 맥락 속에서 분석한다. 단순한 이론 전달이나 지식 암기를 지양하고, 실제 사건 재구성·검시 보고서 작성·증거 분석·모의 감정 및 발표 등 탐구·실험·프로젝트 기반 학습(PBL) 중심으로 운영하여 대학 교양 수준의 학문적 깊이를 추구하며, 경찰·법학·과학수사 분야 진로 탐색의 기초를 제공하고자 한다.</p>
+        <ul class="goal-list"><li>『무원록』과 『증수무원록』을 비롯한 전통 법의학과 현대 과학수사의 발전 과정을 이해하고 설명할 수 있다.</li><li>실제 사건 사례를 기반으로 가설을 설정하고 증거를 분석하여 논리적으로 사건을 재구성할 수 있다.</li><li>검시 기록, 감정서, 사건 분석 보고서 등 법과학 관련 산출물을 작성하고 협업 프로젝트를 수행할 수 있다.</li><li>과학적 근거에 기반한 비판적 사고를 바탕으로 합리적 판단을 내리고 법과학의 윤리적 의미를 이해할 수 있다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><ul class="core-list"><li>법과학은 과학적 방법론과 법률적 판단이 결합된 학문으로, 동서양의 역사적 발전 과정을 통해 현재의 형태로 진화해 왔다.</li><li>사건 증거는 체계적 분석과 논리적 추론을 통해 의미 있는 정보로 전환되며, 법적 판단의 근거가 된다.</li><li>법과학자는 진실 규명을 위해 과학적 객관성과 윤리적 책임을 함께 요구받는다.</li></ul></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">동양 전통 법의학(무원록, 증수무원록)의 검시 기법과 역사적 의의 / 서양 근대 법의학의 발전 과정과 주요 인물·사건 / 해방 이후 대한민국 과학수사의 제도적·기술적 발전(주요 사건을 바탕으로 분석) / 지문 감식, 혈흔 분석, 법독물학, DNA 프로파일링, 디지털 포렌식의 원리(주요 사건 분석 사례 중심) / 형사소송에서 법과학 증거의 역할과 증거 능력 판단 기준(과학적 증거의 증거능력과 관련된 국내외 주요 판례의 내용과 법리 해설).</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">사건 자료 분석을 통한 가설 설정 및 증거 목록 작성 / 전통·현대 검시 기법을 적용한 검시 보고서 및 감정서 작성 / 법과학적 기법을 활용한 팀별 사건 재구성 프로젝트 수행 및 발표 / 상반된 증거를 비교·분석하여 합리적 결론 도출.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">법과학적 증거에 기반한 비판적·과학적 사고 태도 / 형사사법 절차와 정의 실현 과정에 대한 균형 잡힌 시각 / 법과학자로서의 윤리적 책임감과 인권 존중 의식 / 팀 협업 과정에서의 소통 능력과 공동체 의식.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th></tr></thead><tbody><tr><td class="col-ch">1</td><td class="col-topic">오리엔테이션</td><td class="col-detail">과목 소개 및 법과학의 개념과 범위 이해, 탐구 방법론 안내</td></tr><tr><td class="col-ch">2</td><td class="col-topic">동양 전통 법의학 I</td><td class="col-detail">중국 송대 법의학서 『무원록』의 역사적 배경과 주요 검시 기법</td></tr><tr><td class="col-ch">3</td><td class="col-topic">동양 전통 법의학 II</td><td class="col-detail">조선 후기 『증수무원록』의 특징 및 전통 검시 절차 분석</td></tr><tr><td class="col-ch">4</td><td class="col-topic">서양 법의학의 발전</td><td class="col-detail">유럽 근대 법의학의 발달 과정과 주요 사건 사례</td></tr><tr><td class="col-ch">5</td><td class="col-topic">해방 이후 한국 과학수사 역사</td><td class="col-detail">대한민국 과학수사의 제도적 발전 과정 및 주요 기관의 설립</td></tr><tr><td class="col-ch">6</td><td class="col-topic">지문 감식의 역사와 원리</td><td class="col-detail">지문 채취·대조 기법의 역사적 발전과 실제 사건 적용 사례</td></tr><tr><td class="col-ch">7</td><td class="col-topic">혈흔 분석 I</td><td class="col-detail">혈흔의 종류와 형태 분석 원리, 사건 재구성에서의 활용</td></tr><tr><td class="col-ch">8</td><td class="col-topic">혈흔 분석 II – 사례 연구</td><td class="col-detail">실제 사건 자료를 활용한 혈흔 패턴 분석 실습 및 토론</td></tr><tr><td class="col-ch">9</td><td class="col-topic">법독물학과 독극물 수사</td><td class="col-detail">독극물의 종류와 독성 원리, 법독물학의 역사적 사건 분석</td></tr><tr><td class="col-ch">10</td><td class="col-topic">DNA 프로파일링의 역사와 원리</td><td class="col-detail">DNA 감식 기술의 발전 과정과 형사사법에서의 역할</td></tr><tr><td class="col-ch">11</td><td class="col-topic">디지털 포렌식 입문</td><td class="col-detail">디지털 증거의 개념과 수집·분석 절차, 최신 사례 소개</td></tr><tr><td class="col-ch">12</td><td class="col-topic">법치의학 및 신원 확인</td><td class="col-detail">치아 감식, 골격 분석 등 신원 확인 기법과 대형 사고 사례</td></tr><tr><td class="col-ch">13</td><td class="col-topic">모의 사건 분석 I – 자료</td><td class="col-detail">제공된 모의 사건 자료를 바탕으로 가설 설정 및 증거 목록 작성</td></tr><tr><td class="col-ch">14</td><td class="col-topic">모의 사건 분석 II – 검시 보고서 작성</td><td class="col-detail">전통·현대 검시 기법을 적용한 검시 보고서 초안 작성 실습</td></tr><tr><td class="col-ch">15</td><td class="col-topic">모의 사건 분석 III – 증거 분석 발표</td><td class="col-detail">팀별 증거 분석 결과 발표 및 상호 피드백</td></tr><tr><td class="col-ch">16</td><td class="col-topic">중간 정리 및 개념 점검</td><td class="col-detail">1~15차시 핵심 내용 정리, 개념 확인 퀴즈 및 질의응답</td></tr><tr><td class="col-ch">17</td><td class="col-topic">법의 곤충학 및 부패 메커니즘</td><td class="col-detail">사후변화와 사망시간 추정, 법의 곤충학 원리와 사례</td></tr><tr><td class="col-ch">18</td><td class="col-topic">화재·폭발 수사의 과학</td><td class="col-detail">화재 원인 분석 방법과 방화 사건 과학수사 기법</td></tr><tr><td class="col-ch">19</td><td class="col-topic">위조·변조 문서 감정</td><td class="col-detail">필적 감정, 문서 위조 탐지 기법 및 역사적 사건 적용 사례</td></tr><tr><td class="col-ch">20</td><td class="col-topic">심리 프로파일링과 범죄 행동 분석</td><td class="col-detail">범죄자 프로파일링의 원리와 한계, 관련 사례 비판적 검토</td></tr><tr><td class="col-ch">21</td><td class="col-topic">법과학 증거의 법정 활용</td><td class="col-detail">형사소송에서 감정서의 역할, 증거 능력 판단 기준</td></tr><tr><td class="col-ch">22</td><td class="col-topic">오판과 법과학의 한계</td><td class="col-detail">법과학 오류로 인한 억울한 유죄 판결 사례 분석 및 교훈</td></tr><tr><td class="col-ch">23</td><td class="col-topic">법과학의 윤리</td><td class="col-detail">법과학자의 윤리적 의무, 이해충돌 문제, 증인 편향 사례</td></tr><tr><td class="col-ch">24</td><td class="col-topic">국제 법과학 협력과 최신 동향</td><td class="col-detail">인터폴 협력 사례, AI·빅데이터 기반 과학수사의 현황과 과제</td></tr><tr><td class="col-ch">25</td><td class="col-topic">팀 프로젝트 기획 I</td><td class="col-detail">실제 사건 선정, 분석 계획 수립, 역할 분담 및 자료 수집 개시</td></tr><tr><td class="col-ch">26</td><td class="col-topic">팀 프로젝트 기획 II</td><td class="col-detail">사건 관련 1차 자료 분석, 법과학적 기법 적용 계획 구체화</td></tr><tr><td class="col-ch">27</td><td class="col-topic">팀 프로젝트 중간 점검</td><td class="col-detail">팀별 진행 상황 발표, 교수 피드백 및 방향 수정</td></tr><tr><td class="col-ch">28</td><td class="col-topic">감정서 작성 실습</td><td class="col-detail">법과학 감정서 표준 양식에 따른 실제 작성 실습</td></tr><tr><td class="col-ch">29</td><td class="col-topic">팀 프로젝트 발표 I</td><td class="col-detail">1~3팀 사건 분석 결과 발표 및 질의응답</td></tr><tr><td class="col-ch">30</td><td class="col-topic">팀 프로젝트 발표 II</td><td class="col-detail">4~6팀 사건 분석 결과 발표 및 질의응답</td></tr><tr><td class="col-ch">31</td><td class="col-topic">법과학 진로 탐색</td><td class="col-detail">과학수사, 법의학, 경찰 관련 진로 소개 및 선배 특강(게스트 강연)</td></tr><tr><td class="col-ch">32</td><td class="col-topic">종합 정리 및 수료식</td><td class="col-detail">전체 내용 종합 정리, 학습 성과 공유, 이수 안내</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th><th>비고</th></tr></thead><tbody><tr><td>과정 평가</td><td>출석 및 수업 참여</td><td>수업 출결, 토론·발표 참여도, 과제 성실성(20%)</td><td>&mdash;</td></tr><tr><td>과제 평가</td><td>검시 보고서/감정서 작성</td><td>전통·현대 검시 기법 적용 보고서 작성(30%)</td><td>&mdash;</td></tr><tr><td>산출물 평가</td><td>팀 프로젝트 발표</td><td>실제 사건 선정 후 법과학 기법 적용 분석 결과 발표(50%)</td><td>팀별</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <ul class="ref-list"><li>구윤명·서유린, 『증수무원록언해』, 학자원, 2018.</li><li>김호, 『원통함을 없게 하라: 조선의 법의학과 《무원록》의 세계』, 프로네시스, 2006.</li><li>왕여 저/최치운 주석/김호 역, 『신주무원록 억울함을 없게 하라』, 사계절, 2003.</li><li>이원복, 『법정으로 간 DNA 첨단 의생명과학기술의 법과 규제』, 이화여자대학교출판문화원, 2026.</li><li>정태성, 『법과학 이야기』, 코스모스, 2026.</li><li>유성호, 『시체는 거짓말하지 않는다』, 위즈덤하우스, 2025.</li><li>문국진, 『법의학으로 보는 한국의 범죄 사건』, 알마, 2015.</li><li>엘리너 허먼 저/솝희 역, 『독살로 읽는 세계사』, 현대지성, 2021.</li><li>발 맥더미드 저/조진경 역, 『포렌식, 과학수사의 모든 것』, 문예춘추사, 2026.</li><li>박승범 편역/이영란 역/야마자키 아키라 감수, 『과학수사』, 성안당, 2021.</li><li>브랜던 L. 개릿 저/신민영 역, 『오염된 재판』, 한겨레출판, 2021.</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-12" data-num="12">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">순천향대학교</span>
+      <span class="chapter-count">과목 12<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">12</span>
+      <div>
+        <h2 class="chapter-title">호텔리어의 이해</h2>
+        
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">「호텔리어의 이해」는 호텔산업의 전반적인 구조와 호텔리어의 다양한 직무를 이해하기 위해 객실, 식음료, 조리, 마케팅, 인사, 컨시어지, 시설관리 등 호텔 주요 부서의 역할과 업무를 학습하는 교과목이다. 또한 식음료 분야의 커피 실습과 드론을 활용한 호텔 시설물 점검 및 관리 실습을 통해 호텔 현장의 서비스와 스마트 시설관리 기술을 경험하고, 관광·호텔 분야의 진로를 탐색할 수 있도록 구성하였다.</p>
+        <ul class="goal-list"><li>호텔산업의 구조와 특성을 이해하고 호텔리어의 역할 및 직무를 설명할 수 있다.</li><li>객실, 식음료, 조리, 마케팅, 인사, 컨시어지, 시설관리 등 호텔 주요 부서의 기능과 업무를 이해할 수 있다.</li><li>식음료 분야의 커피 실습을 통해 기본적인 음료 제조 과정과 고객 서비스의 중요성을 이해하고 실무 역량의 기초를 함양할 수 있다.</li><li>드론의 비행 원리와 안전수칙을 이해하고, 드론을 활용한 호텔 시설물 점검 및 관리 사례를 체험함으로써 스마트 호텔 운영기술을 이해할 수 있다.</li><li>호텔산업의 다양한 직무와 미래 관광산업의 변화에 대한 이해를 바탕으로 자신의 적성과 진로를 탐색하고, 관광·호텔 분야의 진로를 설계할 수 있다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><p>호텔산업의 이해를 바탕으로 호텔 주요 부서의 역할과 직무를 학습하고, 커피 실습과 드론을 활용한 호텔 시설물 점검 및 관리 실습을 통해 호텔 현장의 서비스와 스마트 기술을 이해하며, 관광·호텔 분야의 진로 역량을 함양한다.</p></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">호텔산업의 구조와 호텔 주요 부서의 기능 및 직무를 이해한다. 커피 서비스와 드론을 활용한 시설관리의 원리 및 활용 사례를 이해한다. 스마트 호텔 운영과 관광산업의 미래를 이해한다.</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">호텔 주요 부서의 직무를 설명하고 비교할 수 있다. 커피 제조의 기본 절차를 실습할 수 있다. 드론을 활용한 영상 촬영과 호텔 시설물 관리 활용 사례를 이해할 수 있다. 자신의 적성과 연계하여 진로를 설계할 수 있다.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">고객 중심의 서비스 마인드와 직업윤리를 함양한다. 안전수칙을 준수하며 실습에 참여하는 태도를 기른다. 협업과 의사소통 능력을 바탕으로 관광·호텔 분야의 진로를 탐색한다.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th><th class="col-bigo">비고</th></tr></thead><tbody><tr><td class="col-ch">1~4</td><td class="col-topic">호텔산업과 호텔리어의 이해</td><td class="col-detail">호텔산업의 개념과 특성 이해, 호텔 조직과 주요 부서 이해, 호텔리어의 역할과 진로 탐색</td><td class="col-bigo">교재, PPT</td></tr><tr><td class="col-ch">5~8</td><td class="col-topic">객실부와 컨시어지의 이해</td><td class="col-detail">객실부의 역할과 업무 이해, 컨시어지의 서비스와 고객 응대 업무 이해, 호텔 서비스 사례 분석</td><td class="col-bigo">활동지, 사례자료</td></tr><tr><td class="col-ch">9~12</td><td class="col-topic">호텔 마케팅과 인사관리의 이해</td><td class="col-detail">호텔 마케팅의 개념과 전략 이해, 인사관리의 역할과 조직 운영 이해, 호텔리어에게 필요한 직무 역량 탐색</td><td class="col-bigo">PPT, 사례자료</td></tr><tr><td class="col-ch">13~16</td><td class="col-topic">식음료 서비스의 이해 및 커피 실습</td><td class="col-detail">호텔 식음료부의 역할 이해, 커피의 종류와 추출 원리 이해, 커피 제조의 기본 절차 실습</td><td class="col-bigo">커피머신, 원두, 우유, 앞치마</td></tr><tr><td class="col-ch">17~20</td><td class="col-topic">호텔 조리부의 이해</td><td class="col-detail">호텔 조리부의 역할과 업무 이해, 메뉴 구성과 식음료 위생관리 이해, 호텔 조리 직무 탐색</td><td class="col-bigo">PPT, 사례자료</td></tr><tr><td class="col-ch">21~24</td><td class="col-topic">호텔 시설관리의 이해</td><td class="col-detail">호텔 시설관리의 역할과 중요성 이해, 스마트호텔과 디지털 기술 활용 사례 이해, 호텔 시설관리 업무 탐색</td><td class="col-bigo">PPT, 영상자료</td></tr><tr><td class="col-ch">25~28</td><td class="col-topic">드론의 이해 및 호텔 시설관리 활용</td><td class="col-detail">드론의 비행 원리와 안전수칙 이해, 드론을 활용한 영상 촬영 실습, 드론의 호텔 시설물 관리 활용 사례 이해</td><td class="col-bigo">DJI Neo 드론, 배터리, 조종기</td></tr><tr><td class="col-ch">29~32</td><td class="col-topic">호텔리어 진로설계 및 직무체험</td><td class="col-detail">호텔 직무를 종합적으로 이해, 관광·호텔 분야의 진로 탐색, 진로계획 수립 및 발표</td><td class="col-bigo">활동지, 발표자료</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th><th>비고</th></tr></thead><tbody><tr><td>수행평가</td><td>토의 및 토론 (4주차)</td><td>호텔 주요 부서의 역할과 직무, 호텔 서비스 사례 및 스마트 호텔 운영에 대한 의견을 제시하고 토론 능력을 평가</td><td>수업 참여도 포함</td></tr><tr><td>수행평가</td><td>발표 (8주차)</td><td>관심 있는 호텔 직무 또는 관광·호텔 분야의 진로를 조사하여 발표하고 직무 이해도와 표현 능력을 평가</td><td>개인 또는 모둠 발표</td></tr><tr><td>수행평가</td><td>실습평가</td><td>커피 제조 실습과 드론을 활용한 영상 촬영 실습을 수행하고, 기본 기능 습득 및 안전수칙 준수 여부를 평가</td><td>커피 실습, 드론 실습</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <div class="notes"><span class="notes-tag">기타 사항</span><p>교수·학습 내용은 4개 차시가 하나의 주제 블록으로 반복 운영된다(각 블록 16주 구성). 위 표는 8개 주제 블록으로 요약하였다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-13" data-num="13">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">순천향대학교</span>
+      <span class="chapter-count">과목 13<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">13</span>
+      <div>
+        <h2 class="chapter-title">예술활용 심리상담</h2>
+        
+      </div>
+    </div>
+    <blockquote class="epigraph">&quot;깨진 조각은 숨겨야 할 부끄러움이 아니라, 가장 찬란하게 빛날 나만의 훈장입니다.&quot;</blockquote>
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">청소년기는 끊임없는 비교와 학업 스트레스, 그리고 크고 작은 &#x27;실패&#x27;라는 파도에 부딪히는 시기입니다. 많은 학생이 실패를 인생의 낙오로 받아들이며 주저앉곤 합니다. 하지만 실패는 끝이 아니라, 더 단단한 성공으로 나아가기 위한 아름다운 디딤돌, 즉 &#x27;멋진 실패&#x27;입니다. 본 과목은 학생들이 삶의 피할 수 없는 역경을 마주했을 때 이를 유연하게 이겨내는 회복탄력성(Resilience)을 기르도록 돕기 위해 기획되었습니다. 프로이트의 방어기제를 통해 내 마음의 보호막을 이해하고, 아들러의 심리학으로 미움받을 &#x27;용기&#x27;와 연대하는 &#x27;공동체 감각&#x27;을 배우며, 코헛의 자기심리학을 통해 서로가 서로에게 따뜻한 거울이 되어주는 &#x27;미러링&#x27;을 경험합니다. 나아가 레이비치와 샤테의 7가지 절대 회복력 기술을 예술 매체(미술, 문학, 공예, 킨츠기)에 접목하여, 내면의 상처를 예술로 치유하고 &#x27;멋진 실패&#x27;를 &#x27;빛나는 성공&#x27;으로 승화시키는 독창적인 고교-대학 연계 교육과정입니다.</p>
+        <ul class="goal-list"><li>심리적 방어와 수용: 프로이트의 방어기제를 통해 자신의 무의식적 저항을 이해하고, 아들러와 코헛의 이론을 바탕으로 자신과 타인을 있는 그대로 수용한다.</li><li>7가지 절대 회복력 체득: 레이비치와 샤테가 제시한 7가지 회복력 기술을 일상과 학업 역경에 적용하는 법을 배운다.</li><li>예술을 통한 인지적 재프레이밍: 킨츠기, 콜라주, 원예 등 다양한 예술 실습을 통해 실패의 경험을 긍정적인 자산으로 재해석(Reframing)한다.</li><li>치유와 연대의 공동체 형성: 서로에게 건강한 &#x27;자기대상&#x27;이 되어주는 미러링 경험을 통해, 함께 성장하는 공동체 감각을 함양하고 관련 진로를 탐색한다.</li></ul>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><ul class="core-list"><li>인생의 역경과 실패는 피할 수 없는 것이지만, 내면의 &#x27;용기&#x27;와 예술적 &#x27;재해석&#x27;을 통해 &#x27;멋진 실패&#x27;에서 &#x27;빛나는 성공&#x27;으로 전환할 수 있다.</li><li>우리는 타인의 시선에서 벗어날 때 비로소 단단해지며, 동시에 서로에게 따뜻한 거울(자기대상)이 되어줄 때 진정한 회복을 경험한다.</li></ul></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">프로이트의 무의식과 마음의 방어기제(억압, 투사, 승화 등) / 아들러의 개인심리학 핵심(열등감의 보상, 미움받을 용기, 공동체 감각) / 코헛의 자기심리학 핵심(자기대상, 미러링전이, 이상화전이) / 레이비치와 샤테의 7가지 절대 회복력 기술(감정 조절, 충동 통제, 인과관계 분석, 자기 효능감, 낙관성, 공감 능력, 적극적 도전).</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">내면의 방어기제와 스트레스를 예술 매체로 안전하게 시각화(Forming)하기 / 7가지 회복력 기술을 활용하여 일상의 &#x27;인지적 오류(생각 덫)&#x27;를 포착하고 수정하기 / 깨지고 상처받은 경험을 킨츠기 등의 기법으로 이어붙이고 아름답게 재창조하기 / 자신의 실패와 극복 서사를 하나의 작품으로 엮어내는 치유적 스토리텔링.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">실패를 부끄러워하지 않고 성장의 자양분으로 삼는 &#x27;멋진 실패&#x27;에 대한 자부심 / 타인의 인정에 목매지 않고 나의 길을 걷는 &#x27;미움받을 용기&#x27; / 나만큼 타인의 상처도 귀하게 여기고 비추어주는 &#x27;공동체적 공감 태도&#x27;.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th></tr></thead><tbody><tr><td class="col-ch">1</td><td class="col-topic">[오리엔테이션] 멋진 실패 빛나는 성공을 위한 초대장</td><td class="col-detail">이론: 과목 소개, 실패를 다루는 우리의 자세(&#x27;멋진 실패, 빛나는 성공&#x27;의 철학 공유). 실습: 내 이름과 내가 생각하는 &#x27;나의 깨진 조각&#x27;을 미니 캔버스에 캐릭터로 그려 표현하기.</td></tr><tr><td class="col-ch">2</td><td class="col-topic">[프로이트] 내 마음의 비밀 방어막 (방어기제 이해)</td><td class="col-detail">이론: 프로이트의 무의식과 방어기제(억압, 합리화, 승화 등). 실습: 내가 자주 쓰는 방어기제를 &#x27;마음의 방패&#x27; 모양으로 시각화하고 개성 있게 꾸미기.</td></tr><tr><td class="col-ch">3</td><td class="col-topic">[프로이트] 상처를 예술로 바꾸는 힘 (승화)</td><td class="col-detail">이론: 방어기제의 최고봉 &#x27;승화(Sublimation)&#x27;. 실습: 락·클래식 음악의 비트에 맞춰 감정을 뿜어내는 &#x27;핑거 페인팅&#x27;.</td></tr><tr><td class="col-ch">4</td><td class="col-topic">[코헛] 나를 채우는 존재, 자기대상 (Self-object)</td><td class="col-detail">이론: 하인즈 코헛의 자기심리학, &#x27;자기대상&#x27;의 필요성. 실습: 가장 든든했던 존재를 찰흙으로 빚어 &#x27;나의 수호신&#x27; 만들기.</td></tr><tr><td class="col-ch">5</td><td class="col-topic">[코헛] &quot;참 잘했어&quot;, 영혼을 깨우는 미러링 (Mirroring)</td><td class="col-detail">이론: 코헛의 미러링(거울전이)과 &#x27;인정 자극&#x27;. 실습: 2인 1조로 서로의 빛나는 표정을 사진으로 찍고 장점을 적어 선물하기.</td></tr><tr><td class="col-ch">6</td><td class="col-topic">[코헛] 닮고 싶은 나의 북극성 (이상화 전이)</td><td class="col-detail">이론: 이상화(Idealizing)와 자아 성장. 실습: 멘토의 명언·가치관을 담은 &#x27;인생 나침반&#x27; 무드등 제작.</td></tr><tr><td class="col-ch">7</td><td class="col-topic">[통합] 내 안의 상처받은 아이와 악수하기</td><td class="col-detail">이론: 프로이트의 기억과 코헛의 결핍이 만나는 &#x27;내면 아이&#x27;. 실습: 위로의 편지 쓰기, 양말 공예로 &#x27;걱정 인형&#x27; 만들기.</td></tr><tr><td class="col-ch">8</td><td class="col-topic">[나눔 1] 거울 방의 대화: 내 마음의 숲을 거닐다</td><td class="col-detail">이론: 촉진적 공감과 무비판적 경청. 실습: 1~7차시 작품 전시, 미러링 피드백 스티커 &#x27;마음 전시회&#x27;.</td></tr><tr><td class="col-ch">9</td><td class="col-topic">[아들러] 열등감, 날아오를 준비가 되었다</td><td class="col-detail">이론: 아들러의 개인심리학, 열등감 극복의 노력. 실습: 열등감을 날개에 적어 독수리 날개 벽화 합동 콜라주.</td></tr><tr><td class="col-ch">10</td><td class="col-topic">[아들러] 인생의 과제와 직면하기</td><td class="col-detail">이론: 세 가지 인생 과제(일·우정·사랑). 실습: &#x27;인생 대모험 보드게임&#x27; 설계.</td></tr><tr><td class="col-ch">11</td><td class="col-topic">[아들러] 미움받을 용기 (과제의 분리)</td><td class="col-detail">이론: &quot;이것은 누구의 과제인가?&quot; 과제의 분리. 실습: 잔소리·시선을 잘라내고 &#x27;내가 결정하는 나의 삶&#x27; 캘리그라피 액자.</td></tr><tr><td class="col-ch">12</td><td class="col-topic">[아들러] 우리는 연결되어 있다 (공동체 감각)</td><td class="col-detail">이론: 공동체 감각(Social Interest)과 타인 공헌. 실습: 모둠별 &#x27;상생 생태계 미니 정원&#x27; 가꾸기.</td></tr><tr><td class="col-ch">13</td><td class="col-topic">[회복력 기술 1&amp;2] 감정 조절과 충동 통제</td><td class="col-detail">이론: 레이비치 &amp; 샤테의 감정 조절 및 충동 통제력. 실습: 분노·불안을 불꽃으로 그리고 물로 정화하는 &#x27;수채화 덮기 기법&#x27;.</td></tr><tr><td class="col-ch">14</td><td class="col-topic">[회복력 기술 3] 왜 이런 일이 생겼을까? (인과관계 분석)</td><td class="col-detail">이론: 실패 원인을 정확히 짚는 유연성. 실습: &#x27;멋진 실패&#x27;의 원인을 다각도로 분석하는 &#x27;마음의 원인 분석 마인드맵&#x27;.</td></tr><tr><td class="col-ch">15</td><td class="col-topic">[회복력 기술 4] 나는 할 수 있다! (자기 효능감)</td><td class="col-detail">이론: 자기 효능감(Self-efficacy)과 성공 기억의 자산화. 실습: 성공 경험을 담은 &#x27;나의 영웅 훈장(Medal)&#x27; 입체 공예.</td></tr><tr><td class="col-ch">16</td><td class="col-topic">[나눔 2] 용기 있는 자들의 축제</td><td class="col-detail">이론: 아들러적 격려(Encouragement)와 칭찬의 차이. 실습: 친구의 실패 스토리를 듣고 격려의 편지를 &#x27;용기 우체통&#x27;에 넣기.</td></tr><tr><td class="col-ch">17</td><td class="col-topic">[회복력 기술 5] 근거 있는 희망 (낙관성)</td><td class="col-detail">이론: 현실적·능동적 낙관성(Optimism). 실습: 어두운 밤하늘 위에 야광 별자리를 수놓는 &#x27;야광 별자리화&#x27;.</td></tr><tr><td class="col-ch">18</td><td class="col-topic">[회복력 기술 6&amp;7] 공감 능력과 적극적 도전 (Reach out)</td><td class="col-detail">이론: 공감과 리치아웃(Reach out) 기술. 실습: 위로의 &#x27;한 줄 감성 카드&#x27;를 대량 제작해 교내 배포.</td></tr><tr><td class="col-ch">19</td><td class="col-topic">[생각 덫 탈출] 내 마음의 삐딱한 선 (인지적 오류 수정)</td><td class="col-detail">이론: &#x27;생각 덫(Thinking Traps)&#x27; — 과장성·개인화·터널 시야 등. 실습: 생각 덫을 4컷 만화로 그리고 반전 결말 그리기.</td></tr><tr><td class="col-ch">20</td><td class="col-topic">[멋진 실패] 깨어짐의 미학 (킨츠기 이론)</td><td class="col-detail">이론: 일본의 &#x27;킨츠기(Kintsugi)&#x27; 철학. 실습: 테라코타 화분·접시를 안전하게 깨뜨려 &#x27;멋진 실패&#x27; 순간과 매칭(1단계: 직면).</td></tr><tr><td class="col-ch">21</td><td class="col-topic">[빛나는 성공] 상처를 잇는 황금실 (킨츠기 실습)</td><td class="col-detail">이론: 상처를 꿰매고 통합하는 심리적 치유. 실습: 깨진 조각을 금박·에폭시로 이어붙이기(2단계: 치유와 통합).</td></tr><tr><td class="col-ch">22</td><td class="col-topic">[긍정심리] 내 안의 숨은 보물 찾기 (강점 발견)</td><td class="col-detail">이론: 긍정심리학의 성격적 강점(Virtues). 실습: 핵심 강점 5가지를 보석으로 상징화한 &#x27;나만의 강점 보석함&#x27;.</td></tr><tr><td class="col-ch">23</td><td class="col-topic">[마음 근육] 감사라는 이름의 연금술</td><td class="col-detail">이론: 감사(Gratitude)의 과학. 실습: &#x27;감사 비타민 병(Gratitude Jar)&#x27; 만들기.</td></tr><tr><td class="col-ch">24</td><td class="col-topic">[나눔 3] 킨츠기, 내 인생의 서사시</td><td class="col-detail">이론: 내러티브 치료(Narrative Therapy). 실습: 킨츠기 작품을 들고 실패와 재탄생을 고백하는 &#x27;밤의 스토리텔링 콘서트&#x27;.</td></tr><tr><td class="col-ch">25</td><td class="col-topic">미래의 나로부터 온 편지 (Future Self)</td><td class="col-detail">이론: 미래 자아와의 심리적 연결감. 실습: 미래의 내가 현재의 나에게 보내는 타임캡슐 편지 및 영상 편지.</td></tr><tr><td class="col-ch">26</td><td class="col-topic">내 인생의 나침반 (가치관 세우기)</td><td class="col-detail">이론: 핵심 가치(Core Values)와 비전. 실습: 강점·노력·사회적 가치를 담은 &#x27;인생 비전 나무(Vision Tree)&#x27; 회화.</td></tr><tr><td class="col-ch">27</td><td class="col-topic">[비전 보드 1] 실패를 이긴 자들의 지도 기획</td><td class="col-detail">이론: 시각적 목표 설정(Goal Setting)의 효과. 실습: 진학·진로와 &#x27;플랜 B(회복력 카드)&#x27;가 포함된 &#x27;비전 보드&#x27; 레이아웃 스케치.</td></tr><tr><td class="col-ch">28</td><td class="col-topic">[비전 보드 2] 당당한 세상 밖으로의 선포</td><td class="col-detail">이론: 공적 선언 효과(Public Commitment Effect). 실습: 비전 보드를 완성하고 &#x27;원픽 회복력 슬로건&#x27;을 입체 글씨로 박기.</td></tr><tr><td class="col-ch">29</td><td class="col-topic">[진로 탐색] 심리상담과 예술치료의 세계</td><td class="col-detail">이론: 심리학과·상담대학원·미술치료학과 및 관련 직업군 탐색. 실습: 아들러·코헛 대화법을 구사하는 &#x27;미니 임상 상담 실습&#x27;.</td></tr><tr><td class="col-ch">30</td><td class="col-topic">[전시 기획] &quot;멋진 실패, 빛나는 성공&quot; 수료전시회 준비</td><td class="col-detail">이론: 예술을 통한 치유의 사회적 확산, 공간 큐레이팅. 실습: 작품 정리, &#x27;작가 노트(Artist Statement)&#x27; 작성 및 전시 공간 연출.</td></tr><tr><td class="col-ch">31</td><td class="col-topic">[수료 전시회] 상처는 빛이 들어오는 통로</td><td class="col-detail">이론: 표현 예술치료 종결 단계의 자아 통합 효과. 실습: 대학 강의실·문화공간에서 전시회 개최, 갤러리 토크 진행.</td></tr><tr><td class="col-ch">32</td><td class="col-topic">[종강 및 수료식] 위대한 회복력자들의 탄생</td><td class="col-detail">이론: 상담의 종결(Termination)이 갖는 심리적 성숙. 실습: &#x27;롤링 페이퍼&#x27; 작성, &#x27;회복력 선언서&#x27; 낭독 후 수료증 수여.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th><th>반영비율 · 평가시기</th></tr></thead><tbody><tr><td>수행평가 ①</td><td>마음 방패 및 거울 사진 포트폴리오</td><td>1~8차시(프로이트의 방어기제와 승화, 코헛의 자기대상과 미러링전이 개념의 이해 및 시각화)</td><td>20% · 8차시</td></tr><tr><td>수행평가 ②</td><td>용기 보드게임 및 격려 서한</td><td>9~16차시(아들러의 열등감 보상, 과제의 분리, 공동체 감각 및 레이비치&amp;샤테의 감정 조절·인과관계 분석 기술)</td><td>20% · 16차시</td></tr><tr><td>수행평가 ③</td><td>킨츠기 치유 서사(스토리텔링)</td><td>17~24차시(레이비치&amp;샤테의 낙관성·리치아웃 기술, 인지적 오류 &#x27;생각 덫&#x27; 수정, 킨츠기 공예 실습 및 내러티브 스토리텔링)</td><td>30% · 24차시</td></tr><tr><td>수행평가 ④</td><td>비전 보드 및 수료 전시회(큐레이팅)</td><td>25~32차시(미래 자아와의 연결, 가치관 나무, 회복력 기반 비전 보드 제작, 심리상담 진로 탐색 및 최종 전시)</td><td>30% · 31~32차시</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <ul class="ref-list"><li>정신분석학의 근본 개념 / 지크문트 프로이트 지음; 윤희기·박찬부 옮김.</li><li>다시 일어서는 용기: 거침없이 살기 위한 아들러의 인생 수업 / 알프레드 아들러 지음; 유진상 옮김.</li><li>미움받을 용기: 사랑과 진정한 자립에 대한 아들러의 가르침 / 기시미 이치로·고가 후미타케 지음; 전경아 옮김.</li><li>자기의 분석 / 하인즈 코헛 지음; 이재훈 옮김.</li><li>하인즈 코헛과 자기 심리학: 온전한 치유에의 길 / 앨런 시걸 지음; 권명수 옮김.</li><li>절대 회복력 / 캐런 레이비치·앤드류 샤테 지음; 우문식·윤상운 [공]옮김.</li><li>펫 쇼미더머니 기업가정신: 멋진 실패 빛나는 성공 이야기 / 유연호 지음.</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="chapter" id="course-14" data-num="14">
+  <div class="chapter-rail" aria-hidden="true"></div>
+  <header class="chapter-head reveal">
+    <div class="chapter-eyebrow">
+      <span class="chapter-univ">충남대학교</span>
+      <span class="chapter-count">과목 14<span class="sep">/</span>14</span>
+    </div>
+    <div class="chapter-titleblock">
+      <span class="chapter-bignum">14</span>
+      <div>
+        <h2 class="chapter-title">네 가지 시선으로 탐험하는 생명과학</h2>
+        
+      </div>
+    </div>
+    
+  </header>
+
+  <div class="chapter-body">
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">1</span><h3 class="sec-title">개관 및 목표</h3></div>
+      <div class="block-inner">
+        <p class="overview">다양한 생명과학 분야의 최신 학문 동향을 살펴보고, 앞으로 생명과학도를 꿈꾸는 미래의 인재들을 위해 이론 강의와 더불어 배운 내용과 연결된 실험·실습을 통해 직접 어떻게 생명과학을 연구하는지 체험해 보고, 스스로 관심 있는 분야를 찾아내고 진로에 도움을 줄 수 있는 기회를 제공하고자 한다.</p>
+        <p class="lead-mini">다양한 생물의 구분, 특성 및 구조, 그리고 인간과의 관계에 대해 알아보고, 다양한 생물의 형태 관찰, 세포와 오가노이드의 배양 및 관찰, DNA와 RNA 추출, 식물로부터 물질의 분리, 생물정보 분석 등 실험·실습을 통해 생명을 연구하는 방법 및 인류 복지를 위한 생명과학에 대해 알아본다.</p>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">2</span><h3 class="sec-title">내용 체계</h3></div>
+      <div class="block-inner">
+        <div class="core-idea"><span class="core-tag">핵심 아이디어</span><p>생명과학이란 어떤 학문인지, 그리고 어떤 방법으로 연구하는지에 대한 최신 동향 체험.</p></div><div class="table-wrap"><table class="cs-table"><thead><tr><th class="cs-cat">범주</th><th>내용 요소</th></tr></thead><tbody><tr><th scope="row" class="cs-cat">지식·이해</th><td class="cs-body">생명현상의 특징, 생명의 다양성, 미생물에 의한 질병, 세포의 구조 및 기능 / 인간과 생물, 인류 복지를 위한 생명체의 활용 / 생명과학에 속하는 분야, 생명과학의 연구 방법.</td></tr><tr><th scope="row" class="cs-cat">과정·기능</th><td class="cs-body">동물세포 배양 및 관찰 / 실험실에서 만드는 작은 인체, 오가노이드 / 식물과학 분석 방법 / 바이러스의 비밀을 찾아서 / 경이로운 미생물의 세계.</td></tr><tr><th scope="row" class="cs-cat">가치·태도</th><td class="cs-body">주변 현상에 대한 관찰 및 탐구 자세 / 호기심, 적극성, 비판적 사고.</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">3</span><h3 class="sec-title">교수·학습 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="sched-table"><thead><tr><th class="col-ch">차시</th><th class="col-topic">주제</th><th class="col-detail">세부 내용</th></tr></thead><tbody><tr><td class="col-ch">1</td><td class="col-topic">동물세포의 배양 및 관찰</td><td class="col-detail">동물세포의 특징 및 배양 방법 (강의)</td></tr><tr><td class="col-ch">2</td><td class="col-topic">동물세포의 배양 및 관찰</td><td class="col-detail">암세포의 특성과 치료법 개발 (강의)</td></tr><tr><td class="col-ch">3</td><td class="col-topic">동물세포의 배양 및 관찰</td><td class="col-detail">현미경을 활용한 다양한 동물세포 관찰 (실험)</td></tr><tr><td class="col-ch">4</td><td class="col-topic">동물세포의 배양 및 관찰</td><td class="col-detail">형광 현미경을 활용한 세포 소기관 관찰 (실험)</td></tr><tr><td class="col-ch">5</td><td class="col-topic">실험실에서 만드는 작은 인체, 오가노이드</td><td class="col-detail">줄기세포에서 미니 장기까지: 오가노이드의 활용 예시 (강의)</td></tr><tr><td class="col-ch">6</td><td class="col-topic">실험실에서 만드는 작은 인체, 오가노이드</td><td class="col-detail">인체를 닮은 미니 장기, 어떻게 만들까? (강의)</td></tr><tr><td class="col-ch">7</td><td class="col-topic">실험실에서 만드는 작은 인체, 오가노이드</td><td class="col-detail">오가노이드 면역염색 (실험)</td></tr><tr><td class="col-ch">8</td><td class="col-topic">실험실에서 만드는 작은 인체, 오가노이드</td><td class="col-detail">오가노이드 현미경 관찰 (실험)</td></tr><tr><td class="col-ch">9</td><td class="col-topic">식물과학 물질분석</td><td class="col-detail">생체 구성 물질 (강의)</td></tr><tr><td class="col-ch">10</td><td class="col-topic">식물과학 물질분석</td><td class="col-detail">식물 생체물질 분리와 분석 (강의)</td></tr><tr><td class="col-ch">11</td><td class="col-topic">식물과학 물질분석</td><td class="col-detail">식물 색소 분리 (실험)</td></tr><tr><td class="col-ch">12</td><td class="col-topic">식물과학 물질분석</td><td class="col-detail">흡광광도계의 원리와 활용 (실험)</td></tr><tr><td class="col-ch">13</td><td class="col-topic">콩콩팥팥? 그런데…</td><td class="col-detail">유전학: G X E = X ?과 G X E X E = X ?? (강의)</td></tr><tr><td class="col-ch">14</td><td class="col-topic">콩콩팥팥? 그런데…</td><td class="col-detail">분자생물학의 중심 원리 (강의)</td></tr><tr><td class="col-ch">15</td><td class="col-topic">콩콩팥팥? 그런데…</td><td class="col-detail">식물과학 빅데이터에 대한 생물정보학적 접근 (실습)</td></tr><tr><td class="col-ch">16</td><td class="col-topic">콩콩팥팥? 그런데…</td><td class="col-detail">in vivo, in vitro 그리고 in silico (실습)</td></tr><tr><td class="col-ch">17</td><td class="col-topic">바이러스의 비밀을 찾아서-1: 바이러스는 생물일까?</td><td class="col-detail">바이러스의 정의 및 종류 강의</td></tr><tr><td class="col-ch">18</td><td class="col-topic">바이러스와 분자생물학</td><td class="col-detail">바이러스의 연구 방법 강의</td></tr><tr><td class="col-ch">19</td><td class="col-topic">실험 실습</td><td class="col-detail">바이러스 감염 세포 관찰</td></tr><tr><td class="col-ch">20</td><td class="col-topic">실험 실습</td><td class="col-detail">바이러스 RNA 추출</td></tr><tr><td class="col-ch">21</td><td class="col-topic">바이러스의 비밀을 찾아서-2: 바이러스는 정말 RNA를 만들고 있을까?</td><td class="col-detail">바이러스 복제 전략 강의</td></tr><tr><td class="col-ch">22</td><td class="col-topic">실험 실습</td><td class="col-detail">바이러스 RNA 검출을 위한 역전사(cDNA 합성) 실험</td></tr><tr><td class="col-ch">23</td><td class="col-topic">실험 실습</td><td class="col-detail">cDNA 검출 real-time quantitative PCR</td></tr><tr><td class="col-ch">24</td><td class="col-topic">실험 실습</td><td class="col-detail">Real-time quantitative PCR 결과 분석</td></tr><tr><td class="col-ch">25</td><td class="col-topic">우리 몸의 90%는 미생물?</td><td class="col-detail">우리 몸과 주변의 미생물 이야기 (강의)</td></tr><tr><td class="col-ch">26</td><td class="col-topic">우리 몸의 90%는 미생물?</td><td class="col-detail">우리 몸과 주변의 미생물 이야기 (강의)</td></tr><tr><td class="col-ch">27</td><td class="col-topic">우리 몸의 90%는 미생물?</td><td class="col-detail">미생물의 배양과 관찰 (실험)</td></tr><tr><td class="col-ch">28</td><td class="col-topic">우리 몸의 90%는 미생물?</td><td class="col-detail">미생물의 배양과 관찰 (실험)</td></tr><tr><td class="col-ch">29</td><td class="col-topic">경이로운 미생물의 세계</td><td class="col-detail">다양한 미생물의 세상 (강의)</td></tr><tr><td class="col-ch">30</td><td class="col-topic">경이로운 미생물의 세계</td><td class="col-detail">DNA 추출 및 전기영동 (실험)</td></tr><tr><td class="col-ch">31</td><td class="col-topic">경이로운 미생물의 세계</td><td class="col-detail">DNA 추출 및 전기영동 (실험)</td></tr><tr><td class="col-ch">32</td><td class="col-topic">경이로운 미생물의 세계</td><td class="col-detail">배양한 미생물 관찰하기 (실험)</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">4</span><h3 class="sec-title">평가 방법 및 내용</h3></div>
+      <div class="block-inner">
+        <div class="table-wrap"><table class="eval-table"><thead><tr><th>평가유형</th><th>평가방법</th><th>내용(범위)</th></tr></thead><tbody><tr><td>절대평가</td><td>출석시수</td><td>2/3 이상 출석 (22시수)</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="block reveal">
+      <div class="sec-head"><span class="sec-num">5</span><h3 class="sec-title">참고 문헌 및 기타 사항</h3></div>
+      <div class="block-inner">
+        <p class="lead-mini">별도의 참고 문헌이 제시되지 않았습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="f-mark">✦</div>
+  <p>2026학년도 2학기 고교-대학 연계 학점 인정 학교 밖 교육 과목 심의 자료</p>
+  <p>충청남도교육청 · 과목별 교육과정 문서 모음</p>
+</footer>
+
+<button class="fab fab-toc" id="fabToc" aria-label="목차 열기">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+  목차
+</button>
+<button class="fab fab-top" id="fabTop" aria-label="맨 위로">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<div class="drawer-scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="과목 목차">
+  <div class="drawer-head">
+    <h4>과목 목차</h4>
+    <button class="drawer-close" id="drawerClose" aria-label="닫기">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body"><a class="drawer-item" href="#course-1" data-target="course-1"><span class="drawer-num">01</span><span class="drawer-meta"><span class="drawer-title">교육과 심리학의 이해</span><span class="drawer-univ">공주대</span></span></a><a class="drawer-item" href="#course-2" data-target="course-2"><span class="drawer-num">02</span><span class="drawer-meta"><span class="drawer-title">몽골학으로 읽는 AI 시대</span><span class="drawer-univ">단국대</span></span></a><a class="drawer-item" href="#course-3" data-target="course-3"><span class="drawer-num">03</span><span class="drawer-meta"><span class="drawer-title">아랍어와 아랍문화</span><span class="drawer-univ">단국대</span></span></a><a class="drawer-item" href="#course-4" data-target="course-4"><span class="drawer-num">04</span><span class="drawer-meta"><span class="drawer-title">베트남 이해와 탐구 프로젝트</span><span class="drawer-univ">단국대</span></span></a><a class="drawer-item" href="#course-5" data-target="course-5"><span class="drawer-num">05</span><span class="drawer-meta"><span class="drawer-title">포르투갈·브라질 언어와 문화의 이해</span><span class="drawer-univ">단국대</span></span></a><a class="drawer-item" href="#course-6" data-target="course-6"><span class="drawer-num">06</span><span class="drawer-meta"><span class="drawer-title">글로벌 이슈 탐구와 영어 학술 연구 실제</span><span class="drawer-univ">단국대</span></span></a><a class="drawer-item" href="#course-7" data-target="course-7"><span class="drawer-num">07</span><span class="drawer-meta"><span class="drawer-title">미적분학 핵심 개념 탐구</span><span class="drawer-univ">단국대</span></span></a><a class="drawer-item" href="#course-8" data-target="course-8"><span class="drawer-num">08</span><span class="drawer-meta"><span class="drawer-title">화학분석기기의 이해 및 실습</span><span class="drawer-univ">단국대</span></span></a><a class="drawer-item" href="#course-9" data-target="course-9"><span class="drawer-num">09</span><span class="drawer-meta"><span class="drawer-title">보건과 건강관리</span><span class="drawer-univ">백석대</span></span></a><a class="drawer-item" href="#course-10" data-target="course-10"><span class="drawer-num">10</span><span class="drawer-meta"><span class="drawer-title">베이킹과 조리 실습</span><span class="drawer-univ">백석대</span></span></a><a class="drawer-item" href="#course-11" data-target="course-11"><span class="drawer-num">11</span><span class="drawer-meta"><span class="drawer-title">사건으로 읽는 법과학</span><span class="drawer-univ">순천향대</span></span></a><a class="drawer-item" href="#course-12" data-target="course-12"><span class="drawer-num">12</span><span class="drawer-meta"><span class="drawer-title">호텔리어의 이해</span><span class="drawer-univ">순천향대</span></span></a><a class="drawer-item" href="#course-13" data-target="course-13"><span class="drawer-num">13</span><span class="drawer-meta"><span class="drawer-title">예술활용 심리상담</span><span class="drawer-univ">순천향대</span></span></a><a class="drawer-item" href="#course-14" data-target="course-14"><span class="drawer-num">14</span><span class="drawer-meta"><span class="drawer-title">네 가지 시선으로 탐험하는 생명과학</span><span class="drawer-univ">충남대</span></span></a></div>
+</aside>
+
+<script>
+(function(){
+  var bar=document.getElementById('progress');
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    var p=max>0?(h.scrollTop/max)*100:0;
+    bar.style.width=p+'%';
+    var topBtn=document.getElementById('fabTop');
+    if(h.scrollTop>600){topBtn.classList.add('show');}else{topBtn.classList.remove('show');}
+  }
+  document.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  // reveal
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{rootMargin:'0px 0px -8% 0px', threshold:.05});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});
+  }
+
+  // drawer
+  var scrim=document.getElementById('scrim'), drawer=document.getElementById('drawer');
+  function openD(){scrim.classList.add('open');drawer.classList.add('open');document.body.style.overflow='hidden';}
+  function closeD(){scrim.classList.remove('open');drawer.classList.remove('open');document.body.style.overflow='';}
+  document.getElementById('fabToc').addEventListener('click',openD);
+  document.getElementById('drawerClose').addEventListener('click',closeD);
+  scrim.addEventListener('click',closeD);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeD();});
+  drawer.querySelectorAll('.drawer-item').forEach(function(a){a.addEventListener('click',closeD);});
+  document.getElementById('fabTop').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+
+  // active chapter in drawer
+  var items={};
+  drawer.querySelectorAll('.drawer-item').forEach(function(a){items[a.dataset.target]=a;});
+  if('IntersectionObserver' in window){
+    var io2=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          Object.keys(items).forEach(function(k){items[k].classList.remove('active');});
+          var a=items[e.target.id]; if(a){a.classList.add('active');}
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px'});
+    document.querySelectorAll('.chapter').forEach(function(c){io2.observe(c);});
+  }
+})();
+</script>
+</body>
+</html>
