@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#DAF2FC">
+<meta name="description" content="고교학점제 4대 안전망 — 학교 교육과정, 충남온라인학교, 공동교육과정, 학교 밖 교육">
+<title>4대 안전망 · 온마당</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  :root{
+    --bg:#DAF2FC; --brand:#4F6EBE; --brand-d:#3a539b; --brand-l:#6d8ad6;
+    --accent:#7BCE7C; --accent-d:#5fb260; --online:#7EC8E3; --online-d:#2a8db5;
+    --plum:#b59ddb;
+    --ink:#1f2b44; --ink-soft:#51607d; --ink-faint:#8597ad;
+    --line:#c5dcef; --surface:#fff; --soft:#eef7fc;
+    --radius:18px; --radius-sm:12px; --radius-pill:999px;
+    --shadow:0 6px 24px rgba(79,110,190,.13);
+    --shadow-sm:0 2px 10px rgba(79,110,190,.10);
+    --shadow-lg:0 14px 40px rgba(79,110,190,.18);
+    --maxw:860px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .clover{display:inline-block;vertical-align:middle}
+
+  /* 리뉴얼 배너 */
+  .renewal-banner{
+    background:#e8edf8;border-bottom:1px solid #c0cce8;
+    color:var(--brand-d);text-align:center;
+    font-size:13.5px;font-weight:600;padding:11px 20px;line-height:1.6;
+  }
+
+  /* 헤더 */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(255,255,255,.88);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;gap:16px;height:68px;max-width:1180px;margin:0 auto;padding:0 24px}
+  .brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+  .brand-txt b{font-size:18px;color:var(--brand);font-weight:800;display:block;letter-spacing:-.4px;line-height:1.1}
+  .brand-txt span{font-size:10.5px;color:var(--ink-soft);font-weight:500}
+  .nav-links{display:flex;gap:4px;margin-left:20px;flex:1}
+  .nav-links a{
+    font-size:14px;font-weight:600;color:var(--ink-soft);
+    padding:8px 14px;border-radius:var(--radius-pill);transition:.18s;
+  }
+  .nav-links a:hover{background:var(--soft);color:var(--brand)}
+  .nav-links a.active{background:var(--brand);color:#fff}
+  .nav-disabled{
+    font-size:14px;font-weight:600;color:#bbc5d4;
+    padding:8px 13px;border-radius:var(--radius-pill);
+    cursor:default;pointer-events:none;user-select:none;
+  }
+  .head-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .head-link{
+    display:flex;align-items:center;gap:5px;flex-shrink:0;
+    background:#fff;color:var(--brand);font-weight:700;font-size:13.5px;
+    padding:9px 16px;border-radius:var(--radius-pill);
+    border:1.5px solid var(--brand);transition:.18s;
+  }
+  .head-link:hover{background:var(--soft)}
+  .head-cta{
+    display:flex;align-items:center;gap:6px;flex-shrink:0;
+    background:var(--accent);color:#1c3d1d;font-weight:700;font-size:13.5px;
+    padding:9px 16px;border-radius:var(--radius-pill);transition:.18s;
+  }
+  .head-cta:hover{background:var(--accent-d)}
+
+  /* 햄버거 */
+  .hamburger{
+    display:none;background:none;border:none;font-size:26px;
+    color:var(--brand);cursor:pointer;margin-left:auto;padding:4px;
+  }
+
+  /* 모바일 메뉴 */
+  .mobile-menu{
+    display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;
+    background:rgba(0,0,0,.4);opacity:0;transition:opacity .25s;
+  }
+  .mobile-menu.open{display:block;opacity:1}
+  .mobile-menu-panel{
+    position:absolute;top:0;right:0;width:min(320px,85vw);height:100%;
+    background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,.15);
+    padding:24px;overflow-y:auto;
+    transform:translateX(100%);transition:transform .25s;
+  }
+  .mobile-menu.open .mobile-menu-panel{transform:translateX(0)}
+  .mobile-menu-close{
+    display:flex;align-items:center;justify-content:center;
+    width:36px;height:36px;border:none;background:var(--soft);
+    border-radius:50%;font-size:20px;cursor:pointer;margin-left:auto;margin-bottom:20px;
+  }
+  .mobile-menu-nav{display:flex;flex-direction:column;gap:4px}
+  .mobile-menu-nav a{
+    display:block;font-size:15px;font-weight:600;color:var(--ink-soft);
+    padding:12px 16px;border-radius:var(--radius-sm);transition:.15s;
+  }
+  .mobile-menu-nav a:hover{background:var(--soft);color:var(--brand)}
+  .mobile-menu-nav a.active{background:var(--brand);color:#fff}
+  .mobile-menu-nav .disabled{color:#bbc5d4;padding:12px 16px;font-size:15px;font-weight:600}
+  .mobile-menu-divider{height:1px;background:var(--line);margin:12px 0}
+  .mobile-menu-shortcuts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+  .mobile-menu-shortcuts a{
+    display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;
+    color:var(--brand);padding:10px 14px;background:var(--soft);
+    border-radius:var(--radius-sm);transition:.15s;
+  }
+  .mobile-menu-shortcuts a:hover{background:var(--line)}
+
+  /* 페이지 헤더 */
+  .page-hero{background:linear-gradient(135deg,var(--brand),var(--brand-l));color:#fff;padding:52px 0 44px}
+  .page-hero .breadcrumb{font-size:13px;opacity:.75;margin-bottom:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .page-hero .breadcrumb a{color:#fff;opacity:.75}
+  .page-hero .breadcrumb a:hover{opacity:1}
+  .page-hero h1{font-size:clamp(24px,3.5vw,34px);font-weight:800;letter-spacing:-.8px;margin-bottom:8px}
+  .page-hero p{font-size:14.5px;opacity:.85}
+
+  /* 안전망 카드 그리드 */
+  .safety-wrap{padding:48px 0 80px}
+  .safety-intro{
+    background:var(--surface);border-radius:var(--radius);padding:32px;
+    box-shadow:var(--shadow-sm);margin-bottom:32px;text-align:center;
+  }
+  .safety-intro p{font-size:15.5px;color:var(--ink-soft);line-height:1.8;max-width:600px;margin:0 auto}
+  .scards{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .scard{
+    background:#fff;border-radius:var(--radius);padding:30px 24px;
+    box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:.2s;
+    display:flex;flex-direction:column;
+  }
+  .scard::before{content:"";position:absolute;top:0;left:0;right:0;height:5px}
+  .scard:nth-child(1)::before{background:var(--brand)}
+  .scard:nth-child(2)::before{background:var(--online)}
+  .scard:nth-child(3)::before{background:var(--accent)}
+  .scard:nth-child(4)::before{background:var(--plum)}
+  .scard:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+  .s-ic{font-size:34px;margin-bottom:14px}
+  .s-step{font-size:11px;font-weight:800;color:var(--ink-faint);letter-spacing:1px;margin-bottom:4px}
+  .scard h3{font-size:18px;font-weight:800;margin-bottom:8px}
+  .scard p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:16px;flex:1}
+  .s-link{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:13.5px;font-weight:700;color:var(--brand);
+    padding:8px 16px;background:var(--soft);border-radius:var(--radius-pill);transition:.15s;
+  }
+  .s-link:hover{background:var(--brand);color:#fff}
+
+  /* 푸터 */
+  footer{background:var(--brand-d);color:rgba(255,255,255,.7);padding:32px 0;text-align:center;font-size:13px}
+  footer a{color:rgba(255,255,255,.7)}
+  footer a:hover{color:#fff}
+
+  @media(max-width:900px){
+    .head-link span{display:none}
+  }
+  @media(max-width:680px){
+    .nav-links,.nav-disabled,.head-tools{display:none}
+    .hamburger{display:block}
+    .scards{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- 클로버 SVG 심볼 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="clv" viewBox="0 0 100 100">
+    <circle cx="50" cy="32" r="17" fill="#7BCE7C"/>
+    <circle cx="32" cy="50" r="17" fill="#7BCE7C"/>
+    <circle cx="68" cy="50" r="17" fill="#7BCE7C"/>
+    <circle cx="50" cy="68" r="17" fill="#5fb260"/>
+    <circle cx="50" cy="50" r="8.5" fill="#4F6EBE"/>
+    <path d="M50 66 Q53 82 59 90" stroke="#5fb260" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </symbol>
+</defs></svg>
+
+<!-- 리뉴얼 안내 배너 -->
+<div class="renewal-banner" role="note">
+  ＜충남 고교학점제 종합지원 포털 온마당＞ 현재 리뉴얼 작업 중입니다.&ensp;(2026. 7. 1. ~ 7. 31.)
+</div>
+
+<!-- 헤더 -->
+<header>
+  <div class="nav">
+    <a href="../index.html" class="brand">
+      <svg class="clover" width="38" height="38"><use href="#clv"/></svg>
+      <span class="brand-txt"><b>온마당</b><span>충남 고교학점제 종합지원</span></span>
+    </a>
+    <nav class="nav-links" aria-label="주 메뉴">
+      <span class="nav-disabled" aria-disabled="true" title="준비 중">고교학점제 안내</span>
+      <span class="nav-disabled" aria-disabled="true" title="준비 중">진로·학업 설계</span>
+      <a href="./index.html" class="active">4대 안전망</a>
+      <a href="../board/index.html">알림·소통 마당</a>
+    </nav>
+    <div class="head-tools">
+      <a href="https://curricenterhscne.github.io/2022-curriculum-majors/" target="_blank" rel="noopener" class="head-link">
+        <svg class="clover" width="15" height="15"><use href="#clv"/></svg>
+        <span>대학 학과 안내</span> ↗
+      </a>
+      <a href="https://curricenterhscne.github.io/course_selector_cne/" target="_blank" rel="noopener" class="head-cta">
+        <svg class="clover" width="15" height="15"><use href="#clv"/></svg>
+        과목 선택 실습 ↗
+      </a>
+    </div>
+    <button class="hamburger" aria-label="메뉴 열기">☰</button>
+  </div>
+</header>
+
+<!-- 모바일 메뉴 -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-panel">
+    <button class="mobile-menu-close" aria-label="메뉴 닫기">✕</button>
+    <nav class="mobile-menu-nav" aria-label="모바일 메뉴">
+      <span class="disabled">고교학점제 안내</span>
+      <span class="disabled">진로·학업 설계</span>
+      <a href="./index.html" class="active">4대 안전망</a>
+      <a href="../board/index.html">알림·소통 마당</a>
+    </nav>
+    <div class="mobile-menu-divider"></div>
+    <div class="mobile-menu-shortcuts">
+      <a href="https://curricenterhscne.github.io/2022-curriculum-majors/" target="_blank" rel="noopener">
+        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 대학 학과 안내 ↗
+      </a>
+      <a href="https://curricenterhscne.github.io/course_selector_cne/" target="_blank" rel="noopener">
+        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 과목 선택 실습 ↗
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 페이지 헤더 -->
+<div class="page-hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="이동 경로">
+      <a href="../index.html">홈</a> › <strong>4대 안전망</strong>
+    </nav>
+    <h1>고교학점제 4대 안전망</h1>
+    <p>원하는 과목이 학교에 없어도 괜찮습니다. 단계별 안전망이 학생의 과목 선택을 보장합니다.</p>
+  </div>
+</div>
+
+<!-- 본문 -->
+<main class="safety-wrap">
+  <div class="wrap">
+    <div class="safety-intro">
+      <p>고교학점제에서는 학생이 원하는 과목을 수강할 수 있도록 학교 안팎에 걸쳐 4단계 안전망을 운영합니다. 학교 교육과정을 기본으로, 온라인학교·공동교육과정·학교 밖 교육이 차례로 과목 선택권을 보장합니다.</p>
+    </div>
+
+    <div class="scards">
+      <a class="scard" href="./schoolcurriculum.html">
+        <div class="s-ic">🏫</div>
+        <div class="s-step">SAFETY NET 1</div>
+        <h3>학교 교육과정</h3>
+        <p>소속 학교가 개설한 과목을 우선 이수하며 기본 학업을 설계합니다. 나의 진로와 적성에 맞춰 학교의 배움 차림표를 선택하세요.</p>
+        <span class="s-link">자세히 보기 →</span>
+      </a>
+      <a class="scard" href="./onlineschool.html">
+        <div class="s-ic">💻</div>
+        <div class="s-step">SAFETY NET 2</div>
+        <h3>충남온라인학교</h3>
+        <p>학교에 없는 과목을 정규 일과 시간 중에 온라인으로 수강할 수 있도록 충남온라인학교가 지원합니다.</p>
+        <span class="s-link">자세히 보기 →</span>
+      </a>
+      <a class="scard" href="./jointcurricula.html">
+        <div class="s-ic">🤝</div>
+        <div class="s-step">SAFETY NET 3</div>
+        <h3>공동교육과정</h3>
+        <p>학교끼리, 지역에서, 온라인으로 — 우리 학교에 없는 과목을 학교 간 연합으로 수강할 수 있습니다.</p>
+        <span class="s-link">자세히 보기 →</span>
+      </a>
+      <a class="scard" href="./off-campus_courses.html">
+        <div class="s-ic">🌱</div>
+        <div class="s-step">SAFETY NET 4</div>
+        <h3>학교 밖 교육</h3>
+        <p>대학, 연구기관, 지역 전문가와 연계된 전문적인 심화 프로그램을 통해 진로를 넓힙니다.</p>
+        <span class="s-link">자세히 보기 →</span>
+      </a>
+    </div>
+  </div>
+</main>
+
+<!-- 푸터 -->
+<footer>
+  <p>© 2026 충청남도교육청 · <a href="../index.html">온마당 홈으로</a></p>
+</footer>
+
+<script>
+// 모바일 메뉴 토글
+(function(){
+  var menu=document.getElementById('mobileMenu');
+  var openBtn=document.querySelector('.hamburger');
+  var closeBtn=menu.querySelector('.mobile-menu-close');
+  function open(){menu.classList.add('open');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
+  function close(){menu.classList.remove('open');menu.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+  openBtn.addEventListener('click',open);
+  closeBtn.addEventListener('click',close);
+  menu.addEventListener('click',function(e){if(e.target===menu)close()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open'))close()});
+})();
+</script>
+
+<script data-goatcounter="https://onmadang.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

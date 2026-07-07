@@ -169,8 +169,36 @@
   footer a{color:rgba(255,255,255,.7)}
   footer a:hover{color:#fff}
 
+  /* 햄버거 */
+  .hamburger{
+    display:none;background:none;border:none;font-size:26px;
+    color:var(--brand);cursor:pointer;margin-left:auto;padding:4px;
+  }
+  .mobile-menu{
+    display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;
+    background:rgba(0,0,0,.4);opacity:0;transition:opacity .25s;
+  }
+  .mobile-menu.open{display:block;opacity:1}
+  .mobile-menu-panel{
+    position:absolute;top:0;right:0;width:min(320px,85vw);height:100%;
+    background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,.15);
+    padding:24px;overflow-y:auto;transform:translateX(100%);transition:transform .25s;
+  }
+  .mobile-menu.open .mobile-menu-panel{transform:translateX(0)}
+  .mobile-menu-close{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:none;background:var(--soft);border-radius:50%;font-size:20px;cursor:pointer;margin-left:auto;margin-bottom:20px}
+  .mobile-menu-nav{display:flex;flex-direction:column;gap:4px}
+  .mobile-menu-nav a{display:block;font-size:15px;font-weight:600;color:var(--ink-soft);padding:12px 16px;border-radius:var(--radius-sm);transition:.15s}
+  .mobile-menu-nav a:hover{background:var(--soft);color:var(--brand)}
+  .mobile-menu-nav a.active{background:var(--brand);color:#fff}
+  .mobile-menu-nav .disabled{color:#bbc5d4;padding:12px 16px;font-size:15px;font-weight:600}
+  .mobile-menu-divider{height:1px;background:var(--line);margin:12px 0}
+  .mobile-menu-shortcuts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+  .mobile-menu-shortcuts a{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--brand);padding:10px 14px;background:var(--soft);border-radius:var(--radius-sm);transition:.15s}
+  .mobile-menu-shortcuts a:hover{background:var(--line)}
+
   @media(max-width:640px){
     .nav-links,.nav-disabled,.head-tools{display:none}
+    .hamburger{display:block}
     .notice-body{padding:24px 20px}
     .attach-section{padding:18px 20px}
     .notice-nav{grid-template-columns:1fr;gap:12px}
@@ -207,7 +235,7 @@
     <nav class="nav-links" aria-label="주 메뉴">
       <span class="nav-disabled" aria-disabled="true" title="준비 중">고교학점제 안내</span>
       <span class="nav-disabled" aria-disabled="true" title="준비 중">진로·학업 설계</span>
-      <span class="nav-disabled" aria-disabled="true" title="준비 중">4대 안전망</span>
+      <a href="../safety/">4대 안전망</a>
       <a href="./index.html" class="active">알림·소통 마당</a>
     </nav>
     <div class="head-tools">
@@ -220,8 +248,31 @@
         과목 선택 실습 ↗
       </a>
     </div>
+    <button class="hamburger" aria-label="메뉴 열기">☰</button>
   </div>
 </header>
+
+<!-- 모바일 메뉴 -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-panel">
+    <button class="mobile-menu-close" aria-label="메뉴 닫기">✕</button>
+    <nav class="mobile-menu-nav" aria-label="모바일 메뉴">
+      <span class="disabled">고교학점제 안내</span>
+      <span class="disabled">진로·학업 설계</span>
+      <a href="../safety/">4대 안전망</a>
+      <a href="./index.html" class="active">알림·소통 마당</a>
+    </nav>
+    <div class="mobile-menu-divider"></div>
+    <div class="mobile-menu-shortcuts">
+      <a href="https://curricenterhscne.github.io/2022-curriculum-majors/" target="_blank" rel="noopener">
+        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 대학 학과 안내 ↗
+      </a>
+      <a href="https://curricenterhscne.github.io/course_selector_cne/" target="_blank" rel="noopener">
+        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 과목 선택 실습 ↗
+      </a>
+    </div>
+  </div>
+</div>
 
 <!-- 페이지 헤더 (JS로 채워짐) -->
 <div class="page-hero" id="page-hero">
@@ -437,6 +488,19 @@ function escUrl(s){ try{ return new URL(s).href }catch{ return '#' } }
 load();
 </script>
 
+<script>
+(function(){
+  var menu=document.getElementById('mobileMenu');
+  var openBtn=document.querySelector('.hamburger');
+  var closeBtn=menu.querySelector('.mobile-menu-close');
+  function open(){menu.classList.add('open');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
+  function close(){menu.classList.remove('open');menu.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+  openBtn.addEventListener('click',open);
+  closeBtn.addEventListener('click',close);
+  menu.addEventListener('click',function(e){if(e.target===menu)close()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open'))close()});
+})();
+</script>
 
 <script data-goatcounter="https://onmadang.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
