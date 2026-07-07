@@ -46,10 +46,10 @@
 ## ③ 참학력 공동교육과정 수강신청
 
 - **레포/호스팅**: 별도 (Vercel)
-- **배포**: https://gongdong-enrollment.vercel.app/
-- **상태**: 별도 개발 완료, 검증 진행 중
-- **연동 위치**: `safety/coop.html` (4대 안전망 > 공동교육과정)
-- **방식**: 본체에서 새 탭 링크(큰 CTA). iframe 임베드는 X-Frame 차단 시 링크 폴백.
+- **배포**: ~~https://gongdong-enrollment.vercel.app/~~ (폐쇄됨, 신규 개발 중)
+- **상태**: 기존 서비스 폐쇄, 새 시스템 개발 중
+- **연동 위치**: `safety/jointcurricula.html` (4대 안전망 > 공동교육과정)
+- **현재 처리**: 수강신청 링크 클릭 시 `safety/enrollment-closed.html`(기간 외 안내 페이지)로 이동. 신규 시스템 완성 후 URL 교체 예정.
 
 ---
 
