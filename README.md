@@ -49,7 +49,7 @@ claude   # 레포 루트에서 실행
 
 - ① https://curricenterhscne.github.io/2022-curriculum-majors/
 - ② https://curricenterhscne.github.io/course_selector_cne/
-- ③ https://gongdong-enrollment.vercel.app/
+- ③ ~~https://gongdong-enrollment.vercel.app/~~ (폐쇄, 신규 개발 중)
 - ⓪ https://curricenterhscne.github.io/cne-design-system/
 
 ## 주의사항

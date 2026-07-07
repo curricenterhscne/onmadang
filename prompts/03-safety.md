@@ -8,10 +8,9 @@ ASSETS.md의 ③ 규칙을 따르세요.
 - 각 카드 → 해당 상세 페이지로 연결. 메인의 4대 안전망 카드 디자인과 톤 일치.
 
 ## safety/coop.html (공동교육과정) — 핵심
-- 참학력 수강신청 연결: https://gongdong-enrollment.vercel.app/
-  - 큰 CTA 버튼, 새 탭(`target="_blank" rel="noopener"`)
+- 참학력 수강신청 연결: ~~https://gongdong-enrollment.vercel.app/~~ (폐쇄됨, 신규 개발 중)
+  - 현재 `safety/enrollment-closed.html`(기간 외 안내 페이지)로 연결
 - 신청 절차 / 일정 / 문의 안내 섹션(텍스트 플레이스홀더)
-- "신청 가능" 상태 배지(그린)
 
 ## safety/online.html (충남온라인학교)
 - 온라인 공동교육과정 강좌 안내

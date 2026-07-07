@@ -56,7 +56,7 @@
 |---|---|---|
 | ① 대학 학과·권장 과목 | https://curricenterhscne.github.io/2022-curriculum-majors/ | `design/practice.html` |
 | ② 과목 선택 실습 | https://curricenterhscne.github.io/course_selector_cne/ | `design/practice.html` |
-| ③ 공동교육과정 수강신청 | https://gongdong-enrollment.vercel.app/ | `safety/coop.html` |
+| ③ 공동교육과정 수강신청 | ~~https://gongdong-enrollment.vercel.app/~~ (폐쇄, 신규 개발 중) → 현재 `safety/enrollment-closed.html`로 안내 | `safety/jointcurricula.html` |
 | ⓪ 디자인 시스템 | https://curricenterhscne.github.io/cne-design-system/ | 전역 CSS |
 
 **①↔② 브리지**: 학과 모달 → `?want=&core=&majorId=` 파라미터 → selector 자동선택 → 토스트.
