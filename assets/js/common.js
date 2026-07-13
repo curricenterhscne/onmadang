@@ -123,3 +123,33 @@
     if (e.key === 'Escape' && menu.classList.contains('open')) closeMenu();
   });
 })();
+
+/* ── GitHub API 캐시 fetch (sessionStorage, 5분 TTL) ── */
+window.cachedFetch = function (url, ttlMs) {
+  var TTL = ttlMs || 300000;
+  var key = 'cf:' + url;
+  try {
+    var c = JSON.parse(sessionStorage.getItem(key));
+    if (c && Date.now() - c.t < TTL) {
+      return Promise.resolve({
+        ok: true, status: 200,
+        json: function () { return Promise.resolve(c.d); },
+        headers: new Map([['Link', c.l || '']])
+      });
+    }
+  } catch (e) { /* ignore */ }
+  return fetch(url).then(function (res) {
+    if (!res.ok) return res;
+    var link = res.headers.get('Link') || '';
+    return res.json().then(function (data) {
+      try {
+        sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), d: data, l: link }));
+      } catch (e) { /* quota exceeded — skip */ }
+      return {
+        ok: true, status: res.status,
+        json: function () { return Promise.resolve(data); },
+        headers: new Map([['Link', link]])
+      };
+    });
+  });
+};
