@@ -6,79 +6,11 @@
 <meta name="theme-color" content="#DAF2FC">
 <title>공지사항 · 온마당</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../assets/css/common.css">
 <!-- marked.js: 마크다운 → HTML 변환 (CDN, 빌드 불필요) -->
 <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
 <style>
-  :root{
-    --bg:#DAF2FC; --brand:#4F6EBE; --brand-d:#3a539b; --brand-l:#6d8ad6;
-    --accent:#7BCE7C; --accent-d:#5fb260; --online:#7EC8E3; --online-d:#2a8db5;
-    --ink:#1f2b44; --ink-soft:#51607d; --ink-faint:#8597ad;
-    --line:#c5dcef; --surface:#fff; --soft:#eef7fc;
-    --radius:18px; --radius-sm:12px; --radius-pill:999px;
-    --shadow:0 6px 24px rgba(79,110,190,.13);
-    --shadow-sm:0 2px 10px rgba(79,110,190,.10);
-    --maxw:860px;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    font-family:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
-    background:var(--bg);color:var(--ink);line-height:1.7;
-    -webkit-font-smoothing:antialiased;
-  }
-  a{text-decoration:none;color:inherit}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-  .clover{display:inline-block;vertical-align:middle}
-
-  /* 헤더 */
-  header{
-    position:sticky;top:0;z-index:100;
-    background:rgba(255,255,255,.88);backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav{display:flex;align-items:center;gap:16px;height:68px;max-width:1180px;margin:0 auto;padding:0 24px}
-  .brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
-  .brand-txt b{font-size:18px;color:var(--brand);font-weight:800;display:block;letter-spacing:-.4px;line-height:1.1}
-  .brand-txt span{font-size:10.5px;color:var(--ink-soft);font-weight:500}
-  .nav-links{display:flex;gap:4px;margin-left:20px;flex:1}
-  .nav-links a{
-    font-size:14px;font-weight:600;color:var(--ink-soft);
-    padding:8px 14px;border-radius:var(--radius-pill);transition:.18s;
-  }
-  .nav-links a:hover{background:var(--soft);color:var(--brand)}
-  .nav-links a.active{background:var(--brand);color:#fff}
-  .nav-disabled{
-    font-size:14px;font-weight:600;color:#bbc5d4;
-    padding:8px 13px;border-radius:var(--radius-pill);
-    cursor:default;pointer-events:none;user-select:none;
-  }
-  .head-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
-  .head-link{
-    display:flex;align-items:center;gap:5px;flex-shrink:0;
-    background:#fff;color:var(--brand);font-weight:700;font-size:13.5px;
-    padding:9px 16px;border-radius:var(--radius-pill);
-    border:1.5px solid var(--brand);transition:.18s;
-  }
-  .head-link:hover{background:var(--soft)}
-  .head-cta{
-    display:flex;align-items:center;gap:6px;flex-shrink:0;
-    background:var(--accent);color:#1c3d1d;font-weight:700;font-size:13.5px;
-    padding:9px 16px;border-radius:var(--radius-pill);transition:.18s;
-  }
-  .head-cta:hover{background:var(--accent-d)}
-  /* 리뉴얼 배너 */
-  .renewal-banner{
-    background:#e8edf8;border-bottom:1px solid #c0cce8;
-    color:var(--brand-d);text-align:center;
-    font-size:13.5px;font-weight:600;padding:11px 20px;line-height:1.6;
-  }
-
-  /* 페이지 헤더 */
-  .page-hero{background:linear-gradient(135deg,var(--brand),var(--brand-l));color:#fff;padding:52px 0 44px}
-  .page-hero .breadcrumb{font-size:13px;opacity:.75;margin-bottom:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-  .page-hero .breadcrumb a{color:#fff;opacity:.75}
-  .page-hero .breadcrumb a:hover{opacity:1}
-  .page-hero h1{font-size:clamp(20px,3vw,28px);font-weight:800;letter-spacing:-.6px;margin-bottom:8px;word-break:keep-all}
+  .page-hero h1{font-size:clamp(20px,3vw,28px);letter-spacing:-.6px;word-break:keep-all}
   .page-hero .meta{font-size:13.5px;opacity:.8;display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
 
   /* 배지 */
@@ -93,9 +25,7 @@
 
   /* 마크다운 본문 스타일 */
   .notice-body{padding:36px 40px;min-height:200px;font-size:15.5px;line-height:1.85;color:var(--ink)}
-  .notice-body h1,.notice-body h2,.notice-body h3{
-    font-weight:800;letter-spacing:-.4px;margin:28px 0 12px;color:var(--ink);
-  }
+  .notice-body h1,.notice-body h2,.notice-body h3{font-weight:800;letter-spacing:-.4px;margin:28px 0 12px;color:var(--ink)}
   .notice-body h1{font-size:22px;border-bottom:2px solid var(--line);padding-bottom:10px}
   .notice-body h2{font-size:19px}
   .notice-body h3{font-size:16.5px}
@@ -111,31 +41,22 @@
     background:var(--soft);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
     color:var(--ink-soft);
   }
-  .notice-body code{
-    font-family:monospace;font-size:13.5px;background:var(--soft);
-    padding:1px 6px;border-radius:5px;color:var(--brand-d);
-  }
+  .notice-body code{font-family:monospace;font-size:13.5px;background:var(--soft);padding:1px 6px;border-radius:5px;color:var(--brand-d)}
   .notice-body pre{background:var(--soft);border-radius:var(--radius-sm);padding:18px;overflow-x:auto;margin-bottom:14px}
   .notice-body pre code{background:none;padding:0}
   .notice-body hr{border:none;border-top:1px solid var(--line);margin:24px 0}
   .notice-body table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:14px}
   .notice-body th,.notice-body td{border:1px solid var(--line);padding:9px 13px;text-align:left}
   .notice-body th{background:var(--soft);font-weight:700}
+  .notice-body img{max-width:100%;height:auto;border-radius:var(--radius-sm);margin:10px 0;box-shadow:var(--shadow-sm)}
 
-  /* 이미지 */
-  .notice-body img{
-    max-width:100%;height:auto;border-radius:var(--radius-sm);margin:10px 0;
-    box-shadow:var(--shadow-sm);
-  }
-
-  /* 첨부파일 영역 (GitHub 업로드 파일 링크 모음) */
+  /* 첨부파일 */
   .attach-section{border-top:1px solid var(--line);padding:24px 40px;background:var(--soft)}
   .attach-section h2{font-size:14px;font-weight:700;color:var(--ink-soft);margin-bottom:14px;display:flex;align-items:center;gap:6px}
   .attach-list{display:flex;flex-direction:column;gap:8px}
   .attach-item{
     display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);
-    border-radius:10px;padding:12px 16px;font-size:14px;color:var(--ink);
-    transition:.15s;
+    border-radius:10px;padding:12px 16px;font-size:14px;color:var(--ink);transition:.15s;
   }
   .attach-item:hover{border-color:var(--brand);color:var(--brand)}
   .attach-icon{font-size:18px;flex-shrink:0}
@@ -164,41 +85,7 @@
   .spinner{width:38px;height:38px;border:3px solid var(--line);border-top-color:var(--brand);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 18px}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* 푸터 */
-  footer{background:var(--brand-d);color:rgba(255,255,255,.7);padding:32px 0;text-align:center;font-size:13px}
-  footer a{color:rgba(255,255,255,.7)}
-  footer a:hover{color:#fff}
-
-  /* 햄버거 */
-  .hamburger{
-    display:none;background:none;border:none;font-size:26px;
-    color:var(--brand);cursor:pointer;margin-left:auto;padding:4px;
-  }
-  .mobile-menu{
-    display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;
-    background:rgba(0,0,0,.4);opacity:0;transition:opacity .25s;
-  }
-  .mobile-menu.open{display:block;opacity:1}
-  .mobile-menu-panel{
-    position:absolute;top:0;right:0;width:min(320px,85vw);height:100%;
-    background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,.15);
-    padding:24px;overflow-y:auto;transform:translateX(100%);transition:transform .25s;
-  }
-  .mobile-menu.open .mobile-menu-panel{transform:translateX(0)}
-  .mobile-menu-close{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:none;background:var(--soft);border-radius:50%;font-size:20px;cursor:pointer;margin-left:auto;margin-bottom:20px}
-  .mobile-menu-nav{display:flex;flex-direction:column;gap:4px}
-  .mobile-menu-nav a{display:block;font-size:15px;font-weight:600;color:var(--ink-soft);padding:12px 16px;border-radius:var(--radius-sm);transition:.15s}
-  .mobile-menu-nav a:hover{background:var(--soft);color:var(--brand)}
-  .mobile-menu-nav a.active{background:var(--brand);color:#fff}
-  .mobile-menu-nav .disabled{color:#bbc5d4;padding:12px 16px;font-size:15px;font-weight:600}
-  .mobile-menu-divider{height:1px;background:var(--line);margin:12px 0}
-  .mobile-menu-shortcuts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
-  .mobile-menu-shortcuts a{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--brand);padding:10px 14px;background:var(--soft);border-radius:var(--radius-sm);transition:.15s}
-  .mobile-menu-shortcuts a:hover{background:var(--line)}
-
   @media(max-width:640px){
-    .nav-links,.nav-disabled,.head-tools{display:none}
-    .hamburger{display:block}
     .notice-body{padding:24px 20px}
     .attach-section{padding:18px 20px}
     .notice-nav{grid-template-columns:1fr;gap:12px}
@@ -208,71 +95,7 @@
 </head>
 <body>
 
-<!-- 클로버 SVG 심볼 -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-  <symbol id="clv" viewBox="0 0 100 100">
-    <circle cx="50" cy="32" r="17" fill="#7BCE7C"/>
-    <circle cx="32" cy="50" r="17" fill="#7BCE7C"/>
-    <circle cx="68" cy="50" r="17" fill="#7BCE7C"/>
-    <circle cx="50" cy="68" r="17" fill="#5fb260"/>
-    <circle cx="50" cy="50" r="8.5" fill="#4F6EBE"/>
-    <path d="M50 66 Q53 82 59 90" stroke="#5fb260" stroke-width="5" fill="none" stroke-linecap="round"/>
-  </symbol>
-</defs></svg>
-
-<!-- 리뉴얼 안내 배너 -->
-<div class="renewal-banner" role="note">
-  ＜충남 고교학점제 종합지원 포털 온마당＞ 현재 리뉴얼 작업 중입니다.&ensp;(2026. 7. 1. ~ 7. 31.)
-</div>
-
-<!-- 헤더 -->
-<header>
-  <div class="nav">
-    <a href="../index.html" class="brand">
-      <svg class="clover" width="38" height="38"><use href="#clv"/></svg>
-      <span class="brand-txt"><b>온마당</b><span>충남 고교학점제 종합지원</span></span>
-    </a>
-    <nav class="nav-links" aria-label="주 메뉴">
-      <span class="nav-disabled" aria-disabled="true" title="준비 중">고교학점제 안내</span>
-      <a href="../design/">진로·학업 설계</a>
-      <a href="../safety/">4대 안전망</a>
-      <a href="./index.html" class="active">알림·소통 마당</a>
-    </nav>
-    <div class="head-tools">
-      <a href="../design/majors/" class="head-link">
-        <svg class="clover" width="15" height="15"><use href="#clv"/></svg>
-        <span>대학 학과 안내</span>
-      </a>
-      <a href="../design/selector/" class="head-cta">
-        <svg class="clover" width="15" height="15"><use href="#clv"/></svg>
-        과목 선택 실습
-      </a>
-    </div>
-    <button class="hamburger" aria-label="메뉴 열기">☰</button>
-  </div>
-</header>
-
-<!-- 모바일 메뉴 -->
-<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-  <div class="mobile-menu-panel">
-    <button class="mobile-menu-close" aria-label="메뉴 닫기">✕</button>
-    <nav class="mobile-menu-nav" aria-label="모바일 메뉴">
-      <span class="disabled">고교학점제 안내</span>
-      <a href="../design/">진로·학업 설계</a>
-      <a href="../safety/">4대 안전망</a>
-      <a href="./index.html" class="active">알림·소통 마당</a>
-    </nav>
-    <div class="mobile-menu-divider"></div>
-    <div class="mobile-menu-shortcuts">
-      <a href="../design/majors/">
-        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 대학 학과 안내
-      </a>
-      <a href="../design/selector/">
-        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 과목 선택 실습
-      </a>
-    </div>
-  </div>
-</div>
+<div id="om-header" data-active="board"></div>
 
 <!-- 페이지 헤더 (JS로 채워짐) -->
 <div class="page-hero" id="page-hero">
@@ -299,16 +122,13 @@
   </div>
 </main>
 
-<!-- 푸터 -->
-<footer>
-  <p>© 2026 충청남도교육청 · <a href="../index.html">온마당 홈으로</a></p>
-</footer>
+<div id="om-footer"></div>
+<script src="../assets/js/common.js"></script>
 
 <script>
 const REPO = 'curricenterhscne/onmadang';
 const BASE = `https://api.github.com/repos/${REPO}/issues`;
 
-/* ── 라벨 → 배지 ────────────────────────────── */
 const BADGE_MAP = {
   '중요': '<span class="nb imp">중요</span>',
   '신규': '<span class="nb new">신규</span>',
@@ -319,26 +139,21 @@ function getBadges(labels) {
   return labels.filter(l => BADGE_MAP[l.name]).map(l => BADGE_MAP[l.name]).join(' ');
 }
 
-/* ── 날짜 포맷 ───────────────────────────────── */
 function fmtDate(iso) {
   const d = new Date(iso);
   return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
 }
 
-/* ── 첨부파일 링크 추출 (마크다운 본문에서) ──── */
 function extractAttachments(body) {
   if (!body) return [];
   const items = [];
-  // GitHub user-attachments CDN 파일
   const re = /\[([^\]]+)\]\((https:\/\/github\.com\/user-attachments\/[^\s)]+)\)/g;
   let m;
   while ((m = re.exec(body)) !== null) {
     items.push({ name: m[1], url: m[2] });
   }
-  // 구 방식 user-images (이미지 제외, 파일만)
   const re2 = /\[([^\]]+)\]\((https:\/\/user-images\.githubusercontent\.com\/[^\s)]+)\)/g;
   while ((m = re2.exec(body)) !== null) {
-    // 이미지 확장자는 제외 (본문에 이미 img로 표시됨)
     if (!/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(m[2])) {
       items.push({ name: m[1], url: m[2] });
     }
@@ -346,7 +161,6 @@ function extractAttachments(body) {
   return items;
 }
 
-/* ── 파일 아이콘 ─────────────────────────────── */
 function fileIcon(name) {
   const ext = (name.split('.').pop() || '').toLowerCase();
   const map = { pdf:'📄', hwp:'📝', hwpx:'📝', doc:'📝', docx:'📝',
@@ -356,12 +170,9 @@ function fileIcon(name) {
   return map[ext] || '📎';
 }
 
-/* ── marked.js 설정 (XSS 방어: sanitize는 별도 처리) ── */
 marked.setOptions({ breaks: true, gfm: true });
 
-/* ── 본문 렌더 ───────────────────────────────── */
 function renderNotice(issue, prev, next) {
-  // 1. 페이지 헤더 채우기
   document.title = `${issue.title} · 온마당 공지사항`;
   document.getElementById('hero-title').textContent = issue.title;
   document.getElementById('hero-h1').textContent   = issue.title;
@@ -372,13 +183,10 @@ function renderNotice(issue, prev, next) {
        ? `<span>수정일 <time datetime="${issue.updated_at}">${fmtDate(issue.updated_at)}</time></span>`
        : ''}`;
 
-  // 2. 마크다운 렌더링
   const rawHtml = issue.body ? marked.parse(issue.body) : '<p><em>(본문 없음)</em></p>';
-  // 외부 링크 target=_blank 처리 + rel 보안
   const safeHtml = rawHtml.replace(/<a\s+href="(https?:\/\/[^"]+)"/g,
     '<a href="$1" target="_blank" rel="noopener noreferrer"');
 
-  // 3. 첨부파일 목록
   const attachments = extractAttachments(issue.body);
   const attachHtml = attachments.length
     ? `<div class="attach-section" aria-label="첨부파일">
@@ -395,7 +203,6 @@ function renderNotice(issue, prev, next) {
        </div>`
     : '';
 
-  // 4. 이전/다음 네비
   const prevHtml = prev
     ? `<div class="nav-adj prev">
         <span class="label">◀ 이전 글</span>
@@ -419,30 +226,26 @@ function renderNotice(issue, prev, next) {
     </nav>`;
 }
 
-/* ── 이슈 번호 파싱 ──────────────────────────── */
 function getIssueId() {
   const params = new URLSearchParams(location.search);
   const id = parseInt(params.get('id'), 10);
   return isNaN(id) || id < 1 ? null : id;
 }
 
-/* ── 인접 공지 조회 (공지 라벨 기준 전후) ──── */
 async function fetchAdjacentIssues(currentId) {
   try {
-    // 공지 라벨 이슈 전체 목록 (번호순, 최대 100)
     const res = await fetch(`${BASE}?state=open&labels=공지&per_page=100&direction=desc`);
     const list = await res.json();
     const idx  = list.findIndex(i => i.number === currentId);
     return {
-      prev: idx < list.length - 1 ? list[idx + 1] : null,  // 더 오래된 글
-      next: idx > 0               ? list[idx - 1] : null,  // 더 최신 글
+      prev: idx < list.length - 1 ? list[idx + 1] : null,
+      next: idx > 0               ? list[idx - 1] : null,
     };
   } catch {
     return { prev: null, next: null };
   }
 }
 
-/* ── 메인 로드 ───────────────────────────────── */
 async function load() {
   const id = getIssueId();
   if (!id) {
@@ -460,7 +263,6 @@ async function load() {
       throw new Error(`GitHub API 오류: ${issueRes.status}`);
     }
     const issue = await issueRes.json();
-    // 공지 라벨 없는 이슈 차단
     if (!issue.labels.some(l => l.name === '공지')) {
       throw new Error('해당 공지를 찾을 수 없습니다.');
     }
@@ -486,20 +288,6 @@ function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
 function escUrl(s){ try{ return new URL(s).href }catch{ return '#' } }
 
 load();
-</script>
-
-<script>
-(function(){
-  var menu=document.getElementById('mobileMenu');
-  var openBtn=document.querySelector('.hamburger');
-  var closeBtn=menu.querySelector('.mobile-menu-close');
-  function open(){menu.classList.add('open');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
-  function close(){menu.classList.remove('open');menu.setAttribute('aria-hidden','true');document.body.style.overflow=''}
-  openBtn.addEventListener('click',open);
-  closeBtn.addEventListener('click',close);
-  menu.addEventListener('click',function(e){if(e.target===menu)close()});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open'))close()});
-})();
 </script>
 
 <script data-goatcounter="https://onmadang.goatcounter.com/count"

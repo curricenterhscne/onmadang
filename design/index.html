@@ -7,77 +7,8 @@
 <meta name="description" content="진로·학업 설계 5단계 — 자기 이해부터 과목 선택 실습, 종합 보고서까지">
 <title>진로·학업 설계 · 온마당</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../assets/css/common.css">
 <style>
-  :root{
-    --bg:#DAF2FC; --brand:#4F6EBE; --brand-d:#3a539b; --brand-l:#6d8ad6;
-    --accent:#7BCE7C; --accent-d:#5fb260; --online:#7EC8E3; --online-d:#2a8db5;
-    --ink:#1f2b44; --ink-soft:#51607d; --ink-faint:#8597ad;
-    --line:#c5dcef; --surface:#fff; --soft:#eef7fc;
-    --radius:18px; --radius-sm:12px; --radius-pill:999px;
-    --shadow:0 6px 24px rgba(79,110,190,.13);
-    --shadow-sm:0 2px 10px rgba(79,110,190,.10);
-    --shadow-lg:0 14px 40px rgba(79,110,190,.18);
-    --maxw:860px;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    font-family:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
-    background:var(--bg);color:var(--ink);line-height:1.7;
-    -webkit-font-smoothing:antialiased;
-  }
-  a{text-decoration:none;color:inherit}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-  .clover{display:inline-block;vertical-align:middle}
-
-  /* 리뉴얼 배너 */
-  .renewal-banner{
-    background:#e8edf8;border-bottom:1px solid #c0cce8;
-    color:var(--brand-d);text-align:center;
-    font-size:13.5px;font-weight:600;padding:11px 20px;line-height:1.6;
-  }
-
-  /* 헤더 */
-  header{
-    position:sticky;top:0;z-index:100;
-    background:rgba(255,255,255,.88);backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav{display:flex;align-items:center;gap:16px;height:68px;max-width:1180px;margin:0 auto;padding:0 24px}
-  .brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
-  .brand-txt b{font-size:18px;color:var(--brand);font-weight:800;display:block;letter-spacing:-.4px;line-height:1.1}
-  .brand-txt span{font-size:10.5px;color:var(--ink-soft);font-weight:500}
-  .nav-links{display:flex;gap:4px;margin-left:20px;flex:1}
-  .nav-links a{
-    font-size:14px;font-weight:600;color:var(--ink-soft);
-    padding:8px 14px;border-radius:var(--radius-pill);transition:.18s;
-  }
-  .nav-links a:hover{background:var(--soft);color:var(--brand)}
-  .nav-links a.active{background:var(--brand);color:#fff}
-  .nav-disabled{
-    font-size:14px;font-weight:600;color:#bbc5d4;
-    padding:8px 13px;border-radius:var(--radius-pill);
-    cursor:default;pointer-events:none;user-select:none;
-  }
-  .head-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
-  .head-link{
-    display:flex;align-items:center;gap:5px;flex-shrink:0;
-    background:#fff;color:var(--brand);font-weight:700;font-size:13.5px;
-    padding:9px 16px;border-radius:var(--radius-pill);
-    border:1.5px solid var(--brand);transition:.18s;
-  }
-  .head-link:hover{background:var(--soft)}
-  .head-cta{
-    display:flex;align-items:center;gap:6px;flex-shrink:0;
-    background:var(--accent);color:#1c3d1d;font-weight:700;font-size:13.5px;
-    padding:9px 16px;border-radius:var(--radius-pill);transition:.18s;
-  }
-  .head-cta:hover{background:var(--accent-d)}
-
-  /* 페이지 헤더 */
-  .page-hero{background:linear-gradient(135deg,var(--brand),var(--brand-l));color:#fff;padding:52px 0 44px}
-  .page-hero h1{font-size:clamp(24px,3.5vw,34px);font-weight:800;letter-spacing:-.8px;margin-bottom:8px}
-  .page-hero p{font-size:14.5px;opacity:.85}
   .breadcrumb{font-size:13px;margin-bottom:14px;opacity:.7}
   .breadcrumb a{color:#fff;opacity:.85}
   .breadcrumb a:hover{opacity:1}
@@ -130,121 +61,20 @@
   }
   .t-link:hover{background:var(--brand);color:#fff}
 
-  /* 푸터 */
-  footer{background:var(--brand-d);color:rgba(255,255,255,.7);padding:32px 0;text-align:center;font-size:13px}
-  footer a{color:rgba(255,255,255,.7)}
-  footer a:hover{color:#fff}
-
-  /* 햄버거 */
-  .hamburger{
-    display:none;background:none;border:none;font-size:26px;
-    color:var(--brand);cursor:pointer;margin-left:auto;padding:4px;
-  }
-  .mobile-menu{
-    display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;
-    background:rgba(0,0,0,.4);opacity:0;transition:opacity .25s;
-  }
-  .mobile-menu.open{display:block;opacity:1}
-  .mobile-menu-panel{
-    position:absolute;top:0;right:0;width:min(320px,85vw);height:100%;
-    background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,.15);
-    padding:24px;overflow-y:auto;transform:translateX(100%);transition:transform .25s;
-  }
-  .mobile-menu.open .mobile-menu-panel{transform:translateX(0)}
-  .mobile-menu-close{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:none;background:var(--soft);border-radius:50%;font-size:20px;cursor:pointer;margin-left:auto;margin-bottom:20px}
-  .mobile-menu-nav{display:flex;flex-direction:column;gap:4px}
-  .mobile-menu-nav a{display:block;font-size:15px;font-weight:600;color:var(--ink-soft);padding:12px 16px;border-radius:var(--radius-sm);transition:.15s}
-  .mobile-menu-nav a:hover{background:var(--soft);color:var(--brand)}
-  .mobile-menu-nav a.active{background:var(--brand);color:#fff}
-  .mobile-menu-nav .disabled{color:#bbc5d4;padding:12px 16px;font-size:15px;font-weight:600}
-  .mobile-menu-divider{height:1px;background:var(--line);margin:12px 0}
-  .mobile-menu-shortcuts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
-  .mobile-menu-shortcuts a{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--brand);padding:10px 14px;background:var(--soft);border-radius:var(--radius-sm);transition:.15s}
-  .mobile-menu-shortcuts a:hover{background:var(--line)}
-
-  @media(max-width:900px){
-    .head-link span{display:none}
-  }
-  @media(max-width:680px){
-    .nav-links,.nav-disabled,.head-tools{display:none}
-    .hamburger{display:block}
-    .flow{grid-template-columns:1fr}
-    .flow::before{display:none}
-    .tool-cards{grid-template-columns:1fr}
-  }
   @media(max-width:980px){
     .flow{grid-template-columns:repeat(2,1fr)}
     .flow::before{display:none}
+  }
+  @media(max-width:680px){
+    .flow{grid-template-columns:1fr}
+    .flow::before{display:none}
+    .tool-cards{grid-template-columns:1fr}
   }
 </style>
 </head>
 <body>
 
-<!-- 클로버 SVG 심볼 -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-  <symbol id="clv" viewBox="0 0 100 100">
-    <circle cx="50" cy="32" r="17" fill="#7BCE7C"/>
-    <circle cx="32" cy="50" r="17" fill="#7BCE7C"/>
-    <circle cx="68" cy="50" r="17" fill="#7BCE7C"/>
-    <circle cx="50" cy="68" r="17" fill="#5fb260"/>
-    <circle cx="50" cy="50" r="8.5" fill="#4F6EBE"/>
-    <path d="M50 66 Q53 82 59 90" stroke="#5fb260" stroke-width="5" fill="none" stroke-linecap="round"/>
-  </symbol>
-</defs></svg>
-
-<!-- 리뉴얼 안내 배너 -->
-<div class="renewal-banner" role="note">
-  ＜충남 고교학점제 종합지원 포털 온마당＞ 현재 리뉴얼 작업 중입니다.&ensp;(2026. 7. 1. ~ 7. 31.)
-</div>
-
-<!-- 헤더 -->
-<header>
-  <div class="nav">
-    <a href="../index.html" class="brand">
-      <svg class="clover" width="38" height="38"><use href="#clv"/></svg>
-      <span class="brand-txt"><b>온마당</b><span>충남 고교학점제 종합지원</span></span>
-    </a>
-    <nav class="nav-links" aria-label="주 메뉴">
-      <span class="nav-disabled" aria-disabled="true" title="준비 중">고교학점제 안내</span>
-      <a href="./" class="active">진로·학업 설계</a>
-      <a href="../safety/">4대 안전망</a>
-      <a href="../index.html">알림·소통 마당</a>
-    </nav>
-    <div class="head-tools">
-      <a href="./majors/" class="head-link">
-        <svg class="clover" width="15" height="15"><use href="#clv"/></svg>
-        <span>대학 학과 안내</span> →
-      </a>
-      <a href="./selector/" class="head-cta">
-        <svg class="clover" width="15" height="15"><use href="#clv"/></svg>
-        과목 선택 실습 →
-      </a>
-    </div>
-    <button class="hamburger" aria-label="메뉴 열기">☰</button>
-  </div>
-</header>
-
-<!-- 모바일 메뉴 -->
-<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-  <div class="mobile-menu-panel">
-    <button class="mobile-menu-close" aria-label="메뉴 닫기">✕</button>
-    <nav class="mobile-menu-nav" aria-label="모바일 메뉴">
-      <span class="disabled">고교학점제 안내</span>
-      <a href="./" class="active">진로·학업 설계</a>
-      <a href="../safety/">4대 안전망</a>
-      <a href="../index.html">알림·소통 마당</a>
-    </nav>
-    <div class="mobile-menu-divider"></div>
-    <div class="mobile-menu-shortcuts">
-      <a href="./majors/">
-        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 대학 학과 안내 →
-      </a>
-      <a href="./selector/">
-        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 과목 선택 실습 →
-      </a>
-    </div>
-  </div>
-</div>
+<div id="om-header" data-active="design"></div>
 
 <!-- 페이지 헤더 -->
 <div class="page-hero">
@@ -307,24 +137,7 @@
   </div>
 </main>
 
-<!-- 푸터 -->
-<footer>
-  <p>© 2026 충청남도교육청</p>
-</footer>
-
-<script>
-// 모바일 메뉴 토글
-(function(){
-  var menu=document.getElementById('mobileMenu');
-  var openBtn=document.querySelector('.hamburger');
-  var closeBtn=menu.querySelector('.mobile-menu-close');
-  function open(){menu.classList.add('open');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
-  function close(){menu.classList.remove('open');menu.setAttribute('aria-hidden','true');document.body.style.overflow=''}
-  openBtn.addEventListener('click',open);
-  closeBtn.addEventListener('click',close);
-  menu.addEventListener('click',function(e){if(e.target===menu)close()});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open'))close()});
-})();
-</script>
+<div id="om-footer"></div>
+<script src="../assets/js/common.js"></script>
 </body>
 </html>
