@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#DAF2FC">
+<title>자료실 · 온마당</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../assets/css/common.css">
+<!-- marked.js: 마크다운 → HTML 변환 (CDN, 빌드 불필요) -->
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<style>
+  .page-hero h1{font-size:clamp(20px,3vw,28px);letter-spacing:-.6px;word-break:keep-all}
+  .page-hero .meta{font-size:13.5px;opacity:.8;display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+
+  /* 카테고리 배지 (hero 안) */
+  .cb{font-size:11px;font-weight:800;padding:4px 10px;border-radius:8px;white-space:nowrap}
+  .cb.cat-form{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4)}
+  .cb.cat-manual{background:rgba(126,200,227,.3);color:#fff;border:1px solid rgba(126,200,227,.5)}
+  .cb.cat-training{background:rgba(123,206,124,.3);color:#fff;border:1px solid rgba(123,206,124,.5)}
+  .cb.cat-promo{background:rgba(180,130,210,.3);color:#fff;border:1px solid rgba(180,130,210,.5)}
+
+  /* 본문 */
+  .resource-wrap{padding:40px 0 80px}
+  .resource-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
+
+  /* 첨부파일 (본문 위) */
+  .attach-section{padding:28px 40px;background:var(--soft);border-bottom:1px solid var(--line)}
+  .attach-section h2{font-size:14px;font-weight:700;color:var(--ink-soft);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+  .attach-list{display:flex;flex-direction:column;gap:8px}
+  .attach-item{
+    display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);
+    border-radius:10px;padding:12px 16px;font-size:14px;color:var(--ink);transition:.15s;
+  }
+  .attach-item:hover{border-color:var(--brand);color:var(--brand)}
+  .attach-icon{font-size:18px;flex-shrink:0}
+  .attach-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .attach-dl{font-size:12px;color:var(--ink-faint);flex-shrink:0;white-space:nowrap}
+  .attach-item.drive{border-color:var(--online);background:#f8fcfe}
+  .attach-item.drive:hover{border-color:var(--online-d);color:var(--online-d)}
+
+  /* 마크다운 본문 스타일 */
+  .resource-body{padding:36px 40px;min-height:120px;font-size:15.5px;line-height:1.85;color:var(--ink)}
+  .resource-body h1,.resource-body h2,.resource-body h3{font-weight:800;letter-spacing:-.4px;margin:28px 0 12px;color:var(--ink)}
+  .resource-body h1{font-size:22px;border-bottom:2px solid var(--line);padding-bottom:10px}
+  .resource-body h2{font-size:19px}
+  .resource-body h3{font-size:16.5px}
+  .resource-body p{margin-bottom:14px}
+  .resource-body ul,.resource-body ol{padding-left:22px;margin-bottom:14px}
+  .resource-body li{margin-bottom:5px}
+  .resource-body a{color:var(--brand);text-decoration:underline;word-break:break-all}
+  .resource-body a:hover{color:var(--brand-d)}
+  .resource-body strong{font-weight:700}
+  .resource-body em{font-style:italic}
+  .resource-body blockquote{
+    border-left:4px solid var(--accent);margin:16px 0;padding:14px 18px;
+    background:var(--soft);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+    color:var(--ink-soft);
+  }
+  .resource-body code{font-family:monospace;font-size:13.5px;background:var(--soft);padding:1px 6px;border-radius:5px;color:var(--brand-d)}
+  .resource-body pre{background:var(--soft);border-radius:var(--radius-sm);padding:18px;overflow-x:auto;margin-bottom:14px}
+  .resource-body pre code{background:none;padding:0}
+  .resource-body hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+  .resource-body table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:14px}
+  .resource-body th,.resource-body td{border:1px solid var(--line);padding:9px 13px;text-align:left}
+  .resource-body th{background:var(--soft);font-weight:700}
+  .resource-body img{max-width:100%;height:auto;border-radius:var(--radius-sm);margin:10px 0;box-shadow:var(--shadow-sm)}
+
+  /* 본문 없음 안내 */
+  .no-body{padding:24px 40px;color:var(--ink-faint);font-size:14px;font-style:italic}
+
+  /* 하단 네비 */
+  .resource-nav{border-top:1px solid var(--line);display:grid;grid-template-columns:1fr auto 1fr;gap:8px;padding:16px 24px;align-items:center}
+  .nav-adj{display:flex;flex-direction:column;gap:3px;overflow:hidden}
+  .nav-adj .label{font-size:11.5px;color:var(--ink-faint);font-weight:600}
+  .nav-adj a{font-size:14px;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:.15s}
+  .nav-adj a:hover{color:var(--brand)}
+  .nav-adj.next{text-align:right}
+  .back-btn{
+    display:inline-flex;align-items:center;gap:6px;background:var(--brand);color:#fff;
+    font-size:14px;font-weight:700;padding:11px 22px;border-radius:var(--radius-pill);transition:.18s;
+    white-space:nowrap;
+  }
+  .back-btn:hover{background:var(--brand-d)}
+
+  /* 로딩·에러 */
+  .state-box{padding:80px 24px;text-align:center;color:var(--ink-faint)}
+  .state-box .ico{font-size:44px;margin-bottom:16px}
+  .state-box p{font-size:16px;margin-bottom:8px}
+  .state-box small{font-size:13px}
+  .spinner{width:38px;height:38px;border:3px solid var(--line);border-top-color:var(--brand);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 18px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  @media(max-width:640px){
+    .resource-body{padding:24px 20px}
+    .attach-section{padding:18px 20px}
+    .resource-nav{grid-template-columns:1fr;gap:12px}
+    .nav-adj.next{text-align:left}
+    .no-body{padding:18px 20px}
+  }
+</style>
+</head>
+<body>
+
+<div id="om-header" data-active="board"></div>
+
+<!-- 페이지 헤더 (JS로 채워짐) -->
+<div class="page-hero" id="page-hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="이동 경로">
+      <a href="../index.html">홈</a> ›
+      <a href="./resources.html">자료실</a> ›
+      <strong id="hero-title">불러오는 중…</strong>
+    </nav>
+    <h1 id="hero-h1"></h1>
+    <div class="meta" id="hero-meta"></div>
+  </div>
+</div>
+
+<!-- 자료 본문 -->
+<main class="resource-wrap">
+  <div class="wrap">
+    <div class="resource-card" id="resource-card">
+      <div class="state-box">
+        <div class="spinner" role="status" aria-label="불러오는 중"></div>
+        <p>자료를 불러오는 중입니다…</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="om-footer"></div>
+<script src="../assets/js/common.js"></script>
+
+<script>
+const REPO = 'curricenterhscne/onmadang';
+const BASE = `https://api.github.com/repos/${REPO}/issues`;
+
+const CAT_MAP = {
+  '서식':   { cls: 'cat-form',     text: '서식' },
+  '매뉴얼': { cls: 'cat-manual',   text: '매뉴얼' },
+  '연수자료':{ cls: 'cat-training', text: '연수자료' },
+  '홍보자료':{ cls: 'cat-promo',    text: '홍보자료' },
+};
+
+function getCatBadge(labels) {
+  for (const l of labels) {
+    const cat = CAT_MAP[l.name];
+    if (cat) return `<span class="cb ${cat.cls}">${cat.text}</span>`;
+  }
+  return '';
+}
+
+function fmtDate(iso) {
+  const d = new Date(iso);
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function extractAttachments(body) {
+  if (!body) return [];
+  const items = [];
+
+  // GitHub 첨부파일
+  const re1 = /\[([^\]]+)\]\((https:\/\/github\.com\/user-attachments\/[^\s)]+)\)/g;
+  let m;
+  while ((m = re1.exec(body)) !== null) {
+    items.push({ name: m[1], url: m[2], type: 'github' });
+  }
+  const re2 = /\[([^\]]+)\]\((https:\/\/user-images\.githubusercontent\.com\/[^\s)]+)\)/g;
+  while ((m = re2.exec(body)) !== null) {
+    if (!/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(m[2])) {
+      items.push({ name: m[1], url: m[2], type: 'github' });
+    }
+  }
+
+  // Google Drive 링크
+  const reDrive = /\[([^\]]+)\]\((https:\/\/drive\.google\.com\/[^\s)]+)\)/g;
+  while ((m = reDrive.exec(body)) !== null) {
+    items.push({ name: m[1], url: m[2], type: 'drive' });
+  }
+
+  return items;
+}
+
+function stripAttachmentLinks(body) {
+  if (!body) return '';
+  // GitHub 첨부 링크 제거 (이미지가 아닌 것)
+  let cleaned = body.replace(/\[([^\]]+)\]\((https:\/\/github\.com\/user-attachments\/[^\s)]+)\)\n?/g, '');
+  cleaned = cleaned.replace(/\[([^\]]+)\]\((https:\/\/user-images\.githubusercontent\.com\/[^\s)]+)\)\n?/g, (match, name, url) => {
+    if (/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(url)) return match; // 이미지는 유지
+    return '';
+  });
+  // Google Drive 링크 제거
+  cleaned = cleaned.replace(/\[([^\]]+)\]\((https:\/\/drive\.google\.com\/[^\s)]+)\)\n?/g, '');
+  return cleaned.trim();
+}
+
+function fileIcon(name) {
+  const ext = (name.split('.').pop() || '').toLowerCase();
+  const map = { pdf:'📄', hwp:'📝', hwpx:'📝', doc:'📝', docx:'📝',
+                xls:'📊', xlsx:'📊', ppt:'📊', pptx:'📊',
+                zip:'🗜️', '7z':'🗜️', rar:'🗜️',
+                png:'🖼️', jpg:'🖼️', jpeg:'🖼️', gif:'🖼️', webp:'🖼️' };
+  return map[ext] || '📎';
+}
+
+marked.setOptions({ breaks: true, gfm: true });
+
+function renderResource(issue, prev, next) {
+  document.title = `${issue.title} · 온마당 자료실`;
+  document.getElementById('hero-title').textContent = issue.title;
+  document.getElementById('hero-h1').textContent   = issue.title;
+  document.getElementById('hero-meta').innerHTML =
+    `${getCatBadge(issue.labels)}
+     <span>등록일 <time datetime="${issue.created_at}">${fmtDate(issue.created_at)}</time></span>
+     ${issue.updated_at !== issue.created_at
+       ? `<span>수정일 <time datetime="${issue.updated_at}">${fmtDate(issue.updated_at)}</time></span>`
+       : ''}`;
+
+  // 첨부파일 추출
+  const attachments = extractAttachments(issue.body);
+  const attachHtml = attachments.length
+    ? `<div class="attach-section" aria-label="첨부파일">
+        <h2>📎 첨부파일 (${attachments.length}개)</h2>
+        <div class="attach-list">
+          ${attachments.map(a => {
+            const isDrive = a.type === 'drive';
+            const icon = isDrive ? '☁️' : fileIcon(a.name);
+            const dlLabel = isDrive ? 'Google Drive에서 다운로드' : '다운로드 ↓';
+            const cls = isDrive ? 'attach-item drive' : 'attach-item';
+            return `<a class="${cls}" href="${escUrl(a.url)}" target="_blank" rel="noopener noreferrer"${isDrive ? '' : ' download'}>
+              <span class="attach-icon" aria-hidden="true">${icon}</span>
+              <span class="attach-name">${escHtml(a.name)}</span>
+              <span class="attach-dl">${dlLabel}</span>
+            </a>`;
+          }).join('')}
+        </div>
+       </div>`
+    : '';
+
+  // 본문: 첨부 링크 제거 후 마크다운 렌더링
+  const cleanedBody = stripAttachmentLinks(issue.body);
+  let bodyHtml = '';
+  if (cleanedBody) {
+    const rawHtml = marked.parse(cleanedBody);
+    const safeHtml = rawHtml.replace(/<a\s+href="(https?:\/\/[^"]+)"/g,
+      '<a href="$1" target="_blank" rel="noopener noreferrer"');
+    bodyHtml = `<div class="resource-body" aria-label="자료 설명">${safeHtml}</div>`;
+  } else if (!attachments.length) {
+    bodyHtml = `<div class="no-body">(본문 없음)</div>`;
+  }
+
+  // 이전/다음
+  const prevHtml = prev
+    ? `<div class="nav-adj prev">
+        <span class="label">◀ 이전 자료</span>
+        <a href="./resource-view.html?id=${prev.number}">${escHtml(prev.title)}</a>
+       </div>`
+    : `<div></div>`;
+  const nextHtml = next
+    ? `<div class="nav-adj next">
+        <span class="label">다음 자료 ▶</span>
+        <a href="./resource-view.html?id=${next.number}">${escHtml(next.title)}</a>
+       </div>`
+    : `<div></div>`;
+
+  document.getElementById('resource-card').innerHTML = `
+    ${attachHtml}
+    ${bodyHtml}
+    <nav class="resource-nav" aria-label="인접 자료">
+      ${prevHtml}
+      <a class="back-btn" href="./resources.html">목록으로</a>
+      ${nextHtml}
+    </nav>`;
+}
+
+function getIssueId() {
+  const params = new URLSearchParams(location.search);
+  const id = parseInt(params.get('id'), 10);
+  return isNaN(id) || id < 1 ? null : id;
+}
+
+async function fetchAdjacentIssues(currentId) {
+  try {
+    const res = await fetch(`${BASE}?state=open&labels=자료&per_page=100&direction=desc`);
+    const list = await res.json();
+    const idx  = list.findIndex(i => i.number === currentId);
+    return {
+      prev: idx < list.length - 1 ? list[idx + 1] : null,
+      next: idx > 0               ? list[idx - 1] : null,
+    };
+  } catch {
+    return { prev: null, next: null };
+  }
+}
+
+async function load() {
+  const id = getIssueId();
+  if (!id) {
+    showError('잘못된 접근입니다.', '자료 번호가 올바르지 않습니다.');
+    return;
+  }
+
+  try {
+    const [issueRes, adjacent] = await Promise.all([
+      fetch(`${BASE}/${id}`),
+      fetchAdjacentIssues(id),
+    ]);
+    if (!issueRes.ok) {
+      if (issueRes.status === 404) throw new Error('해당 자료를 찾을 수 없습니다.');
+      throw new Error(`GitHub API 오류: ${issueRes.status}`);
+    }
+    const issue = await issueRes.json();
+    if (!issue.labels.some(l => l.name === '자료')) {
+      throw new Error('해당 자료를 찾을 수 없습니다.');
+    }
+    renderResource(issue, adjacent.prev, adjacent.next);
+  } catch (err) {
+    showError('자료를 불러오지 못했습니다.', err.message);
+  }
+}
+
+function showError(msg, detail) {
+  document.getElementById('hero-title').textContent = '오류';
+  document.getElementById('hero-h1').textContent    = msg;
+  document.getElementById('resource-card').innerHTML = `
+    <div class="state-box">
+      <div class="ico">⚠️</div>
+      <p>${escHtml(msg)}</p>
+      <small>${escHtml(detail || '')}</small>
+      <p style="margin-top:20px"><a href="./resources.html" style="color:var(--brand)">← 목록으로 돌아가기</a></p>
+    </div>`;
+}
+
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+function escUrl(s){ try{ return new URL(s).href }catch{ return '#' } }
+
+load();
+</script>
+
+<script data-goatcounter="https://onmadang.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
