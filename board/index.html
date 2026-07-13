@@ -254,8 +254,10 @@ async function loadPage(page) {
       fetchIssues(page, currentFilter),
       currentPage === 1 ? fetchTotal(currentFilter) : Promise.resolve(totalCount),
     ]);
-    if (currentPage === 1) totalCount = total;
-
+    if (currentPage === 1) {
+      totalCount = total;
+      if (data.length < PER) totalCount = data.length;
+    }
     document.getElementById('total-count').textContent = `총 ${totalCount}건`;
     document.getElementById('list-area').innerHTML = renderList(data);
     renderPagination(totalCount, page);
