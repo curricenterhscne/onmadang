@@ -234,7 +234,7 @@ function getIssueId() {
 
 async function fetchAdjacentIssues(currentId) {
   try {
-    const res = await fetch(`${BASE}?state=open&labels=공지&per_page=100&direction=desc`);
+    const res = await cachedFetch(`${BASE}?state=open&labels=공지&per_page=100&direction=desc`);
     const list = await res.json();
     const idx  = list.findIndex(i => i.number === currentId);
     return {
@@ -255,7 +255,7 @@ async function load() {
 
   try {
     const [issueRes, adjacent] = await Promise.all([
-      fetch(`${BASE}/${id}`),
+      cachedFetch(`${BASE}/${id}`),
       fetchAdjacentIssues(id),
     ]);
     if (!issueRes.ok) {
