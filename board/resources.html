@@ -11,7 +11,7 @@
 <style>
   /* 게시판 */
   .board-wrap{padding:40px 0 80px}
-  .board-box{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
+  .board-box{background:var(--surface);border-radius:0 var(--radius) var(--radius) var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
 
   /* 필터 바 */
   .filter-bar{display:flex;align-items:center;gap:10px;padding:18px 24px;border-bottom:1px solid var(--line);flex-wrap:wrap}
@@ -99,17 +99,14 @@
   </div>
 </div>
 
-<!-- 게시판 탭 -->
-<div class="wrap" style="padding-top:24px">
-  <nav class="board-tab" aria-label="게시판 탭">
-    <a href="./index.html" class="tab-item">공지사항</a>
-    <a href="./resources.html" class="tab-item active" aria-current="page">자료실</a>
-  </nav>
-</div>
-
 <!-- 게시판 본문 -->
 <main class="board-wrap">
   <div class="wrap">
+    <!-- 게시판 탭 -->
+    <nav class="board-tab" aria-label="게시판 탭">
+      <a href="./index.html" class="tab-item">공지사항</a>
+      <a href="./resources.html" class="tab-item active" aria-current="page">자료실</a>
+    </nav>
     <div class="board-box">
 
       <!-- 필터 바 -->
