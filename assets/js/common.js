@@ -17,7 +17,7 @@
     home:     base + 'index.html',
     design:   base + 'design/',
     safety:   base + 'safety/',
-    board:    base + 'index.html',
+    board:    base + 'board/',
     majors:   base + 'design/majors/',
     selector: base + 'design/selector/',
     apply:    base + 'apply/'
