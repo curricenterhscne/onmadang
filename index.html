@@ -66,6 +66,15 @@
   .pg-btn:hover{border-color:var(--brand);color:var(--brand)}
   .pg-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
   .pg-btn:disabled{opacity:.35;cursor:default;pointer-events:none}
+
+  /* 게시판 탭 */
+  .board-tab{display:flex;gap:4px}
+  .tab-item{
+    font-size:14px;font-weight:600;padding:10px 20px;border-radius:var(--radius) var(--radius) 0 0;
+    color:var(--ink-soft);background:var(--soft);border:1px solid var(--line);border-bottom:none;transition:.15s;
+  }
+  .tab-item:hover{color:var(--brand)}
+  .tab-item.active{background:var(--surface);color:var(--brand);border-bottom:2px solid var(--surface);margin-bottom:-1px;position:relative}
 </style>
 </head>
 <body>
@@ -75,9 +84,20 @@
 <!-- ── 페이지 헤더 ── -->
 <div class="page-hero">
   <div class="wrap">
+    <nav class="breadcrumb" aria-label="이동 경로">
+      <a href="./index.html">홈</a> › <span>알림·소통 마당</span> › <strong>공지사항</strong>
+    </nav>
     <h1>공지사항</h1>
     <p>충남 고교학점제 관련 주요 안내와 공지를 확인하세요.</p>
   </div>
+</div>
+
+<!-- 게시판 탭 -->
+<div class="wrap" style="padding-top:24px">
+  <nav class="board-tab" aria-label="게시판 탭">
+    <a href="./index.html" class="tab-item active" aria-current="page">공지사항</a>
+    <a href="./board/resources.html" class="tab-item">자료실</a>
+  </nav>
 </div>
 
 <!-- ── 게시판 본문 ── -->
