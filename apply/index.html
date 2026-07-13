@@ -134,7 +134,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
 /* ── Modals ── */
 .backdrop{position:fixed;inset:0;background:rgba(21,36,96,.55);
   backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
-  z-index:200;display:flex;align-items:center;justify-content:center;padding:12px}
+  z-index:9100;display:flex;align-items:center;justify-content:center;padding:12px}
 .modal{background:var(--white);border-radius:var(--r);box-shadow:var(--sh2);
   width:100%;max-width:480px;max-height:92vh;overflow-y:auto;display:flex;flex-direction:column}
 .modal-head{display:flex;align-items:flex-start;justify-content:space-between;
@@ -168,7 +168,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
 .school-wrap{position:relative}
 .school-dd{position:absolute;top:calc(100% + 2px);left:0;right:0;background:var(--white);
   border:1.5px solid var(--g200);border-radius:8px;box-shadow:var(--sh2);
-  max-height:200px;overflow-y:auto;z-index:300;display:none;list-style:none;padding:0}
+  max-height:200px;overflow-y:auto;z-index:9200;display:none;list-style:none;padding:0}
 .school-dd li{padding:9px 11px;cursor:pointer;font-size:13px;
   border-bottom:1px solid var(--g100);transition:background .1s}
 .school-dd li:last-child{border-bottom:none}
@@ -235,7 +235,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
 /* ── Toast ── */
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
   background:#1e293b;color:#fff;padding:11px 18px;border-radius:24px;
-  font-size:13px;font-weight:600;box-shadow:var(--sh2);z-index:400;
+  font-size:13px;font-weight:600;box-shadow:var(--sh2);z-index:9300;
   opacity:0;transition:opacity .25s;pointer-events:none;max-width:88vw;text-align:center}
 .toast.success{background:var(--mint)}
 .toast.error{background:var(--red)}
@@ -411,14 +411,14 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
       <a href="../design/selector/" class="om-link">과목 선택 실습</a>
       <a href="./" class="om-cta">수강신청</a>
     </div>
-    <button class="om-hamburger" aria-label="메뉴 열기" onclick="document.getElementById('omMobileMenu').classList.add('open')">☰</button>
+    <button class="om-hamburger" aria-label="메뉴 열기" onclick="omMenuOpen()">☰</button>
   </div>
 </header>
 
 <!-- 온마당 모바일 메뉴 -->
 <div class="om-mobile-menu" id="omMobileMenu" aria-hidden="true">
   <div class="om-mobile-panel">
-    <button class="om-mobile-close" aria-label="메뉴 닫기" onclick="document.getElementById('omMobileMenu').classList.remove('open')">✕</button>
+    <button class="om-mobile-close" aria-label="메뉴 닫기" onclick="omMenuClose()">✕</button>
     <nav class="om-mobile-nav" aria-label="모바일 메뉴">
       <a href="../design/">진로·학업 설계</a>
       <a href="../safety/">4대 안전망</a>
@@ -436,6 +436,17 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
   </div>
 </div>
 </div><!-- /.onmadang-wrap -->
+
+<script>
+// 온마당 모바일 메뉴
+(function(){
+  var menu=document.getElementById('omMobileMenu');
+  window.omMenuOpen=function(){menu.classList.add('open');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'};
+  window.omMenuClose=function(){menu.classList.remove('open');menu.setAttribute('aria-hidden','true');document.body.style.overflow=''};
+  menu.addEventListener('click',function(e){if(e.target===menu)omMenuClose()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open'))omMenuClose()});
+})();
+</script>
 
 <!-- ══ Hero ══ -->
 <header class="hero">
