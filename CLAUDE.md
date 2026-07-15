@@ -62,12 +62,32 @@
 **①↔② 브리지**: 학과 모달 → `?want=&core=&majorId=` 파라미터 → selector 자동선택 → 토스트.
 이 로직은 ①②가 이미 보유. 브리지 URL은 상대경로(`../selector/`)로 연결.
 
+## 앱·모듈 레지스트리
+
+이 레포에는 여러 독립적인 앱/모듈이 공존한다.
+**각 폴더의 `CLAUDE.md`에 해당 앱의 상세 컨텍스트가 있으므로 반드시 참조할 것.**
+
+| 폴더 | 성격 | 공통 헤더/푸터 | 핵심 파일 | 비고 |
+|---|---|---|---|---|
+| `apply/` | 수강신청 앱 (Supabase) | ❌ 독립 | `index.html`, `_embed_data.js` | 실시간 좌석 예약 |
+| `dual_credit/` | 강좌 안내·카탈로그 | ✅ 사용 | `index.html`, `courses.html` | DATA 인라인 |
+| `design/majors/` | 대학 학과 안내 (자산①) | ❌ CDN DS | `index.html`, `app.js` | 기존 로직 유지 |
+| `design/selector/` | 과목 선택 실습 (자산②) | ❌ CDN DS | `index.html`, `guide.html` | 기존 로직 유지 |
+| `board/` | 공지·자료실 | ✅ 사용 | `index.html`, `resources.html` | GitHub Issues API |
+| `safety/` | 4대 안전망 페이지들 | ✅ 사용 | 5개 HTML | 정적 콘텐츠 |
+| `off-campus_courses/` | 학교 밖 교육 강좌 | ✅ 사용 | `index.html` | — |
+
+### 데이터 동기화 주의
+
+`apply/_embed_data.js`와 `dual_credit/courses.html`은 **동일한 14개 강좌 데이터**를 각각 보유한다 (필드명이 다름).
+강좌 정보 수정 시 **반드시 양쪽 동시 수정**. 자세한 필드 매핑은 각 폴더의 CLAUDE.md 참조.
+
 ## 작업 방식
 
 - `prompts/` 폴더의 단계별 프롬프트를 순서대로 사용.
 - 각 단계 완료 후 의미 단위로 커밋(메시지는 한국어).
 - 콘텐츠 텍스트는 플레이스홀더로 두고, 팀이 교체할 수 있게 한다.
-- 공지·자료는 코드가 아닌 `board/data/*.json`으로 분리.
+- 새로운 앱/모듈 추가 시 해당 폴더에 `CLAUDE.md`를 작성하고 위 레지스트리에 등록.
 
 ## 하지 말 것
 
