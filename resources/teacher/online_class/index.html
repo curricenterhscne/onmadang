@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026학년도 1학기 참학력 온라인 공동교육과정 교수·학습 도움 자료집</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a2230;
+  --ink-soft:#414c5e;
+  --ink-faint:#6b7688;
+  --paper:#f6f4ee;
+  --paper-2:#fbfaf6;
+  --card:#ffffff;
+  --line:#e2ddd1;
+  --line-strong:#cfc8b8;
+  --sea:#1f5f6b;          /* 참학력 signature — 충남 바다/청람 */
+  --sea-deep:#123c45;
+  --sea-tint:#e6f0f0;
+  --gold:#b7883a;
+  --gold-tint:#f4ebd8;
+  /* category accents */
+  --cat-health:#c05353;
+  --cat-science:#2f7d8a;
+  --cat-humanities:#7a5aa8;
+  --cat-engineer:#3a6ea5;
+  --cat-work:#b07a2e;
+  --cat-art:#4a8c5f;
+  --cat-etc:#7a7a7a;
+  --shadow:0 1px 2px rgba(26,34,48,.06),0 8px 28px -12px rgba(26,34,48,.18);
+  --shadow-lg:0 2px 4px rgba(26,34,48,.08),0 24px 60px -24px rgba(26,34,48,.32);
+  --radius:14px;
+  --sans:'IBM Plex Sans KR',system-ui,sans-serif;
+  --serif:'Gowun Batang',serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sidebar-w:312px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:var(--sans);color:var(--ink);
+  background:var(--paper);line-height:1.72;
+  font-weight:400;-webkit-font-smoothing:antialiased;
+  font-feature-settings:"tnum";
+}
+a{color:inherit}
+
+/* ===================== LAYOUT ===================== */
+.shell{display:flex;min-height:100vh}
+.sidebar{
+  width:var(--sidebar-w);flex:0 0 var(--sidebar-w);
+  background:linear-gradient(178deg,var(--sea-deep),var(--sea) 62%,#1a555f);
+  color:#eaf2f1;position:sticky;top:0;height:100vh;
+  display:flex;flex-direction:column;
+  border-right:1px solid rgba(0,0,0,.15);
+  z-index:40;
+}
+.sb-head{padding:26px 24px 18px;border-bottom:1px solid rgba(255,255,255,.13)}
+.sb-kicker{
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:#a9d2d1;font-weight:600;margin-bottom:9px;
+}
+.sb-title{
+  font-family:var(--serif);font-weight:700;font-size:19px;line-height:1.42;
+  color:#fff;margin:0;
+}
+.sb-sub{font-size:12px;color:#bcdad9;margin-top:8px;letter-spacing:.01em}
+.sb-search{padding:16px 18px 8px}
+.search-wrap{position:relative}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.55}
+#search{
+  width:100%;padding:10px 12px 10px 36px;border-radius:9px;
+  border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.09);
+  color:#fff;font-family:var(--sans);font-size:13.5px;outline:none;
+}
+#search::placeholder{color:#a9c7c6}
+#search:focus{border-color:#8fd0ce;background:rgba(255,255,255,.14)}
+.sb-nav{flex:1;overflow-y:auto;padding:6px 10px 24px}
+.sb-nav::-webkit-scrollbar{width:8px}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:4px}
+.nav-home{
+  display:flex;align-items:center;gap:9px;width:100%;text-align:left;
+  padding:10px 12px;margin:8px 4px 4px;border-radius:9px;cursor:pointer;
+  background:transparent;border:none;color:#dcecec;font-family:var(--sans);
+  font-size:13.5px;font-weight:500;
+}
+.nav-home:hover{background:rgba(255,255,255,.09)}
+.nav-home.active{background:rgba(255,255,255,.16);color:#fff}
+.nav-cat{margin-top:14px}
+.nav-cat-label{
+  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:#8fbdbc;font-weight:600;padding:4px 14px;margin-bottom:2px;
+  display:flex;align-items:center;gap:7px;
+}
+.nav-cat-dot{width:7px;height:7px;border-radius:50%;flex:0 0 7px}
+.nav-item{
+  display:block;width:calc(100% - 8px);text-align:left;margin:1px 4px;
+  padding:8px 12px 8px 30px;border-radius:8px;cursor:pointer;
+  background:transparent;border:none;color:#cfe3e2;font-family:var(--sans);
+  font-size:13px;line-height:1.4;position:relative;transition:background .12s;
+}
+.nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-item.active{background:rgba(255,255,255,.17);color:#fff;font-weight:500}
+.nav-item .ni-sub{margin-left:6px;color:#94c1c0;font-size:11.5px}
+.nav-item.active .ni-sub{color:#c9e6e5}
+.nav-item::before{
+  content:"";position:absolute;left:15px;top:50%;transform:translateY(-50%);
+  width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.4;
+}
+.sb-foot{padding:12px 20px;border-top:1px solid rgba(255,255,255,.12);font-size:11px;color:#a9c7c6}
+
+.main{flex:1;min-width:0;position:relative}
+.topbar{
+  display:none;position:sticky;top:0;z-index:30;
+  background:var(--sea-deep);color:#fff;padding:11px 16px;
+  align-items:center;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+.topbar button{background:rgba(255,255,255,.14);border:none;color:#fff;
+  width:38px;height:38px;border-radius:9px;cursor:pointer;font-size:18px;
+  display:flex;align-items:center;justify-content:center}
+.topbar .tb-title{font-family:var(--serif);font-weight:700;font-size:14.5px;line-height:1.3}
+.content{max-width:900px;margin:0 auto;padding:52px 48px 120px}
+
+/* ===================== COVER / HOME ===================== */
+.cover{
+  position:relative;border-radius:22px;overflow:hidden;
+  background:
+    radial-gradient(120% 140% at 88% -10%,rgba(183,136,58,.28),transparent 46%),
+    linear-gradient(160deg,var(--sea-deep),var(--sea) 68%,#1c5560);
+  color:#fff;padding:60px 54px 54px;margin-bottom:44px;
+  box-shadow:var(--shadow-lg);
+}
+.cover::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1.4px);
+  background-size:22px 22px;opacity:.5;mask-image:linear-gradient(120deg,transparent,black 60%);
+}
+.cover-badge{
+  display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;font-weight:600;color:#cbe6e4;
+  border:1px solid rgba(255,255,255,.28);border-radius:100px;padding:6px 15px;margin-bottom:26px;
+  position:relative;z-index:2;
+}
+.cover-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.cover h1{
+  font-family:var(--serif);font-weight:700;font-size:clamp(28px,4.4vw,46px);
+  line-height:1.28;margin:0 0 20px;position:relative;z-index:2;letter-spacing:-.01em;
+}
+.cover h1 .em{color:#f2d79a}
+.cover-lead{
+  font-size:16px;line-height:1.8;color:#dcecec;max-width:620px;
+  position:relative;z-index:2;margin:0 0 34px;
+}
+.cover-stats{display:flex;flex-wrap:wrap;gap:14px;position:relative;z-index:2}
+.cstat{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);
+  border-radius:13px;padding:15px 20px;min-width:104px;backdrop-filter:blur(4px);
+}
+.cstat .num{font-family:var(--serif);font-weight:700;font-size:29px;line-height:1;color:#fff}
+.cstat .lab{font-size:11.5px;color:#bcdad9;margin-top:7px;letter-spacing:.03em}
+
+.home-intro{margin:0 0 40px}
+.section-eyebrow{
+  display:flex;align-items:center;gap:12px;margin-bottom:18px;
+  font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--sea);
+}
+.section-eyebrow::after{content:"";flex:1;height:1px;background:var(--line-strong)}
+.home-intro p{font-size:15px;color:var(--ink-soft);max-width:680px}
+
+.cat-block{margin-bottom:40px}
+.cat-block-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
+.cat-block-head .cbh-dot{width:11px;height:11px;border-radius:50%;transform:translateY(1px)}
+.cat-block-head h3{font-size:17px;font-weight:600;margin:0}
+.cat-block-head .cbh-count{font-size:12.5px;color:var(--ink-faint);font-family:var(--mono)}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:16px}
+.subj-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 20px 18px;cursor:pointer;text-align:left;font-family:var(--sans);
+  position:relative;overflow:hidden;transition:transform .16s,box-shadow .16s,border-color .16s;
+  display:flex;flex-direction:column;min-height:150px;
+}
+.subj-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,#888)}
+.subj-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--line-strong)}
+.sc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:12px}
+.sc-subject{font-size:17px;font-weight:600;line-height:1.32;letter-spacing:-.01em}
+.sc-cur{font-size:10.5px;font-family:var(--mono);color:#fff;background:var(--c,#888);
+  padding:2px 7px;border-radius:6px;flex:0 0 auto;font-weight:500;letter-spacing:.02em}
+.sc-unit{font-size:13px;color:var(--ink-soft);line-height:1.5;margin-bottom:auto;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sc-meta{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:13px;
+  border-top:1px solid var(--line);font-size:12px;color:var(--ink-faint)}
+.sc-meta .sc-teacher{font-weight:500;color:var(--ink-soft)}
+.sc-meta .sep{opacity:.4}
+.sc-periods{margin-left:auto;font-family:var(--mono);font-size:11.5px;
+  background:var(--paper);padding:2px 8px;border-radius:6px;color:var(--ink-soft)}
+
+/* ===================== CHAPTER ===================== */
+.chapter{animation:fade .32s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.ch-hero{
+  position:relative;border-radius:20px;overflow:hidden;color:#fff;
+  padding:38px 40px 34px;margin-bottom:34px;box-shadow:var(--shadow);
+  background:linear-gradient(155deg,var(--c-deep,#234),var(--c,#456) 90%);
+}
+.ch-hero::after{content:"";position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.1) 1px,transparent 1.3px);
+  background-size:20px 20px;opacity:.4;mask-image:linear-gradient(130deg,transparent,black 70%)}
+.ch-cat{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;letter-spacing:.14em;
+  text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:16px;
+  position:relative;z-index:2}
+.ch-cat .dot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.9}
+.ch-hero h2{font-family:var(--serif);font-weight:700;font-size:clamp(24px,3.4vw,34px);
+  line-height:1.3;margin:0 0 8px;position:relative;z-index:2;letter-spacing:-.01em}
+.ch-unit{font-size:15px;color:rgba(255,255,255,.9);position:relative;z-index:2;line-height:1.55}
+.ch-hero-meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;position:relative;z-index:2}
+.chm{display:flex;align-items:center;gap:7px;font-size:13px;color:rgba(255,255,255,.92)}
+.chm svg{opacity:.8}
+.chm .code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.16);
+  padding:2px 9px;border-radius:6px}
+
+.ch-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:34px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:9px;
+  font-size:13.5px;font-weight:500;font-family:var(--sans);cursor:pointer;
+  border:1px solid var(--line-strong);background:var(--card);color:var(--ink);
+  text-decoration:none;transition:background .12s,border-color .12s,transform .1s}
+.btn:hover{background:var(--paper-2);border-color:var(--sea);transform:translateY(-1px)}
+.btn.primary{background:var(--sea);color:#fff;border-color:var(--sea)}
+.btn.primary:hover{background:var(--sea-deep)}
+.btn svg{flex:0 0 auto}
+
+/* standard callout */
+.standard-box{
+  background:linear-gradient(120deg,var(--sea-tint),#eef5f4);
+  border:1px solid #cfe4e2;border-left:4px solid var(--sea);
+  border-radius:12px;padding:20px 24px;margin-bottom:38px;
+}
+.standard-box .sb-lab{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:600;color:var(--sea);margin-bottom:9px}
+.standard-box p{margin:0;font-size:15.5px;line-height:1.72;color:var(--ink);font-family:var(--serif)}
+
+.stage-head{display:flex;align-items:center;gap:14px;margin:44px 0 22px}
+.stage-num{width:42px;height:42px;border-radius:11px;flex:0 0 42px;
+  background:var(--sea);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-weight:700;font-size:19px;box-shadow:var(--shadow)}
+.stage-head h3{font-size:20px;font-weight:600;margin:0;letter-spacing:-.01em}
+.stage-head .sh-sub{font-size:13px;color:var(--ink-faint);margin-top:2px}
+
+/* analysis grid */
+.a-grid{display:grid;gap:14px;margin-bottom:8px}
+.a-row{display:grid;grid-template-columns:132px 1fr;gap:0;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.a-row .a-lab{background:var(--paper);padding:16px 18px;font-size:13.5px;font-weight:600;
+  color:var(--sea-deep);display:flex;align-items:center;border-right:1px solid var(--line)}
+.a-row .a-val{padding:16px 20px;font-size:14.5px;color:var(--ink-soft);line-height:1.7}
+.a-val ul{margin:0;padding:0;list-style:none}
+.a-val li{position:relative;padding-left:16px;margin:4px 0}
+.a-val li::before{content:"";position:absolute;left:2px;top:11px;width:5px;height:5px;
+  border-radius:50%;background:var(--sea);opacity:.6}
+
+/* content-elements trio */
+.elements{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+.el-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+  position:relative;overflow:hidden}
+.el-card .el-head{font-size:13px;font-weight:600;color:var(--sea-deep);margin-bottom:12px;
+  padding-bottom:9px;border-bottom:1px dashed var(--line-strong);display:flex;align-items:center;gap:8px}
+.el-card .el-head .el-ic{width:22px;height:22px;border-radius:7px;background:var(--sea-tint);
+  color:var(--sea);display:flex;align-items:center;justify-content:center;flex:0 0 22px}
+.el-card ul{margin:0;padding:0;list-style:none;font-size:13.5px;color:var(--ink-soft);line-height:1.62}
+.el-card li{position:relative;padding-left:14px;margin:5px 0}
+.el-card li::before{content:"";position:absolute;left:2px;top:9px;width:4px;height:4px;
+  border-radius:50%;background:var(--sea);opacity:.55}
+.el-card p{margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.62}
+
+/* eval block */
+.eval-wrap{background:var(--gold-tint);border:1px solid #e6d3a8;border-radius:12px;
+  padding:6px 22px 8px;margin-bottom:14px}
+.eval-item{padding:15px 0;border-bottom:1px dashed #ddc9a0}
+.eval-item:last-child{border-bottom:none}
+.eval-item .ev-lab{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  color:var(--gold);margin-bottom:7px}
+.eval-item .ev-val{font-size:14px;color:var(--ink-soft);line-height:1.68}
+.eval-item ul{margin:0;padding:0;list-style:none}
+.eval-item li{position:relative;padding-left:15px;margin:4px 0}
+.eval-item li::before{content:"";position:absolute;left:3px;top:10px;width:4px;height:4px;
+  border-radius:50%;background:var(--gold)}
+
+/* lessons */
+.lessons-intro{font-size:13.5px;color:var(--ink-faint);margin:0 0 20px}
+.lesson{background:var(--card);border:1px solid var(--line);border-radius:15px;
+  margin-bottom:18px;overflow:hidden;box-shadow:0 1px 2px rgba(26,34,48,.04)}
+.lesson-head{display:flex;align-items:center;gap:16px;padding:18px 22px;cursor:pointer;
+  background:var(--paper-2);border-bottom:1px solid transparent;transition:background .14s;
+  user-select:none}
+.lesson-head:hover{background:var(--paper)}
+.lesson.open .lesson-head{border-bottom-color:var(--line)}
+.lesson-period{width:52px;height:52px;flex:0 0 52px;border-radius:12px;
+  background:var(--sea);color:#fff;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;font-family:var(--mono);line-height:1}
+.lesson-period .lp-cur{font-size:18px;font-weight:500}
+.lesson-period .lp-tot{font-size:11px;opacity:.75;margin-top:2px}
+.lesson-titles{flex:1;min-width:0}
+.lesson-topic{font-size:15.5px;font-weight:600;line-height:1.42;letter-spacing:-.01em}
+.lesson-concept{font-size:12.5px;color:var(--ink-faint);margin-top:4px;
+  display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.lesson.open .lesson-concept{-webkit-line-clamp:unset;overflow:visible}
+.lesson-chev{flex:0 0 auto;color:var(--ink-faint);transition:transform .22s}
+.lesson.open .lesson-chev{transform:rotate(180deg)}
+.lesson-body{display:none;padding:4px 22px 24px}
+.lesson.open .lesson-body{display:block;animation:fade .26s ease}
+.lb-methods{display:flex;flex-wrap:wrap;gap:7px;margin:16px 0 20px}
+.method-chip{font-size:12px;padding:5px 12px;border-radius:100px;background:var(--sea-tint);
+  color:var(--sea-deep);border:1px solid #cfe4e2;font-weight:500}
+.method-chip.off{display:none}
+.lb-concept{font-size:13.5px;color:var(--ink-soft);margin:0 0 20px;padding:12px 16px;
+  background:var(--paper);border-radius:9px;border-left:3px solid var(--line-strong)}
+.lb-concept b{color:var(--sea-deep);font-weight:600}
+.steps{display:grid;gap:0;position:relative}
+.step{display:grid;grid-template-columns:88px 1fr;gap:0;position:relative}
+.step-label{padding:6px 16px 26px 0;text-align:right;position:relative}
+.step-label .sl-name{font-size:13.5px;font-weight:600;color:var(--sea-deep)}
+.step-marker{position:absolute;right:-6px;top:9px;width:12px;height:12px;border-radius:50%;
+  background:var(--sea);border:3px solid var(--card);box-shadow:0 0 0 1px var(--line-strong);z-index:2}
+.step-content{padding:2px 0 26px 26px;border-left:2px solid var(--line);position:relative}
+.step:last-child .step-content{border-left-color:transparent}
+.step-content .sc-text{font-size:14px;color:var(--ink-soft);line-height:1.74;white-space:pre-line}
+.step-content .sc-text a{color:var(--sea);text-decoration:underline;text-underline-offset:2px;word-break:break-all}
+
+/* nav footer */
+.ch-pager{display:flex;gap:12px;margin-top:44px;padding-top:28px;border-top:1px solid var(--line)}
+.pager-btn{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:16px 20px;cursor:pointer;text-align:left;font-family:var(--sans);transition:border-color .14s,box-shadow .14s;min-width:0}
+.pager-btn:hover{border-color:var(--sea);box-shadow:var(--shadow)}
+.pager-btn.next{text-align:right}
+.pager-btn.empty{visibility:hidden}
+.pager-dir{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
+.pager-title{font-size:14.5px;font-weight:600;margin-top:5px;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* PDF modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(18,24,34,.62);z-index:90;
+  display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px)}
+.modal-backdrop.show{display:flex;animation:fade .2s ease}
+.modal{background:var(--card);border-radius:16px;width:min(1000px,100%);height:min(90vh,100%);
+  display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-lg)}
+.modal-head{display:flex;align-items:center;gap:14px;padding:15px 20px;border-bottom:1px solid var(--line)}
+.modal-head .mh-title{font-size:14.5px;font-weight:600;flex:1;min-width:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.modal-head .mh-close{width:36px;height:36px;border-radius:9px;border:1px solid var(--line);
+  background:var(--paper);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.modal-head .mh-close:hover{background:var(--line)}
+.modal iframe{flex:1;border:none;width:100%;background:#525659}
+
+.no-results{text-align:center;padding:60px 20px;color:var(--ink-faint)}
+.no-results svg{opacity:.4;margin-bottom:16px}
+.no-results p{font-size:15px;margin:0}
+
+.scrim{display:none}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:1080px){
+  .content{padding:44px 34px 110px}
+}
+@media(max-width:860px){
+  :root{--sidebar-w:290px}
+  .sidebar{position:fixed;left:0;top:0;transform:translateX(-100%);transition:transform .28s ease;
+    box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:none}
+  .topbar{display:flex}
+  .scrim{display:block;position:fixed;inset:0;background:rgba(18,24,34,.5);z-index:35;
+    opacity:0;pointer-events:none;transition:opacity .26s}
+  .scrim.show{opacity:1;pointer-events:auto}
+  .content{padding:26px 20px 100px}
+  .cover{padding:40px 28px 34px;border-radius:18px}
+  .ch-hero{padding:30px 24px 28px}
+  .a-row{grid-template-columns:104px 1fr}
+  .a-row .a-lab{padding:13px 12px;font-size:12.5px}
+  .a-row .a-val{padding:13px 15px;font-size:14px}
+  .elements{grid-template-columns:1fr}
+  .step{grid-template-columns:64px 1fr}
+  .step-label{padding-right:10px}
+  .step-label .sl-name{font-size:12.5px}
+  .step-content{padding-left:20px}
+  .ch-pager{flex-direction:column}
+}
+@media(max-width:480px){
+  .cover h1{font-size:25px}
+  .card-grid{grid-template-columns:1fr}
+  .cover-stats{gap:10px}
+  .cstat{min-width:calc(50% - 5px);padding:13px 16px}
+}
+
+/* ===================== PRINT ===================== */
+@media print{
+  .sidebar,.topbar,.ch-actions,.ch-pager,.scrim,.modal-backdrop,.lesson-chev{display:none!important}
+  body{background:#fff}
+  .main{width:100%}
+  .content{max-width:100%;padding:0}
+  .cover,.ch-hero{box-shadow:none;color:#111;background:#fff!important;
+    border:2px solid var(--sea);border-radius:0}
+  .cover::after,.ch-hero::after{display:none}
+  .cover *,.ch-hero *{color:#111!important}
+  .cover-badge,.ch-cat{border-color:#999}
+  .chapter{page-break-before:always}
+  .lesson-body{display:block!important}
+  .lesson{break-inside:avoid;box-shadow:none}
+  .subj-card{break-inside:avoid}
+  a[href^="pdf/"]{display:none}
+  .standard-box,.eval-wrap{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-head">
+      <div class="sb-kicker">충남 · 참학력 온라인 공동교육과정</div>
+      <h1 class="sb-title">2026학년도 1학기<br>교수·학습 도움 자료집</h1>
+      <div class="sb-sub">21개 과목 · 78차시 수업 설계</div>
+    </div>
+    <div class="sb-search">
+      <div class="search-wrap">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a9c7c6" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="과목·교사·키워드 검색" autocomplete="off">
+      </div>
+    </div>
+    <nav class="sb-nav" id="nav"></nav>
+    <div class="sb-foot">충청남도교육청 중등교육과</div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <div class="main">
+    <div class="topbar">
+      <button id="menuBtn" aria-label="목차 열기">☰</button>
+      <div class="tb-title">교수·학습 도움 자료집</div>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="mh-title" id="modalTitle">원본 자료</div>
+      <a class="btn" id="modalDownload" href="#" download><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>다운로드</a>
+      <button class="mh-close" id="modalClose" aria-label="닫기">✕</button>
+    </div>
+    <iframe id="modalFrame" title="원본 PDF"></iframe>
+  </div>
+</div>
+
+<script>
+window.EBOOK_DATA = [{"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(간호의기초-대산고-박지혜).pdf", "meta": {"curriculum": "2022", "subject": "간호의 기초", "teacher": "박지혜(대산고등학교)", "unit": "4. 대상자별 간호보조 3) 노인간호", "code": "간기 04-03", "standard": "노인 대상자의 건강 문제와 주로 발생하는 질환 및 노인성 질환의 특징에 대한 이해를 바탕으로 노인 대상자에게 필요한 간호 보조 업무를 수행할 수 있다.", "category": "보건·의료", "school": "대산고등학교", "teacher_name": "박지혜"}, "stage1": {"total_periods": "3", "explanation": "초고령 사회 진입에 따라 노인간호의 중요성을 인식하고, 노화로 인한 다양한 변화\n와 주요 노인성 질환의 특성을 유기적으로 이해하도록 한다. 마주온 팀보드, 구글\n스프레드시트, 퀴즈앤 보드 등 다양한 디지털 도구를 활용하여 학생 스스로 간호\n문제를 발견하고 해결책을 도출함으로써 디지털 소양과 현장 실무 능력을 기르는\n것을 강조한다.", "know": "노화의 특성, 노인성 질환(치매, 파킨슨병, 우울증)의 병태생리 및 간호", "skill": "· 주관적·객관적 자료를 분석하여 대상자의 상태 관찰 및 정보 수집하기\n· 질환별 증상을 비교 분석하여 맞춤형 간호 중재 전략 방안 도출하기\n· 증거 기반의 간호학적 사고를 통해 대상자의 간호 문제를 우선순위별로 추론하기", "value": "노인 대상자에 대한 인간 존엄성과 공감·존중, 대상자 중심의 간호 윤리 의식, 초\n고령 사회의 보건의료 문제 해결에 기여하려는 태도", "eval_goal": "· 노화에 따른 다양한 변화와 주요 노인성 질환의 특성을 유기적으로 이해하고 비\n교·분석할 수 있는가?\n· 가상의 임상 시나리오 분석을 통해 노인 대상자의 간호 문제를 우선순위별로 추\n론하고 맞춤형 간호 돕기 방안을 수립할 수 있는가?\n· 노인 대상자에 대한 인간 존엄성과 공감·존중의 태도를 바탕으로 보건의료 문제\n해결에 적극적으로 참여하는가?", "eval_content": "· 노화의 신체적·심리적·사회적 특성을 파악하고, 치매, 파킨슨병, 노년기 우울증의\n원인 및 주요 증상을 비교하여 차이점을 설명함.\n· 환자 사례에서 주증상(단서)을 찾아내어 간호 문제를 도출하고, 과학적 근거에 기\n반한 환자 중심의 간호 계획을 수립함.\n· 단순한 질병 지식 습득을 넘어 질환이 대상자의 삶에 미치는 영향을 공감하고,\n환자 중심적인 간호 윤리 의식을 나타냄.", "eval_method": "· 서술형 평가 및 관찰 평가 (디지털 구조화 및 비교 인포그래픽 구성 능력, 가상\n시나리오 분석에 따른 간호 문제 도출 및 간호 중재 계획)\n· 동료 평가 (퀴즈앤 보드를 통한 온라인 갤러리 워크 상호 평가)\n· 자기 성찰 평가 (퀴즈앤 보드를 활용한 데이터 기반 탐구 활동 소감)"}, "lessons": [{"topic": "노화(Aging), 신체적·심리적·사회적 변화, 노인에 대한\n공감, 노인 주요 질환에 대한 이해", "concept": "노화(Aging), 신체적·심리적·사회적 변화, 노인에 대한 공감", "method": "□ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 ■ 블랜디드 러닝 □ 기타( )", "period": "1/3", "steps": {"intro": "[공감하기]\n· 나의 60년 후 모습은 어떤 모습일지 노인 체험 영상을 보며 생각해보기\n(https://www.youtube.com/watch?v=U6Jlnwcxsi8)\n· 초고령 사회의 변화와 우리 삶과의 연계성 생각하기\n[생각 열기]\n· 내가 생각하는 '노화'란 무엇인지 마주온 팀보드에 생각을 표현하고 공유하기", "body": "[학습 목표 안내]\n· 노화에 따른 신체적·심리적·사회적 변화를 설명하고, 노인 주요 건강문제를 이해\n할 수 있다.\n[개념 탐구: 심리·사회적 특성]\n· 우울증 경향의 증가, 내향성 및 수동성의 증가, 은퇴로 인한 역할 상실과 소외감\n이해하기\n[개념 탐구: 노화의 신체적 특성]\n· 감각기관(시각, 청각 등), 심혈관계, 근골격계 등 주요 계통별 노화 현상 이해하기\n[개념 탐구: 주요 건강 문제]\n· 노인에게 주로 발생하는 건강문제인 치매, 파킨슨병, 우울증 질환의 특성 파악하기\n· 학습한 내용과 실제 환자 사례를 바탕으로 질환이 환자의 일상생활과 삶의 질에\n미치는 영향을 다각도로 관찰하고, 환자의 고충에 공감하며 존중하는 간호 태도 함\n양하기\n(https://www.youtube.com/watch?v=OJXYjvcFH0U -치매 및 파킨슨병 환자사례)", "closing": "[개념 정리 및 다음 차시 예고]\n· 노화의 3대 영역(신체·심리·사회) 특징 및 주요 건강문제 요약 정리\n· 주요 노인성 질환(치매, 파킨슨병, 우울증)의 비교·분석 및 사례 탐구 활동 예고"}}, {"topic": "주요 노인성 질환(치매, 파킨슨병, 우울증)의 비교·분석\n및 사례 탐구", "concept": "치매(Dementia), 파킨슨병(Parkinson's disease), 노년기 우울증, 증상 비교 및 감\n별 진단", "method": "■ 협동학습 ■ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 ■ 블랜디드 러닝 □ 기타( )", "period": "2/3", "steps": {"intro": "[학습 목표 안내]\n· 학습 목표: 디지털 임상 자료 및 질환 가이드를 활용하여 치매, 파킨슨병, 우울증\n의 특징을 비교 분석할 수 있다.", "body": "[디지털 데이터 수집 및 구조화하기]\n· 모둠별로 디지털 기기를 활용해 중앙치매센터, 질병관리청 국가건강정보포털 등\n에서 각 질환의 원인, 증상 등 단계별 데이터와 환자 사례 수집하기\n- 중앙치매센터(https://www.nid.or.kr/main/main.aspx)\n- 질병관리청 국가건강정보포털(https://health.kdca.go.kr/healthinfo/)\n· 구글 스프레드시트를 활용하여 방대한 질환 정보를 핵심 비교 항목(발병기전, 증\n상, 치료 및 간호)으로 데이터 구조화하기\n▷ 모둠별 데이터 구조화 결과물 ▷ 모둠별 데이터 구조화 결과물\n[질환별 특징 시각화 및 비교 분석]\n· 구조화한 데이터를 바탕으로 실제 환자 사례를 탐구하고, '치매 vs 파킨슨병 vs\n우울증' 삼각 비교 인포그래픽 또는 벤다이어그램 그리기"}}, {"topic": "노인성 질환 사례 분석 및 맞춤형 간호 돕기", "concept": "치매(Dementia), 파킨슨병(Parkinson's disease), 노년기 우울증 환자의 간호 문\n제를 도출하고, 환자 맞춤형 간호 돕기 방안 제안", "method": "■ 협동학습 ■ 탐구학습 ■ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 ■ 블랜디드 러닝 □ 기타( )", "period": "3/3", "steps": {"intro": "[동기 유발 및 활동 안내]\n· 2차시에서 데이터로 분석했던 질환별 특징(원인, 증상)을 다시 한번 상기하기\n· 활동 안내: 실제 병원이나 요양원에서 만날 수 있는 가상의 노인 환자 시나리오\n를 분석하여, 숨겨진 간호 문제를 찾아내고 구체적인 간호 돕기 방안을 제안하기", "body": "[모둠별 시나리오 배정 및 분석 (구글 스프레드시트 활용)]\n· 교사가 미리 준비한 3가지 유형의 시나리오(치매, 파킨슨병, 노년기 우울증) 중\n하나를 모둠별로 배정함.\n- 사례 A (치매 케이스):\n\"78세 김 어르신은 딸과 아들의 방문에도 ‘누구냐, 여기 직원이냐?’라고 말하고, '누가 날 죽이러\n왔다'며 안절부절못하고 복도를 배회하십니다. 간호사가 다가가 진정시키려 하자 '너도 한패지?'라\n며 소리를 지르고 밀치는 행동을 보입니다. 자신의 휴대폰을 장식장 위에 올려놓고 벨소리가 울려\n도 저 라디오는 너무 시끄럽다며 귀찮아합니다.\n- 사례 B (파킨슨병 케이스):\n\"82세 박 어르신은 침상에서 일어날 때 손과 팔이 부르르 떨리는 증상(안정 시 떨림)이 심해졌습니\n다. 걸음을 걸으실 때 상체가 앞으로 굽어있으며, 처음 발을 떼는 것을 매우 힘들어하십니다. 한번\n걷기 시작하면 멈추기 어려워하셔서 최근 화장실 앞으로 가다가 넘어질 뻔한 아찔한 상황이 있었습\n니다.\"\n- 사례 C (노년기 우울증 케이스):\n\"75세 이 어르신은 최근 배우자와 사별한 후 영양 섭취가 불량하고 매사에 의욕이 없으십니다. 간\n호사가 질문을 하면 한참 뒤에 겨우 대답을 하거나 대답을 회피하십니다. \"요새 자꾸 깜빡깜빡하는\n게 치매에 걸린 것 같다\"며 심한 건망증을 호소하시고 잠을 깊이 자지 못하십니다.“"}}], "id": "ch01", "pdf": "pdf/ch01.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(고급대수-한일고-이동규).pdf", "meta": {"curriculum": "2022", "subject": "고급대수", "teacher": "이동규(한일고등학교)", "unit": "III. 행렬과 선형변환", "code": "12고대03-01", "standard": "선형변환의 뜻을 알고, 행렬을 이용하여 선형변환을 표현할 수 있다.", "category": "과학·수학", "school": "한일고등학교", "teacher_name": "이동규"}, "stage1": {"total_periods": "3", "explanation": "벡터 공간에서의 사상 중 선형성을 만족하는 '선형변환'의 대수적 정의를 이해하\n고, 이를 판정할 수 있도록 한다. 나아가 표준기저벡터의 이동을 통해 임의의 선형\n변환을 행렬로 표현하는 원리를 학습하며, 회전·대칭·닮음변환 등 특수한 변환 행\n렬을 유도한다. 최종적으로 지오지브라(GeoGebra) 등 공학 도구를 활용하여 합성\n변환의 기하학적 매커니즘을 시각적으로 추론하고, 행렬의 곱셈이 갖는 대수적 성\n질(교환법칙 불성립 등)을 기하학적 변화와 연결하여 해석하는 디지털 소양과 융합\n적 탐구 능력을 함양한다.", "know": "⦁선형변환의 대수적 정의\n⦁표준기저벡터의 이동과 변환 행렬의 관계\n⦁특수한 선형변환(대칭변환, 닮음변환, 회전변환)의 행렬 표현\n⦁합성변환과 행렬의 곱셈 사이의 관계 및 성질", "skill": "⦁주어진 변환이 선형변환인지 대수적으로 판정하기\n⦁기하학적 조건(회전, 대칭 등)으로부터 이차정사각행렬 변환 행렬 유도하기\n⦁공학 도구를 활용하여 행렬의 연산 결과를 좌표평면 상에 시각화하고 추론하기", "value": "⦁행렬과 도형이 사상을 통해 통합되는 수학의 심미성과 유용성 인식\n⦁복잡한 기하학적 변화를 행렬을 통해 해결하려는 주도적 태도\n⦁공학 도구의 한계와 유용성을 비판적으로 인식하고 탐구에 활용하는 개방성", "eval_goal": "선형변환의 뜻과 행렬 표현의 원리를 명확히 이해하고 특수 변환 행렬을 유도할\n수 있으며, 공학 도구를 활용하여 합성변환의 기하학적 의미를 논리적으로 추론·발\n표할 수 있는가?", "eval_content": "⦁선형변환 정의 이해 및 기본 변환 행렬 도출\n⦁공학 도구를 활용한 회전, 대칭, 닮음 변환 시각화\n⦁변환의 합성과 역변환에 대한 수학적 추론 및 발표", "eval_method": "⦁수행평가 (공학 도구 활용 실습 및 탐구 보고서)\n⦁과정 중심 관찰 평가 (모둠 내 협력 및 문제 해결 과정)"}, "lessons": [{"topic": "선형변환의 뜻과 이차정사각행렬 표현", "concept": "선형변환, 단위 벡터의 이동, 변환 행렬", "method": "□ 협동학습 □ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "1/3", "steps": {"intro": "[동기 유발 및 개념 열기]\n⦁애니메이션 및 게임 그래픽에서 캐릭터가 회전하거나 커지는 원리(좌표의 이동)\n에 대한 영상 제시\n⦁\"좌표평면 위의 수많은 점을 일정한 규칙으로 한 번에 이동시키려면 어떤 수학적\n도구가 필요할까?\" 질문 던지기", "body": "[문제 상황 속 개념 탐구]\n⦁선형변환의 보존성인 가산성과 동차성의 대수적 의미 탐구\n⦁단위 벡터   의 이동 결과를 통해 임의의 점의 변환 위치가 행렬로\n결정됨을 유도[기본 변환 행렬 구성]\n⦁축, 축, 원점, 직선 에 대한 대칭변환 행렬을 모둠별로 직접 계산하여\n도출하기", "closing": "[개념 정리 및 다음 차시 예고]\n⦁선형변환은 결국 행렬과의 1:1 대응임을 요약 및 강조\n⦁다음 차시에 진행될 지오지브라를 활용한 기하학적 실습 안내 및 기초 사용법(행\n렬 입력법) 예습 공지"}}, {"topic": "공학 도구를 활용한 선형변환의 기하학적 탐구", "concept": "회전변환 행렬, 합성변환", "method": "□ 협동학습 □ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "2/3", "steps": {"intro": "[탐구 목표 확인]\n⦁원점을 중심으로 만큼 회전하는 변환을 행렬로 표현할 수 있을지 브레인스토\n밍· 공학 도구(지오지브라) 셋팅 및 모둠별 화면 공유 준비", "body": "[데이터 수집 및 수학적 유도]\n⦁삼각함수의 덧셈정리를 활용하여 회전변환 행렬을 교사와 함께 유도\n[디지털 시각화 및 결과 해석]\n⦁모둠별로 지오지브라에 임의의 다각형을 그리고, 행렬을 적용하여 회전하는 모습\n확인\n⦁대칭변환 행렬과 회전변환 행렬을 곱하여 '합성변환'을 만들고, 교환법칙\n(≠)이 성립하지 않음을 그래픽의 최종 위치 차이로 확인하고 토의하기", "closing": "[결과 공유 및 성찰]\n⦁모둠별로 조합한 '나만의 합성변환 행렬'과 그 기하학적 결과를 화면에 띄우고\n갤러리 워크 진행\n⦁대수와 기하가 행렬을 통해 연결됨을 성찰 일지로 작성하며 단원 마무리"}}, {"topic": "선형변환을 활용한 2D컴퓨터 그래픽스 모델링프로젝트", "concept": "선형변환의 실생활 응용, 합성변환의 설계", "method": "□ 협동학습 □ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/3", "steps": {"intro": "[동기 유발 및 프로젝트 안내]\n⦁2차시에서 학습한 합성변환이 실제 컴퓨터 그래픽스(픽셀 이동, 크기 조절, 회전)\n에 어떻게 적용되는지 직업적 사례(게임 개발자, 애니메이터)와 연결하여 환기\n⦁프로젝트 목표 안내: 지오지브라를 활용하여 특정 애니메이션 동작(예: 걷기, 점\n프 후 회전 등)을 구현하기 위한 '변환 행렬 시퀀스' 설계하기", "body": "[변환 행렬 설계 및 실습]\n⦁모둠별로 지오지브라에 기본 캐릭터(간단한 다각형의 조합)를 디자인하여 좌표평\n면 위에 올리기\n⦁캐릭터가 특정 목적지까지 이동하며 회전 및 크기가 변하는 과정을 3단계 이상\n의 합성변환으로 기획하기\n⦁기획한 움직임을 구현하기 위해 필요한 변환 행렬을 각각 구하고, 최종 합성변환\n행렬을 수식으로 도출하기\n[디지털 시뮬레이션]\n⦁도출한 합성변환 행렬을 지오지브라에 입력하여 캐릭터가 의도한 대로 움직이는\n지 검증 및 오류 수정(디버깅)", "closing": "[발표 및 공유]\n⦁완성된 그래픽 애니메이션 과정과 사용된 행렬 수식을 마주온 또는 패들렛에 게\n시하여 상호 관람 및 발표\n[상호 평가 및 마무리]\n⦁루브릭을 활용하여 동료들의 수학적 논리성과 디자인 창의성 평가하기\n⦁수학(대수학)이 기술과 예술을 연결하는 강력한 도구임을 다 함께 성찰하며 수업\n마무리"}}], "id": "ch02", "pdf": "pdf/ch02.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(교육의 이해-공주여고-이화연).pdf", "meta": {"curriculum": "2015", "subject": "교육학", "teacher": "이화연 (공주여자고등학교)", "unit": "Ⅱ. 교육활동 (1)학습의 원리", "code": "[12교이02-01]", "standard": "학습에 대한 다양한 관점에 기반하여 학습의 의미와 원리를 이해하고 자신에게 맞 는 효과적인 학습 전략과 방법을 탐색하고 적용한다.", "category": "인문·사회", "school": "공주여자고등학교", "teacher_name": "이화연"}, "stage1": {"total_periods": "3차시", "explanation": "자신의 학습 과정이나 결과에 영향을 미치는 개인적·환경적 요소를 이해하고 자신\n의 학습에 도움이 되는 방향으로 이들 개인적·환경적 요소를 조성하거나 변화시키\n는 방안을 탐색하는 것을 강조한다.", "know": "• 학습의 원리와 방법\n• 교수의 원리와 방법", "skill": "• 효과적인 학습 전략과 방법을 탐색하고 적용하기\n• 효과적인 교수 전략과 방법을 탐색하고 적용하기", "value": "• 잘 배우고 잘 가르치려는 마음가짐과 태도", "eval_goal": "학습의 의미와 원리를 이해하고, 실제 교육 현안 및 학습 활동에 적용하여 자신의\n생각을 논리적으로 표현할 수 있다. 또한 모둠 협력 활동과 디지털 기반 결과물 제\n작을 통해 효과적인 학습 전략을 탐색하고, 교육사상가의 교육철학을 바탕으로 자\n신의 학습관을 성찰할 수 있다.", "eval_content": "• 교육 현안 제시글을 읽고 자신의 생각을 글로 논리적으로 서술하기\n• 모둠 토의를 통해 주제에 대한 의견을 비교·조정하고 토론에 참여하기\n• 학습의 원리 단원 내용을 정리하여 보드믹스 마인드맵 및 퀴즈로 제작하기\n• 교육사상가를 탐구하고 핵심 내용을 수기 정리 후 VRWE를 활용하여 교육사상가\n소개 영상을 제작하고 공유하기", "eval_method": "관찰평가, 발표평가, 개별산출물 평가, 자기 평가"}, "lessons": [{"topic": "교육 현안 토론을 통해 학습의 의미와 학습 환경 탐색하기", "concept": "학습의 의미, 학습에 영향을 미치는 환경, 자기주도적 학습, 토론과 의사소통", "method": "☑ 협동학습 ☑ 탐구학습 ☑ 문제중심학습 ☑ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 ☑ 블랜디드 러닝 □ 기타( )", "period": "1/3", "steps": {"intro": "• 학생의 창의성을 키우기 위한 교육방안, 교내 휴대폰 수거에 대한 찬반이라는 두"}}, {"topic": "학습의 원리를 협력적으로 정리하고 시각화하기", "concept": "학습의 원리, 협력적 학습, 개념 구조화, 시각화, 형성평가", "method": "☑ 협동학습 ☑ 탐구학습 □ 문제중심학습 ☑ 토의•토론학습", "period": "2/3", "steps": {}}, {"topic": "교육사상가 탐구를 통해 학습관과 교육관 확장하기", "concept": "교육사상가, 교육철학, 학습관, 탐구, 창의적 표현, 디지털 콘텐츠 제작", "method": "☑ 협동학습 ☑ 탐구학습 □ 문제중심학습 ☑ 토의•토론학습\n☑ 프로젝트 학습 □ 거꾸로학습 ☑ 블랜디드 러닝 □ 기타( )", "period": "3/3", "steps": {"intro": "• 주요 교육사상가의 이름과 특징을 간단히 제시하여 학생의 흥미를 유발함.\n• 이번 수업에서는 자신이 탐구하고 싶은 교육사상가를 선정하여 핵심 교육철학과\n학습관을 조사하고, 이를 수기 자료와 영상으로 재구성하여 발표할 것임을 안내함.", "body": "[교육사상가 선정 및 탐구 방향 안내]\n• 자료: 교육사상가 안내 자료, 교과서, 사상가 목록 예시 자료\n• 교사는 주요 교육사상가의 핵심 특징을 간단히 소개한 뒤, 학생들이 관심 있는\n인물을 1명씩 선정하도록 함.\n• 탐구 시 포함해야 할 요소를 다음과 같이 제시함.\n- 사상가의 생애 또는 활동 배경\n- 핵심 교육철학\n- 학습에 대한 관점\n- 오늘날 교육에 주는 시사점\n[수기 탐구 자료 작성]\n• 자료: 탐구 활동지, 필기구, 색연필, 참고 자료"}}], "id": "ch03", "pdf": "pdf/ch03.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(국제정치-부석고-김주안).pdf", "meta": {"curriculum": "2022", "subject": "국제정치", "teacher": "김주안(부석고)", "unit": "Ⅱ. 국제 분쟁과 해결\n국제 분쟁 이슈 칼럼 작성하기", "code": "[12국정02-01],\n[12국정02-03]", "standard": "국제 분쟁의 의미를 파악하고 국제 분쟁의 원인과 양상에 대하여 설명할 수 있다. 국제 분쟁을 해결하기 위한 국제기구들의 활동을 탐색하고, 그 성과와 문제점에 대하여 토론할 수 있다.", "category": "인문·사회", "school": "부석고", "teacher_name": "김주안"}, "stage1": {"total_periods": "9차시", "explanation": "국제 분쟁의 의미와 유형을 파악하고, 분쟁의 원인과 해결 방안을 다양한 관점에서\n제시할 수 있다.", "know": "·국제 분쟁의 의미와 유형\n·국제 분쟁의 양상", "skill": "·국제 분쟁의 사례 조사하기\n·국제 분쟁의 원인과 결과 파악하기\n·국제 분쟁의 해결책 제시하기", "value": "·국제 분쟁에 대한 관심 가지기\n·세계 시민으로서의 의식을 갖춰 국제 분쟁에 대한 해결책을 생각하기", "eval_goal": "·국제 분쟁의 양상의 사례를 분석하기\n·국제 분쟁의 원인과 결과를 타당도와 신뢰도가 높은 자료를 활용해 논리적으로 분\n석하기\n·국제 분쟁의 해결책에 대한 자신의 의견을 논리적으로 제안하기", "eval_content": "① 국제 분쟁의 양상에 대한 사례 조사\n② 국제 분쟁의 원인 및 결과에 대한 신뢰도 및 타당도 높은 자료를 조사\n③ 헤딩 국제 분쟁이 왜 중요한지에 대해 정리하기\n④ 작성한 칼럼에 대해 명확한 제목과 헤드라인을 제시하기\n⑤ 칼럼에 대한 동료 평가 및 교사의 피드백에 대해 반영하기\n⑥ 칼럼에 대한 작성 동기, 내용 요약, 기반한 후속 탐구에 대한 자신의 의견 표현\n하기", "eval_method": "수행평가(칼럼 작성본 등)\n자기 평가(학습지)\n동료 평가(퀴즈앤 보드 상호 평가 포함)\n면접 평가(면접을 통해 칼럼 작성에 대한 동기, 내용에 대한 이해 및 논리성, 결론,\n추후 후속 탐구의 계획 등)"}, "lessons": [{"topic": "국제 분쟁 이슈 칼럼을 위한 자료 조사 및 작성하기", "concept": "·국제 분쟁의 양상, 원인 분석하기 ·국제 분쟁의 해결 방안 파악하기", "method": "□ 협동학습 □ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/9", "steps": {"intro": "[국제 분쟁에 대한 예시 확인하기]\n·국제 분쟁에 대해 떠오르는 것을 이야기를 나누며, 국제 분쟁의 의미를 이해함.\n또한, 국제 분쟁의 양상이 담긴 영상을 보며, 국제 분쟁의 심각성을 이해하고 해결\n의 필요성에 동감함.\n[활동 및 평가에 대한 전반적 안내]\n·활동의 진행 방안 및 평가 기준에 대해 학생들에게 안내하고 숙지하도록 함.\n·칼럼의 서론, 본론, 결론, 제목과 헤드라인에 들어가야 할 내용과 적절하게 작성하\n는 방법에 대해 안내함.", "body": "[칼럼 작성을 위한 자료 조사]\n·칼럼 작성을 위한 자료 수집을 진행할 때의 유의점인 자료의 신뢰도와 타당도에\n대해 생각하면서 수집할 수 있도록 안내하고 지도함. 특히 AI를 활용할 때의 주의\n점과 AI 사용 내역을 함께 첨부하여 칼럼에 제시할 것을 안내함.\n·자료를 수집할 때에 유용하게 활용할 수 있는 사이트(외교안보연구소, 한국국방연\n구원 등)들과 논문 및 보고서를 찾아볼 수 있는 사이트(DBpia, 구글 학술검색)들을\n소개하며, AI를 검색한 자료들을 검증하며 진행할 것을 강조함.\n제미나이를 활용한 자료 수집 동영상 플랫폼을 활용한 자료 수집"}}, {"topic": "국제 분쟁 이슈 칼럼에 대한 교사 및 동료 피드백 수\n용 및 재작성하기", "concept": "·국제 분쟁의 양상, 원인 분석하기 ·국제 분쟁의 해결 방안 파악하기", "method": "■ 협동학습 □ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "6/9", "steps": {"intro": "[교사 피드백 제공]\n·작성한 칼럼에 대해 교사가 미리 준비한 피드백을 제공해주고, 읽어보게 함.", "body": "[교사 피드백을 반영한 칼럼 재작성하기]"}}, {"topic": "국제 분쟁 이슈 칼럼에 대한 면접 평가", "concept": "·국제 분쟁의 양상, 원인 분석하기 ·국제 분쟁의 해결 방안 파악하기", "method": "□ 협동학습 □ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "9/9", "steps": {"intro": "[칼럼 작성법에 대한 안내]\n·지금까지 진행한 활동에 대해 돌아보게 하면서, 마지막으로 칼럼에 대한 자신의\n생각을 이야기해보는 시간임을 안내하며, 면접을 진행할 때의 유의점(비언어적(태\n도, 자세), 반언어적 표현(어투, 목소리 등)의 유의점, 두괄식 표현의 지향 등)을 설\n명함.\n·자신이 작성한 칼럼에 대해 읽어보는 시간을 가지며, 칼럼에 대해 익숙해지도록\n함.", "body": "[면접 평가진행하기]\n·자신이 작성한 칼럼에 대해, 칼럼을 작성한 동기, 내용과 근거, 결론, 후속 탐구\n진행에 대한 생각 등을 물어보며 웨일온의 소회의실 기능을 활용하여 면접 평가를\n학생을 돌아가며 진행함."}}], "id": "ch04", "pdf": "pdf/ch04.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(로봇과 공학세계-서산석림중-최준혁1).pdf", "meta": {"curriculum": "2022", "subject": "로봇과 공학세계", "teacher": "최준혁 (서산석림중학교)", "unit": "Ⅰ 로봇의 이해", "code": "[12로봇03-03]", "standard": "로봇공학 프로젝트 수행을 위하여 로봇 제어의 원리를 이해하고, 관련 문제해결을 위한 소프트웨어 알고리즘을 구상한다.", "category": "공학·정보", "school": "서산석림중학교", "teacher_name": "최준혁"}, "stage1": {"total_periods": "6차시", "explanation": "로봇이 센서를 통한 입력, 제어를 통한 처리, 모터·LED 등을 통한 출력의 과정을\n거쳐 동작한다는 로봇 제어의 기본 원리를 이해하고, 해결하고자 하는 문제 상황\n에 맞추어 변수·조건문·반복문 등 알고리즘의 핵심 요소를 활용하여 동작 절차를\n소프트웨어로 구상·구현하도록 설정하였다. 마이크로비트 기반의 간단한 로봇을\n직접 제작·프로그래밍하는 과정에서 문제해결력과 도전 의식을 기르도록 한다.", "know": "로봇 제어의 원리(입력·처리·출력), 알고리즘의 구성 요소(변수·조건문·반복문), 마\n이크로비트의 입출력 부품과 핀 구조", "skill": "문제 상황 분석하기, 제어 알고리즘 구상하기, 회로 구성 및 프로그래밍하기, 동\n작을 점검하고 오류 수정하기", "value": "문제해결에 대한 흥미와 도전 의식, 끈기 있게 수정·개선하는 태도, 생성형 AI 도\n구의 올바른 활용 태도", "eval_goal": "로봇 제어의 원리를 이해하고, 문제해결을 위한 알고리즘을 구상하여 마이크로비\n트 로봇을 제작·구현할 수 있다.", "eval_content": "회로(하드웨어) 구성의 정확성, 필수 알고리즘(변수·조건문·반복문)을 포함한 코드\n의 완성도, 산출물 발표(기획 의도·회로·코드·작동 시연)", "eval_method": "프로젝트, 구술·발표, 포트폴리오 (수행평가 100점 / 학기말 반영비율 50%)"}, "lessons": [{"topic": "로봇 프로젝트의 이해와 해결할 문제 정하기", "concept": "로봇 제어의 원리(입력–처리–출력), 사용자 공감과 문제 정의", "method": "□ 협동학습 □ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "1/6", "steps": {"intro": "- 일상생활 속에서 활용되는 로봇 영상을 시청하고, 마이크로비트로 만들 수 있\n는 간단한 로봇 사례(예: 스마트 무드등, 침입 감지 로봇)를 살펴본다.\n- 본 프로젝트의 목표와 수행평가 기준(하드웨어·코딩·발표)을 안내한다.", "body": "- 로봇이 ‘센서 입력 → 마이크로비트 처리 → LED·모터 출력’의 과정을 거쳐 동\n작하는 제어 원리를 이해한다.\n- 학생들은 생활 속 불편함이나 흥미로운 아이디어를 브레인스토밍하여 ‘해결할\n문제’를 정의하고, 계획서 STEP1(로봇 이름, 제작 동기, 핵심 기능)을 작성한다.", "closing": "- 작성한 아이디어를 짝과 공유하고 서로 피드백한다.\n- 다음 차시의 하드웨어·알고리즘 설계 활동을 예고한다."}}, {"topic": "부품·회로 설계와 제어 알고리즘 구상하기", "concept": "입력·출력 부품과 핀 연결, 알고리즘 3요소(변수·조건문·반복문), 스토리보드", "method": "□ 협동학습 ■ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/6", "steps": {"intro": "- 마이크로비트의 주요 입력·출력 부품(충돌 센서, 외부 LED, 서보모터 등)과 핀\n(P0·P1·P2) 구조를 복습한다.", "body": "- 계획서 STEP2를 작성하여 사용할 부품과 역할, 핀 연결 계획을 정한다.\n- 이어 STEP3에서 변수(기억할 값), 조건문(만약 ~라면), 반복문(계속 하기)의 3요\n소를 자신의 로봇 동작에 맞게 설계하고, 동작 순서를 스토리보드로 정리한다.\n- 교사는 순회하며 필수 알고리즘 3요소가 포함되었는지 점검하고 피드백한다.", "closing": "- 회로·알고리즘 설계안을 점검 체크리스트로 스스로 확인하고, 다음 차시의 제\n작·코딩 활동을 준비한다."}}, {"topic": "로봇 제작·프로그래밍 및 시연·발표 〔수행평가〕", "concept": "실습 안전 수칙과 평가 기준(하드웨어 완성도·코드 완성도·발표)을 다시 확인한다.", "method": "□ 협동학습 □ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "6/6", "steps": {"intro": "- 실습 안전 수칙과 평가 기준(하드웨어 완성도·코드 완성도·발표)을 다시 확인한다.", "body": "- 설계안에 따라 회로를 연결하고 마이크로비트 코드를 작성한 뒤 동작을 테스트\n하고 오류를 수정(디버깅)한다.\n- AI의 도움을 받은 경우 STEP4 ‘AI 활용 일지’에 질문·답변·수정 내용을 기록한다.\n- 완성 후 작동 영상을 촬영하고, 〔수행평가〕로 기획 의도·회로·코드·작동 시연을\n발표한다.", "closing": "- 발표에 대한 상호 피드백을 나누고 STEP5 체크리스트로 자기 평가를 한 뒤, 프\n로젝트 전체 소감을 공유한다."}}], "id": "ch05", "pdf": "pdf/ch05.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(로봇과 공학세계-서산석림중-최준혁2).pdf", "meta": {"curriculum": "2022", "subject": "로봇과 공학세계", "teacher": "최준혁 (서산석림중학교)", "unit": "Ⅱ 공학세계와 로봇의 활용", "code": "[12로봇01-03]", "standard": "로봇의 활용 분야를 이해하고 생활 속 다양한 로봇 활용 분야를 탐구하여 로봇 개발과 활용에 대한 긍정적인 사고를 함양한다.", "category": "공학·정보", "school": "서산석림중학교", "teacher_name": "최준혁"}, "stage1": {"total_periods": "3차시", "explanation": "제조·건설·생명·환경·에너지·수송·정보통신·인공지능 등 다양한 공학 분야에서 로\n봇이 어떻게 활용되는지 사례를 중심으로 탐구하고, 생활 속 로봇 활용이 개인·사\n회·국가에 기여하는 바를 이해하여 로봇 개발과 활용에 대한 긍정적인 사고를 기\n르도록 설정하였다. 조사한 내용을 발표 자료로 구성·발표하는 과정에서 공학 분\n야에 대한 흥미와 진로 탐색의 기회를 갖도록 한다.", "know": "공학 분야별 로봇의 종류와 기능, 로봇에 적용된 핵심 센서·기술, 로봇 활용의 사\n회적·경제적 가치", "skill": "로봇 활용 사례 조사·분석하기, 자료를 시각적으로 구성하기, 발표 자료를 제작하\n고 발표하기", "value": "로봇 개발·활용에 대한 긍정적 사고, 공학 분야 진로에 대한 관심, 생성형 AI 활\n용 시 출처 표기 등 윤리 준수", "eval_goal": "다양한 공학 분야에서의 로봇 활용 사례를 탐구하고, 이를 체계적으로 구성하여\n소개·발표할 수 있다.", "eval_content": "내용 구성(이름/사진·센서/기술·활용 분야·선정 이유), 시각적 완성도(슬라이드 10p\n이상·시각 자료·심미성), 산출물 발표(시간·자연스러움·질의응답)", "eval_method": "프로젝트, 구술·발표, 포트폴리오 (수행평가 100점 / 학기말 반영비율 50%)"}, "lessons": [{"topic": "공학 분야 탐색과 소개할 로봇 선정하기", "concept": "공학의 다양한 분야, 공학 로봇의 선정 기준(센서·제어·구동 시스템)", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "1/3", "steps": {"intro": "- 다양한 공학 로봇의 영상·사진을 제시하고, ‘공학 로봇’과 단순 완구의 차이가\n무엇인지 발문한다.", "body": "- 제조, 건설·환경, 생명·의료, 에너지·수송, 정보통신·인공지능 등 분야별 로봇 사\n례를 탐색한다.\n- 기획서의 ‘공학 로봇 선정 기준’(센서·제어·구동 장치를 갖춘 시스템)과 인정·제\n외 사례를 확인한 뒤, 관심 분야를 선택하고 소개할 로봇 1개를 선정하여 기획\n서 3항(로봇 이름·핵심 센서/기술·활용 분야·선정 이유) 초안을 작성한다.", "closing": "- 선정한 로봇과 그 이유를 모둠 안에서 공유하고, 평가 기준(내용 구성·시각적\n완성도·발표)을 안내한다."}}, {"topic": "자료 조사와 발표 자료 기획하기", "concept": "신뢰할 수 있는 자료 조사, 슬라이드 구성, 생성형 AI 활용과 출처 표기", "method": "□ 협동학습 ■ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "2/3", "steps": {"intro": "- 가독성·시각화·구조 측면에서 좋은 발표 자료의 조건을 예시로 비교한다.", "body": "- 선정한 로봇의 핵심 센서·기술, 활용 분야, 선정 이유를 자료 조사로 구체화한다.\n- 기획서 4항에 따라 표지를 포함해 10페이지 이상의 슬라이드 구성을 기획하고,\nAI를 활용할 경우 입력 프롬프트를 우측 칸에 구체적으로 작성한다.\n- 기획서 5항 ‘AI 활용 일지’에 사용 도구·목적·반영 방식을 기록한다.\n- 교사는 출처 표기와 내용 이해 여부를 점검한다.", "closing": "- 슬라이드 구성안을 점검하고 부족한 자료의 보완 계획을 세운다."}}, {"topic": "발표 자료 완성 및 공학 로봇 소개 발표하기", "concept": "발표 태도와 질의응답, 시각적 완성도 점검", "method": "■ 협동학습 □ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/3", "steps": {"intro": "- 발표 순서와 시간(2분 30초 이상), 평가 요소를 안내한다.", "body": "- 슬라이드를 최종 완성하며 시각 자료와 심미성을 점검한다.\n- 선정한 공학 분야의 로봇을 소개 발표(이름/사진·센서/기술·활용 분야·선정 이유\n포함)\n- 질문에 적절히 답변한다.", "closing": "- 동료 평가와 피드백을 나누고 우수 사례를 공유하며, 공학 분야와 연계한 진로\n소감을 이야기한다."}}], "id": "ch06", "pdf": "pdf/ch06.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(문화콘텐츠산업일반-논산고등학교-박은정).pdf", "meta": {"curriculum": "2022", "subject": "문화콘텐츠 산업일반", "teacher": "박은정 (논산고등학교)", "unit": "Ⅰ. 문화 콘텐츠 산업의 개요와 현황\nⅡ. 문화 콘텐츠 산업 분야별 이해", "code": "[문콘 01-03-01] ~\n[문콘 01-03-03],\n[문콘 01-04-01] ~\n[문콘 01-04-02]", "standard": "[문콘 01-03-01] 문화 산업에 대하여 알아보고, 다양한 문화 콘텐츠의 개발 및 문화 산업의 분류에 대하여 설명할 수 있다. [문콘 01-03-02] 4차 산업 혁명 이후 우리나라와 세계 문화 산업의 현황에 대하여 설명할 수 있다. [문콘 01-03-03] 우리나라와 세계 문화 산업에 대하여 분석하고, 향후 문화 산업의 전망에 대하여 설명할 수 있다. [문콘 01-04-01] 4차 산업 혁명에 따른 문화 산업 정책에 대하여 알아보고, 다양한 문화 산업 정책에 관해 설명할 수 있다. [문콘 01-04-02] 우리나라와 세계 문화 산업에 정책을 분석하고, 문화 산업에 미치는 영향에 대하여 설명할 수 있다.", "category": "직업·실무", "school": "논산고등학교", "teacher_name": "박은정"}, "stage1": {"total_periods": "6차시", "explanation": "[문콘01-03] 문화 산업에 대하여 알아보고, 다양한 문화 콘텐츠의 개발 및 문화 산\n업의 분류를 이해하며, 4차 산업 혁명 이후 우리나라와 세계 문화 산업의 현황을\n조사하고, 이를 분석한 자료를 토대로 향후 문화 산업의 전망을 논리적으로 설명할 수 있다.\n[문콘01-04] 4차 산업 혁명에 따른 문화 산업 정책을 알아보고 다양한 정책을 제시\n하며, 우리나라와 세계 문화 산업 정책을 체계적으로 분석하여 문화 산업에 미치는\n영향을 논리적으로 설명할 수 있다.", "know": "· 문화 콘텐츠의 개발 및 문화 산업의 분류 체계\n· 4차 산업 혁명 이후 우리나라와 세계 문화 산업의 현황과 전망\n· 4차 산업 혁명에 따른 문화 산업 정책의 개념·유형", "skill": "· 우리나라와 세계 문화 산업의 현황을 조사·발표하기\n· 우리나라와 세계 문화 산업을 비교·분석하여 전망 추론하기\n· 문화 산업 정책을 조사하고 산업에 미치는 영향을 토론하기", "value": "· 자료의 출처·최신성을 따지는 비판적·정직한 탐구 태도(지식정보처리 역량)\n· 산업 변화를 자신의 진로·삶과 연결하려는 능동적 관심\n· 산업·정책을 다각도로 바라보는 창의적·심미적 안목", "eval_goal": "선택한 문화 콘텐츠 산업 분야의 분류·현황을 자료에 근거해 분석하고, 향후 전망과\n정책 대안을 논리적으로 도출하여 설득력 있게 표현·발표할 수 있는지를 평가한다.", "eval_content": "① 산업 분류 및 국내외 현황 분석(통계·사례 근거 제시)\n② 기술적·사회인구학적 요인에 근거한 산업 전망 추론\n③ 현행 정책 분석 및 문제점·개선 대안 제시\n④ 분석 결과의 시각 자료 활용 발표 및 전달력", "eval_method": "· 수행평가: 우리나라·세계 문화 산업 비교 분석표 작성 및 발표·보고서\n· 정책이 산업에 미치는 영향 토론 및 상호 평가"}, "lessons": [{"topic": "문화 콘텐츠 산업 분류 이해와 내 산업 분야 정하기", "concept": "문화 콘텐츠 산업의 분류 체계 및 분야별 특징", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 ■ 기타( 에듀테크 활용 )", "period": "1/6", "steps": {"intro": "[학습 목표 안내] · 문화 콘텐츠 산업의 분류 체계를 이해하고, 탐구할 산업 분야 1\n개를 근거를 들어 선정할 수 있다.\n[공감하기— 온라인 보드 워밍업]\n1) \"오늘 하루 내가 접한 콘텐츠는 무엇인가요?\" — 유튜브·웹툰·게임·음악·광고 등을\n온라인 공유 보드에 자유 게시\n2) \"4 Truths & 1 Lie\" 자기소개 게임으로 콘텐츠 취향 공유, 친밀감 형성\n3) \"이것들은 공통적으로 무엇일까요?\" 발문→ 학생 응답을 모아 '콘텐츠'와 '콘텐츠\n산업'의 차이로 연결", "body": "[산업 분류 체계 학습— 교과서Ⅰ-03]\n· 출판·만화/웹툰·음악·영화/드라마·게임·방송·광고·캐릭터 등 분류 체계와 분야별 특징 비교\n· '문화'와 '문화 콘텐츠 산업'의 차이를 경제적 부가가치 창출 여부로 구분\n[온라인 보드 모둠 토의]\n· \"콘텐츠 성공 요인 분석\" — 성공한 채널/작품의 공통점을 모둠별 섹션에 정리하고 서로 댓글로 보완\n· 흥미로운 분야 3개로 압축→ 진로 관심사와 연계하여 1개 최종 선정", "closing": "[정리— 온라인 보드 마무리(Exit Ticket)]\n[온라인 보드] \"내가 선택한 산업+ 이유\"를 한 줄로 게시(한 줄 코멘트)\n· 다음 차시 예고: 국가통계포털(KOSIS)·콘텐츠진흥원 통계로 현황 자료 직접 수집"}}, {"topic": "통계·자료로 국내 산업 현황 분석하기", "concept": "국내 문화 산업 현황", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 ■ 기타( 에듀테크 활용 )", "period": "2/6", "steps": {"intro": "[학습 목표 안내] · 신뢰할 수 있는 통계 자료를 수집·해석하여 선택 분야의 국내\n현황을 근거와 함께 분석할 수 있다.\n[탐구 목표 확인— 온라인 보드 워밍업 퀴즈]\n\"Warm-up Quiz\"로 산업 분류·용어를 빠르게 점검(자가 확인)\n· 자료의 출처·발표 연도·단위를 반드시 확인하는 자료 비판 원칙 안내", "body": "[국내 현황 자료 수집— 교과서Ⅰ-03 통계 참고]\n· 한국콘텐츠진흥원 콘텐츠산업조사, 문화체육관광부 통계, KOSIS에서 선택 분야\n매출·증감 자료 수집\n· 참고: 2022년 국내 콘텐츠 산업 매출 약146.9조 원, 최근5년 연평균5.34% 성장\n[현황 분석(활동지2 활용)]\n· 수집한 통계를 표·그래프로 정리하고, 매체 양극화·디지털 전환·생성형AI 도입 등 동향 도출\n[온라인 보드 갤러리 워크] 모둠별 분석 결과를 보드에 게시→ 다른 분야 분석에\n댓글 피드백", "closing": "[정리— 온라인 보드 공유]\n· 가장 의미 있는 통계 1개와 해석을 게시, \"내 분석에서 가장 근거가 약한 부분\" 성찰 댓글\n· 다음 차시 예고: 해외 비교를 통한 글로벌 현황 분석"}}, {"topic": "국외 비교로 글로벌 현황 분석하기", "concept": "문화 콘텐츠 산업 국내외 현황", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 ■ 기타( 에듀테크 활용 )", "period": "3/6", "steps": {"intro": "[학습 목표 안내] · 주요국의 시장 자료를 조사하여 국내외 현황을 비교하고, 글로벌\n관점에서 산업의 위상을 설명할 수 있다.\n[동기 유발— 온라인 보드 국가별 섹션] \"Japan / This is America / China /\nEurope / Korea\" 섹션에 모둠을 배정해 국가별 시장 자료 수집·게시", "body": "[국외 현황 비교— 교과서Ⅰ-03]\n· 미국·중국·일본·유럽 등 주요국의 시장 규모·성장률·주력 분야를 조사\n· 한류(K-POP·드라마·게임)의 글로벌 확산과 수출 구조를 자료로 확인\n[국내·국외 종합 분석(활동지2 완성)]\n· 국내와 국외를 비교하여 공통점·차이점을 근거와 함께 서술\n[온라인 보드 비판적 검토] 생성형AI 활용 시 수치를 원자료와 대조 검증하고 출처를\n댓글로 명시→ 동료가 출처 신뢰도 점검", "closing": "[정리— 온라인 보드 마무리(Wrap-up)] 핵심 정리 게시, 다음 블록(정책·발표) 예고"}}, {"topic": "산업 전망 추론하기— 기술·사회 요인 분석", "concept": "문화 콘텐츠 산업의 기술적 변화 요인, 사회인구학적 요인", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( 에듀테크 활용 )", "period": "4/6", "steps": {"intro": "[학습 목표 안내] · 기술적·사회인구학적 변화 요인에 근거하여 선택 분야의 향후\n전망을 논리적으로 추론할 수 있다.\n[동기 유발— 온라인 보드] \"다음 콘텐츠의 특징은 무엇인가요?\" / \"Why are you\nso famous?\" 발문으로 최신 트렌드 사례 공유\n· 전망은 '느낌'이 아니라' 근거(기술적·사회인구학적 요인)'에서 나와야 함을 강조", "body": "[산업 전망 추론(활동지3 활용)]\n· 2~3차시 현황 분석을 토대로 기술적 변화 요인과 사회·인구학적 변화 요인을 각각 정리\n· 두 요인을 연결해 향후 전망(인력 수요 변화, 디지털 점유율 상승 등)을 논리적으로 도출\n[온라인 보드 모둠 토의] 전망 초안을 게시→ \"이 전망의 근거가 충분한가?\" 동료\n질문·반론 댓글로 정교화", "closing": "[정리]\n· 전망 요약본을 온라인 보드에 게시, 다음 차시(정책 분석) 준비 자료 안내"}}, {"topic": "정책 분석과 대안 제시", "concept": "문화 콘텐츠 산업 현황 정책", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 ■ 기타( 에듀테크 활용 )", "period": "5/6", "steps": {"intro": "[학습 목표 안내] · 현행 문화 산업 정책을 분석하고, 문제점을 진단하여 실현 가능한\n개선 대안을 제시할 수 있다.\n[동기 유발— 온라인 보드] \"넷플릭스 시리즈물\"처럼 정책·산업 전략이 만든 성공\n사례를 게시하며 정책의 영향 환기(교과서Ⅰ-04)", "body": "[정책 분석— 교과서Ⅰ-04]\n· 4차 산업 혁명 대응 정책(육성·규제 완화·수출 확대·지역 활성화 등) 유형을 조사·요약\n· OSMU 전략, 디지털 컨버전스 등 정책 키워드를 사례와 연결\n[문제점·대안(활동지3 완성)] · 정책의 문제점(매체 간 비용 불균형, 창의 인력 보호\n미흡 등)을 진단하고 실현 가능한 개선 대안 제안\n[온라인 보드 토론] [온라인 보드] 대안을 게시→ \"이 대안의 비용은 누가 부담하며\n실현 가능성은?\" 상호 토론", "closing": "[정리] · 보고서 최종본과 발표 자료(시각 자료 포함)를 다음 차시 전까지 완성하도록 안내"}}, {"topic": "분석 결과 발표 및 상호 평가— \"데이터로 말하는 우리 산업\"", "concept": "문화 콘텐츠 산업 분석", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 ■ 기타( 에듀테크 활용 )", "period": "6/6", "steps": {"intro": "[학습 목표 안내] · 분석 결과를 시각 자료와 함께 설득력 있게 발표하고, 동료의\n분석을 평가하며 자신의 학습을 성찰할 수 있다.\n[평가 기준 안내— 온라인 보드] \"문화 콘텐츠 산업 분석 채점 기준\"과\"분석 양식\"을\n보드에 게시·재확인", "body": "[온라인 보드 발표 환경— \"문화 콘텐츠 산업 분석 발표\" 섹션]\n모든 학생의 보고서를 보드에 업로드→ 갤러리 워크로 동시 관람\n[발표(각3~4분)]\n· 발표 흐름: 분야 선정 이유→ 국내외 현황(핵심 통계) → 전망→ 정책·대안→ 핵심 한 문장\n[질의응답·상호 평가— 온라인 보드] \"그 수치의 출처는?\", \"전망 근거가 충분한가?\"\n동료 질문", "closing": "[정리 및 성찰— 온라인 보드] 우수작 자동 집계(좋아요), 자기 성찰(가장 배운 점/\n보완점/진로 연결) 게시\n· 단원 총평: \"문화 콘텐츠 산업은 감(感)이 아니라 데이터로 읽어야 한다\""}}, {"topic": "콘텐츠 기획의 출발— 스토리텔링·타깃·차별화", "concept": "· 콘텐츠 기획 개념· 스토리텔링 유형· 타깃 분석과 차별화", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 ■ 기타( 에듀테크 활용 )", "period": "1/6", "steps": {"intro": "[학습 목표 안내] · 콘텐츠 기획의 개념을 이해하고, 타깃과 차별화 요소를 분석하여\n기획 방향을 정할 수 있다.\n[공감하기— 온라인 보드] \"문화 콘텐츠 제작\" 섹션에서 \"비슷한 콘텐츠가 넘쳐나는\n데 왜 어떤 것만 성공할까?\" 발문에 사례 게시\n[온라인 보드] 스토리텔링 유형 분류 활동: Entertainment / Information /\nBusiness / Daily Life Storytelling 사례를 보드에 분류", "body": "[콘텐츠 기획·스토리텔링 학습— 교과서 Ⅳ-01] · 문화 콘텐츠 상품의 개발 여건·특성·\n개발 과정, 스토리텔링 기법 학습\n[타깃·차별화 분석— 온라인 보드\"문화 콘텐츠 제작 기획 아이디어\"] 내 콘텐츠의\n타깃(연령·관심사·소비 상황)과 차별화 요소(소재·형식·톤)를 게시하고 댓글로 상호 점검", "closing": "[정리— 온라인 보드] 내 콘텐츠의 \"타깃 한 줄+ 차별화 한 줄\" 게시\n· 다음 차시 예고: 기획안을 구체적 설계로 발전(구성·공정·수익 구조)"}}, {"topic": "콘텐츠 상세 설계— 구성·제작 공정·수익 구조", "concept": "· 구성 요소· 제작 공정·자원 배분· 수익/확산 구조· OSMU", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 ■ 기타( 에듀테크 활용 )", "period": "2/6", "steps": {"intro": "[학습 목표 안내] · 기획 의도를 바탕으로 콘텐츠의 구성 요소·제작 공정·수익 구\n조를 구체적으로 설계할 수 있다.\n[탐구 목표 확인— 온라인 보드] \"OSMU(One Source Multi Use)\" 사례(웹툰→\n드라마→연극→굿즈) 게시로 콘텐츠 확장 구조 환기(교과서Ⅳ-01)", "body": "[콘텐츠 구조 설계(활동지2 활용)]\n· 콘텐츠의 핵심 구성 요소(스토리/장면/기능/화면 등)를 빠짐없이 설계\n· 제작 공정과 자원 배분(역할·도구·일정)을 현실적으로 계획\n[수익·확산 구조+ 문화 기술(CT)]\n· 수익 구조 또는 확산 전략(플랫폼·연계 상품) 구상, AR·VR·생성형AI 등 문화 기술\n활용 검토(교과서Ⅳ-01)\n· 저작권 점검: 사용 이미지·음원·폰트의 출처·이용 범위 확인 및 표기 계획\n[제작 도구 실습]\n· 캔바·웹 기반 도구 중 콘텐츠 성격에 맞는 도구 선택·실습", "closing": "[중간 점검— 온라인 보드 갤러리 워크]\n[설계도를 게시→ \"이 설계만 보고 제작이 가능한가?\" 동료 점검 댓글\n· 보완 과제: 다음 차시 전까지 시제품(프로토타입) 1차본 제작"}}, {"topic": "창작 아이디어 발상— 스캠퍼(SCAMPER)로 차별화", "concept": "· 스캠퍼 기법· 창의적 발상· 콘텐츠 구체화", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 ■ 기타( 에듀테크 활용 )", "period": "3/6", "steps": {"intro": "[학습 목표 안내]\n· 스캠퍼(SCAMPER) 기법을 활용하여 차별화된 창작 아이디어를 도출하고 콘텐츠에\n반영할 수 있다.\n[동기 유발— 온라인 보드] \"대기업 광고회사 입사 문제\"처럼 발상 퀴즈로 창의적 사고 워밍업", "body": "[스캠퍼 기법 학습— 교과서Ⅳ-01]\n· 대체·결합·응용·수정·다른 용도·제거·재배치의7가지 질문으로 기존 아이디어를 변형\n[온라인 보드 \"스캠퍼(SCAMPER)\" 섹션] 내 콘텐츠에 스캠퍼7 질문을 적용한 결과를\n게시하고, 모둠원이 가장 참신한 아이디어에 좋아요·댓글\n[콘텐츠 1차본 보완]\n· 스캠퍼로 도출한 차별화 아이디어를 시제품에 반영하여 완성도를 높임", "closing": "[정리— 온라인 보드] 보완된 콘텐츠 1차본을 게시, 다음 블록(제작 완성·홍보·발표) 예고"}}, {"topic": "제작과 문제 해결", "concept": "· 자기주도적 제작· 문제 예측과 해결· 추가 조사", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 ■ 기타( 에듀테크 활용 )", "period": "4/6", "steps": {"intro": "[학습 목표 안내]\n· 제작 과정에서 발생하는 문제를 스스로 예측·해결하며 콘텐츠 완성도를 높일 수 있다.\n[동기 유발— 온라인 보드]\n· 제작 중 자주 겪는 문제(분량·기술·저작권) 사례를 공유하고, 문제 해결 과정 자체가\n평가 대상임을 안내", "body": "[콘텐츠 제작 및 문제 해결(활동지3 활용)]\n· 1차 시제품을 완성도 있게 발전시키며, 부딪힌 문제와 해결 방법을 제작 일지에 기록\n· 필요한 기술·시장 정보를 추가 조사하여 콘텐츠에 반영\n[온라인 보드 제작 일지]\n· 막힌 지점과 해결책을 게시→ 비슷한 문제를 겪은 동료와 해결 노하우 교환", "closing": "[정리]\n· 제작 중간본을 온라인 보드에 공유하고1차 피드백, 다음 차시(홍보 전략) 준비"}}, {"topic": "홍보·마케팅 전략 수립— 광고 분석과 바이럴", "concept": "· 홍보의 목적·요건·단계· 매체별 전략· 바이럴 마케팅", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 ■ 기타( 에듀테크 활용 )", "period": "5/6", "steps": {"intro": "[학습 목표 안내]\n· 홍보의 목적과 매체별 전략을 이해하고, 타깃에 맞는 홍보·마케팅 전략을 수립할 수 있다.\n[동기 유발— 온라인 보드 광고 분석]\n· \"각각 무엇을 홍보하고 있을까요?\" — 광고 이미지를 보고 홍보 제품·전략을 댓글로 분석\n[온라인 보드] \"광고의 제목을 영어 2~3단어로\" 활동으로 핵심 메시지 압축 연습", "body": "[홍보·마케팅 학습— 교과서Ⅴ-01]\n· 홍보의 목적·요건·단계와 매체별 홍보 전략 학습\n[바이럴 마케팅— 온라인 보드\"바이럴 마케팅\"]\n· 인플루언서·SNS 확산 사례를 게시하고, 내 콘텐츠에 적용할 바이럴 전략 구상\n[홍보 전략 수립(활동지3 완성)]\n· 타깃에 맞는 매체별 홍보 전략(썸네일·카피·플랫폼)과'구독을 부르는 한 문장' 설계", "closing": "[정리— 온라인 보드]\n· 홍보 전략 초안 게시→ \"이 홍보가 정말 내 타깃에게 닿을까?\" 동료 점검\n· 발표 자료·대본을 다음 차시 전까지 완성"}}, {"topic": "콘텐츠 발표·저작권 점검— \"나의 콘텐츠 데뷔의 날\"", "concept": "· 발표·전달력· 저작권 윤리· 상호 평가와 자기 성찰", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 ■ 기타( 에듀테크 활용 )", "period": "6/6", "steps": {"intro": "[학습 목표 안내] · 저작권을 점검하며 콘텐츠를 발표하고, 동료 평가와 자기 성찰을\n통해 학습을 마무리할 수 있다.\n[저작권 점검— 온라인 보드\"저작권 퀴즈\"]\n[온라인 보드] 저작권 퀴즈로 출처 표기·이용 범위를 최종 점검(교과서Ⅳ-02)", "body": "[온라인 보드 \"문화 콘텐츠 제작 발표\" 섹션] 모든 학생의 콘텐츠(산출물·시연 영상)를\n보드에 업로드→ 갤러리 워크로 동시 관람\n[발표(각3~4분)] · 발표 흐름: 기획 의도·타깃→ 차별화→ 콘텐츠 시연→ 제작 중\n문제와 해결→ 홍보 전략\n· 산출물을 직접 시연(게임 플레이·영상 재생 등)하며 핵심 전달\n[질의응답·상호 평가— 온라인 보드] \"이 콘텐츠의 차별점은?\", \"홍보가 타깃에 통할까?\"\n동료 질문, 1인당 3편 이상 평가 댓글", "closing": "[정리 및 성찰— 온라인 보드] 우수작 좋아요 집계, 자기 성찰(가장 어려웠던 점/해\n결법/진로 연결) 게시\n· 단원 총평: \"좋은 콘텐츠는 기획·제작·홍보가 하나로 연결될 때 완성된다\""}}], "id": "ch07", "pdf": "pdf/ch07.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(보건-우성초등학교-김진아).pdf", "meta": {"curriculum": "2022", "subject": "보건", "teacher": "김진아 (공주우성초등학교)", "unit": "Ⅰ-2. 질병 예방과 건강 생활 기술", "code": "12보건01-05", "standard": "개인·공동체의 질병 예방과 건강 관리에 건강 생활 기술과 건강 관리 모델을 적용하여 평가하고, 국가적·국제적 수준의 건강 문제와 이에 대한 건강 옹호 방안을 탐색한다.", "category": "보건·의료", "school": "공주우성초등학교", "teacher_name": "김진아"}, "stage1": {"total_periods": "11차시", "explanation": "생애주기별 건강 특성을 생체리듬과 관련하여 이해하고 개인과 가족 및 지역\n사회의 건강관리에 긍정적인 영향을 미치도록 한다.", "know": "∙ 개인과 공동체, 국가의 질병예방과 건강관리\n∙ 건강생활기술과 건강자원\n∙ 개인⋅공동체⋅국가의 건강옹호와 협력 및 네트워크", "skill": "∙ 건강관리하기\n∙ 네트워크 활용 및 건강옹호하기", "value": "∙ 건강 가치화와 건강관리 및 건강증진 실천 의지\n∙ 건강지향적 환경 개선 의지\n∙ 소통과 협력하며 반성과 개선 인식\n∙ 건강관리의 생활화", "eval_goal": "개인 및 공동체의 건강 문제를 인식하고, 건강 생활 기술과 모델을 적용하여\n실측 가능한 건강 옹호 방안을 수립할 수 있는지 평가한다.\n또한 디지털 도구를 활용해 건강 정보를 시각화하고 온·오프라인 캠페인을 통해\n건강한 공동체 만들기에 참여하는 역량을 종합적으로 평가한다.", "eval_content": "∙ 캠페인 구상(40%): 생애주기별 건강 이슈(구강 건강, 영양, 신체 활동 등)\n선정 및 구체적인 옹호 방안 기획\n∙ 캠페인 개발(40%): 디지털 도구(캔바 등)를 활용한 카드뉴스, PPT 등 캠페인\n홍보 콘텐츠 제작\n∙ 캠페인 홍보 및 참여(20%): 결과물 발표, 온라인 홍보 활동 및 실시간 질의\n응답 참여도", "eval_method": "∙ 수행평가 100%: 프로젝트 과정(활동지, 기록지)과 최종 산출물(카드뉴스,\nPPT)을 종합적으로 평가한다.\n∙ 관찰 평가: 실시간 화상 수업 중 발표 및 토론, 협력적 문제 해결 과정을\n관찰하여 평가한다.\n∙ 자기·동료 평가: 캠페인 기획 및 제작 과정에 대한 자기 성찰과 모둠원 간\n상호 평가를 실시한다.\n∙ 성적 산출: 본 과목은 P/F(Pass/Fail) 방식으로 운영되며, 출석률과 참여율을\n핵심 지표로 활용한다."}, "lessons": [{"topic": "건강 옹호 캠페인 구상 (수행평가 1)\n- “우리의 건강 이슈 찾기”", "concept": "개인적·사회적 건강 지표, 생애주기별 건강 이슈, 건강 옹호 전략", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "4/11", "steps": {"intro": "[동기유발]\n∙ 현재 자신의 건강 상태를 건강 지표를 통해 측정하고, 개인적⋅사회적 건강 상태\n평가해보기\n∙ “우리가 주변의 건강 문제를 해결하는 건강 옹호자가 된다면 어떤 변화를 만들\n수 있을까?” 질문 던지기", "body": "[학습 목표 안내]\n∙ 생애주기별 주요 건강 이슈를 분석하고, 과학적 근거에 기반한 건강 옹호 캠페인을\n기획할 수 있다.\n[건강 이슈 탐색]\n∙ 생애주기별 분석: 영유아, 청소년, 성인, 노년 등 각 시기별로 발생하는 주요 질환\n및 건강 관리 필요성 조사하기\n- 교과서 관련 단원, 도표, 이미지를 우선 탐색하도록 제시한다.\n- ‘카카오파스타 건강 헬스 메거진’ 홈페이지를 방문하여 생애주기별 관심도가\n높은 게시글의 내용과 특성을 분석하도록 안내한다.\n[건강 옹호 캠페인 기획]\n∙ 건강 옹호 캠페인 주제 선정 및 옹호 방안 수립의 개요를 작성한다.", "closing": "[정리 및 다음 차시 예고]\n∙ 개별적으로 캠페인 기획의 개요를 발표하며 동료 및 교사의 피드백을 주고\n받는 시간을 가진다.\n∙ 디지털 도구를 활용한 건강 옹호 콘텐츠(카드뉴스, PPT 등) 제작 방법을 안내한다."}}, {"topic": "건강 옹호 캠페인 구상 (수행평가 2)\n- “디지털 건강 옹호 콘텐츠 제작”", "concept": "건강 생활 기술 적용, 정보의 시각화, 디지털 리터러시", "method": "□ 협동학습 ■ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 ■ 거꾸로학습 ■ 블랜디드 러닝 □ 기타( )", "period": "7/11", "steps": {"intro": "[탐구 목표 확인]\n∙ 건강 옹호 메시지의 신뢰성을 높이기 위한 자료 수집의 기준, 주의점 제시\n- 출처, 주장에 대한 과학적 근거 등 뒷받침 자료의 존재 유무 등, 생성형 AI\n답변 내용 진위 확인 과정 거치기 등\n∙ “우리가 주변의 건강 문제를 해결하는 건강 옹호자가 된다면 어떤 변화를 만들\n수 있을가?” 질문 던지기", "body": "[콘텐츠 제작(디지털 도구 활용)]\n∙ 정보 시각화: 캔바, 미리캔버스 등을 활용하여 건강 정보를 효과적으로 전달할 수\n있는 레이아웃 설계하기\n- 생성형 AI 활용 또는 조사 자료 복제 방지를 위해 양식은 별도 제공하지 않으며,\n학생들의 창작물로 수행평가가 진행됨을 안내하기\n- 건강 옹호 활동에서 가장 중요한 요소는 ‘전달력’ 이며, 같은 정보도 ‘전달력’에\n따라 교육 대상자의 교육 효과가 달라질 수 있음을 설명하며 콘텐츠 제작에 대한\n참여 의의를 강조하기\n[분야별 콘텐츠 개발]\n∙ 생애주기별 맞춤형 건강 정보를 바탕으로 카드뉴스, 발표 자료 등을 제작하기\n- (예시) 구강 건강 - 치위생, 영양 관리 - 간호사, 신체 활동 - 물리치료사 등\n자신의 희망 진로 또는 관심 분야와 관련된 주제를 선정할 수 있도록 안내하기", "closing": "[정리 및 다음 차시 예고]\n∙ 제작 중인 콘텐츠의 시각적 전달력과 메시지의 명확성을 점검하고 보완하기\n∙ 최종 홍보를 위한 발표 자료 동료, 자기, 교사 평가"}}, {"topic": "캠페인 결과물 발표, 홍보 및 성찰 (수행평가 3)\n- “함께 만드는 건강한 미래”", "concept": "건강 옹호 참여 및 소통, 협력적 문제 해결, 자기 성찰", "method": "□ 협동학습 ■ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 ■ 거꾸로학습 ■ 블랜디드 러닝 □ 기타( )", "period": "11/11", "steps": {"intro": "[동기 유발]\n∙ 실시간 화상 수업 환경에서 제작물을 공유하고 ‘건강 옹호가’로서 소통할 수 있는\n분위기 조성하기\n- 화상 수업 환경에서 ‘발표 독려’ 또는 ‘과제 점검’ 등의 역할을 부여받은 학생이\n발표 환경을 조성하고 주도할 수 있도록 독려하기\n[탐구 목표 확인]\n∙ “우리가 주변의 건강 문제를 해결하는 건강 옹호자가 되어 어떤 정보를 전달할\n수 있을까?” 질문 던지기", "body": "[캠페인 발표]\n∙ 결과물 공유: 제작한 콘텐츠를 발표하고 동료(학우)들의 질문에 답변하며 건강 지식\n확산하기\n[상호 평가]\n∙ ‘교과서와 연계된 내용’, ‘교과서 내용에 덧붙여 심층 조사한 내용’, ‘인상 깊은\n내용’, ‘전달력(발표 및 자료의 가독성 등)’ 등의 평가요소를 사전 안내하며 동료\n평가할 수 있도록 안내하기", "closing": "[정리 및 성찰]\n∙ 프로젝트 과정을 통해 배운 점을 서술하고, 일상 속에서 건강 옹호 활동의 실천\n다짐하기\n∙ 건강한 공동체 만들기에 참여하는 시민 역량 중요성 강조"}}], "id": "ch08", "pdf": "pdf/ch08.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(생태와환경-천안봉서중학교-이규행).pdf", "meta": {"curriculum": "2022", "subject": "지구과학", "teacher": "이규행 (천안봉서중학교)", "unit": "환경 문제와 쟁점", "code": "[12생환03-03]", "standard": "자원과 에너지, 폐기물 등과 관련된 국내외 환경 문제와 쟁점을 시차성 및 유한성 등과 관련지어 데이터를 기반으로 심층 탐구하고, 개인 및 사회 차원의 합리적 의 사 결정에 적용한다.", "category": "과학·수학", "school": "천안봉서중학교", "teacher_name": "이규행"}, "stage1": {"total_periods": "5", "explanation": "자원 및 에너지, 폐기물 등과 관련된 환경 문제와 쟁점의 발생, 영향, 해결 과정에\n서 상당한 시차가 생길 수 있음을 알고(시차성), 사전 예방의 원칙을 사례를 통해\n심층적으로 탐구하도록 한다. 화석 연료 기반의 자원 및 에너지 사용에 한계가 있\n음(유한성)을 이해하고, 데이터 조사와 분석 등을 통해 에너지원과 시스템의 전환\n방안을 심층적으로 탐구하며 개인과 사회 차원에서 합리적으로 의사 결정을 할 수\n있는 대안을 제시하도록 한다.", "know": "⋅환경 문제 예방 ⋅데이터 분석을 통한 심층 탐구 ⋅환경 문제의 시차성, 유한성", "skill": "⋅환경 관련 데이터를 조사·수집·분석하기\n⋅디지털 도구를 활용하여 자료를 시각화하고 해석하기\n⋅데이터 간 상관관계를 분석하고 결과를 추론하기\n⋅AI 기반 예측 결과를 비판적으로 해석하기\n⋅피지컬 컴퓨팅 도구를 활용하여 환경 정보를 측정하고 문제 해결 방안을 구현하기\n⋅환경 문제 해결 사례를 분석하고 실천 방안을 의사소통하기", "value": "⋅환경 문제에 대한 책임감과 공동체 의식\n⋅지속 가능한 사회 실현을 위한 실천 의지\n⋅데이터 기반 의사 결정의 중요성 인식\n⋅환경 문제 해결 과정에 대한 적극적 참여 태도\n⋅과학 기술과 디지털 도구를 활용한 문제 해결 태도\n⋅타인의 의견을 존중하며 협력적으로 의사소통하는 태도", "eval_goal": "지역 환경 문제를 실제 데이터에 기반하여 탐구하고, 데이터 분석 결과와 환경 문\n제의 시차성에 대한 이해를 바탕으로 합리적인 해결 방안을 도출하며, 개인 및 사\n회 차원의 실천 방안을 제안할 수 있다.", "eval_content": "⋅실제 환경 데이터의 수집·분석 및 시각화 능력\n⋅데이터를 활용한 환경 문제 원인 및 영향 해석 능력\n⋅AI 예측 결과 및 분석 자료에 대한 비판적 사고 능력\n⋅마이크로비트를 활용한 환경 측정 및 문제 해결 아이디어 구현 능력\n⋅환경 문제 해결 사례 분석을 통한 시차성 이해 수준\n⋅환경 문제 해결을 위한 실천 방안 제안 및 의사소통 능력", "eval_method": "⋅서술형 평가(환경 문제 분석 및 의사결정)\n⋅탐구 활동 관찰 평가(데이터 분석 및 측정 활동)\n⋅산출물 평가(마이크로비트 활용 문제 해결 결과물)\n⋅발표 및 토의 평가(실천 방안 제안 및 협의 과정)\n⋅자기평가 및 동료평가"}, "lessons": [{"topic": "실제 환경 데이터 분석을 통한 지역 환경 문제 탐구", "concept": "⋅환경 문제와 쟁점 ⋅데이터 기반 환경 탐구 ⋅상관관계 분석 ⋅AI 기반 예측", "method": "□ 협동학습 ■ 탐구학습 ■ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "2/5", "steps": {"intro": "[환경 문제 공감하기]\n⋅우리 지역의 대기오염 및 미세먼지 관련 뉴스 기사와 공공데이터 시각화 자료\n살펴보기\n⋅\"우리 지역의 대기질은 실제로 나빠지고 있을까?\"라는 질문 제시\n[생각 열기]\n⋅학생들이 체감한 지역 환경 문제를 온라인 협업 보드(퀴즈앤 등)에 작성하기\n⋅환경 문제를 판단할 때 필요한 증거는 무엇인지 토의하기", "body": "[학습 목표 안내]\n⋅실제 환경 데이터를 분석하여 지역 환경 문제를 탐구할 수 있다.\n⋅데이터 분석 결과를 바탕으로 환경 문제의 원인과 영향을 추론할 수 있다.\n[실제 환경 데이터 분석하기]\n⋅공공데이터포털에서 제공하는 지역별 대기오염 자료(PM10, PM2.5, 황 산화물\n등) 확인하기\nhttps://www.data.go.kr/data/15063218/fileData.do\n⋅제공된 엑셀 데이터를 활용하여 월별·계절별 변화 그래프 작성하기\n⋅평균, 최대값, 변화 추세 등 데이터 특징 분석하기\n[데이터 시각화 및 상관관계 탐구]\n⋅미세먼지 농도와 타 오염 물질, 기온, 풍속, 차량 통행량 등의 관계를 산점도로\n표현하기\n⋅엑셀의 상관관계 분석 기능을 활용하여 변수 간 관계 탐색하기\n⋅상관관계가 인과관계를 의미하는지 토의하기\n[AI를 활용한 미래 예측]\n⋅AI 코디니의 데이터 예측 기능을 활용하여 향후 대기질 변화 예측하기\n⋅예측 결과를 분석하고 신뢰할 수 있는 근거인지 비판적으로 검토하기\n⋅환경 문제의 발생과 영향이 시간차를 두고 나타날 수 있음을 이해하기"}}, {"topic": "마이크로비트를 활용한 환경 데이터 측정", "concept": "⋅환경 데이터 수집 ⋅센서 기반 측정 ⋅환경 모니터링 ⋅데이터 분석", "method": "□ 협동학습 ■ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/5", "steps": {"intro": "[탐구 목표 확인]\n⋅2차시에 분석한 지역 환경 데이터 결과를 되돌아보기\n⋅\"우리가 생활하는 공간의 환경 상태는 실제로 어떨까?\"라는 질문 제시\n⋅마이크로비트와 환경 센서를 활용한 환경 데이터 수집 방법 소개\n[생각 열기]\n⋅학생들이 측정하고 싶은 지역 환경 요소를 온라인 협업 보드(퀴즈앤 등)에 작성하기\n⋅환경 요소를 측정할 때 필요한 것은 무엇인지 의견 나누기", "body": "[학습 목표 안내]\n⋅마이크로비트를 활용하여 환경 데이터를 수집할 수 있다.\n⋅수집한 데이터를 분석하여 환경 문제와 관련된 의미를 해석할 수 있다.\n[환경 측정 장치 이해하기]\n⋅마이크로비트의 센서(온도, 소음, 미세먼지, 조도 등) 측정 방법 이해하기\n⋅센서 데이터가 환경 문제 탐구에 활용되는 사례 살펴보기\n[환경 데이터 측정하기]\n⋅마이크로비트 확장 키트를 이용한 측정 시범(미세먼지, 산성도, 가스 등)\n⋅마이크로비트를 활용하여 다양한 장소에서 온도, 소음, 빛 등의 데이터를 측정하기\n⋅측정값을 기록지 또는 스프레드시트에 정리하기\n⋅실물 마이크로비트를 지참하지 못한 경우, 시뮬레이션 활용\n[데이터 정리 및 시각화]\n⋅측정 데이터를 표로 정리하기\n⋅엑셀 또는 구글 스프레드시트를 활용하여 그래프 작성하기\n⋅측정 장소에 따른 환경 데이터 차이 분석하기\n[환경 문제 탐구]\n⋅측정 결과를 바탕으로 측정 장소의 환경 문제를 탐색하기\n⋅가장 개선이 필요한 환경 요소 선정하기\n⋅측정 결과의 원인을 토의하고 해결이 필요한 이유를 설명하기"}}, {"topic": "마이크로비트를 활용한 문제 해결 아이디어 구현", "concept": "⋅환경 문제 해결 ⋅피지컬 컴퓨팅 ⋅프로토타입 설계", "method": "■ 협동학습 ■ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "4/5", "steps": {"intro": "[문제 상황 재확인]\n⋅3차시에 측정한 환경 데이터 결과 확인하기\n⋅모둠별로 발견한 인근 환경 문제 공유하기\n⋅\"우리가 직접 해결할 수 있는 방법은 무엇일까?\" 질문 제시\n[생각 열기]\n⋅학생들이 해결하고 싶은 환경 문제를 온라인 협업 보드(퀴즈앤 등)에 작성하기\n⋅환경 문제를 해결할 때 필요한 것은 무엇인지 의견 나누기", "body": "[학습 목표 안내]\n⋅환경 데이터 분석 결과를 바탕으로 문제 해결 아이디어를 도출할 수 있다.\n⋅마이크로비트를 활용하여 문제 해결 프로토타입을 구현할 수 있다.\n[문제 해결 아이디어 도출]\n⋅모둠별 환경 문제 선정하기 (소음, 미세먼지, 교실 온도, 에너지 낭비 등)\n⋅브레인스토밍을 통해 해결 방안 탐색하기\n⋅실현 가능성, 효과성, 지속가능성을 고려하여 최종 아이디어 선정하기\n[프로토타입 설계하기]\n⋅마이크로비트 활용 방안 구상하기\n⋅입력(센서) - 처리 - 출력(LED, 부저, 모터 연동 등) 구조 설계하기\n⋅순서도 또는 스케치로 아이디어 시각화하기\n[문제 해결 프로그램 구현하기]\n⋅MakeCode를 활용하여 프로그램 작성하기\n⋅예시)\n- 소음 기준 초과 시 경고 표시 장치\n- 온도 상승 시 환기 알림 장치\n- 미세먼지 농도 증가 시 경고 시스템\n- 에너지 절약 실천 알림 장치\n- 자동 차양막 동작 시스템\n⋅테스트를 통해 오류 수정 및 기능 개선하기\n[효과 검증하기]\n⋅구현 결과 시연하기\n⋅실제 환경 문제 해결에 도움이 되는지 검토하기\n⋅한계점과 개선 방향 토의하기"}}, {"topic": "환경 문제 해결 사례를 고려한 실천 방안 제안", "concept": "⋅환경 문제의 시차성 ⋅환경 의사결정 ⋅환경 시민성 ⋅지속가능한 실천", "method": "■ 협동학습 ■ 탐구학습 ■ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "5/5", "steps": {"intro": "[문제 상황 확인]\n⋅4차시에 구상한 아이디어 결과 확인하기\n⋅모둠별로 아이디어 공유하기\n⋅“환경 문제는 해결 노력을 시작해도 효과가 바로 나타날까?” 질문 제시\n[생각 열기]\n⋅학생들이 찾아보고 싶은 환경 문제 해결 사례를 온라인 협업 보드(퀴즈앤 등)에 작\n성하기\n⋅환경 문제를 해결할 때 고려할 점들은 무엇인지 의견 나누기", "body": "[학습 목표 안내]\n⋅환경 문제 해결 과정에서 나타나는 시차성을 설명할 수 있다.\n⋅환경 문제 해결을 위한 개인 및 사회 차원의 실천 방안을 제안할 수 있다.\n[사례 분석하기]\n⋅국내외 환경 문제 해결 사례 조사하기\n- 미세먼지 저감 정책\n- 일회용품 사용 감축 정책\n- 탄소중립 및 신재생에너지 확대 정책\n- 하천 및 습지 복원 사업 등\n⋅문제 발생 → 해결 노력 → 효과 발생 과정을 정리하기\n⋅효과가 나타나기까지 걸린 시간과 원인 분석하기\n[환경 문제 해결의 시차성 이해하기]\n⋅사례별 시차성이 발생하는 이유 토의하기\n⋅환경 문제 예방의 중요성과 사전 예방 원칙 이해하기\n⋅단기적 관점과 장기적 관점의 의사결정 비교하기\n[실천 방안 제안하기]\n⋅1~4차시에서 탐구한 지역 및 학교 환경 문제를 다시 살펴보기\n⋅개인 차원, 학교 차원, 지역사회 차원의 실천 방안 구분하기\n⋅실천 가능성, 효과성, 지속가능성을 고려하여 우선순위 정하기\n⋅모둠별 실천 계획서 작성하기\n- 환경 실천 제안서, 환경 행동 선언문, 환경 경보기 설명서 등"}}], "id": "ch09", "pdf": "pdf/ch09.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(세포와물질대사-충남관광보건고-장인영).pdf", "meta": {"curriculum": "2022", "subject": "세포와물질대사", "teacher": "장인영 (충남관광보건고등학교)", "unit": "Ⅰ세포 – 02. 세포의 구조와 기능", "code": "12세포01-03", "standard": "[12세포01-03] 동물세포와 식물세포를 구성하는 세포 소기관의 구조와 기능을 이해하고, 세포 소기관들의 유기적 관계를 추론하여 협력적으로 소통할 수 있다.", "category": "과학·수학", "school": "충남관광보건고등학교", "teacher_name": "장인영"}, "stage1": {"total_periods": "3차시", "explanation": "[12세포01-03] 세포 소기관의 구조와 기능은 전자현미경을 포함한 다양한 현미경의\n이용, 세포 분획법, 자기 방사법 등의 방법으로 알아낼 수 있음을 이해하도록 하고,\n세포 소기관의 유기적 관계는 물질의 합성과 분비를 중심으로 다루도록 한다.", "know": "• 세포의 연구 방법\n• 세포 소기관의 구조\n• 세포 소기관의 기능\n• 동물세포와 식물세포의 공통점과 차이점", "skill": "• 세포 소기관의 기능 설명하기\n• 동물세포와 식물세포를 관찰하고 비교하기\n• 모둠 토의 및 프로젝트를 통해 의견 공유 및 소통하기\n• 다양한 자료를 활용하여 세포의 구조를 표현하고 설명하기", "value": "• 생명의 기본 단위인 세포를 학습하고자 하는 태도\n• 생명체의 복잡성과 정교함에 대한 호기심과 탐구 의지\n• 과학적 근거를 바탕으로 자신의 생각을 표현하는 자세\n• 모둠 활동에서 타인의 의견을 존중하며 협력적으로 소통하는 태도", "eval_goal": "• 세포의 연구 방법과 세포 소기관의 구조와 기능을 이해 및 설명하며, 모둠 활동을\n통해 협력적으로 소통할 수 있는지를 평가한다.", "eval_content": "• 세포의 연구 방법 설명하기\n• 세포 소기관의 구조와 기능 설명하기\n• 동물세포와 식물세포의 공통점과 차이점 설명하기\n• 모둠 활동 시 자신의 의견을 제시하고 타인의 의견을 존중하며 협력적으로 소통하기", "eval_method": "• 수행평가 : 설명 자료(인포그래픽) 제작 자료\n• 발표평가 : 설명 자료(인포그래픽) 발표\n• 자기 및 동료평가 : 협력 과정 및 의사소통 태도 평가"}, "lessons": [{"topic": "세포, 넌 누구니?", "concept": "세포의 연구 방법, 동물세포의 세포 소기관, 식물세포의 세포 소기관", "method": "■ 협동학습 □ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "1/3", "steps": {"intro": "[공감하기]\n▸세포 관련 영상 시청 (두 가지 영상 중 하나 선택)\n(1) 세포설의 기묘한 역사\n-영상 길이: 6분 12초\n-자막: 한국어 자막, 한국어 오디오(더빙) 가능\n-링크: https://www.youtube.com/watch?v=URUJD5NEXC8\n(2) 세포 속으로의 여행\n-영상 길이: 1분 13초\n-자막: 영어 자막만 가능\n-링크: https://www.youtube.com/watch?v=URUJD5NEXC8\n[생각열기]\n▸활동 예고: “과학자들의 오랜 연구를 통해, 오늘날 세포는 생물체를 구성하는 구조적\n단위이자 생명 활동을 수행하는 기능적 단위임을 말하고 있습니다. 따라서 세포의\n연구는 생명체의 다양한 생명 현상을 이해하는 기본이 되므로, 우리는 세 번의 시간을\n걸쳐 세포 전문가가 되고자 합니다.”", "body": "[학습 목표 안내]\n-세포의 연구 방법에 대해 설명할 수 있다.\n-동물세포와 식물세포를 구성하는 세포 소기관의 구조와 기능을 설명할 수 있다.\n[프로젝트 안내]\n▸모둠 구성 (2인 1조 가정, 주제를 세분화하여 1인 1조도 가능)\n-1조: 세포의 연구 방법 – 현미경의 종류와 사용 방법"}}, {"topic": "세포, 내가 자세히 알려준다!", "concept": "세포의 연구 방법, 동물세포의 세포 소기관, 식물세포의 세포 소기관", "method": "■ 협동학습 □ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "2/3", "steps": {"intro": "[생각열기]\n▸1차시 내용 언급, 마무리 및 발표 준비 안내", "body": "[학습 목표 안내]\n-세포의 연구 방법에 대해 설명할 수 있다.\n-동물세포와 식물세포를 구성하는 세포 소기관의 구조와 기능을 설명할 수 있다.\n[프로젝트 진행 및 마무리]\n▸한 장 분량 설명 자료(인포그래픽) 제작 마무리\n▸제작한 설명 자료(인포그래픽)를 마주온 퀴즈앤 보드 등과 같은 공유 플랫폼에 게시\n-주의: 웨일온 계정으로 로그인해야 교사 유료 계정 사용 가능\n[발표 및 경청]\n▸조마다 5분씩 발표\n-설명뿐만 아니라 경청의 자세도 중요함을 안내\n-교사가 제시하는 학습지 채우기 또는 백지에 발표 내용 필기 및 정리\n▸자기평가지 및 동료평가지 작성"}}, {"topic": "세포, 이제 내가 전문가!", "concept": "세포의 연구 방법, 동물세포의 세포 소기관, 식물세포의 세포 소기관", "method": "□ 협동학습 □ 탐구학습 ■ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/3", "steps": {"intro": "[공감하기]\n▸세포 관련 영상 시청\n생물학: 세포 구조\n-영상 길이: 7분 21초\n-자막: 한국어 자막, 한국어 오디오(더빙) 가능\n-링크: https://www.youtube.com/watch?v=URUJD5NEXC8\n[생각열기]\n▸2차시 설명 자료(인포그래픽)를 학생들에게 제시 및 교사의 간단한 설명\n▸활동 예고: “동물세포와 식물세포는 진핵세포에 속하며, 세포는 원핵세포와 진핵세포로\n나뉩니다. 오늘은 세포를 나누는 기준을 알아봅시다.”", "body": "[학습 목표 안내]\n-원핵세포와 진핵세포의 구조를 비교할 수 있다.\n[학습 내용 안내]\n▸원핵세포의 정의를 듣고, 직접 상상하여 활동지에 그림을 그린 후 마주온 퀴즈앤\n보드 등과 같은 공유 플랫폼에 게시\n-상상해서 그림을 그리는 것이므로 정답은 없음을 안내\n▸교사가 ①유전물질, ②핵막, ③세포막, ④세포벽, ⑤라이보솜, ⑥막성 세포소기관\n단어를 언급하면, 학생들은 원핵세포와 진핵세포를 비교하여 토의•토론하기\n-부담 없이 자유롭게 본인의 생각을 밝힐 수 있도록 편안한 분위기 조성\n-필요시 마주온 퀴즈앤 보드 등 공유 플랫폼 활용\n▸교사와 함께 원핵세포, 진핵세포의 바른 과학 개념 정립 및 학습지 채우기", "closing": "[정리 및 다음 차시 예고]\n▸마주온 퀴즈앤 퀴즈쇼 기능을 통해 세포 관련 학생 이해 여부 확인\n▸세포막을 통한 물질의 이동에 관해 배울 것임을 안내"}}], "id": "ch10", "pdf": "pdf/ch10.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(스포츠개론-서산중앙고등학교-정혜민).pdf", "meta": {"curriculum": "2022", "subject": "스포츠개론", "teacher": "정혜민 (서산중앙고등학교)", "unit": "Ⅱ. 스포츠와 학문\n01. 스포츠와 사회과학적 연구", "code": "[12스개02-01]", "standard": "스포츠에 대한 사회과학적 탐구 내용과 방법을 이해하고 사례에 적용하여 분석하며 사회과학적 연구 태도를 실천한다.", "category": "예술·체육", "school": "서산중앙고등학교", "teacher_name": "정혜민"}, "stage1": {"total_periods": "4차시", "explanation": "스포츠 현상에 내재한 다양한 사회·문화적 가치를 파악하기 위해 사회과학적 연구\n방법을 체계적으로 이해한다. 현대 스포츠 문화의 형성 요인을 구체적인 사례를 통\n해 다각도로 분석하고, 그 과정에서 나타나는 긍정적·부정적 영향력을 비판적으로\n고찰하여 스포츠 문화의 발전적 방향과 실천적 해결 방안을 창의적으로 제시하는\n활동을 강조한다.", "know": "·스포츠 현상을 바라보는 사회과학적 관점 및 탐구 방법론 이해\n·현대 스포츠 문화에 영향을 미치는 다각적 요인 분석\n·스포츠가 사회에 미치는 긍정적·부정적 영향과 갈등 요인에 대한 구조적 이해", "skill": "·스포츠 현상(문화)에 사회과학적 이론과 탐구 방법을 적용하여 원인-결과 체계적\n분석\n·분석 결과를 바탕으로 스포츠 문화의 문제점을 진단하고, 현실적·구체적인 개선\n방안 및 미래 발전 방향 도출하기\n·자료 수집·정리 과정에서 신뢰성 있는 근거를 확보하고, 발표를 통해 청중과 비판\n적·협력적 상호작용하기", "value": "·스포츠 현상을 객관적·과학적으로 고찰하는 태도의 중요성을 인식하고 즐거운 탐\n구 정신 실천하기\n·스포츠 문화의 한계를 인식하고, 사회 구성원으로서 더 나은 스포츠 문화를 만들\n기 위한 책임감과 윤리적 태도 견지하기\n·다양한 사회적 관점을 포용하고, 토론과 발표 과정에서 동료의 의견을 존중하는\n민주적 시민의식 발휘하기", "eval_goal": "스포츠 문화 형성 요인을 사회과학적 방법으로 심층 탐구하고, 그 결과를 논리적으\n로 분석하여 스포츠의 미래 발전과 개선 방안을 창의적으로 제시하고 발표할 수\n있다.", "eval_content": "① 탐구 설계 및 자료 조사\n② 내용 분석 및 논리성\n③ 해결 방안 및 확장 사고\n④ 말하기 및 의사소통 태도", "eval_method": "·수행평가(활동 결과물 종합평가)\n·발표 평가"}, "lessons": [{"topic": "스포츠 현상 사회학적 탐구-통계로 보는 스포츠 사회", "concept": "· 스포츠 사회학의 핵심 개념 · 스포츠 사회학의 이해 ·스포츠의 사회적 흐름 담론\n이해", "method": "□ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "1/4", "steps": {"intro": "[생각 열기]\n§ “감정은 스포츠를 이해하게 하지만, 통계는 스포츠 사회를 설명하게 한다” 발문\n§ 스포츠 현상을 단순한 유희가 아닌 사회과학적으로 연구해야 하는 이유와 필요\n성 제시\n§ 스포츠 부정적 일탈(폭력, 도핑 등)에 관한 사례를 제시하며 사회문화적 요인과\n연결하여 간단하게 제시", "body": "[학습 목표 안내]\n§ 스포츠의 사회과학적 연구 동향과 현상을 이해하고 스포츠 사회학 담론을 파악\n할 수 있다.\n[스포츠 사회학에 대해 알아보기]\n§ 스포츠 사회학에서 다루는 주요 주제와 연구 사례 제시\n§ 스포츠 사회학 연구의 필요성과 양적·질적연구 차이점 교육(사례 중심)\n[RISS를 활용한 스포츠 사회학 연구 동향 파악하기]- 활동지①\n§ 스포츠 사회학적 키워드 선정하여 관련 연구 동향 살펴보기\n§ 연구들을 살펴보며 스포츠 사회학 연구의 필요성 의견 나눔\n[빅카인즈를 활용한 스포츠 사회적 담론 분석하기 활동]- 활동지①\n§ 스포츠 사회학적 흐름 담론 파악할 수 있는 통계 기법 설명\n§ 빅카인즈 사이트 활용: 자신의 키워드 관련 뉴스 중 어떠한 주제의 키워드가 가\n장 높은 빈도로 나타날 것 같은지에 대한 탐색\n§ 빅카인즈를 활용하여 학생이 선정한 키워드 [2022.04.01.~2026.3.1.] 까지의 데\n이터 수집\n§ 관계도 분석, 키워드 트렌드, 연관어 분석 실시하여 결과 확인 후 담론 흐름 분\n석하기\n§ 패들렛에 분석결과 입력하여 공유 및 의견 나누기"}}, {"topic": "스포츠 사회학적 이슈 분석", "concept": "· 스포츠 사회 문제 분석 ·스포츠 공정성과 인권 이해 ·비판적 사고 · 토론을 통한\n의사결정", "method": "□ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "2/4", "steps": {"intro": "§본 차시 전까지의 설문조사 결과를 통한 스포츠 사회학적 이슈 주제 제시\n(운동회 민원, 성전환 선수의 대회 참가)\n[딜레마 상황 제시를 통한 동기유발]\n§ 운동회 소음 민원에 위축되는 학교 체육대회(사회학적 제시)\n§ 성전환 선수의 대회 참가 이슈(사회학적)", "body": "[학습 목표 안내]\n§ 스포츠 현장의 이해관계를 분석하고 학생의 권리를 지키면서 지역사회와 상생하\n는 창의적인 해결 전략을 제시할 수 있다.\n§ 성전환 선수의 경기 참여에 대한 사회학적 윤리학적으로 이해한 후 건강한 사회\n적 합의를 제시할 수 있다.\n[운동회 소음 민원에 위축되는 학교 행사-상생의 지혜 제안서 설계]-활동지②\n§ 스포츠 사회학적으로 바라보는 운동회 소음 민원 이해하기\n§ 운동회 소음 민원 관련 통계 파악 및 분석하기\n§ 민원인과의 권리 대립 분석 및 상생의 지혜를 위한 제안서 설계 활동\n[성전환 선수의 대회 참가 이슈에 대한 스포츠 공정성 vs 인권]\n§ 성전환 선수의 대회 참가 사례 동영상 시청\n§ 성전환 선수의 찬반 입장 탐색\n§ 스포츠 공정성 vs 인권에 대한 찬반 토론 실시(패들렛 활용)\n[성전환 선수 시합 출전-공정성 vs 인권 찬반 토론 의견 나눔 패들렛>", "closing": "[정리 및 다음 차시 예고]\n§ 체육대회의 승패가 주는 교육적 의미에 대한 성찰\n§ 대립하는 스포츠 윤리 문제에서 우리가 사회적 합의를 이끌어낼 방안에 대한 의"}}, {"topic": "스포츠 현상별 문화 분석 및 탐구 설계", "concept": "·스포츠 문화 이해하기 · 스포츠 현상별 문화 분석하기 · 스포츠의 순기능과역기능\n·발표·표현력", "method": "□ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타(발표활동)", "period": "3/4", "steps": {"intro": "[스포츠 문화의 양면성 인식]\n§ 우리 사회나 스포츠 현장에서 나타나는 다양한 스포츠 문화(팬 문화, 전문체육\n스포츠 문화 등) 및 역기능적 현상(폭력, 도핑, 비리 등) 실태 제시", "body": "[학습 목표 안내]\n§ 다양한 스포츠 문화에 대해 이해하고, 스포츠 현상에 따른 스포츠 문화와 요인을\n제시할 수 있다.\n[전차시 후속 활동: 공정성 vs 인권 학급 찬반 의견 조사분석 발표]- 활동지③\n§ 전차시에 학습한 공정성vs인권(성전환선수)에 대한 학급 찬반의견 조사결과 발표\n[찬반의견 조사 활동지 작성 결과본]\n[구조적 배경 분석 및 탐구 계획]\n§ 스포츠 현상별 스포츠 문화, 역기능적 실태 탐색 후 의견 나눔\n§ 학생 개인이 선택한 해당 스포츠 문화가 형성하게 된 사회적·구조적 요인(배경)\n에 대한 모둠별 의견 나눔\n§ 해당 문화가 사회 또는 개인에게 미치는 긍정적 영향과 부정적 영향 다각도로\n제시\n§ 수행평가 1단계인 탐구 설계 및 자료 조사 구상", "closing": "[정리 및 다음 차시 예고]\n§ 구상한 탐구 기획의 현실성과 타당성을 교사 및 동료 검토를 통해 1차 확인실시\n§ 다음 차시 예고: 탐구 보고서 작성 및 발표 준비 사항 안내"}}, {"topic": "스포츠 문화 영향 요인 심층 탐구 및 발표 활동", "concept": "· 스포츠 문화 영향 요인 분석 · 스포츠 문화 구조 분석 ·비판적 사고 ·스포츠의 사\n회·윤리적 관점 탐구 ·발표·표현력", "method": "□ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타(발표활동)", "period": "4/4", "steps": {"intro": "[‘스포츠와 문화’ 콜로키움 분위기 조성]\n§ 심층 탐구 작성 및 결과에 따른 발표를 실시하여 심도있는 활동 분위기 조성\n§ 탐구 작성 및 발표 순서(기준) 안내", "body": "[학습 목표 안내]\n§ 스포츠 문화의 영향 요인을 파악하고 이를 개선할 수 있는 실천적 아이디어를\n제시할 수 있다.\n§ 스포츠 문화의 문제점을 우리 사회 전제의 사회적, 윤리적 관점에서의 시사점을\n제시할 수 있다.\n[심층 탐구 및 발표]- 활동지④\n§ 전차시에서 학생 개인이 선택한 스포츠 문화의 구조적 요인, 긍정적·부정적 영향\n분석\n§ 단순한 스포츠계 내부 문제를 넘어 우리 사회 전체의 사회적 관점과 윤리적 관\n점에서 바라본 시사점 등 제시\n§ 탐구 발표 실시 및 동료 학생들과의 질의응답을 통한 비판적 확장 토론 진행", "closing": "[정리 및 성찰]\n§ 스포츠 문화별 영향 요인 등 의견 나눔\n§ 스포츠 사회학 수업 정리 및 질의응답\n§ 타 과목과의 스포츠 사회학 융합 가능성 안내"}}], "id": "ch11", "pdf": "pdf/ch11.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(인간과심리-충남온라인학교-강서현).pdf", "meta": {"curriculum": "2022", "subject": "인간과 심리", "teacher": "강서현 (충남온라인학교)", "unit": "Ⅰ. 마음의 과학적 탐구", "code": "12심리01-03", "standard": "심리학 내 다양한 하위 분야가 실생활과 관련되거나 사회 발전에 기여한 사례를 탐색하고 자신의 진로 탐색과 연결한다.", "category": "인문·사회", "school": "충남온라인학교", "teacher_name": "강서현"}, "stage1": {"total_periods": "3차시", "explanation": "심리학이 인간의 마음과 행동을 다루는 학문으로서 우리 삶에 어떻게 적용되는지\n이해하도록 돕는다. 심리학의 다양한 하위 분야(임상, 상담, 인지, 발달, 사회, 범죄\n심리학 등)가 실생활의 문제를 해결하고 사회 발전에 기여한 구체적 사례를 탐색한\n다. 이를 바탕으로 학생 개개인의 관심사 및 진로 방향과 심리학적 탐구 주제를 능\n동적으로 연결한다. 나아가 생성형 AI 도구를 비판적으로 활용해 학습 내용을 문학\n적·시각적 매체(시와 시화)로 재구성하고 공유하는 탐구·성찰 활동을 통해 창의적\n융합 소양을 함양하는 것을 목표로 한다.", "know": "Ÿ 심리학의 주요 연구 방법 및 기초·응용 심리학의 다양한 하위 분야\nŸ 심리학 이론이 실생활의 오류 인지 및 문제 해결에 기여하는 방식\nŸ 자신의 진로 및 관심 분야와 심리학의 접점", "skill": "Ÿ 심리학 하위 분야 및 이론을 실생활 사례와 비교·대조하기\nŸ 자신의 진로 관심사에 맞는 심리학 주제를 선정하고 사례 기반 탐구·발표하기\nŸ 학습한 심리학적 지식을 성찰하여 시와 시화 등의 창의적 산물로 표현하기", "value": "Ÿ 인간의 마음과 행동을 과학적·객관적으로 이해하려는 태도\nŸ 심리학의 실용적 가치를 인식하고 실생활 및 사회 문제 해결에 기여하려는 개\n방적 태도\nŸ 자기 성찰을 통한 깊이 있는 진로 탐색의 자세", "eval_goal": "심리학의 다양한 하위 분야가 실생활 및 사회 발전에 기여한 사례를 명확히 이해\n하고, 자신의 진로와 연계하여 다양한 관점에서 깊이 있게 분석·탐구할 수 있는지\n를 평가한다.", "eval_content": "① 선택한 탐구 주제의 적절성\n② 정보의 신뢰성과 정확성\n③ 말하기 및 의사소통 태도\n④ 창의성 및 개인적 성찰\n※ 1차시 이론 매칭 활동과 3차시 AI 활용 시화전 활동은 수업 내 학습 역량 강화\n및 복습 활동으로 운영하며, 본 평가 점수에는 산입하지 않고 과정 중심 피드백 및\n생활기록부 기재 요소로만 연계함.", "eval_method": "'심리학 주제탐구 발표' 채점 기준 루브릭을 적용한 교사 실시간 관찰 및 정량·정\n성 평가 실시."}, "lessons": [{"topic": "심리학의 연구 방법과 다양한 하위 분야 탐색", "concept": "· 심리학의 연구 방법 · 심리학의 하위 분야 · 진로 탐색", "method": "□ 협동학습 ■ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "1/3", "steps": {"intro": "[생각 열기]\n· ‘심리학은 우리 사회에 어떤 도움을 주고 있을까?’ 질문 제시\n· 일상생활 속 심리학 사례(광고, 학습, 상담, 범죄 예방 등)를 제시하여 심리학의\n활용 분야에 대한 관심 유도\n[학습 목표 안내]\n· 심리학의 다양한 하위 분야를 이해할 수 있다.\n· 심리학이 사회 발전에 기여한 사례를 탐색할 수 있다.\n· 자신의 진로 및 관심 분야와 관련된 심리학 주제를 탐색할 수 있다.", "body": "[심리학 하위 분야 탐색]\n· 기초 심리학과 응용 심리학의 다양한 하위 분야 살펴보기\n· 관심 있는 심리학 분야를 선택하여 관련 직업 및 실생활 활용 영역 조사하기\n· 활동지 작성 후 결과 공유하기\n[심리학의 사회적 기여 사례 분석]\n· 심리학 연구가 사회 발전에 기여한 사례 읽기\n- 고령 운전자의 교통안전 연구에 적용된 심리학의 사례\n- 자폐 스펙트럼 장애 인식 개선 사례\n· 사례별 관련 심리학 분야를 추론하고 사회적 기여 내용 정리하기\n[사회 문제와 심리학 연결하기]\n· 고령화, 학교폭력, 지역 소멸 등 우리나라의 다양한 사회 문제 탐색하기\n· 관심 있는 사회 문제를 선택하고 선정 이유를 작성한 뒤 해당 문제 해결에 기여\n할 수 있는 심리학 분야 탐색하기\n학생 활동 예시 1 학생 활동 예시 2\n· 이후 주제탐구 발표를 위한 관심 주제 구상하기", "closing": "· 탐색한 심리학 하위 분야 중 자신의 진로 및 관심사와 연결된 발표 주제를 최종\n확정하도록 안내"}}, {"topic": "진로와 연계한 심리학 주제탐구 발표", "concept": "· 심리학 주제탐구 · 정보 분석 및 활용 · 의사소통과 발표", "method": "□ 협동학습 ■ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "2/3", "steps": {"intro": "[발표 준비 및 학습 목표 안내]\n· 수행평가의 목적과 발표 절차 안내\n· 발표 평가 요소(주제 적절성, 내용의 정확성, 진로 연계성, 발표 태도) 안내\n· 동료 발표를 경청하며 피드백을 작성할 것을 안내\n[탐구 주제 공유]\n· 학생들이 선정한 심리학 탐구 주제를 간단히 소개\n· 다양한 심리학 분야가 진로 및 사회 문제와 어떻게 연결되는지 생각해 보기", "body": "[심리학 주제탐구 발표]\n· 학생들이 탐구한 심리학 분야 및 관련 주제를 발표하고 탐구 결과를 공유하기\n· 심리학 개념을 진로 및 관심 분야와 연계하여 설명하기\n학생 활동 예시 1 학생 활동 예시 2\n[패들렛 활용 상호 피드백]\n· 동료의 발표를 경청하며 인상 깊은 점, 새롭게 알게 된 점, 궁금한 점 기록하기\n· 다양한 심리학 분야의 가치와 활용 가능성 공유하기", "closing": "[탐구 결과 성찰]\n· 발표를 통해 알게 된 심리학 분야 및 사회적 활용 사례 정리\n· 심리학이 다양한 진로 분야와 연결될 수 있음을 이해하기\n[다음 차시 예고]\n· 학습한 심리학 개념을 활용한 시 창작 및 시화 제작 활동 안내"}}, {"topic": "심리학 개념을 활용한 온라인 시화전 개최", "concept": "· 심리학 개념의 재구성 · 창의적 표현 · 자기 성찰", "method": "□ 협동학습 □ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/3", "steps": {"intro": "[학습 내용 돌아보기]\n· 수업 중 학습한 심리학 개념 및 탐구 주제 되돌아보기\n[학습 목표 안내]\n· 생성형 AI 및 디지털 도구를 활용하여 학습 경험을 시화로 표현할 수 있다.\n· 작품 공유를 통해 자신의 성장과 배움을 성찰할 수 있다.", "body": "[심리학 학습 경험 성찰하기]\n· 인간과 심리 수업을 통해 새롭게 알게 된 점, 흥미를 느낀 분야, 변화한 생각 등\n정리하기\n[시 창작 및 시화 제작]\n· 심리학 개념과 학습 경험을 바탕으로 시 작성하기\n· 생성형 AI 및 디지털 도구를 활용하여 시의 의미와 분위기를 시각적으로 표현하\n고 시와 이미지를 결합하여 시화 작품 완성하기\n학생 활동 예시 1 학생 활동 예시 2\n[온라인 시화전 운영]\n· 완성된 작품을 패들렛에 게시하여 온라인 시화전 운영하기\n· 동료의 작품을 감상하며 작품에 담긴 심리학 개념과 의미 탐색하기\n· 댓글 및 감상평을 작성하며 서로의 생각과 배움 공유하기", "closing": "[수업 회고 및 성찰]\n· 심리학 수업을 통해 새롭게 알게 된 점과 변화한 생각 나누기\n· 단원 전체 학습 과정을 되돌아보며 학습 의미 성찰하기"}}], "id": "ch12", "pdf": "pdf/ch12.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(지구시스템과학-홍주고-홍성준).pdf", "meta": {"curriculum": "2022", "subject": "지구시스템과학", "teacher": "홍성준(홍주고등학교)", "unit": "Ⅱ. 해수의 운동 – 05. 조석", "code": "12지시02-04", "standard": "조석의 발생 과정을 이해하고 자료 해석을 통해 각 지역에서의 조석 양상을 설명할 수 있다.", "category": "과학·수학", "school": "홍주고등학교", "teacher_name": "홍성준"}, "stage1": {"total_periods": "3차시", "explanation": "기조력으로 발생하는 조석 현상의 원리를 이해하고, 실제 관측 자료를 해석하여 우\n리나라의 조석 양상을 설명한다. 실측 빅데이터를 그래프로 시각화하여 해역별 조\n석 패턴을 도출하는 디지털 탐구를 수행한다.", "know": "-기조력으로 조석이 발생하는 과정을 설명할 수 있다.\n-달에 의한 기조력과 태양에 의한 기조력의 크기를 비교하여 설명할 수 있다.\n-우리나라 해안의 하루 및 한 달 동안 조석 양상을 옳게 설명할 수 있다.", "skill": "-우리나라 해안의 한 달 동안 조석 자료를 그래프로 올바르게 변환할 수 있다.\n-지구 규모의 빅데이터와 시뮬레이션을 통해 각 지역에서의 조석 양상의 차이점과\n조석 현상의 패턴을 추론할 수 있다.", "value": "-우리나라 해안의 조석 자료를 수집하고 변환하는 모둠 활동 때 자신에게 주어진\n역할을 충실히 수행할 수 있다.\n-조석 그래프를 탐구하는 과정에서 객관적인 데이터에 기반하여 추론하는 과학적\n태도를 지닌다.\n-온라인 보드를 활용한 서술형 답안 공유 및 피드백 과정에서 타인의 과학적 논증\n을 개방적인 태도로 검토하고 소통할 수 있다.", "eval_goal": "실시간 조석 실측 데이터를 스스로 수집 및 시각화하여 조석 패턴의 특징을 과학\n적으로 해석할 수 있으며, 천체의 상대적 위치 변화에 따른 조차 변동성을 기조력\n을 이용하여 추론하고 온라인 보드를 통해 논리적으로 공유할 수 있는지 평가한다.", "eval_content": "① 해역별 실시간 조석 데이터 수집 및 기본 개념 정리\n② 구글 스프레드시트를 활용한 조석 곡선 구현 및 패턴 해석\n③ 천체 운동 기반 조석 변동성 의견 공유, 서술형 평가", "eval_method": "- 수행평가(활동지·기록지·디지털 산출물 과정 중심 종합 평가)\n- 발표 평가(퀴즈앤 보드를 통한 온라인 갤러리 워크)\n- 서술형 평가"}, "lessons": [{"topic": "조석 현상의 이해와 데이터 수집", "concept": "조석, 만조, 간조, 조차, 대조(사리), 소조(조금), 조석 양상", "method": "□ 협동학습 ▣ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "", "steps": {"intro": "[생각열기]\n- 조석 현상과 관련된 영상 시청\n(서해안 앞바다의 밀물 썰물 타입랩스 영상, 밀물에 고립된 사람들의 안전사고 뉴스)\nhttps://www.youtube.com/watch?v=d0lTw6tcAww\n[반복되는 갯벌사고…밀물보고 나오면 이미 늦어 / 연합뉴스TV]\n[동기유발]\n- [마주온-퀴즈앤 보드] 에 '내가 경험했거나 알고 있는 조석 현상(갯벌 체험, 바다\n낚시 등)'을 자유롭게 적어 공유하며 학습 동기 유발", "body": "[학습 목표 안내]\n- 학습 목표: 조석이 발생하는 과정을 설명할 수 있다.\n[개념 탐구]\n1. 기조력(달의 인력 및 원심력)에 의해 발생하는 조석 현상의 원리 이해\n2. 조석 양상, 간조, 만조, 조석 주기, 조차\n3. 일주조, 반일주조, 혼합조, 태양의 영향 – 대조(사리), 소조(조금)\n[문제인식 및 가설설정]\n- 삼면이 바다로 둘러싸인 우리나라 해안 지역의 조석 현상이 어떤 패턴으로 나타\n날지 문제를 인식하고, 가설을 설정해본다.\n- 가설 설정한 내용을 [마주온-퀴즈앤보드]에 공유한다.\n[데이터 수집] - [활동지 1]\n1. <국립해양조사원 누리집-스마트 조석예보>에 접속\n(https://www.khoa.go.kr/swtc/main.do)\n2. 해양 정보-스마트 조석예보에서 동해안, 서해안, 남해안 각 해역의 조위 관측소\n한 곳씩을 선택한다.\n3. 선택한 세 해역의 하루 동안의 조석 그래프를 상세 예측 정보에서 얻고, 실시간\n조석 정보를 기록한다. 선택한 세 해역의 한 달 동안의 조석 자료를 수집한다.\n- 모둠별 소회의실 개설, 탐구할 영역(동해안, 서해안, 남해안) 분담하여 지정한\n다.\n- 지정된 해역의 특정 기간의 시간별 조위 데이터를 다운로드하여 [활동지 1]을\n작성한다.", "closing": "[결과 공유]\n각 모둠이 선택한 해역과 수집한 데이터의 정상 수집 여부 및 [활동지 1] 작성 내\n용을 화면 공유를 통해 확인한다.\n[다음 차시 예고]\n수집한 데이터를 구글 스프레드시트에 업로드하여 디지털 그래프로 시각화하여 조석\n그래프를 표현하고, 각 선택한 지역의 조석 곡선 패턴을 추론하는 활동을 안내한다."}}, {"topic": "실시간 자료를 이용한 해역별 조석 현상 패턴 추론 및\n데이터 시각화", "concept": "조석 정보 기록, 조석 그래프 표현, 데이터 시각화, 삼면 해역의 조석 양상 비교\n분석, 지형적 요인 원인 추론, 가설 검증", "method": "▣ 협동학습 ▣ 탐구학습 □ 문제중심학습 ▣ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "", "steps": {"intro": "[탐구 목표 확인]\n- 탐구 목표 : 실시간 자료를 활용하여 우리나라 해안 지역의 조석 현상 패턴을 추\n론할 수 있다.\n[전 차시 환기]\n- 1차시 모둠별로 지정한 해역(서해안, 동해안, 남해안 중 1개)의 한달동안의 1시\n간 간격의 예측 조위 데이터 파일을 재 확인하고, 1차시의 초기 가설을 상기시\n켜 수치 데이터를 그래프로 시각화하여 가설을 검증해 봄을 안내한다.\n[준비 점검]\n- 각 모둠별로 구글 스프레드시트 공유 링크와 활성화 여부를 확인하고, 데이터 전\n처리 준비 상태를 점검한다.", "body": "[데이터 시각화]\n- [참고자료(2차시)] 내용을 이용하여 한 달 간의 조위 엑셀 데이터를 구글 스프레드\n시트에 올바르게 가져와 데이터 범위를 설정\n- 시간(X축), 조위(Y축) 데이터를 선택하고 매끄러운 선 그래프 기능을 이용하여\n한달동안의 조석 곡선을 그래프로 시각화\n(구글 시트 및 데이터 시각화 자료 예시)\n서해안 - 인천 동해안 - 울릉도 남해안 - 거문도\n- 완성된 그래프 [마주온-퀴즈앤보드]에 업로드\n[그래프 해석 및 분석] - [활동지 2]\n- 생성된 조석 곡선을 바탕으로 다음 과학적 사실을 추론하는 모둠 토의 진행\n- 1~6 문항 토의 및 결론 도출하여 활동지 작성 및 퀴즈앤 보드 업로드\n(대조/소조 찾기, 대조/소조 일 때 달의 위상 찾기, 세 해역의 조석 그래프를 보\n고 차이점 설명하기, 세 해역의 대조/소조/조차 비교하기, 삼면 해역에서의 조석\n양상과 원인 추론하기)\n- 과정 중심 평가 진행"}}, {"topic": "천체의 상대적 위치에 따른 조차의 변화 탐구하기", "concept": "자료를 해석하여 조석 주기와 조차를 구하기, 천체의 상대적 위치에 따른 조차 설\n명하기", "method": "▣ 협동학습 ▣ 탐구학습 □ 문제중심학습 ▣ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "", "steps": {"intro": "[개념 복습]\n- 기조력으로 조석이 발생하는 과정 개념 복습\n- 달에 의한 기조력과 태양에 의한 기조력의 크기 비교\n- 2차시 활동과 3차시 활동의 연계성 강조\n[문제 제기 및 탐구 목표 안내] [활동지3]\n- (가) 하루동안 변화하는 해수면의 높이 그래프와 (나)태양,지구,달의 상대적 위치\n가 드러난 [활동지3] 제시\n- 천체의 위치가 변하면 조석 그래프는 어떻게 바뀔지 질문 제공\n[학습 목표 제시]\n- 달과 태양의 위치 변화에 따른 기조력의 변화를 추론할 수 있다.", "body": "[모둠별 문항 협동 해결] [활동지3]\n- 소회의실 이동 및 역할 분담 : 제시한 서술형 문항 확인\n- 그래프의 조석 주기와 조차 계산, 천체 위치 변화에 따른 기조력 변화 원인을 글\n로 표현\n- 1~4번 문항 해결 (조석 주기와 최대 조차 계산 및 근거 서술, 현재 천체의 위치\n에 따른 인력 작용 특징 분석, 일주일 후 천체 변화가 조석 그래프에 미치는 영\n향을 서술하여 표현)\n[결과 공유 및 의견 나눔]\n- [마주온-퀴즈앤 보드]에 모둠별로 최종 도출한 서술형 답안 실시간 업로드\n- 온라인 갤러리 워크 형식으로 퀴즈앤 보드의 다른 모둠의 답안을 자유롭게 검토\n하고 과학적 근거가 타당한지 분석함.\n- 다른 모둠이 해석한 과학적 근거를 읽으며 우리 모둠의 생각과 비교하고 새롭게\n배운 점이나 인상 깊은 표현을 찾아본다.\n- 댓글 기능을 활용하여 보완이 필요한 부분에 대해 의견 작성 및 나눔하고, 다른\n모둠 답안의 우수한 점을 칭찬하고 보완할 점을 긍정적인 방향으로 보완하여 의\n견을 제시한다.\n- 다른 모둠의 피드백 댓글을 확인하여, 생각을 공유하고 탐구 내용을 보완함", "closing": "[개념 정교화 및 피드백]\n- 하현, 상현 위치에서 기조력이 상쇄되는 원리 최종 정리\n- 일주일 후 삭, 망 위치로 변할 때 천체의 인력이 합성되는 메커니즘에 관한 시각\n자료 제공\n[수업 정리 및 다음 차시 예고]\n- 과정 중심 평가 요소 안내 및 수업 마무리"}}], "id": "ch13", "pdf": "pdf/ch13.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(프로그래밍-갈산고-은용식).pdf", "meta": {"curriculum": "2022", "subject": "프로그래밍", "teacher": "은용식 (갈산고등학교)", "unit": "II. 문제해결과 프로그래밍", "code": "프그 02-04", "standard": "순차, 선택, 반복의 제어 구조를 이해하고, 문제 상황에 알맞은 제어 구조를 선택하여 이를 적용한 프로그램을 작성할 수 있다.", "category": "공학·정보", "school": "갈산고등학교", "teacher_name": "은용식"}, "stage1": {"total_periods": "6차시", "explanation": "순차, 선택, 반복이라는 3대 핵심 제어 구조의 작동 원리와 논리적 흐름을 깊이 있\n게 탐구한다. 단일 조건문(if)에서 다중 조건 분기(if-elif-else), 횟수 제어 반복\n(for)과 조건 제어 반복(while)의 메커니즘 차이를 명확히 이해하고, 이를 복합적으\n로 결합한 중첩 제어 구조 프로그램을 설계·구현하는 능력을 강조한다. AI 코스웨\n어 대시보드가 제공하는 정량적 학습 데이터(수행률, 코드 실행 분석)를 기반으로\n학생 맞춤형 피드백을 제공하여, 문제 해결 과정 중심의 실시간 디버깅 및 알고리\n즘 최적화 활동을 극대화한다.", "know": "· 조건식 작성을 위한 비교연산자(>, >=, ==, !=) 및 논리연산자의 개념\n· 조건문(if, if-else, if-elif-else)의 실행 흐름과 조건 분기 원리\n· 반복문(for, while)의 구동 원리 및 range() 함수의 매개변수 제어 규칙\n· 루프의 실행 흐름을 강제 제어하는 break와 continue 구문의 특성\n· 중첩 제어 구조(조건-조건, 반복-조건, 반복-반복)의 개념과 2차원 공간 표현 원리", "skill": "· 주어진 문제 상황을 분석하여 입력·처리·출력으로 추상화하기\n· 문제 해결 시나리오에 알맞은 제어 구조를 도출하고 이를 흐름도로 표현하기\n· AI 코스웨어를 활용해 문법 오류와 구동 실패 원인을 자가 진단하기\n· 코들의 실시간 피드백 및 대시보드 분석 결과를 반영하여 소스 코드를 지속적으\n로 디버깅하고 고도화하기", "value": "· 복잡한 에러 메시지와 논리적 예외 상황을 마주했을 때 포기하지 않고 해결하려\n는 과제 집착력\n· 일상의 수작업이나 비효율적인 업무를 자동화 프로그램 설계로 개선하려는 창의\n적·실천적 태도\n· 디지털 실습실 환경에서 타인의 소스 코드를 존중하고 기술 활용 시 디지털 윤리\n를 준수하는 시민성", "eval_goal": "순차, 선택, 반복의 제어 구조 및 중첩 제어 구조를 정확히 이해하고 , 주어진 실\n생활 문제 상황의 요구사항을 만족하는 파이썬 프로그램을 오류 없이 구현 및 해\n석할 수 있는지를 평가한다.", "eval_content": "① 발표 및 문제 정리: 도전문제 분석, 알고리즘 설계 및 기록의 명확성\n② 프로그래밍 문제 해결: 파이썬을 활용한 제어 구조 소스 코드 구현력\n③ 프로그래밍 해석 및 기록: 구현된 코드를 완벽히 해석하고 논리를 서술하는 능력", "eval_method": "· AI 코스웨어 과정 중심 평가: 코들 대시보드 기반 문항별 수행률 및 코드 실행\n분석 데이터를 통한 실시간 과정 평가 및 개인별 맞춤 피드백 누적\n· 프로젝트 및 구술·발표 평가: 구현된 프로그램의 제어 로직 정합성을 설명하고\n퀴즈앤 보드를 통한 상호 코드 리뷰 및 동료 피드백 진행"}, "lessons": [{"topic": "if문과 비교연산자\n- \"상황에 따라 다르게 작동하는 프로그램\"", "concept": "조건문의 개념 , 비교연산자의 종류와 의미 , 단일 조건문(if)의 실행 흐름", "method": "□ 협동학습 ☑ 탐구학습 ☑ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 ☑ 블랜디드 러닝 □ 기타( )", "period": "1/6", "steps": {"intro": "▶ 수업 시작 전 크롬 브라우저를 통해 코들에 접속할 수 있도록 한다.\n❍ 전 차시 학습 확인\n- 문자열 슬라이싱의 개념과 활용 사례를 발문한다.\n❍ 학습 동기 유발\n- [여러 가지 조건에 따라 전혀 다른 결과를 출력하는 프로그램]에 대해 발문한다.\n“콜라를 뽑을 수 있는 버튼을 누르면 콜라가 나오고, 사이다를 뽑을 수 있는 버\n튼을 누르면 사이다가 나오는 음료수 자판기의 코딩은 어떻게 할까?”\n동기유발자료1 동기유발자료2\n❍ 학습 목표 제시\n❍ 학습 활동 안내\n① 개념학습\n- 조건문의 개념\n- 조건문과 함께 사용할 수 있는 비교연산자의 종류\n- 조건문의 활용 방법: if문\n② 조건문 프로그래밍 실습\n- 절대값 찾기\n- 초과할 경우 다른 값 출력\n- 특정 값이 입력된 경우 특정한 결과 값 출력", "body": "❍ 개념 학습\n가. 조건문의 개념\n- 조건문의 개념에 대해 설명한다.\n- 조건문을 활용한 사례를 보여주고 이해하도록 한다.\n나. 비교연산자의 종류\n- >, >=, ==, ! = 등 비교연산자의 종류를 설명한다.\n- 비교연산자 == 와 대입연산자 =를 구분해서 사용하도록 안내한다."}}, {"topic": "if-else 및 if-elif-else문\n- \"다중 조건과 복합 제어 구조\"", "concept": "양방향 조건문(if-else)의 구조, 다중 조건문(if-elif-else)의 구조", "method": "□ 협동학습 □ 탐구학습 ☑ 문제중심학습 □ 토의•토론학습\n☑ 프로젝트 학습 □ 거꾸로학습 ☑ 블랜디드 러닝 □ 기타( )", "period": "2/6", "steps": {"intro": "▶ 수업 시작 전 크롬 브라우저를 통해 코들에 접속할 수 있도록 한다.\n❍ 전 차시 학습 확인\n- if문의 개념과 활용 사례를 발문한다.\n❍ 학습 동기 유발\n- [다양한 조건, 또는 조건 안의 또 다른 조건이 구현된 프로그램]에 대해 발문\n한다.\n“학생 성적에 따른 학점의 부여, 또는 사용자의 나이에 따른 요금을 부과할 수\n있는 프로그램은 어떻게 구현이 될까?”\n동기유발자료1 동기유발자료2\n❍ 학습 목표 제시\n❍ 학습 활동 안내\n① 개념학습\n- if-else문의 개념과 활용 사례\n- if-elif-else문의 개념과 활용 사례\n② 조건문 프로그래밍 실습\n- if-else문: 정수의 참 거짓\n- if-else문: 짝수 출력하기\n- if-elif-else문: 점수 등급 분류하기\n- if-elif-else문: 이번 달은 무슨 계절일까요?", "body": "❍ 개념 학습\n가. if-else문\n- if-else문의 개념에 대해 설명한다.\n- if-else문을 활용한 사례를 보여주고 이해하도록 한다."}}, {"topic": "for문과 range 함수\n- \"규칙적인 작업 자동화하기\"", "concept": "반복문의 필요성, for문의 문법 구조, range() 함수의 매개변수 제어", "method": "□ 협동학습 ☑ 탐구학습 ☑ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 ☑ 블랜디드 러닝 □ 기타( )", "period": "3/6", "steps": {"intro": "▶ 수업 시작 전 크롬 브라우저를 통해 코들에 접속할 수 있도록 한다.\n❍ 전 차시 학습 확인\n- if-else문의 개념과 활용 사례를 발문한다.\n- if-elif-else문의 개념과 활용 사례를 발문한다.\n❍ 학습 동기 유발\n- [원하는 횟수만큼의 반복 작업이 구현된 프로그램]에 대해 발문한다.\n“새해를 맞이하여 카운트다운을 하는 프로그램을 적성할 때 10번씩 출력되도록\n반복하는 방법은 없을까?”\n동기유발자료1 동기유발자료2\n❍ 학습 목표 제시\n❍ 학습 활동 안내\n① 개념학습1\n- 반복문의 개념과 활용 사례\n- 리스트 및 문자열과 함께 사용되는 반복문의 활용 사례\n② 반복문 기초 실습\n- 양수만 출력하기\n- 온점의 개수 맞추기\n③ 개념학습2\n- range 함수 활용의 기초\n- 다양한 range 함수 사용 방법\n④ for in range 함수 기초 실습\n- 100번 출력하기\n- 카운트다운 프로그램 작성", "body": "❍ 개념 학습 1\n가. 반목문의 개념과 활용 사례\n- 반복문의 개념에 대해 설명한다.\n- 반복문이 사용될 수 있는 사례에 대해 설명한다."}}, {"topic": "리스트 index 활용 및 이중 for문\n- \"2차원 공간과 행렬 패턴 탐색\"", "concept": "반복문 내 리스트 index 활용, 이중 루프(Nested Loop) 구동 원리, 2차원 데이터\n표현", "method": "□ 협동학습 □ 탐구학습 ☑ 문제중심학습 □ 토의•토론학습\n☑ 프로젝트 학습 □ 거꾸로학습 ☑ 블랜디드 러닝 □ 기타( )", "period": "4/6", "steps": {"intro": "▶ 수업 시작 전 크롬 브라우저를 통해 코들에 접속할 수 있도록 한다.\n❍ 전 차시 학습 확인\n- for문의 개념과 활용 사례를 발문한다.\n- for in range문의 개념과 활용 사례를 발문한다.\n❍ 학습 동기 유발\n- [2차원 상의 패턴을 행과 열로 표현하는 프로그램]에 대해 발문한다.\n“컴퓨터 프로그램을 이용해서 행과 열을 표현하는 5x5 행렬을 표현할 수 있을까?”\n동기유발자료1 동기유발자료2\n❍ 학습 목표 제시\n❍ 학습 활동 안내\n① 개념학습1\n- 반복문에서 사용할 수 있는 list의 index값 활용 개념\n- if문과 함께 사용할 수 있는 반복문의 활용 사례\n② 반복문 심화 실습\n- 별의 위치는? - 짝수의 합 구하기\n③ 개념학습2\n- 이중 for문의 개념 - 이중 for문 활용 사레\n④ 이중 for문 함수 기초 실습\n- 패턴 출력하기 - 소수를 구분하여 출력하기", "body": "❍ 개념 학습 1\n가. 반복문에서 사용할 수 있는 list의 index값 활용 개념\n- list의 index의 개념에 대해 설명한다.\n- list의 index의 활용 사례에 대해 설명한다."}}, {"topic": "while문과 흐름 제어 - \"조건이 만족할 때까지 무한\n달리기\"", "concept": "조건 제어 반복문(while), 반복문의 조건식 설계, 루프 제어 구문(break,\ncontinue)", "method": "□ 협동학습 ☑ 탐구학습 ☑ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 ☑ 블랜디드 러닝 □ 기타( )", "period": "5/6", "steps": {"intro": "▶ 수업 시작 전 크롬 브라우저를 통해 코들에 접속할 수 있도록 한다.\n❍ 전 차시 학습 확인\n- if문과 함께 사용하는 반복문의 개념과 활용 사례를 발문한다.\n- 이중 for문의 개념과 활용 사례를 발문한다.\n❍ 학습 동기 유발\n- [특정한 조건이 충족될 때에만 작업을 자동으로 반복하는 프로그램]에 대해\n발문한다.\n“0부터 100까지 5의 배수가 됐을 때에만 특정 단어를 출력하는 프로그램을 만\n들려면 어떻게 해야 할까?”\n동기유발자료1 동기유발자료2\n❍ 학습 목표 제시\n❍ 학습 활동 안내\n① 개념학습\n- while문의 개념과 활용 사례\n- break구문을 활용한 반복문의 종료\n- ontinue구문을 활용한 반복문의 초기화 및 다시 실행\n② 반복문 프로그래밍 실습\n- 언제까지 더할까? - 짝수의 합 구하기 - 반 평균 수학 점수 구하기\n- 팩토리얼 계산하기 - 0이 입력될 때까지 출력하기\n- 3의 배수는 제외하고 더하기", "body": "❍ 개념 학습\n가. while문의 개념과 활용 사례\n- while문의 개념에 대해 설명한다.\n- for문과 비교한 while문의 특징과 활용 사례를 비교하도록 한다.\n나. break, continue 구문을 활용한 반복문의 종료와 다시 실행\n- 반복문을 중간에 중지하고 반복문을 강제로 중단시키는 break 구문에 대해 이\n해하도록 한다."}}, {"topic": "중첩 제어 구조 - \"조건과 반복의 완벽한 결합\"", "concept": "중첩 제어 구조의 의미와 특징, 구조별 조합(선택-선택, 반복-선택, 반복-반복) 메\n커니즘", "method": "□ 협동학습 □ 탐구학습 ☑ 문제중심학습 □ 토의•토론학습\n☑ 프로젝트 학습 □ 거꾸로학습 ☑ 블랜디드 러닝 □ 기타( )", "period": "6/6", "steps": {"intro": "▶ 수업 시작 전 크롬 브라우저를 통해 코들에 접속할 수 있도록 한다.\n❍ 전 차시 학습 확인\n- for문과 비교한 while문의 개념과 활용 사례를 발문한다.\n❍ 학습 동기 유발\n- [조건문과 반복문이 함께 포함된 프로그램]에 대해 발문한다.\n“계산기처럼 사용자가 더하기, 빼기, 곱하기, 나누기 등을 선택하면 해당하는 기능을 반\n복하여 사용할 수 있듯이, 컴퓨터에서도 컴퓨터로 구현하려면 어떻게 해야 할까?”\n동기유발자료1 동기유발자료2"}}], "id": "ch14", "pdf": "pdf/ch14.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집 양식(회계원리-대천여자고등학교-이인화).pdf", "meta": {"curriculum": "2022", "subject": "회계원리", "teacher": "이인화(대천여자고등학교)", "unit": "4. 회계 윤리와 회계 기준", "code": "[회원01-04-01]\n~ [회원01-04-02]", "standard": "회계 윤리의 뜻과 기업의 사회적 책임을 위한 회계 윤리의 중요성을 탐구하고 이에 대해 토론하며 회계 윤리 관련 분식회계 사례를 조사하여 발표할 수 있다.", "category": "직업·실무", "school": "대천여자고등학교", "teacher_name": "이인화"}, "stage1": {"total_periods": "4차시", "explanation": "기업이나 조직의 재무 상태와 경영 성과를 전달하기 위한 방법인 회계의 중요성과\n회계가 기업과 조직의 사익을 위해 올바르지 않게 사용되는 분식회계(회계부정)의\n문제점을 사례를 통해 파악하고 이를 통해 학생이 스스로 회계 윤리의 중요성을\n깨닫게 한다. 또한 이전까지 학습했던 회계에 대한 지식을 바탕으로 분식회계가 회\n계적으로 어떠한 방법을 통해 이루어졌는지에 대해 조사하고 이를 발표하므로 강\n한 회계 기준이 필요함을 발견할 수 있도록 한다.", "know": "· 분식회계의 의미와 실제 사례를 통한 사회에 미치는 영향력 이해\n· 회계 기준의 필요성과 전문가로서 사회적 책임 이해\n· 분식회계의 다양한 방법에 대한 학습(재고자산 과대 계상, 매출 조기 인식, 가공\n매출 계상 등)", "skill": "· 수업을 통해 분식회계의 의미와 실제 기업의 사례 학습하기\n· 프로젝트 학습을 통해 분식회계 기업을 선정하고 이에 대한 보고서 작성하기\n· 작성한 보고서 내용을 바탕으로 분식회계 사례를 공유하기\n· 회계적인 지식을 활용하여 분식회계의 방법을 찾아내는 협동학습 참여하기", "value": "· 회계 윤리의 중요성과 분식회계로 인한 결과에 민감하게 반응하는 태도\n· 프로젝트 학습을 주도적으로 진행하고 팀원과 협력하여 결과를 도출할 수 있는\n협동 능력\n· 결과물을 제작하기 위해 여러 에듀테크를 활용할 수 있는 적용 능력", "eval_goal": "분식회계의 의미와 필요성을 명확하게 이해하고, 이를 바탕으로 실제 사례를 조사\n하고 발표하며, 분식회계의 구체적인 방법을 찾아낼 수 있는지를 평가한다.", "eval_content": "① 회계윤리 및 회계기준에 대한 구술 평가 : 회계 윤리 및 분식회계의 의미, 현재\n한국에서 활용하고 있는 회계 기준에 대해 인지하고 있는지 구술 평가 실시\n② 프로젝트 탐구 보고서 제출 : 분식회계의 사례, 분식회계의 방법, 이로 인한 사\n회적 파장을 포함하고 있는 탐구 보고서 제출 및 발표 자료 제작(피피티 4쪽\n이상)\n③ 분식회계 탐정 활동 및 정답 도출 하기 : 학습한 내용을 바탕으로 교사가 재구\n성한 재무상태표, 손익계산서를 보고 어떠한 방식으로 분식회계를 저질렀는지\n파악하고 토의하여 정답을 도출", "eval_method": "· 발표 평가(루브릭에 의한 평가)\n· 프로젝트 학습 산출물 평가(패들렛을 활용한 과정중심평가 및 카드 뉴스 제작 상\n태에 대한 산출물 평가)\n· 수업 중 형성평가(팀별 토의를 통한 분식회계의 방법을 탐구하는 탐정 활동에 대\n한 형성 평가 진행)"}, "lessons": [{"topic": "회계윤리의 중요성과 필요성", "concept": "회계윤리의 의미, 회계윤리의 중요성, 분식회계의 의미, 기업의 사회적 책임", "method": "þ 협동학습 □ 탐구학습 □ 문제중심학습 þ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "1/4", "steps": {"intro": "<전시학습 확인>\n- 분개와 전기에 대한 간단한 진위형 문제 제시\n- 이전에 학습한 회계상 거래의 특징과 구체적인 거래의 사례를 분개하는 발문 제\n시\n<동기 유발>\n- 분식회계의 정의에 대한 설명\n- 분식회계의 대표적인 사례 제시\n동기유발자료1(분식의 의미) 동기유발자료2(회계 부정 사례)\n<학습 목표 제시>\n- 회계 윤리의 중요성과 필요성\n- 분식회계의 의미와 기업의 사회적 책임", "body": "<개념 학습>\n[충남온배움터-팀보드 활용]\n회계 윤리의 의미와 필요성, 분식회계의 의미와 사례에 대한 개념학습 진행\n<분식회계의 사례 제시>\n루이싱 커피, 대우조선해양 등의 구체적인 분식회계의 사례를 제시하고 분식회계의\n파급효과와 기업의 사회적 책임에 대한 의견 공유 실시\n<프로젝트 학습 –1차시>\n[충남온배움터-과제제출 및 패들렛 활용]\n팀을 선정한 후 수업 중 제시되지 않는 분식회계의 사례 중 하나를 선정하고, 이와\n관련된 뉴스 기사 및 선정 동기를 패들렛에 공유하고 이를 발표함."}}, {"topic": "분식회계 탐정 되어보기", "concept": "분식회계의 일반적인 방법, 분식회계가 사회에 미치는 파급효과", "method": "þ 협동학습 □ 탐구학습 þ 문제중심학습 □ 토의•토론학습\nþ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "2/4", "steps": {"intro": "<전시 학습 확인>\n- 분식회계의 의미, 회계 윤리의 중요성에 대해 묻는 발문\n- 조사했던 분식회계의 구체적인 사례에 대한 발문\n<동기 유발 및 차시 활동 안내 >\n- 분식 회계 탐정 수업 소개\n- 임시 회계 탐정이 되기 위해 10문제의 문제를 풀어야 함을 제시\n- 회계 탐정 임명장 발급 후 직접 회계 탐정이 되어 교사가 재구성한 재무제표(재\n무상태표 및 손익계산서)를 보고 분식회계의 방법을 맞추어야 함을 예고", "body": "<전개1 : 임시 회계 수사관 자격시험>\n- 이전까지 학습했던 재무상태표, 손익계산서의 개념과 계정과목에 대한 이해를 점\n검하기 위한 10문항의 문제를 학생들이 풀어볼 수 있도록 학습지로 제시"}}, {"topic": "회계 기준의 필요성", "concept": "분식회계를 방지하기 위한 다양한 회계 기준", "method": "□ 협동학습 þ 탐구학습 □ 문제중심학습 □ 토의•토론학습\nþ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/4", "steps": {}}, {"topic": "분식회계의 문제점과 회계 기준의 필요성", "concept": "분식회계의 문제점, 회계기준의 필요성", "method": "þ 협동학습 □ 탐구학습 □ 문제중심학습 □ 토의•토론학습\nþ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "4/4", "steps": {"intro": "<전시학습 확인>\n- 회계 기준의 종류에 대한 진위형, 단답형 문항으로 전시학습 확인\n- 프로젝트 학습 2차시에 대한 발문으로 현안 파악\n<동기 유발 및 차시 활동 안내 >\n- 프로젝트 학습의 마지막 차시인 만큼 이제까지의 학습의 결과를 잘 도출할 수\n있도록 격려\n- 카드 뉴스의 형태로 이전의 탐구를 재구성하여 발표할 것을 안내", "body": "<전개1 : 프로젝트 학습 3차시 : 카드뉴스 제작하기 >\n[패들렛 및 미리캔버스 활용 ]\n- 이전까지 탐구한 내용을 바탕으로 4페이지 이내의 카드 뉴스를 제작하여 패들렛\n에 업로드\n- 시인성을 위해 미리캔버스를 활용해 한눈에 알아볼 수 있도록 제작해야함을 권\n고\n- 카드뉴스에 4가지 구성요소(의미, 방법, 파급효과, 방지방법)이 모두 들어갈 수\n있도록 지도\n학생 제작 카드 뉴스 예시1 학생 제작 카드 뉴스 예시2\n<전개2: 프로젝트 학습 발표>\n- 5분 이내의 시간동안 분석한 내용을 발표할 수 있도록 안내\n- 발표 후 학생들이 팀별로 1가지의 질의를 할 수 있도록 지도", "closing": "<결과 공유 및 성찰>\n- 분식회계의 파급효과, 회계 기준의 필요성에 대해 본인이 깨달은 점에 대해 서로\n공유\n<다음 차시 예고>"}}], "id": "ch15", "pdf": "pdf/ch15.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집(2022법과사회-서산중앙고등학교-오욱석).pdf", "meta": {"curriculum": "2022", "subject": "법과사회", "teacher": "서산중앙고등학교", "unit": "2. 국가생활과 법(헌법의 기본원리와 기본권)", "code": "12법사02-02", "standard": "우리나라 헌법의 기본 원리와 기본권 내용을 이해하고, 기본권 제한의 요건과 한계를 탐구한다.", "category": "인문·사회", "school": "서산중앙고등학교", "teacher_name": ""}, "stage1": {"total_periods": "3차시", "explanation": "현대 국가에서 민주주의와 법치주의가 헌법을 통해 구현된다는 점과 우리나라의\n헌법에서 나타난 기본 원리가 무엇인지 이해한다. 우리나라 헌법이 어떤 기본권을\n보장하고 어떤 경우에 기본권이 제한될 수 있는지에 대해 분석하고, 기본권 제한의\n사례를 통하여 요건과 한계를 탐구한다.", "know": "⋅우리나라 헌법의 기본원리\n⋅헌법이 보장하는 기본권의 종류와 내용\n⋅기본권 제한의 요건과 한계", "skill": "⋅우리나라 헌법의 기본권 보장 및 제한 사유 분석하기\n⋅기본권 충돌 시 해결할 수 있는 방안 탐구하기\n⋅구체적인 기본권 제한 사례를 통해 제한 요건과 한계 탐구하기", "value": "⋅헌법과 민주주의 및 법치주의에 대한 존중\n⋅국민의 기본권 보장에 대한 가치 인식\n⋅기본권 제한의 정당성 및 한계에 대한 비판적⋅성찰적 태도"}, "lessons": [{"topic": "대한민국 헌법의 전문과 총강에 나타난 헌법의 기본원\n리 탐구", "concept": "⋅헌법의 기본원리(국민주권주의, 자유민주주의, 복지국가주의, 평화통일주의, 문화국가\n원리, 국제평화주의)", "method": "□ 협동학습 ■ 탐구학습 ■ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "1/3", "steps": {"intro": "[생각열기]\n⋅가상 상황:화면 공유를 통해 무인도 그래픽을 띄우고 돌발 미션 제시\n(무인도에 표류되어 새로운 국가를 세우게 되었을 때, 가장 먼저 만들어야할 법적 가치\n나 규칙 3가지 정하기)\n⋅ 실시간으로 자신이 생각한 문장또는 단어 입력(예:안전, 평등, 자유, 평화 등)\n(마주온 - 퀴즈엔보드 활용)\n⋅실시간으로 올라오는 텍스트에 대해 화면 공유를 통해 자신이 쓴 내용에 대해 의견을\n말하며 가장 많이 쓰인 단어나 표현 문구 찾아보기\n⋅빈도 수가 많은 표현 문구들을 조합하여 대한민국 헌법의 기본원리 소개하기", "body": "[학습 목표 안내]\n⋅우리나라 헌법의 전문과 총강을 분석하여 헌법의 기본원리 6가지를 도출할 수 있다.\n[문제 상황 속 개념 탐구]\n⋅대한민국 헌법 전문에 담긴 내용을 6대 기본원리를 통해 분석하기\n⋅6대 기본원리(국민주권주의, 자유민주주의, 복지국가의 원리, 평화통일주의, 문화국가\n의 원리, 국제평화주의) 핵심 개념을 화이트보드를 활용한 교수학습\n[총강 속 기본원리 적용하기]\n⋅총강(1조~9조)까지의 내용 중 각각 어떤 기본원리에 속하는지 탐구하기\n⋅우리 일상 속 기본원리가 어떻게 구현되는지 구체적인 예시 찾아보기"}}, {"topic": "헌법이 보장하는 국민의 기본권 종류와 핵심 특징 탐구", "concept": "⋅기본권, 인간의 존엄과 가치 및 행복추구권, 자유권, 평등권, 참정권, 사회권, 청구권", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "2/3", "steps": {"intro": "[동기유발]\n⋅멘티미터를 활용하여 학생들이 일상에서 당연하게 누리는 권리들을 짧은 문장으로 입력\n(예: 학교 끝나고 PC방 가기, SNS에 내 의견 올리기 등등)\n⋅실시간 투표(선택)을 활용한 밸런스 게임 진행\n(예:‘평생 내 의견을 말할 수 없지만 국가가 모든 의식주를 최고급으로 보장해주기 vs. 내 힘\n으로 힘들게 일하면서 벌어먹고 살아야 하지만 내 생각과 자유는 완벽하게 보장받기)\n[교사 피드백 및 연결]\n⋅학생들이 선택한 가치들이 헌법에서 보장하는 어떤 권리와 맞닿아 있는지 가볍게 짚어주면\n서 주의 환기\n[학습목표안내]\n⋅헌법이 보장하는 기본권의 의미와 성격을 이해하고 이를 바탕으로 현대 사회에 필요한 새로\n운 기본권 조문을 제시할 수 있다.", "body": "[기본권 개념 및 종류]\n⋅기본권의 개념과 종류를 헌법 조문의 예시와 함께 학습"}}, {"topic": "헌법 제37조 2항을 통해 본 기본권 제한의 요건과 한\n계 분석", "concept": "⋅기본권 제한 ⋅헌법 제37조 2항 ⋅과잉금지의 원칙", "method": "□ 협동학습 ■ 탐구학습 ■ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/3", "steps": {"intro": "[동기 유발]\n⋅‘학교나 교육청에서 원격 수업 중 모든 학생의 카메라 켜기를 의무하고 거부시 불이익\n을 준다면 이는 정당한 제한일까요? 기본권 침해일까요?’ 즉석에서 찬성과 반대 투표\n시행\n[학습 목표 안내]\n⋅헌법 제37조 2항을 바탕으로 기본권 제한의 목적, 방법, 형식, 한계 등을 이해하고 실\n제 판례 및 일상 예시를 통해 제한의 정당성을 비판적으로 분석할 수 있다.", "body": "[헌법 제37조 제2항 법리 해석]\n* 헌법 제37조 제2항 조문을 화면에 띄우고 핵심 키워드 중심 분석\n1. 목적: 국가안전보장, 질서유지, 공공복리\n2. 방법: 필요한 경우에 한하여(과잉금지의 원칙)\n2. 형식: 국회가 제정한 '법률'로만 제한 가능\n3. 한계: 자유와 권리의 '본질적인 내용'은 침해 불가\n* 국가 권력의 남용을 막기 위한 '과잉금지원칙(목적의 정당성, 수단의 적합성, 피해의 최소\n성, 법익의 균형성)'의 개념을 일상적 예시(예: 파리를 잡기 위해 도끼를 쓸 수 없는 이유)를\n들어 쉽게 설명\n[디지털 판례/사례 탐구 및 토의]\n* 디지털 도구 활용: 헌법재판소 종합법률정보(search.ccourt.go.kr)의 쉬운 판례 자\n료나 교사가 재구성한 사례 카드 제공\n* 모둠별 소회의실에서 제시된 실제 예시(예: 심야 시간 청소년 셧다운제, 감염병 예방을 위\n한 집회 금지 등)를 보고, 이 제한이 헌법 제37조 제2항과 과잉금지원칙을 잘 지켰는지 마\n주온 퀴즈앤보드를 활용해 찬반 토의 및 분석서 작성하기", "closing": "[비판적 성찰 및 단원 마무리]\n* 모둠별 분석 결과를 실시간 화면 공유로 발표하며, 공공의 이익을 위한 제한이라 할지\n라도 헌법적 한계를 반드시 준수해야 함을 내면화\n* 심화 및 실천 다짐(온라인 전시 연계): 퀴즈앤보드에 오늘 배운 법리를 바탕으로 '우리\n학교나 사회의 규칙 중 과잉금지원칙에 어긋나는 사례가 있다면 어떻게 고치면 좋을지'\n한 줄 대안 및 실천 다짐을 남기며 전체 단원 총평 마무리"}}], "id": "ch16", "pdf": "pdf/ch16.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집(2022지구과학-충남온라인학교-이해민).pdf", "meta": {"curriculum": "2022", "subject": "지구과학", "teacher": "이해민(충남온라인학교)", "unit": "01. 해수의 성질과 순환 1) 해수의 성질", "code": "12지구01-01", "standard": "실측 자료를 활용하여 해수의 온도, 염분, 밀도 분포를 분석·해석할 수 있다.", "category": "과학·수학", "school": "충남온라인학교", "teacher_name": "이해민"}, "stage1": {"total_periods": "3차시", "explanation": "해수의 밀도가 수온과 염분에 따라 결정된다는 것을 T-S 다이어그램을 통해서 이\n해시키고, 인공위성 및 ARGO 자료 등 전 지구 규모의 빅데이터 실측 자료를 활용\n하여 학생들 스스로 데이터를 분석하고 해석함으로써 디지털 소양을 기르는 것을\n강조한다.", "know": "⋅해수의 성질 ⋅수온과 염분", "skill": "⋅변인을 조작적으로 정의하여 탐구 설계하기\n⋅다양한 도구와 수학적 사고를 활용하여 정보를 조사⋅수집⋅해석하기\n⋅증거에 기반한 과학적 사고를 통해 자료를 과학적으로 분석⋅평가⋅추론하기", "value": "⋅과학 유용성\n⋅자연과 과학에 대한 감수성\n⋅과학 문제해결에 대한 개방성\n⋅안전⋅지속가능 사회에 기여"}, "lessons": [{"topic": "해양 위기 공감 및 해수의 물리⋅화학적 성질과 T-S 다\n이어그램의 이해", "concept": "⋅해수의 성질 ⋅수온과 염분 ⋅T-S 다이어그램", "method": "□ 협동학습 □ 탐구학습 ■ 문제중심학습 ■ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "1/3", "steps": {}}, {"topic": "인공위성 및 ARGO 실측 빅데이터 수집 및 시각화 탐구", "concept": "⋅실측 자료 분석 ⋅T-S 다이어그램 해석 및 적용", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "2/3", "steps": {"intro": "[탐구 목표 확인]\n⋅인공위성과 ARGO 플로트가 전 세계 바다를 관측하는 원리 및 데이터 수집의 중요성 소개\nhttp://argo.nims.go.kr/argo3/ (국립기상과학원 ARGO – ARGO 소개 페이지 참고)\n⋅학습 목표 안내: 수집된 실측 자료를 활용하여 해수 성질의 분포를 분석하고 해석하기", "body": "[데이터 수집 및 처리(디지털 도구 활용)]\n⋅모둠별로 디지털 기기를 활용해 기상청 또는 공공 데이터 포털에서 ARGO 실측 데이터\n(수온, 염분 등) 다운로드\nhttps://data.kma.go.kr (기상청 날씨데이터 서비스 기상 자료 개방 포털)\nhttp://argo.nims.go.kr (국립기상과학원 ARGO – ARGO Global 자료)\n⋅구글 스프레드시트 또는 코랩 등을 이용하여 방대한 수치 데이터를 분석 가능한 형태로\n전처리하기\n[데이터 시각화 및 결과 해석]\n⋅전처리한 데이터를 바탕으로 수온-깊이, 염분-깊이 연직 분포 그래프 그리기\n⋅T-S 다이어그램 그래프 상에 모둠이 수집한 데이터를 산점도로 직접 표시하고 등밀도선\n해석하기\n⋅수집한 해역의 특징(예: 적도 부근과 극지방의 밀도 차이 등)을 과학적으로 분석하기", "closing": "[결과 공유 및 성찰]\n⋅모둠별 데이터 분석 결과 및 작성한 T-S 다이어그램 공유하기\n⋅빅데이터 관측 자료를 직접 다루며 시뮬레이션한 경험을 통해 디지털 소양과 데이터의\n가치 성찰하기"}}, {"topic": "해양 환경 보전을 위한 '나만의 작은 행동 다짐하기'\n포스터 제작 및 발표", "concept": "⋅해양 환경 보전 실천 ⋅기후 변화와 인간 활동", "method": "□ 협동학습 □ 탐구학습 □ 문제중심학습 ■ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/3", "steps": {"intro": "[동기 유발 및 프로젝트 안내]\n⋅1차시의 '해양 위기 공감' 내용과 2차시에서 직접 분석한 데이터 결과를 연결하여 해양\n보전의 필요성 환기\n⋅프로젝트 목표 안내: 일상생활에서 실천할 수 있는 해양 환경 보전 방안을 고안하여\n포스터로 제작하고 공유하기", "body": "[포스터 기획 및 제작]\n⋅모둠별 또는 개인별로 해양 오염 방지 및 기후 변화 완화를 위한 '나만의 작은 행동 다짐'\n아이디어 도출 (예: 플라스틱 사용 줄이기, 올바른 분리배출 등)\n⋅디지털 디자인 도구(교육용 캔바, 마주온의 미리캔버스 등)를 활용하여 시각적이고 창의적인\n다짐 포스터 제작하기\n[발표 및 공유]\n⋅완성된 포스터를 마주온 보드에 게시하여 '갤러리 워크' 형태로 상호 관람하기\n⋅각자 자신의 행동 다짐을 짧게 발표하고 질의응답 및 토의 진행하기", "closing": "[상호 평가 및 마무리]\n⋅루브릭을 활용하여 친구들의 포스터 창의성 및 실천 가능성 상호 평가하기\n⋅다 함께 실천 의지를 다지는 선언으로 수업 마무리 및 성취기준 관련 전체 단원 총평"}}], "id": "ch17", "pdf": "pdf/ch17.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집(고급화학-정산고-김강훈).pdf", "meta": {"curriculum": "2022", "subject": "고급화학", "teacher": "김강훈 (정산고등학교)", "unit": "Ⅰ. 4. 02. 탄화수소의 구조", "code": "[12고화01-06", "standard": "포화 및 불포화 탄화수소의 이성질체를 이해하고, 이성질체를 구조식으로 그려 비교할 수 있다.", "category": "과학·수학", "school": "정산고등학교", "teacher_name": "김강훈"}, "stage1": {"total_periods": "3차시", "explanation": "탄소 원자의 결합 특성과 혼성 오비탈에 대한 이해를 바탕으로 탄화수소의 3차원\n구조를 이해하고, 아보가드로(Avogadro) 등 분자 모델링 프로그램을 활용하여 학\n생 스스로 분자를 설계·시각화하며 구조 분석을 통해 이성질체를 비교함으로써 화\n학적 탐구 역량 향상한다.", "know": "· 탄소의 결합 특성과 혼성 오비탈\n· 탄화수소의 분류(포화·불포화, 사슬·고리, 지방족·방향족)\n· 구조 이성질체와 입체 이성질체의 개념과 차이", "skill": "· 분자 모델링 도구를 활용하여 분자의 3차원 구조를 설계·시각화하기\n· 결합각·결합 길이 등 정량 정보를 측정하여 구조를 분석·해석하기\n· 증거에 기반하여 이성질체의 구조와 성질을 비교·추론하기", "value": "· 미시 세계의 구조를 탐구하는 과학적 호기심\n· 컴퓨터 기반 화학 실험을 책임 있게 활용하는 태도\n· 과학적 근거에 기반한 소통 및 협력 활동 수행", "eval_goal": "탄소 화합물의 결합과 구조를 이해하고, 분자 모델링을 통해 탄화수소 이성질체의\n구조적 차이와 성질을 논리적으로 비교·분석할 수 있는지를 평가한다.", "eval_content": "① 개념 이해: 탄소의 결합·혼성 오비탈·탄화수소 구조의 이해(서술형)\n② 모델링 수행: 아보가드로를 활용한 분자 설계 및 구조 측정(실습 관찰)\n③ 이성질체 비교: 모델링 결과를 바탕으로 한 구조–성질 비교·발표(산출물)", "eval_method": "· 과정 중심 평가: 웨일온 화면 공유로 모델링 수행 과정을 실시간 관찰·누적\n· 산출물·발표 평가: 분자 모델·이성질체 비교표·발표 자료 종합 평가\n· 상호 평가: 공유 보드를 통한 동료 피드백 및 자기 성찰 평가 병행"}, "lessons": [{"topic": "탄화수소의 분류와 탄소의 결합", "concept": "탄소의 결합 특성, 혼성 오비탈, 탄화수소의 분류", "method": "□ 협동학습 ■ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 ■ 블랜디드 러닝 □ 기타( )", "period": "1/3", "steps": {"intro": "[공감하기]\n· 연료·플라스틱·의약품 등 우리 주변의 다양한 탄소 화합물 사진·영상을 보며 \"왜\n탄소는 이토록 다양한 물질을 만들 수 있을까?\" 발문한다.\nhttps://www.youtube.com/watch?v=5n_LQHXbvXk\n[생각 열기]\n· 같은 분자식(C₄H₁₀)인데도 성질이 다른 물질이 존재할 수 있는 까닭을 추측해 공\n유 보드(마주온-퀴즈앤보드)에 자유롭게 게시한다.\n[학습 목표 제시]\n[학습 활동 안내]\n① 개념학습 — 탄소의 결합 특성 / 혼성 오비탈 / 탄화수소의 분류\n② 구조 그려 보기 — 알케인·알켄·알카인의 결합과 구조 예측하기", "body": "▣ 개념 학습 1. 탄소의 결합 특성\n· 탄소가 원자가 전자 4개로 4개의 공유 결합을 형성하는 까닭을 설명한다.\n· 단일·이중·삼중 결합의 차이와 결합 길이·세기 관계를 안내한다.\n▣ 개념 학습 2. 혼성 오비탈과 분자 구조\n· sp³(정사면체, 약 109.5°), sp²(평면 삼각형, 120°), sp(직선형, 180°)와 결합각·구\n조의 관계를 설명한다.\n· 메테인·에텐·에타인을 예로 혼성과 입체 구조를 연결하여 이해하도록 한다.\n▣ 개념 학습 3. 탄화수소의 분류\n· 포화(알케인)·불포화(알켄·알카인), 사슬형·고리형, 지방족·방향족으로 분류 기준을\n정리한다.", "closing": "[개념 정리 및 다음 차시 예고]\n· 결합 방식–혼성–분자 구조의 관계를 정리한다.\n· 다음 차시에 아보가드로 프로그램으로 직접 분자를 모델링할 것을 안내한다."}}, {"topic": "아보가드로 프로그램 활용 탄화수소 분자 모델링", "concept": "분자 모델링, 3차원 분자 구조, 결합각·결합 길이 측정", "method": "■ 협동학습 ■ 탐구학습 □ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 ■ 블랜디드 러닝 □ 기타( )", "period": "2/3", "steps": {"intro": "[탐구 목표 확인]\n· 분자 모델링의 의미와 아보가드로 프로그램의 기능을 소개하고 설치를 안내한다.\n[학습 목표 안내]\n· 탄화수소를 직접 모델링하여 3차원 구조와 결합 정보를 분석한다.", "body": "[프로그램 기초 익히기(교사 화면 공유)]\n· 원자 추가·삭제, 결합 그리기, 도구 사용법을 시연한다.\n· 구조 최적화(Optimize Geometry) 기능으로 안정한 입체 구조를 얻는 방법을 안\n내한다.\n[기본 분자 모델링 실습]\n· 메테인(CH₄), 에테인(C₂H₆), 에텐(C₂H₄), 에타인(C₂H₂)을 모둠별로 모델링하고 공-\n막대 모형을 회전하며 관찰한다.\n[측정 탐구]\n· 측정 도구로 결합각과 결합 길이를 확인하여 혼성오비탈에 따른 분자 구조 및 결\n합각을 비교한다.\n· 단일·이중·삼중 결합에 따른 결합 길이 변화를 관찰·기록한다.\n[모둠 공유]\n· 완성한 분자를 캡처·내보내기하여 공유 보드에 업로드하고 상호 관람한다.", "closing": "[정리 및 성찰]\n· 결합 종류–혼성–입체 구조의 관계를 모델로 확인한 점을 정리한다.\n· 다음 차시에 이성질체를 직접 모델링해 비교할 것을 예고한다."}}, {"topic": "분자 모델링을 통한 이성질체 비교 탐구", "concept": "구조 이성질체, 작용기", "method": "■ 협동학습 ■ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n□ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/3", "steps": {"intro": "[문제 상황]\n· \"C₄H₁₀, C₅H₁₂에는 서로 다른 물질이 몇 가지나 존재할까?\"\n발문하고 모둠별로 예측한 결과를 공유 보드(마주온-퀴즈앤보드)에 게시한다.", "body": "❍ 개념 학습. 이성질체의 종류\n· 구조 이성질체: 사슬 이성질체, 위치 이성질체, 작용기 이성질체\n· 입체 이성질체는 간략히만 소개한다. 기하 이성질체 광학 이성질체\n[모델링 탐구]\n· 모둠별로 분자식을 정해 가능한 이성질체를 아보가드로로 분자 모델링 한다.\n· 각 이성질체의 3차원 구조를 회전하며 탄소 골격과 결합 차이를 관찰한다.\n[비교 분석]\n· 분자식은 같지만 구조가 다름을 모델로 확인하고, 차이를 표로 정리한다.", "closing": "[결과 공유 및 성찰]\n· 모둠별로 만든 이성질체 모델을 공유 보드에 게시하고 상호 관람한다.\n· 다음 차시에 이성질체의 구조 차이를 물질의 성질과 연결할 것을 예고한다."}}], "id": "ch18", "pdf": "pdf/ch18.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집(생물의 유전-태안고-이준근).pdf", "meta": {"curriculum": "2022", "subject": "생물의 유전", "teacher": "이준근 (태안고등학교)", "unit": "Ⅱ. 유전자의 발현 – 01. 유전자 발현 과정", "code": "[12유전02-01]", "standard": "전사와 번역 과정을 거쳐 유전자가 발현되는 중심원리를 이해하고, 모형을 이용하여 유전자발현 과정을 설명할 수 있다.", "category": "과학·수학", "school": "태안고등학교", "teacher_name": "이준근"}, "stage1": {"total_periods": "3차시", "explanation": "[12유전02-01] 전사와 번역 과정을 거쳐 유전자가 발현되는 중심원리를 이해하고,\n단백질 합성 과정 모의실험을 통해 유전자발현 과정을 설명할 수 있다.", "know": "• 중심원리 ⋅전사와 번역", "skill": "• 생물 특징과 생명 활동 관계 추론하기\n• 생명 현상에서 문제 발견 및 가설 설정하기\n• 생명과학 탐구 설계, 수행 및 조사하기\n• 생명과학적 근거를 기반으로 자료 해석, 분석 및 결론 도출하기\n• 모형 생성하여 생명 현상 설명하기\n• 다양한 매체를 활용하여 협력적 소통하기", "value": "• 과학의 심미적 가치\n• 과학 유용성\n• 자연과 과학에 대한 감수성\n• 과학 창의성\n• 과학 활동의 윤리성\n• 과학 문제 해결에 대한 개방성\n• 안전⋅지속가능 사회에 기여\n• 과학 문화 향유", "eval_goal": "• 모형을 통해 전사와 번역 과정을 단계별로 이해하며, 모둠별 협업 활동을 통해\n협력적으로 소통하는 과정을 평가한다.", "eval_content": "• 전사와 번역 과정 단계별로 설명하기\n• 모둠별 협업 활동을 통해 모형을 바탕으로 중심원리 설명하기", "eval_method": "• 수행평가: 전사와 번역 과정을 설명하는 모형과 자료 제작\n• 발표평가: 모둠별 모형(중심원리) 발표\n• 자기 및 동료평가: 활동 참여도 및 의사소통 태도 평가"}, "lessons": [{"topic": "유전자와 단백질은 어떤 관계일까?", "concept": "유전자발현, 유전자와 효소의 관계, 아르지닌 합성 경로, 1유전자 1효소설", "method": "■ 협동학습 ■ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "1/3", "steps": {"intro": "[사례 살펴보기]\n영국의 내과의사 개로드는 ‘알캅톤뇨증’을 연구하여 다음과 같이 설명하였다.\n1. 알캅톤뇨증은 유전병이다.\n2. 이 질환은 타이로신의 물질대사에 필요한 효소가 결핍되어 나타난다.\n[질문 제시하기]\n개로드의 알캅톤뇨증 연구 사례를 살펴봤을 때, 유전자는 물질대사에 필요한 특정\n산물의 합성에 관여한다고 할 수 있다. 이때, 특정 산물이란 어떤 것일까?", "body": "[학습 목표 확인하기]\n▶ 비들과 테이텀의 실험을 이해하고, 아르지닌 합성 경로를 설명할 수 있다.\n▶ 유전자, 단백질, 형질의 관계를 바르게 추론할 수 있다.\n[기초 개념 확인하기]\n▶ 유전자발현: 유전자에 담긴 유전정보에 따라 단백질과 같은 기능적 산물이 합성\n되는 과정\n▶ 최소배지: 생명체가 살아가는 데 필요한 최소한의 영양물질만 들어 있는 배지이다.\n야생형 붉은빵곰팡이는 최소배지에서 성장에 필요한 모든 물질을 합\n성할 수 있다."}}, {"topic": "유전정보의 흐름은 어떻게 될까?", "concept": "1유전자 1단백질설, 1유전자 1폴리펩타이드설, 중심원리, 유전정보의 흐름", "method": "■ 협동학습 ■ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "2/3", "steps": {"intro": "[사례 살펴보기]\n헤모글로빈의 구조적 특징\n1. 헤모글로빈은 서로 다른 폴리펩타이드로 구성되어 있다.\n2. 헤모글로빈을 구성하는 폴리펩타이드는 α 2개, β 개다.\n[질문 제시하기]\n지난 시간에 유전자가 효소를 합성을 결정한다는 1유전자 1효소설을 학습했다. 그\n렇다면 헤모글로빈을 이루는 폴리펩타이드는 어떻게 합성되는 걸까?", "body": "[학습 목표 확인하기]\n▶ 1유전자 1단백질설과 1유전자 1폴리펩타이드설이 무엇인지 설명할 수 있다.\n▶ 유전정보의 흐름을 이해하고 전사 과정을 설명할 수 있다.\n[기초 개념 확장하기]\n▶ 1유전자 1단백질설: 유전자가 효소뿐만 아니라 단백질 합성에도 관여한다는 가설\n▶ 1유전자 1폴리펩타이드설: 유전자가 각각의 폴리펩타이드 합성에 관여한다는 가설"}}, {"topic": "전사의 3단계는 어떻게 일어날까?", "concept": "전사, 프로모터, 개시, 신장, 종결", "method": "■ 협동학습 ■ 탐구학습 ■ 문제중심학습 □ 토의•토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/3", "steps": {"intro": "[사례 살펴보기]\nDNA가 복제되는 방식 알아보기\n1. DNA 중합효소가 관여하고, RNA 조각인 프라이머가 필요하다.\n2. 합성되는 가닥은 선도 가닥과 지연 가닥으로 나뉜다.\n3. DNA 복제는 항상 5‘→3’ 방향으로 합성된다.\n[질문 제시하기]\nDNA에서 RNA가 합성되는 전사는 복제 과정과 어떤 차이가 있을까?", "body": "[학습 목표 확인하기]\n▶ 전사 과정을 단계별로 설명할 수 있다.\n▶ DNA 복제 과정과 전과 과정의 차이점을 비교하여 설명할 수 있다.\n[심화 개념 탐구하기]\n▶ 프로모터(촉진유전자): RNA 중합효소가 결합하여 전사가 시작되는 DNA의 특정한\n염기서열\n▶ 1유전자 1폴리펩타이드설: 유전자가 각각의 폴리펩타이드 합성에 관여한다는 가설"}}], "id": "ch19", "pdf": "pdf/ch19.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집(인문학과 윤리-충남온라인학교-송달호).pdf", "meta": {"curriculum": "2022", "subject": "인문학과 윤리", "teacher": "송달호 (충남온라인학교)", "unit": "Ⅱ-Ⅳ. 타인과 관계 맺기, 자유와 평등\n철학자 유니버스: 사상가 탐구를 통한 현대\n사회 문제 해결", "code": "12인문학과윤리04-04", "standard": "동서양 사상가의 핵심 사상을 탐구하고, 이를 현대 사회의 다양한 문제 상황에 적 용하여 윤리적 해결 방안을 제시할 수 있다.", "category": "인문·사회", "school": "충남온라인학교", "teacher_name": "송달호"}, "stage1": {"total_periods": "4차시", "explanation": "동서양의 다양한 윤리·사회 사상가들의 핵심 사상을 탐구하여 비판적·창의적 사고\n로 자신만의 해석을 도출하고, AI 도구를 활용한 가상 인터뷰와 시각화 콘텐츠 제\n작 등의 디지털 활동을 통해 사상가의 사상을 현대 사회의 윤리적 쟁점에 적용해\n보는 활동을 강조한다.", "know": "·동서양 윤리·사회 사상가의 핵심 사상(인간관/윤리관/사회관/국가관 등)\n·사상가의 사상이 현대 사회에 주는 시사점\n·다양한 사회 문제와 윤리적 쟁점에 대한 이해", "skill": "·사상가의 입장을 비교·분석하여 자신의 관점 정립하기\n·AI도구를 활용해 사상을 현대적 문제에 적용·재해석하기\n·사상가 캐릭터화·시각화 자료로 창의적 표현하기", "value": "·다양한 사상에 대한 개방적·비판적 태도\n·사상가의 한계 인식과 자기 사고의 책임감\n·공동체 문제 해결에 참여하는 시민적 덕성", "eval_goal": "사상가의 핵심 사상을 정확히 이해하고, 이를 바탕으로 현대 사회의 문제에 대한\n윤리적 해결 방안을 논리적으로 제시할 수 있는지를 평가한다.", "eval_content": "① 사상가 선정 및 핵심 사상의 정리(인간관·윤리관·사회관 등4개 이상)\n② AI활용 가상 인터뷰 질문·답변·자신의 생각(4개 이상)\n③ 철학자 히어로 캐릭터 설계 및 현대 문제 해결 전략(PPT)\n④ 발표 및 상호 평가 참여도", "eval_method": "·수행평가(활동지·기록지·산출물 종합 평가)\n·발표 평가(퀴즈앤 보드 상호 평가 포함)\n·자기 성찰 평가(생활기록부 활용 자기 평가)"}, "lessons": [{"topic": "AI 대화형 도구 활용 가상 사회 이슈 인터뷰", "concept": "· AI 도구의 활용과 한계 · 사상가의 입장에서 사회 문제 분석 · 비판적 사고", "method": "□ 협동학습 ■ 탐구학습 ■ 문제중심학습 □ 토의·토론학습\n□ 프로젝트 학습 □ 거꾸로학습 ■ 블랜디드 러닝 □ 기타( )", "period": "2/4", "steps": {"intro": "[탐구 목표 확인]\n·1차시에서 정리한 사상가의 핵심 사상을 바탕으로, 그 사상가가 현대 사회 문제에 어떤 답\n을 줄지 추론한다.\n·AI대화형 도구(ChatGPT, 아숙업)의 강점과 한계 안내\n- 강점: 다양한 사상가의 입장을 빠르게 시뮬레이션\n- 한계: 잘못된 정보·일반화된 답변 가능성→ 반드시 비판적 검증 필요\n[준비 점검- 퀴즈앤 활용]\n·퀴즈앤 미니 퀴즈: 본인이 선정한 사상가의 핵심 개념 5문제 자가 점검", "body": "[학습 목표 안내]\n·동서양 사상가 중 1인을 선정하고, 그의 핵심 사상(인간관·윤리관·사회관·국가관 등)을 4가지\n이상 정리할 수 있다.\n[사상가 둘러보기- 퀴즈앤 활용]\n·퀴즈앤 퀴즈쇼: 10명의 대표 사상가 핵심 키워드 매칭 퀴즈 진행\n(공자·맹자·순자·이황·이이·정약용·플라톤·아리스토텔레스·칸트·밀·롤스·마르크스·키르케고르 등)\n·모둠별로 흥미로운 사상가 후보군 3명 압축→ 모둠 토의로 1명 최종 선정\n[핵심 사상 정리(활동지1 활용)]\n·교과서·학습지를 참고해 선정한 사상가의 핵심 사상을 4가지 카테고리로 정리\n(① 인간관② 윤리관/덕관③ 사회관/국가관④ 이상사회·이상적 인간상)\n·모둠 내 동료 점검: 빠진 내용·잘못된 해석 상호 보완", "closing": "[정리 및 다음 차시 예고]\n·모둠 발표(2분 이내): 우리가 선택한 사상가와 그 이유\n·퀴즈앤 보드에\"내 사상가 한 줄 소개\" 게시\n·다음 차시 예고: AI 대화형 도구(ChatGPT, 아숙업)를 활용한 가상 인터뷰\n·과제 안내: 가상 인터뷰에 던질 \"오늘날의 사회 문제\" 질문 후보 2~3개 미리 구상해 오기"}}, {"topic": "철학자 히어로 캐릭터 설계 및 콘텐츠 제작", "concept": "· 사상의 캐릭터화·시각화 · 현대 문제 해결 전략 설계 · 디지털 도구 활용", "method": "■ 협동학습 □ 탐구학습 □ 문제중심학습 □ 토의·토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/4", "steps": {"body": "[히어로 캐릭터 설계(활동지3 - 히어로 설계 워크시트)]\n·캐릭터 이름·능력·상징· 핸드 시그니처 설계\n- 능력은 사상의 핵심 개념을 형상화(예: \"정언명령 빔\", \"양지 확충 실드\", \"사단지심 컨트롤\")\n·위기 상황 설정: 본인이 해결하고 싶은 현대 사회 문제 1가지 구체화\n[사고 프로세스(히어로 의사결정) 작성- 철학적 질문4단계]\n①문제 인식: 사태의 윤리적 쟁점을 어떻게 식별하는가?\n②이론 적용: 사상가의 핵심 개념을 문제에 어떻게 적용하는가?\n③도덕 판단: 행위의 도덕성을 무엇으로 판단하는가?\n④해결 방향: 사상가가 제시할 구체적 해결책은?\n[PPT제작(디지털 도구 활용)]\n·미리캔버스/ 캔바/ 슬라이드고 등 활용 가능\n·이미지는 직접 그리기, AI 이미지 생성(Sora·DALL·E 등), 무료 이미지 활용 모두 허용\n·사상의\"리스크(한계)\" 슬라이드 반드시 포함→ 비판적 사고 강조\n※본 활동지에는 학생이 디자인 단계에서 캡처한PPT 슬라이드 이미지를 삽입할 자리(이미지 칸)를 둠", "closing": "[결과 공유 및 성찰]\n·가장 인상 깊었던 질문-답변 한 가지를 퀴즈앤 보드에 게시\n·동료 인터뷰 결과에 댓글로 피드백(좋은 점/ 보완할 점)\n·성찰 발문: \"AI 답변에 내가 동의/반대한 지점은 어디인가?\", \"사상가의 한계를 어디서 느꼈는가?\"\n·다음 차시 예고: 사상가를 \"히어로 캐릭터\"로 디자인하기", "intro": "[동기 유발]\n·\"마블·DC 히어로의 능력은 어떤 가치를 상징할까?\" 짧은 영상/이미지 자료 활용\n·\"철학자도 시대를 구하는 사상 히어로가 될 수 있을까?\" 발문\n[프로젝트 안내]\n·본 차시 목표: 1·2차시 결과를 바탕으로 사상가를\" 히어로 캐릭터\"로 재창조\n·산출물: PPT 5~7장(히어로 소개/ 사상 요약/ 위기 상황/ 전략/ 철학적 질문4개/ 한계/ 마무리)\n·우수 사례 안내: \"정의의 망치 칸트\", \"공공의지 루소\", \"행복 메이커 아리스토텔레스\""}}, {"topic": "발표 및 상호 평가- \"사상 히어로 데뷔의 날\"", "concept": "· 발표·표현력 · 상호 평가와 토의 · 자기 성찰", "method": "□ 협동학습 □ 탐구학습 □ 문제중심학습 ■ 토의·토론학습\n■ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "4/4", "steps": {"closing": "[정리 및 성찰]\n·우수작 시상 및 공유(퀴즈앤 보드 인기 게시물 자동 집계)\n·자기 성찰 작성: 가장 배운 점/ 한계로 느낀 점/ 내 사상에 보태고 싶은 다른 사상\n·단원 총평: 사상가의 사상은 \"박물관 속 유물\"이 아니라 \"오늘을 비추는 거울\"임을 강조\n·생활기록부 기재용 자기 성찰문 작성 안내(수행평가 점수와는 별도)", "intro": "[학습 동기 유발]\n·발표 안내: \"오늘은 사상 히어로 데뷔의 날\" 슬로건과 함께 분위기 조성\n·평가 기준 안내: 사상 정확성30 / 질문과 해결력30 / 논리·창의성20 / 캐릭터화·전달력20\n[퀴즈앤 발표 환경 세팅]\n·퀴즈앤 보드에 모든 학생의 PPT 미리 업로드→ 갤러리 워크 형식으로 동시 관람", "body": "[발표(각2~3분)]\n·발표 흐름: 히어로 소개→ 사상 요약→ 위기 상황→ 전략→ 철학적 질문4개→ 한계→ 마무리\n·발표자는 카메라/스크린을 향해 사상가의 1인칭 또는 3인칭 시점을 선택\n[질의응답& 토의]\n·동료 질문(2~3개 이상 받기): \"그 사상가라면 정말 그렇게 답할까?\"\n·교사 발문: 사상의 한계는 어떤 다른 사상으로 보완될 수 있는가?\n[상호 평가- 퀴즈앤 활용]\n·퀴즈앤 보드 또는 라이브 폼으로 동료 평가 진행(1인당 다른 모둠 3편 이상 평가)\n·평가 기준에 따라 점수+ 자유 코멘트 작성"}}], "id": "ch20", "pdf": "pdf/ch20.pdf"}, {"file": "26-1 정규외 교수학습 운영 도움 자료집(직무의사소통-천안동중-김민기).pdf", "meta": {"curriculum": "2022", "subject": "직무 의사소통", "teacher": "김민기 (천안동중학교)", "unit": "2. 의사소통과 문제 해결 (2) 2. 의사소통\n문제와 갈등 조정", "code": "Ÿ 12직의01-03\nŸ 12직의01-05\nŸ 12직의01-06", "standard": "Ÿ [12직의01-03] 효과적인 진로 탐색 및 직무 수행을 위해 다양한 방법으로 정보 를 수집하고 분석하여 내용을 이해하고 평가한다. Ÿ [12직의01-05] 정보를 효과적으로 조직하여 직무의 목적·대상·상황에 적합하게 표현한다. Ÿ [12직의01-06] 직무 수행 과정에서 발생하는 의사소통 문제와 대인 관계 갈등 에 대해 대화와 협의로 대처하고 조정한다.", "category": "직업·실무", "school": "천안동중학교", "teacher_name": "김민기"}, "stage1": {"total_periods": "3차시", "explanation": "Ÿ [12직의01-03] 이 성취기준은 진로 탐색과 취업 준비, 실질적인 직무 수행과\n관련된 다양한 정보를 조사⋅수집⋅분석⋅해석함으로써 직무를 명료하게 수행\n할 수 있는 능력을 기르기 위해 설정하였다. 직무와 관련된 문제를 해결하기 위\n한 정보와 자료를 조사⋅수집하기, 정보와 자료를 목적에 맞게 선별⋅분석하여\n핵심 내용을 이해하기, 정보와 자료에 담긴 의도를 추론하고 내용을 비판하기\n등을 학습한다.\nŸ [12직의01-05] 성취기준 해설 없음\nŸ [12직의01-06] 성취기준 해설 없음", "know": "Ÿ 직무 의사소통의 목적과 맥락\nŸ 직무별 소통 대상과 소통 문화\nŸ 의사소통 문제와 대인 관계 갈등의 원인\nŸ 직무 공동체에서 발생하는 가치 충돌과 역할 갈등\nŸ 대화와 협의를 통한 갈등 조정의 원리", "skill": "Ÿ 관심 직무의 주요 업무와 의사소통 특성 조사하기\nŸ 직무 수행 상황에서 참여자의 입장, 의도, 중시 가치, 소통 방식을 구분하기\nŸ 의사소통을 방해하는 요소와 갈등의 핵심 파악하기\nŸ 갈등 해결을 위한 대화와 협의 방안 탐색하기\nŸ 해결 방안의 효과를 예측하고 논리적으로 설명하기", "value": "Ÿ 상대방의 상황과 처지를 이해하려는 태도\nŸ 경청과 공감을 바탕으로 소통하려는 태도\nŸ 직무 공동체 구성원을 존중하는 태도\nŸ 갈등을 회피하지 않고 협력적으로 해결하려는 태도\nŸ 자신의 의사소통 방식을 반성적으로 점검하는 태도\nŸ 직무 환경의 특성을 고려하여 책임 있게 표현하려는 태도", "eval_content": "① 관심 직무의 주요 업무, 소통 대상, 직무 의사소통 특성 조사\n② 직무 상황 속 참여자의 입장, 의도, 소통 방식 분석\n③ 의사소통을 방해하는 요소와 갈등의 핵심 파악\n④ 대화와 협의를 활용한 조정 방안 및 기대 효과 제시\n⑤ 700~900자 갈등 해결 논술 작성\n⑥ 동료 피드백과 자기 성찰을 통한 표현 보완", "eval_method": "수행평가: 직무 의사소통 갈등 분석 및 해결 논술\n활동지 평가: 관심 직무 의사소통 특성 분석표, 갈등 구조 분석표\n동료 평가: 해결 방안의 타당성 및 대화·협의 표현 검토\n자기 성찰 평가: 자신의 의사소통 태도 점검 및 보완 방향 작성\n관찰 평가: 수업 중 조사, 토의, 피드백 참여 과정 관찰"}, "lessons": [{"topic": "관심 직무의 의사소통 특성과 갈등 가능성 탐색", "concept": "직무 의사소통, 직무 맥락, 소통 대상, 참여자 특성, 의사소통 역량, 갈등 요인", "method": "□ 협동학습 □ 탐구학습 ☑ 문제중심학습 □ 토의•토론학습\n☑ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "1/3", "steps": {"intro": "[생각 열기]\nŸ 교사는 “내가 희망하는 직무에서 의사소통이 원활하지 않으면 어떤 문제가 생\n길까?”라는 질문을 제시한다.\nŸ 학생들은 자신의 관심 직무를 떠올리고, 해당 직무에서 주로 만나는 사람, 전달\n해야 하는 정보, 의사소통이 중요한 상황을 간단히 작성한다.\nŸ 온라인 협업 공동 작성 문서에 관심 직무를 입력하고, 직무별로 요구되는 의사\n소통 능력을 자유롭게 공유한다.\nŸ 교사는 학생 응답 중 사회복지사, 경찰, 전기공학기술자, 교사, 변리사, 메카트\n로닉스 공학자, 지능형 로봇 개발자 등 다양한 직무가 직무 의사소통 상황을 다\n르게 형성한다는 점을 안내한다.", "body": ""}}, {"topic": "직무 갈등 상황의 참여자 입장과 갈등 핵심 분석", "concept": "의사소통 갈등, 참여자 입장, 의도, 중시 가치, 소통 방식, 갈등 핵심, 의사소통 방해 요소", "method": "□ 협동학습 □ 탐구학습 ☑ 문제중심학습 □ 토의•토론학습\n☑ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "2/3", "steps": {"intro": "[문제 상황 제시]\nŸ 교사는 직무 현장에서 발생할 수 있는 갈등 사례를 제시한다.\nŸ 학생들은 같은 직무 목표를 가지고 있어도 업무 우선순위, 표현 방식, 관계 인\n식, 위계 문화, 정보 공유 방식이 다르면 갈등이 발생할 수 있음을 확인한다.", "body": ""}}, {"topic": "대화와 협의를 활용한 직무 갈등 해결 논술 작성", "concept": "대화, 협의, 갈등 조정, 해결 방안, 기대 효과, 논리적 구성, 직무 의사소통 성찰", "method": "□ 협동학습 □ 탐구학습 ☑ 문제중심학습 □ 토의•토론학습\n☑ 프로젝트 학습 □ 거꾸로학습 □ 블랜디드 러닝 □ 기타( )", "period": "3/3", "steps": {"intro": "[평가 기준 확인]\nŸ 교사는 갈등 해결 논술의 평가 기준을 안내한다.\nŸ 학생들은 의사소통 문제 파악, 대처 및 조정 방법 제시, 협의 및 대화 활용, 논\n리적 구성과 표현, 분량을 중심으로 자신의 글을 작성해야 함을 확인한다.\nŸ 교사는 해결 방안이 추상적인 조언에 머무르지 않도록 실제 직무 상황에서 실\n행 가능한 대화와 협의 장면을 포함해야 함을 안내한다.", "body": ""}}], "id": "ch21", "pdf": "pdf/ch21.pdf"}];
+
+const CAT_META = {
+  "보건·의료":{c:"var(--cat-health)",deep:"#8a3838"},
+  "과학·수학":{c:"var(--cat-science)",deep:"#1f5560"},
+  "인문·사회":{c:"var(--cat-humanities)",deep:"#523d73"},
+  "공학·정보":{c:"var(--cat-engineer)",deep:"#274c72"},
+  "직업·실무":{c:"var(--cat-work)",deep:"#7a5320"},
+  "예술·체육":{c:"var(--cat-art)",deep:"#356343"},
+  "기타":{c:"var(--cat-etc)",deep:"#555"}
+};
+const CAT_ORDER = ["과학·수학","인문·사회","공학·정보","보건·의료","직업·실무","예술·체육","기타"];
+const DATA = window.EBOOK_DATA || [];
+
+const el = (id)=>document.getElementById(id);
+const esc = (s)=>String(s==null?"":s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+// linkify URLs inside text (already escaped)
+function linkify(s){
+  return esc(s).replace(/(https?:\/\/[^\s<)]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+}
+// turn "· item\n· item" into <ul> when it looks like a bullet list
+function asList(s){
+  if(!s) return "";
+  const lines = s.split(/\n/).map(l=>l.trim()).filter(Boolean);
+  const bullety = lines.filter(l=>/^[·⦁•\-]/.test(l)).length;
+  if(lines.length>1 && bullety>=Math.max(1,lines.length-1)){
+    return "<ul>"+lines.map(l=>"<li>"+linkify(l.replace(/^[·⦁•\-]\s*/,""))+"</li>").join("")+"</ul>";
+  }
+  return "<p>"+linkify(s).replace(/\n/g,"<br>")+"</p>";
+}
+function displaySubject(d){
+  let s = d.meta.subject;
+  // distinguish the two robot chapters by unit
+  return s;
+}
+function teacherLabel(d){
+  const n = d.meta.teacher_name;
+  return n ? n : "공동 집필";
+}
+
+/* ---------- NAV ---------- */
+function buildNav(){
+  const nav = el("nav");
+  let html = `<button class="nav-home active" data-home><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>전체 표지 · 목차</button>`;
+  CAT_ORDER.forEach(cat=>{
+    const docs = DATA.filter(d=>d.meta.category===cat);
+    if(!docs.length) return;
+    const m = CAT_META[cat];
+    html += `<div class="nav-cat"><div class="nav-cat-label"><span class="nav-cat-dot" style="background:${m.c}"></span>${esc(cat)}</div>`;
+    docs.forEach(d=>{
+      html += `<button class="nav-item" data-id="${d.id}" style="color:#cfe3e2"><span>${esc(displaySubject(d))}</span> <span class="ni-sub">${esc(teacherLabel(d))}</span></button>`;
+    });
+    html += `</div>`;
+  });
+  nav.innerHTML = html;
+  nav.querySelector("[data-home]").addEventListener("click",()=>{go(null)});
+  nav.querySelectorAll(".nav-item").forEach(b=>{
+    b.addEventListener("click",()=>go(b.dataset.id));
+  });
+}
+function setActiveNav(id){
+  document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.id===id));
+  document.querySelector(".nav-home").classList.toggle("active",!id);
+}
+
+/* ---------- HOME ---------- */
+function renderHome(){
+  const totalLessons = DATA.reduce((a,d)=>a+d.lessons.length,0);
+  const schools = new Set(DATA.map(d=>d.meta.school).filter(Boolean)).size;
+  let html = `
+  <div class="cover">
+    <div class="cover-badge"><span class="dot"></span>2026학년도 1학기 · 참학력 온라인 공동교육과정</div>
+    <h1>교실의 경계를 넘어,<br><span class="em">함께 설계한 수업</span>의 기록</h1>
+    <p class="cover-lead">충청남도 곳곳의 학교에서 온라인 공동교육과정을 운영한 선생님들이 직접 설계한 교수·학습 자료를 한자리에 모았습니다. 성취기준 분석부터 차시별 활동까지, 실제 수업에 곧바로 참고할 수 있도록 정리했습니다.</p>
+    <div class="cover-stats">
+      <div class="cstat"><div class="num">${DATA.length}</div><div class="lab">개 과목</div></div>
+      <div class="cstat"><div class="num">${totalLessons}</div><div class="lab">차시 설계안</div></div>
+      <div class="cstat"><div class="num">${schools}</div><div class="lab">참여 학교</div></div>
+      <div class="cstat"><div class="num">${CAT_ORDER.filter(c=>DATA.some(d=>d.meta.category===c)).length}</div><div class="lab">교과 영역</div></div>
+    </div>
+  </div>
+  <div class="home-intro">
+    <div class="section-eyebrow">이 자료집을 여는 법</div>
+    <p>왼쪽 목차에서 과목을 선택하거나 아래 카드를 눌러 각 과목의 수업 설계를 펼쳐 보세요. 모든 과목은 <b>1단계 교육과정 분석</b>과 <b>2단계 차시별 교수·학습 설계안</b>으로 구성되어 있으며, 각 과목 상단에서 원본 PDF도 바로 열람·내려받을 수 있습니다.</p>
+  </div>`;
+
+  CAT_ORDER.forEach(cat=>{
+    const docs = DATA.filter(d=>d.meta.category===cat);
+    if(!docs.length) return;
+    const m = CAT_META[cat];
+    html += `<div class="cat-block"><div class="cat-block-head"><span class="cbh-dot" style="background:${m.c}"></span><h3>${esc(cat)}</h3><span class="cbh-count">${docs.length} SUBJECTS</span></div><div class="card-grid">`;
+    docs.forEach(d=>{
+      html += cardHTML(d,m);
+    });
+    html += `</div></div>`;
+  });
+  el("content").innerHTML = html;
+  el("content").querySelectorAll(".subj-card").forEach(c=>c.addEventListener("click",()=>go(c.dataset.id)));
+}
+function cardHTML(d,m){
+  return `<button class="subj-card" data-id="${d.id}" style="--c:${m.c}">
+    <div class="sc-top">
+      <div class="sc-subject">${esc(displaySubject(d))}</div>
+      <div class="sc-cur">${esc(d.meta.curriculum||"")}</div>
+    </div>
+    <div class="sc-unit">${esc(d.meta.unit||"")}</div>
+    <div class="sc-meta">
+      <span class="sc-teacher">${esc(teacherLabel(d))}</span>
+      <span class="sep">·</span>
+      <span>${esc(d.meta.school||"")}</span>
+      <span class="sc-periods">${d.lessons.length}차시</span>
+    </div>
+  </button>`;
+}
+
+/* ---------- CHAPTER ---------- */
+function renderChapter(d){
+  const m = CAT_META[d.meta.category];
+  const s1 = d.stage1;
+  const idx = DATA.findIndex(x=>x.id===d.id);
+  const prev = DATA[idx-1], next = DATA[idx+1];
+
+  const analysisRows = [];
+  if(s1.total_periods) analysisRows.push(["총 차시", `<p>${esc(s1.total_periods)}</p>`]);
+  if(s1.explanation) analysisRows.push(["성취기준 해설", asList(s1.explanation)]);
+
+  let html = `<div class="chapter">
+    <div class="ch-hero" style="--c:${m.c};--c-deep:${m.deep}">
+      <div class="ch-cat"><span class="dot"></span>${esc(d.meta.category)}</div>
+      <h2>${esc(displaySubject(d))}</h2>
+      <div class="ch-unit">${esc(d.meta.unit||"")}</div>
+      <div class="ch-hero-meta">
+        <span class="chm"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="M6 10.5V16c0 1 2.7 3 6 3s6-2 6-3v-5.5"/></svg>${esc(d.meta.curriculum||"")} 개정 교육과정</span>
+        <span class="chm"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>${esc(d.meta.teacher||"")}</span>
+        ${d.meta.code?`<span class="chm"><span class="code">${esc(d.meta.code)}</span></span>`:""}
+      </div>
+    </div>
+
+    <div class="ch-actions">
+      <button class="btn primary" data-pdf="${esc(d.pdf)}" data-title="${esc(displaySubject(d))} · ${esc(d.meta.teacher||"")}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3v5h5"/><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/></svg>원본 PDF 보기</button>
+      <a class="btn" href="${esc(d.pdf)}" download><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>PDF 내려받기</a>
+      <button class="btn" onclick="window.print()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>인쇄</button>
+    </div>`;
+
+  if(d.meta.standard){
+    html += `<div class="standard-box"><div class="sb-lab">성취기준</div><p>${esc(d.meta.standard)}</p></div>`;
+  }
+
+  /* STAGE 1 */
+  html += `<div class="stage-head"><div class="stage-num">1</div><div><h3>교육과정 분석하기</h3><div class="sh-sub">성취기준 해설 · 내용 요소 · 평가 계획</div></div></div>`;
+
+  if(analysisRows.length){
+    html += `<div class="a-grid">`;
+    analysisRows.forEach(([lab,val])=>{
+      html += `<div class="a-row"><div class="a-lab">${esc(lab)}</div><div class="a-val">${val}</div></div>`;
+    });
+    html += `</div>`;
+  }
+
+  if(s1.know||s1.skill||s1.value){
+    html += `<div class="elements">
+      ${elementCard("지식·이해","M12 2 2 7l10 5 10-5-10-5Z M2 17l10 5 10-5 M2 12l10 5 10-5",s1.know)}
+      ${elementCard("과정·기능","M14.7 6.3a5 5 0 0 0-7.4 6.6l-4 4a1 1 0 0 0 1.4 1.4l4-4a5 5 0 0 0 6.6-7.4l-2.3 2.3-1.4-1.4Z",s1.skill)}
+      ${elementCard("가치·태도","M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12C19 16.5 12 21 12 21Z",s1.value)}
+    </div>`;
+  }
+
+  const evalItems = [];
+  if(s1.eval_goal) evalItems.push(["평가 목표",s1.eval_goal]);
+  if(s1.eval_content) evalItems.push(["평가 내용",s1.eval_content]);
+  if(s1.eval_method) evalItems.push(["평가 방법",s1.eval_method]);
+  if(evalItems.length){
+    html += `<div class="eval-wrap">`;
+    evalItems.forEach(([lab,val])=>{
+      html += `<div class="eval-item"><div class="ev-lab">${esc(lab)}</div><div class="ev-val">${asList(val)}</div></div>`;
+    });
+    html += `</div>`;
+  }
+
+  /* STAGE 2 */
+  html += `<div class="stage-head"><div class="stage-num">2</div><div><h3>차시별 교수·학습 설계안</h3><div class="sh-sub">${d.lessons.length}개 차시</div></div></div>`;
+  html += `<p class="lessons-intro">각 차시를 눌러 도입 · 전개 · 정리 활동을 펼쳐 보세요.</p>`;
+  d.lessons.forEach((L,i)=>{
+    html += lessonHTML(L,i===0);
+  });
+
+  /* pager */
+  html += `<div class="ch-pager">
+    ${prev?`<button class="pager-btn" data-id="${prev.id}"><div class="pager-dir">← 이전</div><div class="pager-title">${esc(displaySubject(prev))}</div></button>`:`<div class="pager-btn empty"></div>`}
+    ${next?`<button class="pager-btn next" data-id="${next.id}"><div class="pager-dir">다음 →</div><div class="pager-title">${esc(displaySubject(next))}</div></button>`:`<div class="pager-btn empty"></div>`}
+  </div>`;
+
+  html += `</div>`;
+  el("content").innerHTML = html;
+
+  // wire events
+  el("content").querySelector("[data-pdf]").addEventListener("click",e=>{
+    const b=e.currentTarget;openModal(b.dataset.pdf,b.dataset.title);
+  });
+  el("content").querySelectorAll(".lesson-head").forEach(h=>{
+    h.addEventListener("click",()=>h.parentElement.classList.toggle("open"));
+  });
+  el("content").querySelectorAll(".pager-btn[data-id]").forEach(b=>{
+    b.addEventListener("click",()=>go(b.dataset.id));
+  });
+}
+
+function elementCard(title,pathD,content){
+  return `<div class="el-card">
+    <div class="el-head"><span class="el-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${pathIcons(title)}</svg></span>${esc(title)}</div>
+    ${asList(content||"")}
+  </div>`;
+}
+function pathIcons(t){
+  if(t.startsWith("지식")) return '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>';
+  if(t.startsWith("과정")) return '<path d="M14.7 6.3a5 5 0 0 0-7.4 6.6l-4 4a1 1 0 0 0 1.4 1.4l4-4a5 5 0 0 0 6.6-7.4l-2.3 2.3-1.4-1.4z"/>';
+  return '<path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12C19 16.5 12 21 12 21z"/>';
+}
+
+function lessonHTML(L,open){
+  const [cur,tot] = (L.period||"/").split("/");
+  const methods = parseMethods(L.method);
+  const steps = [["도입","intro"],["전개","body"],["정리","closing"]].filter(([_,k])=>L.steps[k]);
+  return `<div class="lesson${open?" open":""}">
+    <div class="lesson-head">
+      <div class="lesson-period"><span class="lp-cur">${esc(cur||"·")}</span><span class="lp-tot">/${esc(tot||"·")}</span></div>
+      <div class="lesson-titles">
+        <div class="lesson-topic">${esc(L.topic||"차시 설계")}</div>
+        ${L.concept?`<div class="lesson-concept">핵심 개념 · ${esc(L.concept)}</div>`:""}
+      </div>
+      <svg class="lesson-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="lesson-body">
+      ${methods.length?`<div class="lb-methods">${methods.map(mm=>`<span class="method-chip">${esc(mm)}</span>`).join("")}</div>`:""}
+      ${L.concept?`<div class="lb-concept"><b>핵심 개념</b> — ${esc(L.concept)}</div>`:""}
+      <div class="steps">
+        ${steps.map(([name,key])=>`
+          <div class="step">
+            <div class="step-label"><span class="sl-name">${name}</span><span class="step-marker"></span></div>
+            <div class="step-content"><div class="sc-text">${linkify(L.steps[key])}</div></div>
+          </div>`).join("")}
+      </div>
+    </div>
+  </div>`;
+}
+function parseMethods(s){
+  if(!s) return [];
+  const out=[];
+  // find selected (■) methods
+  const re=/([■☑✔])\s*([^□■☑✔()\n]+)/g;let m;
+  while((m=re.exec(s))){
+    const name=m[2].replace(/\s+/g," ").trim();
+    if(name && name.length<20) out.push(name);
+  }
+  // fallback: if none marked, take any labels after removing checkboxes
+  if(!out.length){
+    s.split(/[□■\n]/).map(x=>x.trim()).filter(x=>x&&x.length<20&&!/기타/.test(x)).forEach(x=>out.push(x));
+  }
+  return out.slice(0,8);
+}
+
+/* ---------- MODAL ---------- */
+function openModal(src,title){
+  el("modalFrame").src = src;
+  el("modalTitle").textContent = title;
+  el("modalDownload").href = src;
+  el("modal").classList.add("show");
+  document.body.style.overflow="hidden";
+}
+function closeModal(){
+  el("modal").classList.remove("show");
+  el("modalFrame").src="about:blank";
+  document.body.style.overflow="";
+}
+el("modalClose").addEventListener("click",closeModal);
+el("modal").addEventListener("click",e=>{if(e.target===el("modal"))closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+/* ---------- SEARCH ---------- */
+function runSearch(q){
+  q=q.trim().toLowerCase();
+  if(!q){renderHome();setActiveNav(null);return;}
+  const hits = DATA.filter(d=>{
+    const hay=[d.meta.subject,d.meta.teacher,d.meta.school,d.meta.unit,d.meta.standard,d.meta.code,d.meta.category,
+      d.stage1.explanation,d.stage1.know,d.stage1.skill,
+      ...d.lessons.map(l=>l.topic+" "+l.concept)].join(" ").toLowerCase();
+    return hay.includes(q);
+  });
+  let html=`<div class="home-intro"><div class="section-eyebrow">검색 결과 · "${esc(q)}"</div><p>${hits.length}개 과목을 찾았습니다.</p></div>`;
+  if(!hits.length){
+    html+=`<div class="no-results"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><p>검색 결과가 없습니다. 다른 키워드로 시도해 보세요.</p></div>`;
+  }else{
+    html+=`<div class="card-grid">`;
+    hits.forEach(d=>html+=cardHTML(d,CAT_META[d.meta.category]));
+    html+=`</div>`;
+  }
+  el("content").innerHTML=html;
+  el("content").querySelectorAll(".subj-card").forEach(c=>c.addEventListener("click",()=>go(c.dataset.id)));
+  setActiveNav(null);
+}
+let searchTimer;
+el("search").addEventListener("input",e=>{
+  clearTimeout(searchTimer);
+  const v=e.target.value;
+  searchTimer=setTimeout(()=>runSearch(v),160);
+});
+
+/* ---------- ROUTER ---------- */
+function go(id){
+  if(!id){
+    renderHome();setActiveNav(null);location.hash="";
+  }else{
+    const d=DATA.find(x=>x.id===id);
+    if(!d){renderHome();return;}
+    renderChapter(d);setActiveNav(id);location.hash=id;
+  }
+  el("content").scrollTop=0;
+  window.scrollTo(0,0);
+  closeSidebar();
+}
+window.addEventListener("hashchange",()=>{
+  const h=location.hash.replace("#","");
+  if(h && DATA.find(x=>x.id===h)) {if(!document.querySelector(".nav-item.active[data-id='"+h+"']")) go(h);}
+});
+
+/* ---------- SIDEBAR (mobile) ---------- */
+function openSidebar(){el("sidebar").classList.add("open");el("scrim").classList.add("show")}
+function closeSidebar(){el("sidebar").classList.remove("open");el("scrim").classList.remove("show")}
+el("menuBtn").addEventListener("click",openSidebar);
+el("scrim").addEventListener("click",closeSidebar);
+
+/* ---------- INIT ---------- */
+buildNav();
+const initHash=location.hash.replace("#","");
+if(initHash && DATA.find(x=>x.id===initHash)) go(initHash);
+else renderHome();
+</script>
+</body>
+</html>
