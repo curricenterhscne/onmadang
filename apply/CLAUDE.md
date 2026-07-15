@@ -73,6 +73,8 @@ _embed_data.js (정적)          Supabase RPC (실시간)
 3. **serverTimeDiff** — 클라이언트-서버 시간차 보정. 모든 카운트다운은 `Date.now() + serverTimeDiff` 사용.
 4. **z-index 계층** — backdrop: 9100, 학교 자동완성: 9200, 토스트: 9300.
 5. **학번 형식** — `학년-반(2자리)-번호(2자리)`, e.g. `"2-01-15"`.
+6. **학년 제한** — 전체 강좌가 1~2학년 대상이므로 3학년 옵션 제거됨. `gradeRestricted` 강좌는 확정 시 학년 검증하여 차단.
+7. **강좌 안내 링크** — `../dual_credit/`로 연결 (off-campus_courses 아님).
 
 ## 관리자 페이지 (admin/)
 
@@ -82,7 +84,7 @@ _embed_data.js (정적)          Supabase RPC (실시간)
 - 비밀번호 로그인 (sessionStorage 저장, 자동 로그인)
 - 대시보드 요약 카드 (전체 신청자, 마감 강좌, 폐강 위험)
 - 강좌 테이블 (코드, 강좌명, 기관, 지역, 신청/정원, 잔여, 강제마감 토글, 정원수정)
-- 신청자 명단 모달
+- 신청자 명단 모달 + 개별 삭제
 - 강좌별/전체 엑셀 다운로드 (클라이언트 SheetJS)
 
 ### API (Supabase Edge Functions)
@@ -93,13 +95,25 @@ _embed_data.js (정적)          Supabase RPC (실시간)
 | `admin-enrollments` | GET | enrollments 조회 (code 필터, includeSchool 옵션) |
 | `admin-set-capacity` | POST | courses.capacity 업데이트 |
 | `admin-toggle-close` | POST | courses.is_closed_manual 토글 |
+| `admin-delete-enrollment` | POST | enrollment 삭제 + enrolled_count 차감 |
 
 Edge Functions 소스: `supabase/functions/admin-*/index.ts`
 인증: `Authorization: Bearer {ADMIN_PASSWORD}` (환경변수)
 
 ### 배포
-- Edge Functions: `npx supabase functions deploy admin-courses` (4개 각각)
+- Edge Functions: `npx supabase functions deploy {함수명} --no-verify-jwt` (5개 각각)
+- **`--no-verify-jwt` 필수** — 없으면 Supabase가 Authorization 헤더를 JWT로 검증하여 401 발생
 - 프론트엔드: git push → GitHub Pages 자동 배포
+
+### enrolled_count 보정
+신청 삭제 등으로 `courses.enrolled_count`가 실제와 불일치할 경우 SQL로 보정:
+```sql
+UPDATE courses SET enrolled_count = (
+  SELECT COUNT(*) FROM enrollments
+  WHERE enrollments.course_code = courses.code
+    AND enrollments.status IN ('active', 'pending')
+);
+```
 
 ## 하지 말 것
 
