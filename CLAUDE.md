@@ -70,6 +70,7 @@
 | 폴더 | 성격 | 공통 헤더/푸터 | 핵심 파일 | 비고 |
 |---|---|---|---|---|
 | `apply/` | 수강신청 앱 (Supabase) | ❌ 독립 | `index.html`, `_embed_data.js` | 실시간 좌석 예약 |
+| `apply/admin/` | 수강신청 관리자 대시보드 | ❌ 독립 | `index.html` | Edge Functions API |
 | `dual_credit/` | 강좌 안내·카탈로그 | ✅ 사용 | `index.html`, `courses.html` | DATA 인라인 |
 | `design/majors/` | 대학 학과 안내 (자산①) | ❌ CDN DS | `index.html`, `app.js` | 기존 로직 유지 |
 | `design/selector/` | 과목 선택 실습 (자산②) | ❌ CDN DS | `index.html`, `guide.html` | 기존 로직 유지 |
