@@ -1046,7 +1046,7 @@ async function openReserveModal(code, btn) {
     const targetGrade = (detail.target || '').match(/(\d)학년/);
     if (targetGrade) {
       const allowed = targetGrade[1];
-      const msg = `이 강좌는 ${allowed}학년만 신청 가능합니다. 계속하시겠습니까?`;
+      const msg = `이 강좌는 ${allowed}학년만 신청 가능합니다.\n해당 학년이 아니면 신청이 거부됩니다. 계속하시겠습니까?`;
       if (!confirm(msg)) return;
     }
   }
@@ -1183,6 +1183,19 @@ async function submitConfirm() {
   if (!name)                          { showToast('이름을 입력해 주세요.', 'error'); return; }
   if (!/^0\d{9,10}$/.test(phone))     { showToast('올바른 연락처를 입력해 주세요. (예: 01012345678)', 'error'); return; }
   if (!/^\d{4}$/.test(pin))           { showToast('취소비번은 숫자 4자리입니다.', 'error'); return; }
+
+  // Grade restriction enforcement
+  const detail = DETAIL_MAP[currentCode];
+  if (detail && detail.gradeRestricted) {
+    const targetGrade = (detail.target || '').match(/(\d)학년/);
+    if (targetGrade) {
+      const selectedGrade = document.getElementById('r-grade').value;
+      if (selectedGrade !== targetGrade[1]) {
+        showToast(`이 강좌는 ${targetGrade[1]}학년만 신청 가능합니다.`, 'error');
+        return;
+      }
+    }
+  }
 
   const btn = document.getElementById('r-submit-btn');
   btn.disabled = true; btn.textContent = '신청 중…';
