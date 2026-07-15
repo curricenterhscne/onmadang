@@ -11,8 +11,10 @@
 
 ```
 apply/
-├─ index.html       ← 앱 전체 (1563줄, 스타일·로직 인라인)
-└─ _embed_data.js   ← 정적 데이터 (SCHOOLS 122개, COURSE_DETAILS 14개)
+├─ index.html       ← 수강신청 앱 전체 (1563줄, 스타일·로직 인라인)
+├─ _embed_data.js   ← 정적 데이터 (SCHOOLS 122개, COURSE_DETAILS 14개)
+└─ admin/
+   └─ index.html    ← 관리자 대시보드 (독립 페이지)
 ```
 
 ## 데이터 흐름
@@ -71,6 +73,33 @@ _embed_data.js (정적)          Supabase RPC (실시간)
 3. **serverTimeDiff** — 클라이언트-서버 시간차 보정. 모든 카운트다운은 `Date.now() + serverTimeDiff` 사용.
 4. **z-index 계층** — backdrop: 9100, 학교 자동완성: 9200, 토스트: 9300.
 5. **학번 형식** — `학년-반(2자리)-번호(2자리)`, e.g. `"2-01-15"`.
+
+## 관리자 페이지 (admin/)
+
+`apply/admin/index.html` — 수강신청 현황 모니터링 및 관리 대시보드.
+
+### 기능
+- 비밀번호 로그인 (sessionStorage 저장, 자동 로그인)
+- 대시보드 요약 카드 (전체 신청자, 마감 강좌, 폐강 위험)
+- 강좌 테이블 (코드, 강좌명, 기관, 지역, 신청/정원, 잔여, 강제마감 토글, 정원수정)
+- 신청자 명단 모달
+- 강좌별/전체 엑셀 다운로드 (클라이언트 SheetJS)
+
+### API (Supabase Edge Functions)
+
+| 함수 | 메서드 | 역할 |
+|------|--------|------|
+| `admin-courses` | GET | courses 테이블 전체 조회 |
+| `admin-enrollments` | GET | enrollments 조회 (code 필터, includeSchool 옵션) |
+| `admin-set-capacity` | POST | courses.capacity 업데이트 |
+| `admin-toggle-close` | POST | courses.is_closed_manual 토글 |
+
+Edge Functions 소스: `supabase/functions/admin-*/index.ts`
+인증: `Authorization: Bearer {ADMIN_PASSWORD}` (환경변수)
+
+### 배포
+- Edge Functions: `npx supabase functions deploy admin-courses` (4개 각각)
+- 프론트엔드: git push → GitHub Pages 자동 배포
 
 ## 하지 말 것
 
