@@ -131,6 +131,12 @@
   .modal-table-wrap table td, .modal-table-wrap table th { padding: 8px 10px; }
   .empty-msg { text-align: center; padding: 32px; color: #aaa; font-size: .9rem; }
 
+  .btn-del {
+    padding: 3px 8px; border-radius: 5px; border: 1px solid #fed7d7;
+    background: #fff; color: #e53e3e; font-size: .75rem; cursor: pointer;
+  }
+  .btn-del:hover { background: #fff5f5; }
+
   #loading-bar {
     text-align: center; padding: 60px; color: #888; font-size: 1rem;
   }
@@ -215,7 +221,7 @@
       <table id="modal-table">
         <thead>
           <tr>
-            <th>학번</th><th>이름</th><th>학교</th><th>연락처</th><th>상태</th>
+            <th>학번</th><th>이름</th><th>학교</th><th>연락처</th><th>상태</th><th>삭제</th>
           </tr>
         </thead>
         <tbody id="modal-tbody"></tbody>
@@ -439,34 +445,67 @@
   async function openModal(code, name) {
     modalCode = code;
     document.getElementById('modal-title').textContent = `[${code}] ${name} 신청자 명단`;
-    document.getElementById('modal-tbody').innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:#aaa">불러오는 중...</td></tr>';
+    document.getElementById('modal-tbody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:#aaa">불러오는 중...</td></tr>';
     document.getElementById('enroll-modal').classList.add('active');
 
     try {
       const res = await fetch(`${SUPABASE_FN}/admin-enrollments?code=${encodeURIComponent(code)}`, { headers: authHeaders() });
       if (res.status === 401) { logout(); return; }
       const data = await res.json();
-      const tbody = document.getElementById('modal-tbody');
-      tbody.innerHTML = '';
-      if (!data.length) {
-        tbody.innerHTML = '<tr><td colspan="5" class="empty-msg">신청자가 없습니다.</td></tr>';
-        return;
-      }
-      for (const r of data) {
-        const tr = document.createElement('tr');
-        const statusLabel = r.status === 'active' ? '확정' : '선점중';
-        tr.innerHTML = `
-          <td>${r.student_no || '-'}</td>
-          <td>${r.name || '-'}</td>
-          <td>${r.school || '-'}</td>
-          <td>${r.phone || '-'}</td>
-          <td>${statusLabel}</td>
-        `;
-        tbody.appendChild(tr);
-      }
+      renderModalRows(data);
     } catch (e) {
       document.getElementById('modal-tbody').innerHTML =
-        `<tr><td colspan="5" class="empty-msg">오류: ${e.message}</td></tr>`;
+        `<tr><td colspan="6" class="empty-msg">오류: ${e.message}</td></tr>`;
+    }
+  }
+
+  function renderModalRows(data) {
+    const tbody = document.getElementById('modal-tbody');
+    tbody.innerHTML = '';
+    if (!data.length) {
+      tbody.innerHTML = '<tr><td colspan="6" class="empty-msg">신청자가 없습니다.</td></tr>';
+      return;
+    }
+    for (const r of data) {
+      const tr = document.createElement('tr');
+      const statusLabel = r.status === 'active' ? '확정' : '선점중';
+      tr.innerHTML = `
+        <td>${r.student_no || '-'}</td>
+        <td>${r.name || '-'}</td>
+        <td>${r.school || '-'}</td>
+        <td>${r.phone || '-'}</td>
+        <td>${statusLabel}</td>
+        <td><button class="btn-del" data-id="${r.id}" data-name="${r.name || ''}">삭제</button></td>
+      `;
+      tbody.appendChild(tr);
+    }
+    tbody.querySelectorAll('.btn-del').forEach(btn => {
+      btn.addEventListener('click', () => deleteEnrollment(btn.dataset.id, btn.dataset.name, btn));
+    });
+  }
+
+  async function deleteEnrollment(id, name, btn) {
+    if (!confirm(`"${name}" 신청을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) return;
+    btn.disabled = true;
+    btn.textContent = '삭제중…';
+    try {
+      const res = await fetch(`${SUPABASE_FN}/admin-delete-enrollment`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ id }),
+      });
+      if (res.status === 401) { logout(); return; }
+      if (!res.ok) throw new Error(await res.text());
+      btn.closest('tr').remove();
+      // 명단이 비었으면 안내 표시
+      if (!document.getElementById('modal-tbody').children.length) {
+        document.getElementById('modal-tbody').innerHTML = '<tr><td colspan="6" class="empty-msg">신청자가 없습니다.</td></tr>';
+      }
+      loadCourses(); // 대시보드 카운트 갱신
+    } catch (e) {
+      alert('삭제 오류: ' + e.message);
+      btn.disabled = false;
+      btn.textContent = '삭제';
     }
   }
 
