@@ -31,20 +31,58 @@ serve(async (req) => {
 
   const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
   const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const sbHeaders = {
+    apikey: SERVICE_ROLE_KEY,
+    Authorization: `Bearer ${SERVICE_ROLE_KEY}`,
+  };
 
-  const url = `${SUPABASE_URL}/rest/v1/enrollments?id=eq.${encodeURIComponent(id)}`;
-  const res = await fetch(url, {
-    method: "DELETE",
-    headers: {
-      apikey: SERVICE_ROLE_KEY,
-      Authorization: `Bearer ${SERVICE_ROLE_KEY}`,
-      Prefer: "return=minimal",
-    },
-  });
+  // 1. 삭제 전에 enrollment 조회하여 course_code 확인
+  const getRes = await fetch(
+    `${SUPABASE_URL}/rest/v1/enrollments?id=eq.${encodeURIComponent(id)}&select=course_code,status`,
+    { headers: sbHeaders }
+  );
+  if (!getRes.ok) {
+    return Response.json({ error: await getRes.text() }, { status: 502, headers: CORS_HEADERS });
+  }
+  const rows = await getRes.json();
+  if (!rows.length) {
+    return Response.json({ error: "enrollment not found" }, { status: 404, headers: CORS_HEADERS });
+  }
+  const { course_code, status } = rows[0];
 
-  if (!res.ok) {
-    const text = await res.text();
-    return Response.json({ error: text }, { status: 502, headers: CORS_HEADERS });
+  // 2. enrollment 삭제
+  const delRes = await fetch(
+    `${SUPABASE_URL}/rest/v1/enrollments?id=eq.${encodeURIComponent(id)}`,
+    {
+      method: "DELETE",
+      headers: { ...sbHeaders, Prefer: "return=minimal" },
+    }
+  );
+  if (!delRes.ok) {
+    return Response.json({ error: await delRes.text() }, { status: 502, headers: CORS_HEADERS });
+  }
+
+  // 3. active/pending 상태였으면 courses.enrolled_count 차감
+  if (status === "active" || status === "pending") {
+    // 현재 enrolled_count 조회
+    const courseRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/courses?code=eq.${encodeURIComponent(course_code)}&select=enrolled_count`,
+      { headers: sbHeaders }
+    );
+    if (courseRes.ok) {
+      const courses = await courseRes.json();
+      if (courses.length) {
+        const newCount = Math.max(0, (courses[0].enrolled_count || 0) - 1);
+        await fetch(
+          `${SUPABASE_URL}/rest/v1/courses?code=eq.${encodeURIComponent(course_code)}`,
+          {
+            method: "PATCH",
+            headers: { ...sbHeaders, "Content-Type": "application/json", Prefer: "return=minimal" },
+            body: JSON.stringify({ enrolled_count: newCount }),
+          }
+        );
+      }
+    }
   }
 
   return Response.json({ ok: true }, { headers: CORS_HEADERS });
