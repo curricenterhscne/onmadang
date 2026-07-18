@@ -4,6 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>충남 고교 과목 선택 실습 — 고교학점제 시뮬레이션</title>
+<!-- journey iframe 임베드 감지 (?embed=1) — 외곽 크롬 감춤, 핵심 로직 미변경 -->
+<script>
+  try {
+    if (new URLSearchParams(location.search).has('embed')) {
+      document.documentElement.classList.add('is-embedded');
+    }
+  } catch (_) { /* 무시 */ }
+</script>
+<style>
+  html.is-embedded .renewal-banner,
+  html.is-embedded > body > header,
+  html.is-embedded .onmadang-footer,
+  html.is-embedded footer.onmadang-footer,
+  html.is-embedded .mobile-menu,
+  html.is-embedded .hamburger,
+  html.is-embedded .kk-breadcrumb,
+  html.is-embedded #om-header,
+  html.is-embedded #om-footer { display: none !important; }
+  html.is-embedded body { padding-top: 0 !important; }
+</style>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
 <!-- 꾸꾸클럽 디자인 시스템 v1.0 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/tokens/design-tokens.css">

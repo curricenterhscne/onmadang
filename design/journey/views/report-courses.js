@@ -43,7 +43,7 @@ export async function render(view, ctx) {
     <article class="j-view">
       <header class="j-view-head">
         <h1>수강 이력카드 (자동 생성)</h1>
-        <p>4단계 <a href="../selector/" target="_blank" rel="noopener">과목 선택 실습</a>에서 저장한 JSON 파일을 상단 <b>파일 열기</b> 또는 <b>드래그앤드롭</b>으로 불러오면, 이 화면이 자동으로 채워집니다.</p>
+        <p>4단계 <a href="#/planner/selector">과목 선택 실습</a>을 여정 안에서 진행하면 결과가 자동으로 이 화면에 반영됩니다. 이미 파일이 있다면 상단 <b>파일 열기</b> 또는 <b>드래그앤드롭</b>으로 불러오세요.</p>
       </header>
       ${banner}
       <div id="report-body">${renderBody(cp, req)}</div>

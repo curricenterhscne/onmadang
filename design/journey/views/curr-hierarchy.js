@@ -122,7 +122,8 @@ export async function render(view, ctx) {
           </label>
         </div>
         <div class="j-inline-actions">
-          <a class="j-btn j-btn-primary" href="../selector/" id="go-selector">과목 선택 실습 열기 ↗</a>
+          <a class="j-btn j-btn-primary" href="#/planner/selector" id="go-selector">여정 안에서 실습 열기 →</a>
+          <a class="j-btn" href="../selector/" target="_blank" rel="noopener">새 창으로 열기 ↗</a>
           <label class="j-check">
             <input type="checkbox" id="visited" ${visited ? 'checked' : ''}>
             <span>우리 학교 교육과정을 살펴봤습니다</span>
