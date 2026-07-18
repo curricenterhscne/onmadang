@@ -558,15 +558,96 @@ function openModal(d) {
         </table>
       </div>
     </div>
-    <div class="modal-section" style="padding-top:var(--space-4);border-top:1px solid var(--color-border);margin-top:var(--space-2);">
+    <div class="modal-section" style="padding-top:var(--space-4);border-top:1px solid var(--color-border);margin-top:var(--space-2);display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
       <a href="${buildSelectorUrl(d)}" class="kk-btn kk-btn--accent">
         이 학과 권장 과목으로 과목 선택 실습 →
       </a>
+      <button type="button" id="btnSaveMajor" class="kk-btn kk-btn--outline" data-major-id="${escHtml(d.id || d.name)}" data-major-name="${escHtml(d.name)}" data-category-id="${escHtml(d.categoryId)}" data-category-name="${escHtml(meta.name)}">
+        + 내 기록에 담기
+      </button>
+      <span id="saveMajorToast" style="display:none;font-size:12.5px;color:#5fb260;font-weight:700;"></span>
     </div>` : ''}
   `;
 
+  // "내 기록에 담기" 버튼 (journey store에 안전 병합) — journey import 금지, 동일 키에 최소 코드로
+  const saveBtn = document.getElementById('btnSaveMajor');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => onmadangSaveMajor(d, meta.name));
+  }
+
   // freeze background scroll
   document.body.style.overflow = 'hidden';
+}
+
+// ──────────────────────────────────────────────────────────────
+// 온마당 journey 훅 — localStorage 'onmadang.jinro.v1' step3.savedMajors 안전 병합
+// (journey store.js import 금지, 스키마 필드만, try/catch로 실패 조용히 무시)
+// ──────────────────────────────────────────────────────────────
+function onmadangSaveMajor(d, categoryName) {
+  const KEY = 'onmadang.jinro.v1';
+  const SCHEMA = 'onmadang_jinro/v1';
+  try {
+    // 권장 과목 요약: 진로선택 = 핵심(core), 일반+진로+융합 = 권장(recommended)
+    const core = [];
+    const recommended = [];
+    const subjects = d.subjects || {};
+    Object.values(subjects).forEach(g => {
+      const gen = g['일반선택'] || [];
+      const car = g['진로선택'] || [];
+      const fus = g['융합선택'] || [];
+      car.forEach(s => { if (!core.includes(s)) core.push(s); });
+      [...gen, ...car, ...fus].forEach(s => { if (!recommended.includes(s)) recommended.push(s); });
+    });
+
+    const entry = {
+      majorId: d.id || d.name,
+      name: d.name,
+      categoryId: d.categoryId,
+      categoryName: categoryName || '',
+      coreSubjects: core,
+      recommendedSubjects: recommended,
+      savedAt: new Date().toISOString(),
+    };
+
+    let cache = null;
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) cache = JSON.parse(raw);
+    } catch (_) { cache = null; }
+
+    if (!cache || typeof cache !== 'object') {
+      cache = { schema: SCHEMA, schemaVersion: 1 };
+    }
+    if (cache.schema && cache.schema !== SCHEMA) {
+      // 다른 스키마면 담기 취소
+      showSaveMajorToast('저장 형식이 달라 담을 수 없습니다', true);
+      return;
+    }
+    cache.schema = SCHEMA;
+    cache.step3 = cache.step3 || {};
+    const arr = Array.isArray(cache.step3.savedMajors) ? cache.step3.savedMajors : [];
+    // 중복(majorId) 제거 후 최신 앞으로
+    const filtered = arr.filter(x => x && x.majorId !== entry.majorId);
+    filtered.unshift(entry);
+    cache.step3.savedMajors = filtered.slice(0, 20);
+    cache.meta = cache.meta || {};
+    cache.meta.updatedAt = new Date().toISOString();
+
+    localStorage.setItem(KEY, JSON.stringify(cache));
+    showSaveMajorToast(`"${d.name}" 담았습니다 (${cache.step3.savedMajors.length}개)`);
+  } catch (e) {
+    showSaveMajorToast('담기 실패 — 브라우저 저장소를 확인해주세요', true);
+  }
+}
+
+function showSaveMajorToast(msg, isError) {
+  const t = document.getElementById('saveMajorToast');
+  if (!t) return;
+  t.textContent = msg;
+  t.style.color = isError ? '#b64525' : '#5fb260';
+  t.style.display = 'inline';
+  clearTimeout(showSaveMajorToast._t);
+  showSaveMajorToast._t = setTimeout(() => { t.style.display = 'none'; }, 2600);
 }
 
 function closeModal() {
