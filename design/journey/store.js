@@ -123,6 +123,7 @@ export function createDefault() {
       },
       deptInfo: { requiredCompetency: '', neededSubjects: '', jobFields: '' },
       sameNameCompare: { deptName: '', a: {}, b: {}, similarDepts: [] },
+      savedMajors: [],
     },
     step4: {
       coursePlan: null,
