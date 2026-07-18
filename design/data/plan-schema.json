@@ -1,0 +1,255 @@
+{
+  "$comment": "localStorage key 'onmadang.jinro.v1'에 저장되는 단일 JSON 문서의 스키마(약식). jinro-store.js가 기본값 생성·검증에 사용.",
+  "schemaVersion": 1,
+  "document": {
+    "meta": {
+      "createdAt": "ISO8601",
+      "updatedAt": "ISO8601",
+      "curriculumVersion": "'2022' 고정 (스키마 확장 대비 필드만 유지)"
+    },
+    "profile": {
+      "$comment": "전부 선택 입력. 인쇄 직전에만 채워도 됨.",
+      "school": "string",
+      "grade": "number",
+      "classNo": "string",
+      "name": "string"
+    },
+    "step1": {
+      "prologue": {
+        "strengths": [
+          "string"
+        ],
+        "commonWithFriend": "string",
+        "sentences": {
+          "happy": "",
+          "like": "",
+          "good": "",
+          "respectWho": "",
+          "respectWhy": ""
+        },
+        "pledge": [
+          "",
+          "",
+          ""
+        ]
+      },
+      "interest": {
+        "ranks": [
+          {
+            "rank": 1,
+            "type": "R|I|A|S|E|C",
+            "tScore": "number|null",
+            "traits": "",
+            "jobs": ""
+          }
+        ],
+        "topJobExample": {
+          "type": "",
+          "jobGroup": "",
+          "job": "",
+          "major": ""
+        },
+        "reflection": ""
+      },
+      "aptitude": {
+        "high": [
+          {
+            "area": "",
+            "percentile": null,
+            "interested": "",
+            "new": "",
+            "toCheck": ""
+          }
+        ],
+        "low": [
+          {
+            "area": "",
+            "effort": ""
+          }
+        ],
+        "reflection": ""
+      },
+      "values": {
+        "myTop3": [
+          {
+            "value": "",
+            "score": null
+          }
+        ],
+        "testTop3": [
+          {
+            "value": "",
+            "score": null
+          }
+        ],
+        "mismatchNote": "",
+        "byOrientation": [],
+        "hopeJob": {
+          "job": "",
+          "realizedValues": ""
+        }
+      },
+      "jobs": [
+        {
+          "name": "",
+          "coreAbility": "",
+          "majors": "",
+          "tasks": "",
+          "fit": "",
+          "salary": "",
+          "howToPrepare": "",
+          "licenses": ""
+        }
+      ],
+      "jobFuture": [
+        {
+          "job": "",
+          "prediction": ""
+        }
+      ],
+      "jobFutureInsight": "",
+      "summary": {
+        "futureOutlookPositive": null,
+        "reason": "",
+        "conclusion": "탐색 결과를 종합할 때, 관심 직업(학과)은 ___이다"
+      }
+    },
+    "step2": {
+      "quiz": {
+        "structure": {
+          "done": false,
+          "score": null
+        },
+        "grading": {
+          "done": false,
+          "score": null
+        },
+        "hierarchy": {
+          "done": false,
+          "score": null
+        }
+      },
+      "mySchool": {
+        "visitedSelector": false,
+        "schoolName": ""
+      }
+    },
+    "step3": {
+      "field": {
+        "interested": "",
+        "reason": "",
+        "considerations": [
+          {
+            "item": "",
+            "reason": ""
+          }
+        ],
+        "readiness": {
+          "academic": "",
+          "career": "",
+          "community": ""
+        }
+      },
+      "department": {
+        "interested": "",
+        "reason": "",
+        "universities": [
+          {
+            "region": "",
+            "univ": ""
+          }
+        ],
+        "readiness": {
+          "academic": "",
+          "career": "",
+          "community": ""
+        }
+      },
+      "deptInfo": {
+        "requiredCompetency": "",
+        "neededSubjects": "",
+        "jobFields": ""
+      },
+      "sameNameCompare": {
+        "deptName": "",
+        "a": {
+          "univ": "",
+          "field": "",
+          "goal": "",
+          "learn": "",
+          "jobs": "",
+          "linkedSubjects": ""
+        },
+        "b": {},
+        "similarDepts": []
+      }
+    },
+    "step4": {
+      "coursePlan": {
+        "importedFrom": "selector-json | selector-localstorage | manual",
+        "importedAt": null,
+        "career": {
+          "field": "",
+          "hopeJob": ""
+        },
+        "plan": "selector 내보내기 구조를 그대로 보관 + 정규화 뷰"
+      },
+      "creditCard": {
+        "$comment": "coursePlan에서 파생 — 저장하지 않고 렌더 시 계산 권장"
+      },
+      "mandarat": {
+        "grade1": {
+          "cells": {}
+        },
+        "grade2": {
+          "cells": {}
+        },
+        "grade3": {
+          "cells": {}
+        }
+      },
+      "peerReview": {
+        "given": [],
+        "received": [],
+        "revisionNote": ""
+      },
+      "audit": {
+        "byTerm": [
+          {
+            "grade": 1,
+            "semester": 1,
+            "completed": [],
+            "incomplete": [],
+            "note": ""
+          }
+        ]
+      },
+      "checklist": {
+        "answers": {
+          "카테고리명.항목인덱스": "O|X|null"
+        },
+        "$comment": "checklist.json의 항목에 응답"
+      },
+      "roadmap": {
+        "careerGoal": "",
+        "phases": [
+          {
+            "id": "hs2",
+            "years": null,
+            "goal": ""
+          }
+        ],
+        "afterThoughts": ""
+      }
+    }
+  },
+  "completionRules": {
+    "step1.prologue": "strengths.length>=3 && pledge에 1줄 이상",
+    "step1.interest": "ranks[0].type 존재",
+    "step1.summary": "conclusion 채워짐",
+    "step2.*": "quiz.done == true (mySchool은 visitedSelector)",
+    "step4.coursePlan": "plan 존재",
+    "step4.mandarat": "학년 1개 이상에서 셀 8개 중 4개 이상 목표 입력",
+    "final": "step1.summary && step4.coursePlan && step4.checklist 응답 50%↑ && step4.roadmap.careerGoal"
+  }
+}

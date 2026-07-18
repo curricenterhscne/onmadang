@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#DAF2FC">
+<meta name="description" content="자기 이해 → 교육과정 → 진로설계 → 과목 선택 → 종합 보고서까지, 한 파일로 완성하는 진로학업설계 여정">
+<title>진로·학업 설계 여정 · 온마당</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../../assets/css/common.css">
+<link rel="stylesheet" href="./journey.css">
+<link rel="stylesheet" href="../../assets/css/print.css" media="print">
+</head>
+<body>
+
+<div id="om-header" data-active="design"></div>
+
+<!-- 상단 "내 설계서" 바 -->
+<div class="j-savebar" aria-label="내 설계서">
+  <div class="wrap j-savebar-inner">
+    <div class="j-savebar-info">
+      <span class="j-savebar-ic" aria-hidden="true">📄</span>
+      <div>
+        <div class="j-savebar-title">내 설계서 파일</div>
+        <div class="j-savebar-time"><span id="save-time">아직 저장한 파일이 없습니다</span></div>
+      </div>
+    </div>
+    <div class="j-savebar-actions">
+      <button type="button" id="btn-save-file" class="j-btn j-btn-primary">파일로 저장</button>
+      <button type="button" id="btn-open-file" class="j-btn">파일 열기</button>
+      <button type="button" id="btn-wipe" class="j-btn j-btn-ghost" title="기록 지우고 종료">기록 지우기</button>
+      <input type="file" id="open-file-input" accept="application/json,.json" hidden>
+    </div>
+  </div>
+  <div class="wrap j-savebar-drop">
+    <div id="dropzone" class="j-dropzone">
+      <span>여기로 <b>.json 파일을 끌어다 놓으면</b> 바로 불러옵니다.
+        (설계서 파일 또는 과목 선택 실습에서 내보낸 파일)</span>
+    </div>
+    <div id="save-status" class="j-savebar-status" role="status" aria-live="polite"></div>
+  </div>
+  <div class="wrap">
+    <div class="j-progress" role="progressbar" aria-label="전체 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div id="journey-progress" class="j-progress-bar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- breadcrumb -->
+<nav class="j-breadcrumb wrap" id="journey-crumbs" aria-label="이동 경로">
+  <a href="../">진로·학업 설계</a>
+</nav>
+
+<!-- 뷰 컨테이너 -->
+<main id="view" class="j-main wrap" tabindex="-1" aria-busy="false"></main>
+
+<noscript>
+  <div class="wrap" style="padding:32px 0">
+    <p>이 페이지는 JavaScript가 필요합니다. 브라우저 설정에서 스크립트를 활성화해 주세요.</p>
+  </div>
+</noscript>
+
+<div id="om-footer"></div>
+<script src="../../assets/js/common.js"></script>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
