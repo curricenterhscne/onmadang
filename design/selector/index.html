@@ -1799,6 +1799,9 @@ function exportToJSON() {
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   showToast('JSON 파일로 저장했습니다');
+
+  // 온마당 journey 훅 — 최근 실습 결과를 localStorage에 복사 (report-courses 배너용)
+  try { localStorage.setItem('onmadang.jinro.selector', JSON.stringify(payload)); } catch (_) {}
 }
 
 async function importFromJSON(file) {
