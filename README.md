@@ -32,8 +32,21 @@ claude   # 레포 루트에서 실행
 | 3 | `prompts/03-safety.md` | 4대 안전망 + 자산 ③ 연동 |
 | 4 | `prompts/04-board.md` | 공지·자료실(JSON 분리) |
 | 5 | `prompts/05-polish.md` | 반응형·접근성·배포 마무리 |
+| 6 | `prompts/06-jinro-foundation.md` | journey 앱 셸·라우터·store(node --test)·파일 우선 저장 |
+| 7 | `prompts/07-jinro-self.md` | 1단계 자기 이해 뷰 4종 |
+| 8 | `prompts/08-jinro-curriculum.md` | 2단계 교육과정 이해 뷰 3종(퀴즈) |
+| 9 | `prompts/09-jinro-career.md` | 3단계 진로설계 활동 3종 + majors 담기 훅 |
+| 10 | `prompts/10-jinro-report.md` | 5단계 종합 보고서 3종 + selector 훅 + 마무리 |
 
 각 단계 완료 후 커밋 → Pages 링크 확인 → 다음 단계.
+
+### 테스트
+
+`design/journey/` 모듈은 유닛 테스트가 있습니다.
+
+```bash
+node --test tests/store.test.js   # 19 케이스 · Node 18+
+```
 
 ## 핵심 문서
 

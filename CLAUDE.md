@@ -72,8 +72,9 @@
 | `apply/` | 수강신청 앱 (Supabase) | ❌ 독립 | `index.html`, `_embed_data.js` | 실시간 좌석 예약 |
 | `apply/admin/` | 수강신청 관리자 대시보드 | ❌ 독립 | `index.html` | Edge Functions API |
 | `dual_credit/` | 강좌 안내·카탈로그 | ✅ 사용 | `index.html`, `courses.html` | DATA 인라인 |
-| `design/majors/` | 대학 학과 안내 (자산①) | ❌ CDN DS | `index.html`, `app.js` | 기존 로직 유지 |
-| `design/selector/` | 과목 선택 실습 (자산②) | ❌ CDN DS | `index.html`, `guide.html` | 기존 로직 유지 |
+| `design/majors/` | 대학 학과 안내 (자산①) | ❌ CDN DS | `index.html`, `app.js` | 기존 로직 유지 + 담기 훅 |
+| `design/selector/` | 과목 선택 실습 (자산②) | ❌ CDN DS | `index.html`, `guide.html` | 기존 로직 유지 + localStorage 훅 |
+| `design/journey/` | 진로학업설계서 SPA-lite | ✅ 사용 | `index.html`, `app.js`, `store.js` | 해시 라우터·14 뷰, 파일 우선 저장, node --test |
 | `board/` | 공지·자료실 | ✅ 사용 | `index.html`, `resources.html` | GitHub Issues API |
 | `safety/` | 4대 안전망 페이지들 | ✅ 사용 | 5개 HTML | 정적 콘텐츠 |
 | `off-campus_courses/` | 학교 밖 교육 강좌 | ✅ 사용 | `index.html` | — |
@@ -82,6 +83,14 @@
 
 `apply/_embed_data.js`와 `dual_credit/courses.html`은 **동일한 14개 강좌 데이터**를 각각 보유한다 (필드명이 다름).
 강좌 정보 수정 시 **반드시 양쪽 동시 수정**. 자세한 필드 매핑은 각 폴더의 CLAUDE.md 참조.
+
+### journey ↔ majors/selector 훅
+
+`design/journey/`는 majors·selector와 다음 2개 지점에서만 연결된다:
+- **majors**: 학과 상세 모달 "내 기록에 담기" 버튼 → localStorage `onmadang.jinro.v1` step3.savedMajors 병합
+- **selector**: `exportToJSON()` 말미 3줄 → localStorage `onmadang.jinro.selector`에 payload 복사 (report-courses 배너)
+
+두 훅 모두 journey `store.js` import 없이 최소 코드로 안전 병합(try/catch). 세부는 각 폴더 CLAUDE.md 및 `design/CLAUDE.md` 참조.
 
 ## 작업 방식
 
