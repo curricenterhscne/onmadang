@@ -402,6 +402,91 @@
 }
 .j-nav .j-btn { min-width: 130px; }
 
+/* ── 편제 뷰 (curr-structure) ─────────────────────────── */
+.j-elective-legend { font-size: 12.5px; color: var(--ink-soft); line-height: 2; margin-top: 8px; }
+.j-elective-tag {
+  display: inline-block; font-size: 10.5px; font-weight: 800;
+  padding: 2px 8px; border-radius: var(--radius-pill); margin-right: 4px;
+  background: var(--soft); color: var(--brand-d);
+}
+.j-elective-tag.is-general { background: #eaf6fb; color: var(--online-d); }
+.j-elective-tag.is-career  { background: #e6f5e0; color: var(--accent-d); }
+.j-elective-tag.is-fusion  { background: #efe5f6; color: var(--brand); }
+
+.j-groups { display: grid; gap: 8px; }
+.j-group summary b { color: var(--brand-d); font-size: 14.5px; }
+.j-group-meta { font-size: 12px; color: var(--ink-faint); margin-left: 8px; }
+.j-common {
+  background: #fff; border-left: 3px solid var(--brand);
+  padding: 8px 12px; font-size: 12.5px; margin: 8px 0; border-radius: 4px;
+}
+.j-common b { color: var(--brand-d); margin-right: 4px; }
+.j-common small { color: var(--ink-faint); }
+.j-elective {
+  background: #fff; padding: 8px 12px;
+  font-size: 12.5px; line-height: 1.7;
+  border-radius: 4px; margin: 6px 0;
+}
+.j-elective.is-general { border-left: 3px solid var(--online); }
+.j-elective.is-career  { border-left: 3px solid var(--accent); }
+.j-elective.is-fusion  { border-left: 3px solid var(--plum); }
+
+/* ── 퀴즈 공통 ────────────────────────────────────────── */
+.j-quiz-list { display: grid; gap: 12px; margin-top: 8px; }
+.j-quiz-item {
+  background: var(--soft); border: 1px solid var(--line);
+  border-radius: 8px; padding: 12px 14px;
+}
+.j-quiz-item.is-correct { background: #f2fbef; border-color: var(--accent); }
+.j-quiz-item.is-wrong   { background: #fff6ee; border-color: #ecc7a2; }
+.j-quiz-item select {
+  font-family: inherit; font-size: 13.5px; color: var(--ink);
+  padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px;
+  background: #fff; width: 100%; margin-top: 6px;
+}
+.j-quiz-prompt b { color: var(--brand-d); font-size: 13.5px; }
+.j-quiz-clue { font-size: 12.5px; color: var(--ink-soft); margin-top: 4px; }
+.j-quiz-clue code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: #fff; padding: 2px 6px; border-radius: 4px;
+  border: 1px solid var(--line); font-size: 12px;
+}
+.j-quiz-ans summary { color: var(--brand); font-weight: 700; font-size: 12.5px; cursor: pointer; padding: 4px 0; }
+.j-quiz-ans p { font-size: 12.5px; color: var(--ink); line-height: 1.6; margin-top: 4px; }
+.j-quiz-actions { display: flex; gap: 8px; align-items: center; margin-top: 14px; flex-wrap: wrap; }
+.j-quiz-score { font-size: 14px; font-weight: 800; color: var(--brand-d); }
+
+/* ── 위계 다이어그램 ─────────────────────────────────── */
+.j-hier { display: grid; gap: 8px; padding: 6px 0; }
+.j-hier .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.j-hier .col-label {
+  min-width: 80px; font-size: 12px; font-weight: 800;
+  color: var(--brand); background: var(--soft);
+  padding: 4px 10px; border-radius: var(--radius-pill);
+}
+.j-hier .col-nodes { display: flex; gap: 6px; flex-wrap: wrap; }
+.j-hier .node {
+  font-size: 12.5px; padding: 6px 10px; border-radius: 6px;
+  background: #fff; border: 1px solid var(--line); color: var(--ink);
+}
+.j-hier .node.is-common  { background: var(--soft); border-color: var(--brand-l); color: var(--brand-d); font-weight: 700; }
+.j-hier .node.is-general { border-color: var(--online); }
+.j-hier .node.is-career  { border-color: var(--accent); }
+.j-hier .arrow { text-align: center; color: var(--brand-l); font-size: 16px; }
+
+.j-suneung { background: #fbfaff; }
+.j-suneung h2 { color: var(--brand); }
+
+/* ── selector 링크 카드 ───────────────────────────────── */
+.j-selector-link { background: linear-gradient(160deg, #f2fbef 0%, #eaf6fb 100%); }
+.j-inline-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.j-check { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; color: var(--ink); }
+.j-check input { transform: scale(1.15); accent-color: var(--brand); }
+
+/* ── 예외 리스트 ─────────────────────────────────────── */
+.j-list-exceptions li b { color: var(--brand); }
+.j-list-exceptions li small { color: var(--ink-faint); display: block; margin-top: 2px; }
+
 /* ── 반응형 ──────────────────────────────────────────── */
 @media (max-width: 720px) {
   .j-start-grid { grid-template-columns: 1fr; }
