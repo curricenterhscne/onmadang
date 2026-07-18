@@ -7,7 +7,7 @@ const STEP_META = [
   { id: 'self',       n: 1, label: '자기 이해',       desc: '흥미·적성·가치관을 탐색합니다',       route: '#/self/prologue' },
   { id: 'curriculum', n: 2, label: '교육과정 이해',   desc: '2022 개정 편제·평가·위계를 이해합니다', route: '#/curriculum/structure' },
   { id: 'majors',     n: 3, label: '진로설계 활동',   desc: '학과 탐색·만다라트·로드맵을 작성합니다', route: '#/career/majors' },
-  { id: 'planner',    n: 4, label: '과목 선택 실습',  desc: '학교 편성표로 3년간 과목을 선택합니다', route: '../selector/', external: true },
+  { id: 'planner',    n: 4, label: '과목 선택 실습',  desc: '학교 편성표로 3년간 과목을 선택합니다', route: '#/planner/selector' },
   { id: 'report',     n: 5, label: '종합 보고서',     desc: 'A4 인쇄용 진로학업설계서를 조립합니다', route: '#/report/print' },
 ];
 
@@ -21,11 +21,11 @@ const ACTIVITY_ROUTES = {
   'step2.structure':'#/curriculum/structure',
   'step2.grading':  '#/curriculum/grading',
   'step2.hierarchy':'#/curriculum/hierarchy',
-  'step2.mySchool': '../selector/',
+  'step2.mySchool': '#/planner/selector',
   'step3.field':      '#/career/majors',
   'step3.department': '#/career/majors',
   'step3.sameName':   '#/career/majors',
-  'step4.coursePlan': '../selector/',
+  'step4.coursePlan': '#/planner/selector',
   'step4.mandarat':   '#/career/mandarat',
   'step4.roadmap':    '#/career/roadmap',
   'step5.checklistHalf': '#/report/check',

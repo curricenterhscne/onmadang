@@ -62,7 +62,7 @@ export async function render(view, ctx) {
 
       <nav class="j-nav">
         <a href="#/career/mandarat" class="j-btn">← 만다라트</a>
-        <a href="../selector/" class="j-btn j-btn-primary">4단계: 과목 선택 실습 ↗</a>
+        <a href="#/planner/selector" class="j-btn j-btn-primary">4단계: 과목 선택 실습 →</a>
       </nav>
     </article>
   `;

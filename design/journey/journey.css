@@ -724,6 +724,49 @@
 .rp-mandala b { color: var(--brand-d); font-size: 12.5px; }
 .rp-mandala-k { color: var(--brand); font-weight: 700; }
 
+/* ── selector 임베드 뷰 (planner-selector) ────────────── */
+.j-main.j-view-embed {
+  max-width: none;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.j-embed {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-sm);
+  padding: 18px 20px;
+  display: grid; gap: 12px;
+}
+.j-embed-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; flex-wrap: wrap;
+  padding-bottom: 12px; border-bottom: 1px dashed var(--line);
+}
+.j-embed-title h1 {
+  font-size: 20px; font-weight: 800; color: var(--brand-d);
+  letter-spacing: -.3px; margin-bottom: 2px;
+}
+.j-embed-title .j-hint { margin: 0; }
+.j-embed-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.j-embed-detected {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; flex-wrap: wrap;
+  background: linear-gradient(160deg, #e6f5e0 0%, #f2fbef 100%);
+  border-left: 4px solid var(--accent);
+  padding: 12px 16px; border-radius: 8px;
+}
+.j-embed-detected b { color: var(--accent-d); font-size: 14px; }
+.j-embed-frame-wrap {
+  border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+  background: var(--soft);
+}
+.j-embed-frame {
+  display: block; width: 100%;
+  height: calc(100vh - 320px); min-height: 520px;
+  border: none;
+}
+.j-embed-foot { padding-top: 6px; }
+.j-embed-foot .j-hint { margin: 0; }
+
 /* ── 반응형 ──────────────────────────────────────────── */
 @media (max-width: 720px) {
   .j-start-grid { grid-template-columns: 1fr; }

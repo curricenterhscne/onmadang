@@ -15,6 +15,7 @@ const ROUTES = {
   '/curriculum/structure': 'curr-structure',
   '/curriculum/grading': 'curr-grading',
   '/curriculum/hierarchy': 'curr-hierarchy',
+  '/planner/selector': 'planner-selector',
   '/career/majors': 'career-majors',
   '/career/mandarat': 'career-mandarat',
   '/career/roadmap': 'career-roadmap',
@@ -32,6 +33,7 @@ const BREADCRUMB = {
   '/curriculum/structure': ['2. 교육과정 이해', '교과 편제'],
   '/curriculum/grading': ['2. 교육과정 이해', '성적 산출'],
   '/curriculum/hierarchy': ['2. 교육과정 이해', '과목 위계'],
+  '/planner/selector': ['4. 과목 선택 실습', '학교 편성표 실습'],
   '/career/majors': ['3. 진로설계 활동', '학과 탐색'],
   '/career/mandarat': ['3. 진로설계 활동', '만다라트'],
   '/career/roadmap': ['3. 진로설계 활동', '진로 로드맵'],
@@ -134,6 +136,8 @@ async function render(path) {
   }
 
   view.innerHTML = '';
+  // 이전 뷰가 붙였을 수 있는 상태 클래스 정리
+  [...view.classList].forEach(c => { if (c.startsWith('j-view-')) view.classList.remove(c); });
   try {
     await mod.render(view, { store, data, navigate, progress: store.progress });
   } catch (e) {
