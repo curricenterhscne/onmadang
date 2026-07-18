@@ -77,4 +77,22 @@
 
   /* 5단계 카드/상태 UI는 인쇄 시 감춤 (인쇄용 뷰에서 별도 재구성) */
   .j-start, .j-flow, .j-incomplete, .j-progress { display: none !important; }
+
+  /* report-print 문서 전용 */
+  .rp-doc { border: none !important; padding: 0 !important; box-shadow: none !important; }
+  .rp-cover { padding: 0 0 10mm; border-bottom: 1pt solid #000; margin-bottom: 8mm; page-break-after: avoid; }
+  .rp-cover-brand { font-size: 9pt; color: #000; margin-bottom: 4mm; }
+  .rp-cover-title { font-size: 24pt; margin-bottom: 12mm; color: #000; }
+  .rp-cover-table { font-size: 10pt; }
+  .rp-cover-table th, .rp-cover-table td { padding: 3mm 8mm; border-bottom: 0.4pt solid #000; }
+  .rp-section { margin-top: 6mm; padding-top: 3mm; border-top: 0.4pt dashed #000; page-break-inside: avoid; break-inside: avoid; }
+  .rp-section:first-of-type { border-top: none; }
+  .rp-section h2 { font-size: 12pt; margin-bottom: 3mm; color: #000; }
+  .rp-table { font-size: 9pt; margin: 2mm 0; }
+  .rp-table th, .rp-table td { border: 0.4pt solid #000; padding: 2mm 2.5mm; }
+  .rp-table thead th, .rp-table th { background: #eee !important; color: #000; }
+  .rp-ul, .rp-ol { font-size: 9pt; }
+  .rp-empty, .rp-i { color: #666 !important; }
+  .rp-check .rp-mark { width: 10pt; }
+  .rp-actions, .no-print { display: none !important; }
 }
