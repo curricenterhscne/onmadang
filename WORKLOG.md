@@ -4,6 +4,46 @@
 
 ---
 
+## 2026-07-18: 사전 조사 — selector JSON I/O + common.js 헤더 방식 (prompts/06 착수)
+
+### selector exportToJSON / importFromJSON 요약 (design/selector/index.html:1774~1835)
+
+- **payload 구조** (`schema: 'cne_course_selector/v1'`)
+  - `exportedAt`: KST ISO(+09:00), `year`, `schoolCode`, `schoolName`, `department|null`
+  - `selections`: `Set<'g{groupIdx}-s{subjectIdx}-sem{0..5}'>` → `[...state.userSelections]` 배열로 직렬화
+  - `preset`: 활성 학과 프리셋(있으면), `null`
+  - `summary`: `_buildSummary()` — `{ totalCredits, changcheCredits, groupBreakdown }` (교과군별 학점 집계, 소수 첫째 자리)
+- **파일명**: `과목선택_{학교명}[_{학과}]_{YYYY-MM-DDTHHmm}.json` (특수문자 `_` 치환)
+- **import 흐름**
+  1. `schema` 검증(`cne_course_selector/v1` 이외 거부) → `schoolCode` 유효성 → 학교 매칭
+  2. `state.year` 갱신 후 `onSchoolChange(schoolCode, department, selections)`로 복원
+  3. `preset` 있으면 버튼 활성화
+- **드래그앤드롭**: `document`에 `.json` 파일 드롭 시 import (드롭 존 UI 없음, 문서 전체가 존)
+
+### journey store가 참고해야 할 지점
+
+- **schema 필드명**은 selector 컨벤션 준수 → 설계서 파일도 `schema`, `exportedAt`(KST) 사용 (`onmadang_jinro/v1`)
+- selector payload의 `summary.groupBreakdown`을 그대로 5단계 이력카드 1차 데이터원으로 사용 (design/CLAUDE.md 명시)
+- `openFile()`은 두 스키마(`onmadang_jinro/v1`, `cne_course_selector/v1`)를 파일 내용으로 자동 판별해야 함 — selector 파일 드롭 시 `step4.coursePlan`에 들어감
+
+### 공통 헤더/푸터 방식 (assets/js/common.js)
+
+- 사용법: 페이지에 `<div id="om-header" data-active="design"></div>`와 `<div id="om-footer"></div>` 두고 `<script src="../assets/js/common.js"></script>`
+- IIFE로 감싼 non-module 스크립트. 실행 시:
+  1. `<script src>`에서 base 경로 자동 계산(GitHub Pages 프로젝트 하위 대응)
+  2. 클로버 SVG defs를 헤더 앞에 삽입 → 리뉴얼 배너 + `<header>`(GNB 4개, 헤드툴 3개, 햄버거) + 모바일 메뉴로 `outerHTML` 치환
+  3. `<div id="om-footer">`도 `<footer>`로 치환
+  4. 햄버거 열기/닫기, ESC 닫기, 모바일 아코디언 바인딩
+- `data-active` 값: `about|design|safety|board` (없으면 그냥 비활성)
+- window에 `cachedFetch` 노출 (sessionStorage, 5분 TTL) — journey `data()` 헬퍼와는 별개(우리는 파일 fetch용 자체 캐시 사용)
+- **journey는 셸 1개**이므로 index.html에서 위 방식을 그대로 사용하면 GNB `design` 활성 + 상대경로 링크 자동 계산.
+
+### 이번 단계에서 손대지 않는 것
+
+- selector/majors의 핵심 로직 (`onSchoolChange`, 학과 브리지 파라미터, 학점 집계 등). 06 단계는 journey 셸/store/대시보드/랜딩 링크만.
+
+---
+
 ## 2026-07-07: 외부 자산 ①② 통합 (커밋 cd56a0d)
 
 ### 작업 내용

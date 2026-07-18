@@ -1,0 +1,80 @@
+/* ============================================================
+   print.css — A4 인쇄 골격 (진로학업설계서 · 공용)
+   화면 UI를 걷어내고 본문만 A4에 맞춰 정렬.
+   본문 상세 스타일은 각 뷰(예: #/report/print) 자체 CSS로.
+   ============================================================ */
+
+@page {
+  size: A4 portrait;
+  margin: 15mm;
+}
+
+@media print {
+  /* 브라우저 UI · 헤더/푸터 · 설계서 바 · breadcrumb 제거 */
+  html, body { background: #fff !important; color: #000 !important; }
+  header, footer, .renewal-banner,
+  .mobile-menu, .hamburger,
+  .j-savebar, .j-breadcrumb,
+  #om-header, #om-footer,
+  .no-print { display: none !important; }
+
+  body {
+    font-family: "Pretendard Variable", Pretendard, "Malgun Gothic", system-ui, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.5;
+    color: #000;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  main.j-main, .j-main, main {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 링크는 검정, 밑줄 유지 */
+  a { color: #000 !important; text-decoration: none !important; }
+
+  /* 페이지 분할 힌트 */
+  .print-page {
+    page-break-after: always;
+    break-after: page;
+  }
+  .print-page:last-child { page-break-after: auto; break-after: auto; }
+  .print-avoid-break {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  h1, h2, h3, h4 {
+    color: #000 !important;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  h1 { font-size: 18pt; margin-bottom: 8mm; }
+  h2 { font-size: 14pt; margin: 6mm 0 3mm; }
+  h3 { font-size: 12pt; margin: 4mm 0 2mm; }
+
+  /* 표: 얇은 검정 테두리 */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  th, td {
+    border: 0.6pt solid #000;
+    padding: 3mm 2mm;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: #eee !important; font-weight: 700; }
+
+  ul, ol { padding-left: 6mm; }
+  img, svg { max-width: 100%; height: auto; }
+
+  /* 5단계 카드/상태 UI는 인쇄 시 감춤 (인쇄용 뷰에서 별도 재구성) */
+  .j-start, .j-flow, .j-incomplete, .j-progress { display: none !important; }
+}
