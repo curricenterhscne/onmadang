@@ -80,11 +80,16 @@
   .result{margin-top:22px}
   .result[hidden]{display:none}
   .badge{
-    display:inline-block; font-size:13px; font-weight:800; letter-spacing:.02em;
-    padding:6px 13px; border-radius:999px; margin-bottom:14px;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    font-size:34px; font-weight:800; letter-spacing:.06em;
+    padding:22px 16px; border-radius:14px; margin-bottom:20px;
+    border:2px solid transparent;
   }
-  .badge.pass{background:var(--pass-bg); color:var(--pass)}
-  .badge.hold{background:var(--hold-bg); color:var(--hold)}
+  .badge::before{font-size:30px; line-height:1}
+  .badge.pass{background:var(--pass-bg); color:var(--pass); border-color:#bfe6d8}
+  .badge.pass::before{content:"\2714"}          /* ✔ */
+  .badge.hold{background:var(--hold-bg); color:var(--hold); border-color:#f4cfac}
+  .badge.hold::before{content:"\26A0"}          /* ⚠ */
   .who{font-size:19px; font-weight:800; margin:0 0 18px; letter-spacing:-.01em}
   .who span{font-weight:500; color:var(--ink-soft); font-size:14px}
 
@@ -209,6 +214,7 @@
     var sch = $('sch').value, gr = $('gr').value;
     var sid = norm($('sid').value), name = norm($('name').value);
     if(!sch || !gr || !sid || !name){ show('네 항목을 모두 입력해 주세요.'); return; }
+    if(!/^\d{5}$/.test(sid)){ show('학번은 숫자 5자리로 입력해 주세요. (예: 학년 1자리 + 반 2자리 + 번호 2자리)'); return; }
     if(tries >= 12){ show('조회 시도가 많습니다. 잠시 후 다시 시도해 주세요.'); return; }
     tries++;
 
@@ -237,7 +243,7 @@
     $('hours').innerHTML = '<b>' + hours + '</b>시간';
     $('note').innerHTML = done
       ? '이수 결과는 소속 학교로 공문 안내되었으며, <strong>학교생활기록부 창의적체험활동(진로활동)에 기재</strong>됩니다. 기재 시기와 방법은 학교 방침에 따릅니다.'
-      : '이수 기준에 미치지 못해 <strong>학교생활기록부에 기재되지 않습니다.</strong> 표시된 시간은 실제 출석한 시간입니다.';
+      : '이수 기준(전체 시간의 2/3 - 12시간 이상 출석)에 미치지 못하여, 이수 처리 되지 않았습니다. 해당 강좌와 관련한 내용은 <strong>학교생활기록부에 기재되지 않습니다.</strong>(미이수 기록도 되지 않습니다.) 표시된 시간은 실제 출석한 시간입니다.';
     $('res').hidden = false;
     $('res').scrollIntoView({ behavior:'smooth', block:'nearest' });
   }
