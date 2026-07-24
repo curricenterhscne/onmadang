@@ -238,7 +238,27 @@
 
 /* ── 뷰 공통 (self·curriculum·career·report) ─────────── */
 .j-view { display: grid; gap: 18px; }
-.j-view-head { text-align: left; margin-bottom: 4px; }
+
+/* #view 내부의 <header> 요소가 사이트 공통 <header>(sticky·흰 배경·z-index:100)
+   스타일을 상속받지 않도록 명시적으로 리셋한다. #view 선택자(ID)로 특이도를
+   높여 !important 없이 오버라이드. */
+#view .j-view-head,
+#view .j-dash-hero,
+#view .j-embed-head {
+  position: static;
+  top: auto;
+  z-index: auto;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+#view .j-view-head,
+#view .j-dash-hero {
+  border-bottom: none;
+}
+
+.j-view-head { text-align: left; margin-bottom: 4px; padding: 0; }
 .j-view-head h1 { font-size: 24px; font-weight: 800; color: var(--brand-d); letter-spacing: -.4px; }
 .j-view-head p  { color: var(--ink-soft); font-size: 14px; margin-top: 6px; }
 
