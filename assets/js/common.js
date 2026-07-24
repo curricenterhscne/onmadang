@@ -199,9 +199,9 @@
   }
 })();
 
-/* ── GitHub API 캐시 fetch (sessionStorage, 5분 TTL) ── */
+/* ── GitHub API 캐시 fetch (sessionStorage, 1분 TTL) ── */
 window.cachedFetch = function (url, ttlMs) {
-  var TTL = ttlMs || 300000;
+  var TTL = ttlMs || 60000;
   var key = 'cf:' + url;
   try {
     var c = JSON.parse(sessionStorage.getItem(key));
