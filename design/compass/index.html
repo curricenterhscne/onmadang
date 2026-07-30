@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>진로 나침반 · 진로·학업 설계 | 온마당</title>
+<meta name="description" content="커리어넷 검사 결과로 나에게 맞는 계열과 학과를 찾아보세요. 흥미유형에서 학과·권장과목까지 연결합니다.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../../assets/css/common.css">
+<link rel="stylesheet" href="../css/jinro.css">
+<style>
+  /* 검사 카드 */
+  .cp-tests{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+  .cp-test{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 20px;text-align:center;transition:.18s;
+  }
+  .cp-test:hover{border-color:var(--brand-l);box-shadow:var(--shadow-sm)}
+  .cp-test .cp-ic{font-size:32px;margin-bottom:10px}
+  .cp-test h3{font-size:16px;font-weight:800;margin-bottom:4px}
+  .cp-test .cp-time{font-size:12.5px;color:var(--ink-faint);margin-bottom:10px}
+  .cp-test p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:14px}
+  .cp-link{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:13px;font-weight:700;color:var(--brand);
+    padding:7px 16px;background:var(--soft);border-radius:var(--radius-pill);transition:.15s;
+  }
+  .cp-link:hover{background:var(--brand);color:#fff}
+
+  /* 유형 선택 */
+  .cp-pick{margin-top:20px}
+  .cp-pick label{display:block;font-size:15px;font-weight:700;margin-bottom:8px}
+  .cp-pick select{
+    font-family:inherit;font-size:15px;padding:10px 14px;
+    border:1.5px solid var(--line);border-radius:var(--radius-sm);
+    background:var(--surface);color:var(--ink);width:100%;max-width:400px;
+  }
+  .cp-pick select:focus{border-color:var(--brand);outline:3px solid var(--online-d);outline-offset:2px}
+
+  /* 결과 영역 */
+  .cp-result{margin-top:22px;display:none}
+  .cp-result.show{display:block}
+  .cp-desc{
+    background:var(--soft);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 22px;margin-bottom:18px;
+  }
+  .cp-desc h3{font-size:16px;font-weight:800;margin-bottom:6px}
+  .cp-desc p{font-size:14px;color:var(--ink-soft);line-height:1.7;margin:0}
+  .cp-fields{display:grid;gap:10px}
+  .cp-field{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    transition:.15s;
+  }
+  .cp-field:hover{border-color:var(--brand-l);box-shadow:var(--shadow-sm)}
+  .cp-field-name{font-size:15px;font-weight:700}
+  .cp-field-units{font-size:12.5px;color:var(--ink-faint);margin-top:2px}
+  .cp-field-link{
+    font-size:12.5px;font-weight:700;color:var(--brand);white-space:nowrap;
+    padding:5px 12px;background:var(--soft);border-radius:var(--radius-pill);transition:.15s;
+  }
+  .cp-field-link:hover{background:var(--brand);color:#fff}
+
+  .cp-note{
+    margin-top:20px;background:var(--soft);border:1px solid var(--line);
+    border-radius:var(--radius);padding:18px 22px;
+  }
+  .cp-note p{font-size:14px;color:var(--ink-soft);line-height:1.7;margin:0}
+  .cp-note p+p{margin-top:8px}
+
+  @media(max-width:680px){
+    .cp-tests{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div id="om-header" data-active="design"></div>
+
+<section class="page-hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="현재 위치">
+      <a href="../../index.html">홈</a> <span aria-hidden="true">›</span>
+      <a href="../">진로·학업 설계</a> <span aria-hidden="true">›</span>
+      <span>진로 나침반</span>
+    </nav>
+    <h1>뭘 골라야 할지 모르겠다면</h1>
+    <p>먼저 나를 알아보세요. 검사 결과에서 어울리는 계열과 학과를 찾아드립니다.</p>
+  </div>
+</section>
+
+<main class="wrap jn-main">
+
+  <!-- 1. 검사 안내 -->
+  <section class="jn-sec">
+    <h2>커리어넷에서 검사받기</h2>
+    <p class="jn-muted">아래 검사를 하나 이상 받아 보세요. 결과에서 나의 흥미유형(R·I·A·S·E·C)을 확인할 수 있습니다.</p>
+
+    <div class="cp-tests">
+      <div class="cp-test">
+        <div class="cp-ic" aria-hidden="true">🔍</div>
+        <h3>직업흥미검사(H형)</h3>
+        <div class="cp-time">약 20분 · 155문항</div>
+        <p>6가지 흥미유형 중 나에게 높은 유형을 알려줍니다.</p>
+        <a class="cp-link" href="https://www.career.go.kr/cnet/front/examen/inspctIntro.do?INSPCT_SEQ=17" target="_blank" rel="noopener">검사하러 가기 →</a>
+      </div>
+      <div class="cp-test">
+        <div class="cp-ic" aria-hidden="true">🧩</div>
+        <h3>직업적성검사</h3>
+        <div class="cp-time">약 30분 · 88문항</div>
+        <p>11가지 적성 영역에서 나의 강점을 파악합니다.</p>
+        <a class="cp-link" href="https://www.career.go.kr/cnet/front/examen/inspctIntro.do?INSPCT_SEQ=6" target="_blank" rel="noopener">검사하러 가기 →</a>
+      </div>
+      <div class="cp-test">
+        <div class="cp-ic" aria-hidden="true">💎</div>
+        <h3>직업가치관검사</h3>
+        <div class="cp-time">약 20분 · 49문항</div>
+        <p>일을 할 때 내가 중요하게 여기는 가치를 알아봅니다.</p>
+        <a class="cp-link" href="https://www.career.go.kr/cnet/front/examen/inspctIntro.do?INSPCT_SEQ=5" target="_blank" rel="noopener">검사하러 가기 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 유형 → 분야 탐색 -->
+  <section class="jn-sec">
+    <h2>검사 결과로 분야 찾기</h2>
+    <p class="jn-muted">직업흥미검사 결과에서 가장 높은 유형을 골라 보세요. 어울리는 자연계열 학문 분야를 안내합니다.</p>
+
+    <div class="cp-pick">
+      <label for="cp-select">나의 흥미유형</label>
+      <select id="cp-select">
+        <option value="">-- 선택하세요 --</option>
+      </select>
+    </div>
+
+    <div id="cp-result" class="cp-result" role="region" aria-live="polite">
+      <div class="cp-desc" id="cp-desc"></div>
+      <div class="cp-fields" id="cp-fields"></div>
+    </div>
+
+    <div class="cp-note" id="cp-humanities" style="display:none">
+      <p><strong>인문·사회·예술 계열</strong>에 관심이 있다면, 자연계열과 달리 특정 권장과목을 두지 않습니다. 학과 정보를 직접 살펴보세요.</p>
+      <p><a class="cp-link" href="../majors/" style="margin-top:4px">학과·과목 탐색 →</a></p>
+    </div>
+
+    <div class="cp-note" style="margin-top:16px">
+      <p>이 매핑은 탐색 출발점입니다. 흥미유형 하나로 진로가 정해지는 것이 아닙니다. 여러 분야를 살펴보고, 선생님과도 이야기해 보세요.</p>
+    </div>
+  </section>
+
+</main>
+
+<div id="om-footer"></div>
+<script src="../../assets/js/common.js"></script>
+<script>
+(function(){
+  /* ── 데이터 로드 ───────────────────────────────────── */
+  const base = document.querySelector('script[src$="common.js"]')?.src.replace(/assets\/js\/common\.js$/, '') || '../../';
+  const dataBase = base + 'design/data/';
+
+  Promise.all([
+    fetch(dataBase + 'compass-mapping.json').then(r => r.json()),
+    fetch(dataBase + 'holland-interest-types.json').then(r => r.json()),
+    fetch(dataBase + 'recommended-subjects.json').then(r => r.json())
+  ]).then(([mapping, holland, recSubj]) => {
+    init(mapping, holland, recSubj);
+  }).catch(err => {
+    console.error('데이터 로드 실패:', err);
+  });
+
+  function init(mapping, holland, recSubj) {
+    const sel = document.getElementById('cp-select');
+    const result = document.getElementById('cp-result');
+    const descEl = document.getElementById('cp-desc');
+    const fieldsEl = document.getElementById('cp-fields');
+    const humNote = document.getElementById('cp-humanities');
+
+    /* 셀렉트 옵션 구성 */
+    holland.types.forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t.code;
+      opt.textContent = t.name;
+      sel.appendChild(opt);
+    });
+
+    /* 분야별 학과명 맵 */
+    const fieldUnitsMap = {};
+    recSubj.fields.forEach(f => { fieldUnitsMap[f.field] = f.units; });
+
+    /* 유형 선택 시 */
+    sel.addEventListener('change', function() {
+      const code = this.value;
+      if (!code) {
+        result.classList.remove('show');
+        humNote.style.display = 'none';
+        return;
+      }
+
+      const hollandType = holland.types.find(t => t.code === code);
+      const mapEntry = mapping.mapping.find(m => m.code === code);
+
+      /* 유형 설명 */
+      descEl.innerHTML = '<h3>' + hollandType.name + '</h3>' +
+        '<p><strong>성격 특성:</strong> ' + hollandType.traits + '</p>' +
+        '<p><strong>관련 직업군:</strong> ' + hollandType.jobGroups + '</p>';
+
+      /* 분야 카드 */
+      fieldsEl.innerHTML = '';
+      if (mapEntry && mapEntry.fields.length > 0) {
+        mapEntry.fields.forEach(fieldName => {
+          const units = fieldUnitsMap[fieldName] || '';
+          const card = document.createElement('div');
+          card.className = 'cp-field';
+          card.innerHTML =
+            '<div>' +
+              '<div class="cp-field-name">' + fieldName + '</div>' +
+              (units ? '<div class="cp-field-units">' + units + '</div>' : '') +
+            '</div>' +
+            '<a class="cp-field-link" href="../majors/">학과 탐색 →</a>';
+          fieldsEl.appendChild(card);
+        });
+      }
+
+      /* A, E 유형처럼 자연계열 분야가 적을 때 인문계열 안내도 표시 */
+      var showHum = !mapEntry || mapEntry.fields.length <= 2 ||
+                    code === 'A' || code === 'S' || code === 'E' || code === 'C';
+      humNote.style.display = showHum ? '' : 'none';
+
+      result.classList.add('show');
+    });
+  }
+})();
+</script>
+<script data-goatcounter="https://onmadang.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

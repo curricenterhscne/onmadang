@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>내 선택 점검 · 진로·학업 설계 | 충남 고교학점제 종합지원 포털 온마당</title>
+<meta name="description" content="과목 선택 실습에서 내보낸 파일로 졸업 학점, 교과(군)별 필수이수, 국수영 상한, 과목 위계, 석차등급 산출 여부를 스스로 점검합니다.">
+<meta property="og:title" content="내 선택 점검 | 온마당">
+<meta property="og:description" content="내가 고른 과목, 이대로 괜찮을까요? 스스로 점검해 보세요.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../../assets/css/common.css">
+<link rel="stylesheet" href="../css/jinro.css">
+</head>
+<body>
+
+<div id="om-header" data-active="design"></div>
+
+<section class="page-hero jn-noprint">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="현재 위치">
+      <a href="../../index.html">홈</a> <span aria-hidden="true">›</span>
+      <a href="../">진로·학업 설계</a> <span aria-hidden="true">›</span>
+      <span>내 선택 점검</span>
+    </nav>
+    <h1>내가 고른 과목, 이대로 괜찮을까요?</h1>
+    <p>과목 선택 실습에서 내보낸 파일을 올리면 스스로 점검할 수 있습니다.</p>
+  </div>
+</section>
+
+<main class="wrap jn-main">
+
+  <!-- 파일 투입 -->
+  <section class="jn-sec" id="intake">
+    <div class="jn-drop" id="drop">
+      <h2>파일을 여기에 놓으세요</h2>
+      <p id="drop-help">「과목 선택 실습」에서 <b>내보내기 → JSON</b>으로 저장한 파일입니다.</p>
+      <button type="button" class="jn-btn" id="pick">파일 고르기</button>
+      <input type="file" id="file" accept=".json,application/json" hidden>
+      <p class="jn-fine" style="margin-top:14px">
+        파일은 이 기기에서만 열립니다. 서버로 보내지 않고, 저장하지도 않습니다.
+      </p>
+    </div>
+
+    <div class="jn-actions" style="margin-top:12px">
+      <a class="jn-btn jn-btn--ghost" href="../selector/">아직 안 골랐어요 · 과목 선택 실습 가기</a>
+      <a class="jn-btn jn-btn--ghost" href="../majors/">학과부터 볼래요</a>
+    </div>
+
+    <div class="jn-alert jn-hidden" id="err" role="alert"></div>
+  </section>
+
+  <!-- 결과 -->
+  <div id="result" class="jn-hidden">
+
+    <div class="jn-print-head">
+      <p class="t">나의 과목 선택 점검표</p>
+      <div class="sub" id="print-sub"></div>
+    </div>
+
+    <section class="jn-sec">
+      <div class="jn-card">
+        <div class="jn-meta" id="meta"></div>
+        <dl class="jn-totals" id="totals"></dl>
+        <p class="jn-fine jn-noprint" id="mismatch" style="margin-top:10px"></p>
+      </div>
+    </section>
+
+    <section class="jn-sec jn-noprint">
+      <div class="jn-card">
+        <div class="jn-field">
+          <label for="field-sel"><b>희망 계열·분야</b>를 고르면 권장과목까지 함께 확인합니다</label>
+          <select id="field-sel">
+            <option value="">— 고르지 않음 —</option>
+          </select>
+        </div>
+        <p class="jn-fine" style="margin-top:8px">
+          인문계열과 자율·자유전공학부는 권장과목을 두지 않습니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="jn-sec">
+      <h2 id="result-h" tabindex="-1">점검 결과</h2>
+      <ul class="jn-checks" id="checks"></ul>
+    </section>
+
+    <section class="jn-sec jn-page-break">
+      <h2>학년·학기별 선택 과목</h2>
+      <div id="byterm"></div>
+    </section>
+
+    <div class="jn-actions jn-noprint">
+      <button type="button" class="jn-btn" id="print">점검표 인쇄 · PDF로 저장</button>
+      <button type="button" class="jn-btn jn-btn--ghost" id="copy">결과 요약 복사</button>
+      <button type="button" class="jn-btn jn-btn--ghost" id="again">다른 파일 넣기</button>
+    </div>
+
+    <p class="jn-note jn-noprint">
+      휴대전화에서는 화면을 캡처해 보관하거나 선생님께 보내면 됩니다.
+    </p>
+
+    <p class="jn-footnote jn-hidden">
+      이 표는 제출 서류가 아니라 스스로 점검하기 위한 자료입니다.
+      최종 확인은 담임 선생님 또는 교육과정 담당 선생님과 함께 하세요.
+      · 충남 고교학점제 종합지원 포털 온마당 (onmadang.or.kr)
+    </p>
+  </div>
+</main>
+
+<div id="om-footer"></div>
+
+<script src="../../assets/js/common.js"></script>
+<script src="../js/jinro-plan.js"></script>
+<script src="../js/jinro-verify.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var BADGE = { ok: '충족', warn: '확인 필요', error: '부족', unknown: '확인 불가' };
+
+  var rules = null, schools = null, state = null;
+
+  /* ── 규칙 데이터 ────────────────────────────────────────── */
+  function getJSON(url) {
+    return fetch(url).then(function (r) {
+      if (!r.ok) throw new Error(url + ' 을(를) 불러오지 못했습니다');
+      return r.json();
+    });
+  }
+
+  var ready = Promise.all([
+    getJSON('../data/required-credits.json'),
+    getJSON('../data/grading.json'),
+    getJSON('../data/subject-hierarchy.json'),
+    getJSON('../data/recommended-subjects.json'),
+    getJSON('../data/group-alias.json')
+  ]).then(function (a) {
+    rules = {
+      requiredCredits: a[0], grading: a[1], hierarchy: a[2],
+      recommended: a[3], alias: a[4]
+    };
+    fillFields();
+  }).catch(function (e) { showErr(e.message); });
+
+  // 학교 목록은 학과가 있는 학교의 편성표 코드를 찾는 데만 쓴다 (실패해도 진행)
+  getJSON('../selector/data/schools.json')
+    .then(function (d) { schools = d; })
+    .catch(function () { schools = null; });
+
+  function fillFields() {
+    var sel = $('field-sel');
+    (rules.recommended.fields || []).forEach(function (f) {
+      var o = document.createElement('option');
+      o.value = f.field;
+      o.textContent = f.field + (f.units ? ' — ' + f.units : '');
+      sel.appendChild(o);
+    });
+    var q = new URLSearchParams(location.search).get('field');
+    if (q) sel.value = q;
+  }
+
+  /* ── 오류 표시 ──────────────────────────────────────────── */
+  function showErr(msg) {
+    var el = $('err');
+    el.textContent = msg;
+    el.classList.remove('jn-hidden');
+  }
+  function clearErr() { $('err').classList.add('jn-hidden'); }
+
+  /* ── 파일 처리 ──────────────────────────────────────────── */
+  function readFile(file) {
+    clearErr();
+    if (!file) return;
+    var fr = new FileReader();
+    fr.onload = function () {
+      var plan;
+      try { plan = JSON.parse(fr.result); }
+      catch (e) { return showErr('JSON 파일이 아닙니다. 과목 선택 실습에서 내보낸 파일인지 확인해 주세요.'); }
+      var bad = JinroPlan.validate(plan);
+      if (bad) return showErr(bad);
+      loadCatalog(plan);
+    };
+    fr.onerror = function () { showErr('파일을 읽지 못했습니다.'); };
+    fr.readAsText(file);
+  }
+
+  function loadCatalog(plan) {
+    ready.then(function () {
+      var code = JinroPlan.catalogCode(plan, schools);
+      return getJSON(JinroPlan.catalogUrl(plan.year, code, '../selector/data'))
+        .catch(function () { return null; });   // 못 불러와도 summary 로 진행
+    }).then(function (catalog) {
+      state = { plan: plan, catalog: catalog };
+      render();
+      $('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      $('result-h').focus();
+    }).catch(function (e) { showErr(e.message); });
+  }
+
+  /* ── 렌더 ───────────────────────────────────────────────── */
+  function render() {
+    var R = JinroPlan.resolve(state.plan, state.catalog, rules.alias);
+    var intent = { field: $('field-sel').value || null };
+    var rep = JinroVerify.verify({ resolved: R, rules: rules, intent: intent });
+    if (!rep.ok) return showErr(rep.error);
+
+    var m = rep.meta;
+    var when = new Date().toLocaleDateString('ko-KR');
+    var deptTxt = m.department ? ' · ' + m.department : '';
+
+    $('meta').innerHTML =
+      '<b>' + esc(m.schoolName) + '</b>' +
+      '<span>' + esc(m.year) + '학년도' + esc(deptTxt) + '</span>' +
+      '<span>점검일 ' + when + '</span>';
+    $('print-sub').textContent =
+      m.schoolName + ' · ' + m.year + '학년도' + deptTxt + ' · 점검일 ' + when;
+
+    $('totals').innerHTML =
+      total('교과 이수학점', rep.totals.subjectCredits) +
+      total('창의적 체험활동', rep.totals.changche) +
+      total('총 이수학점', rep.totals.total + ' / 192');
+
+    $('mismatch').textContent = rep.mismatch
+      ? '참고: 실습 화면의 합계(' + rep.mismatch.summary + ')와 다시 계산한 값(' + rep.mismatch.mine + ')이 다릅니다. 실습에서 파일을 다시 내보내 보세요.'
+      : '';
+
+    $('checks').innerHTML = rep.checks.map(checkHtml).join('');
+    $('byterm').innerHTML = byTermHtml(R.items);
+    $('result').classList.remove('jn-hidden');
+    $('intake').classList.add('jn-noprint');
+    document.querySelector('.jn-footnote').classList.remove('jn-hidden');
+    window.__report = rep;   // 요약 복사용
+  }
+
+  function total(label, v) {
+    return '<div class="jn-total"><dt>' + label + '</dt><dd>' + v + '</dd></div>';
+  }
+
+  // 학년·학기별 선택 과목 (3학년 × 2학기)
+  function byTermHtml(items) {
+    if (!items || !items.length) {
+      return '<p class="jn-muted">편성표를 불러오지 못해 과목 목록을 표시할 수 없습니다.</p>';
+    }
+    var GRADE = [
+      { g: 1, sems: [0, 1] },
+      { g: 2, sems: [2, 3] },
+      { g: 3, sems: [4, 5] }
+    ];
+    var LABEL = ['1학기', '2학기'];
+    var bySem = [[], [], [], [], [], []];
+    items.forEach(function (it) { if (bySem[it.sem]) bySem[it.sem].push(it); });
+
+    return '<div class="jn-terms">' + GRADE.map(function (row) {
+      var cells = row.sems.map(function (s, idx) {
+        var list = bySem[s].slice().sort(function (a, b) { return b.credits - a.credits; });
+        var cr = list.reduce(function (a, b) { return a + b.credits; }, 0);
+        var lis = list.length
+          ? list.map(function (it) {
+              return '<li><span class="jn-term__nm">' + esc(it.name) + '</span>'
+                + '<span class="jn-term__cr">' + it.credits + '</span></li>';
+            }).join('')
+          : '<li class="jn-term__empty">선택 과목 없음</li>';
+        return '<div class="jn-term">'
+          + '<div class="jn-term__hd"><span>' + row.g + '학년 ' + LABEL[idx] + '</span>'
+          + '<span class="jn-term__sum">' + list.length + '과목 · ' + fmt(cr) + '학점</span></div>'
+          + '<ul class="jn-term__list">' + lis + '</ul></div>';
+      }).join('');
+      return cells;
+    }).join('') + '</div>';
+  }
+
+  function fmt(n) { return n % 1 === 0 ? n : parseFloat(n.toFixed(1)); }
+
+  function checkHtml(c) {
+    var h = '<li class="jn-check" data-level="' + c.level + '">'
+      + '<div class="jn-check__head">'
+      + '<span class="jn-badge" data-level="' + c.level + '">' + BADGE[c.level] + '</span>'
+      + '<span class="jn-check__title">' + esc(c.title) + '</span>'
+      + (c.value ? '<span class="jn-check__value">' + esc(c.value) + '</span>' : '')
+      + '</div>';
+    if (c.detail) h += '<p class="jn-check__detail">' + esc(c.detail) + '</p>';
+    if (c.rows)   h += groupTable(c.rows);
+    if (c.lists)  h += rankLists(c.lists);
+    if (c.fix)    h += '<p class="jn-check__fix">→ ' + esc(c.fix) + '</p>';
+    if (c.link)   h += '<a class="jn-check__link" href="' + c.link + '">바로 가기</a>';
+    if (c.ref)    h += '<p class="jn-check__ref">근거 · ' + esc(c.ref) + '</p>';
+    return h + '</li>';
+  }
+
+  function groupTable(rows) {
+    var h = '<table class="jn-table"><caption class="jn-fine" style="text-align:left;padding:4px 0">교과(군)별 이수학점</caption>'
+      + '<thead><tr><th scope="col">교과(군)</th><th scope="col" class="num">이수</th>'
+      + '<th scope="col" class="num">필수</th><th scope="col">판정</th></tr></thead><tbody>';
+    rows.forEach(function (r) {
+      var lv = r.ok === null ? 'unknown' : (r.ok ? 'ok' : 'error');
+      h += '<tr data-ok="' + r.ok + '">'
+        + '<th scope="row" style="font-weight:600">' + esc(r.group) + '</th>'
+        + '<td class="num">' + (r.got === null ? '—' : r.got) + '</td>'
+        + '<td class="num">' + r.need + '</td>'
+        + '<td><span class="jn-tag jn-badge" data-level="' + lv + '">' + BADGE[lv] + '</span></td></tr>';
+    });
+    return h + '</tbody></table>';
+  }
+
+  function rankLists(L) {
+    function col(title, arr, note) {
+      if (!arr.length) return '';
+      return '<div class="jn-col"><h3>' + title + ' <span class="jn-fine">(' + arr.length + ')</span></h3>'
+        + '<ul>' + arr.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>'
+        + (note ? '<p class="jn-fine">' + note + '</p>' : '') + '</div>';
+    }
+    return '<div class="jn-cols">'
+      + col('석차등급이 나옵니다', L.withRank)
+      + col('석차등급이 안 나옵니다', L.noRank, '성취도만 기록')
+      + col('이수 여부만 기록', L.passOnly, '교양 교과(군)')
+      + '</div>';
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  /* ── 이벤트 ─────────────────────────────────────────────── */
+  var drop = $('drop');
+  $('pick').addEventListener('click', function () { $('file').click(); });
+  $('file').addEventListener('change', function (e) { readFile(e.target.files[0]); });
+
+  ['dragenter', 'dragover'].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('over'); });
+  });
+  ['dragleave', 'drop'].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('over'); });
+  });
+  drop.addEventListener('drop', function (e) {
+    if (e.dataTransfer.files && e.dataTransfer.files.length) readFile(e.dataTransfer.files[0]);
+  });
+
+  $('field-sel').addEventListener('change', function () { if (state) render(); });
+  $('print').addEventListener('click', function () { window.print(); });
+  $('again').addEventListener('click', function () {
+    state = null;
+    $('result').classList.add('jn-hidden');
+    $('intake').classList.remove('jn-noprint');
+    $('file').value = '';
+    clearErr();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    $('pick').focus();
+  });
+
+  $('copy').addEventListener('click', function () {
+    var rep = window.__report;
+    if (!rep) return;
+    var t = ['[나의 과목 선택 점검]',
+      rep.meta.schoolName + ' · ' + rep.meta.year + '학년도',
+      '총 ' + rep.totals.total + '학점 (교과 ' + rep.totals.subjectCredits + ' + 창체 ' + rep.totals.changche + ')',
+      ''];
+    rep.checks.forEach(function (c) {
+      t.push('· [' + BADGE[c.level] + '] ' + c.title + (c.value ? ' — ' + c.value : ''));
+      if (c.fix) t.push('   → ' + c.fix);
+    });
+    t.push('', '※ 제출 서류가 아닌 자기 점검용입니다. 최종 확인은 선생님과 함께 하세요.');
+    var txt = t.join('\n');
+    var done = function () {
+      var b = $('copy'); var o = b.textContent;
+      b.textContent = '복사했습니다'; setTimeout(function () { b.textContent = o; }, 1600);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, fallback);
+    else fallback();
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = txt; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) { showErr('복사하지 못했습니다.'); }
+      document.body.removeChild(ta);
+    }
+  });
+})();
+</script>
+</body>
+</html>

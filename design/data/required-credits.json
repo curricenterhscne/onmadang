@@ -1,0 +1,64 @@
+{
+  "source": "교육부 고시 제2022-33호 총론 학점 배당 기준(일반고) — 2025학년도 고1부터",
+  "curriculumVersion": "2022",
+  "graduation": {
+    "total": 192,
+    "subjects": 174,
+    "creativeActivities": 18
+  },
+  "subjectsBreakdown": {
+    "required": 84,
+    "autonomous": 90
+  },
+  "creditUnit": "1학점 = 50분 기준 16회 수업. 공통과목 기본 4학점(한국사 3학점, 과학탐구실험1·2 각 1학점)",
+  "requiredByGroup": [
+    {
+      "group": "국어",
+      "credits": 8
+    },
+    {
+      "group": "수학",
+      "credits": 8
+    },
+    {
+      "group": "영어",
+      "credits": 8
+    },
+    {
+      "group": "사회(역사/도덕 포함)",
+      "credits": 8
+    },
+    {
+      "group": "과학",
+      "credits": 10
+    },
+    {
+      "group": "한국사",
+      "credits": 6
+    },
+    {
+      "group": "체육",
+      "credits": 10
+    },
+    {
+      "group": "예술",
+      "credits": 10
+    },
+    {
+      "group": "기술·가정/정보/제2외국어/한문/교양",
+      "credits": 16
+    }
+  ],
+  "koreanMathEnglishCap": {
+    "rule": "국어·수학·영어 교과의 이수 학점 총합은 81학점을 초과하지 않도록 하며, 교과 이수 학점이 174학점을 초과하는 경우에는 초과 이수 학점의 50%를 넘지 않도록 함",
+    "cap": 81,
+    "formula": "상한 = 81 + max(0, 교과이수학점 - 174) × 0.5",
+    "note": "81 상한과 50% 룰은 별개 규칙이 아니라 하나의 동적 상한이다. 두 판정으로 분리하면 틀린다.",
+    "source": "교육부 고시 제2022-33호 총론 / 2025 고교학점제 워크북(충남교육청) p.16·p.40"
+  },
+  "jointCurriculumLimit": {
+    "rule": "공동교육과정은 일과 시간 내·외 구분 없이 한 학기 2과목으로 제한",
+    "note": "한 번 이수한 과목은 다음 학기에 재수강 불가",
+    "source": "2025 고교학점제 워크북(충남교육청) p.33"
+  }
+}

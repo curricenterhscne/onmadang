@@ -1,0 +1,214 @@
+/* ============================================================
+   온마당 「진로·학업 설계」 공용 스타일 — jinro.css
+   check / compass / outside 가 공유한다.
+   토큰은 assets/css/common.css 의 것을 그대로 쓴다.
+   (실측: --bg --brand --brand-d --brand-l --accent --online
+          --ink --ink-soft --ink-faint --line --surface --soft
+          --radius --radius-sm --radius-pill --shadow* --maxw)
+   ============================================================ */
+
+:root{
+  /* 판정 상태색 — 색만으로 구분하지 않고 항상 텍스트를 병기한다 (KWCAG) */
+  --st-ok:#2f8f4e;      --st-ok-bg:#e8f6ec;    --st-ok-line:#b6e0c2;
+  --st-warn:#a86a00;    --st-warn-bg:#fdf3e2;  --st-warn-line:#f0d9ac;
+  --st-error:#c0392b;   --st-error-bg:#fdecea; --st-error-line:#f3c2bc;
+  --st-unknown:#5d6b81; --st-unknown-bg:#eef1f5;--st-unknown-line:#d3dae4;
+}
+
+.jn-main{padding:28px 0 64px}
+.jn-sec{margin-bottom:22px}
+.jn-sec h2{font-size:18px;font-weight:800;letter-spacing:-.4px;margin-bottom:10px}
+.jn-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:20px;
+}
+.jn-muted{color:var(--ink-soft);font-size:14px}
+.jn-fine{color:var(--ink-faint);font-size:12.5px;line-height:1.6}
+
+/* ── 파일 투입 ───────────────────────────────────────────── */
+.jn-drop{
+  border:2px dashed var(--brand-l);border-radius:var(--radius);
+  background:var(--surface);padding:32px 20px;text-align:center;transition:.18s;
+}
+.jn-drop.over{background:var(--soft);border-color:var(--brand);}
+.jn-drop h2{font-size:19px;font-weight:800;margin-bottom:6px;letter-spacing:-.5px}
+.jn-drop p{font-size:14px;color:var(--ink-soft);margin-bottom:16px}
+.jn-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:inherit;font-size:14.5px;font-weight:700;
+  padding:11px 20px;border-radius:var(--radius-pill);
+  border:1.5px solid var(--brand);background:var(--brand);color:#fff;
+  cursor:pointer;transition:.18s;
+}
+.jn-btn:hover{background:var(--brand-d);border-color:var(--brand-d)}
+.jn-btn--ghost{background:#fff;color:var(--brand)}
+.jn-btn--ghost:hover{background:var(--soft)}
+.jn-btn:focus-visible,.jn-drop:focus-visible,a:focus-visible,select:focus-visible{
+  outline:3px solid var(--online-d);outline-offset:2px;
+}
+.jn-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.jn-alert{
+  background:var(--st-error-bg);border:1px solid var(--st-error-line);
+  color:var(--st-error);border-radius:var(--radius-sm);
+  padding:12px 16px;font-size:14px;font-weight:600;margin-top:14px;
+}
+
+/* ── 요약 ────────────────────────────────────────────────── */
+.jn-meta{
+  display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+  font-size:14px;color:var(--ink-soft);margin-bottom:14px;
+}
+.jn-meta b{color:var(--ink);font-size:16px;font-weight:800}
+.jn-totals{display:flex;flex-wrap:wrap;gap:10px}
+.jn-total{
+  flex:1 1 150px;background:var(--soft);border:1px solid var(--line);
+  border-radius:var(--radius-sm);padding:12px 14px;
+}
+.jn-total dt{font-size:12.5px;color:var(--ink-soft);font-weight:600}
+.jn-total dd{font-size:22px;font-weight:800;letter-spacing:-.6px}
+
+/* ── 판정 항목 ───────────────────────────────────────────── */
+.jn-checks{display:flex;flex-direction:column;gap:10px;list-style:none}
+.jn-check{
+  border:1px solid var(--line);border-left-width:5px;
+  border-radius:var(--radius-sm);background:var(--surface);padding:14px 16px;
+}
+.jn-check[data-level="ok"]     {border-left-color:var(--st-ok)}
+.jn-check[data-level="warn"]   {border-left-color:var(--st-warn)}
+.jn-check[data-level="error"]  {border-left-color:var(--st-error)}
+.jn-check[data-level="unknown"]{border-left-color:var(--st-unknown)}
+
+.jn-check__head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px}
+.jn-check__title{font-size:15.5px;font-weight:800;letter-spacing:-.3px}
+.jn-check__value{font-size:13.5px;color:var(--ink-soft);font-weight:600}
+.jn-badge{
+  flex-shrink:0;font-size:12px;font-weight:800;letter-spacing:-.2px;
+  padding:3px 10px;border-radius:var(--radius-pill);border:1px solid;
+}
+.jn-badge[data-level="ok"]     {color:var(--st-ok);background:var(--st-ok-bg);border-color:var(--st-ok-line)}
+.jn-badge[data-level="warn"]   {color:var(--st-warn);background:var(--st-warn-bg);border-color:var(--st-warn-line)}
+.jn-badge[data-level="error"]  {color:var(--st-error);background:var(--st-error-bg);border-color:var(--st-error-line)}
+.jn-badge[data-level="unknown"]{color:var(--st-unknown);background:var(--st-unknown-bg);border-color:var(--st-unknown-line)}
+
+.jn-check__detail{font-size:14px;color:var(--ink-soft);line-height:1.65}
+.jn-check__fix{
+  font-size:13.5px;font-weight:600;color:var(--brand-d);
+  background:var(--soft);border-radius:10px;padding:9px 12px;margin-top:8px;
+}
+.jn-check__ref{font-size:11.5px;color:var(--ink-faint);margin-top:7px}
+.jn-check__link{
+  display:inline-block;font-size:13px;font-weight:700;color:var(--brand);
+  margin-top:8px;border-bottom:1.5px solid var(--brand);
+}
+
+/* ── 표 ──────────────────────────────────────────────────── */
+.jn-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px}
+.jn-table th,.jn-table td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left}
+.jn-table th{font-size:12.5px;color:var(--ink-soft);font-weight:700;background:var(--soft)}
+.jn-table td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.jn-table tr[data-ok="false"] td{background:var(--st-error-bg)}
+.jn-table tr[data-ok="null"] td{background:var(--st-unknown-bg)}
+.jn-tag{font-size:11.5px;font-weight:800;padding:1px 7px;border-radius:var(--radius-pill);border:1px solid}
+
+.jn-cols{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
+@media(min-width:720px){.jn-cols{grid-template-columns:repeat(3,1fr)}}
+.jn-col h3{font-size:13px;font-weight:800;margin-bottom:6px}
+.jn-col ul{list-style:none;font-size:13px;color:var(--ink-soft);line-height:1.8}
+
+.jn-field{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px}
+.jn-field select{
+  font-family:inherit;font-size:14px;padding:9px 12px;
+  border:1.5px solid var(--line);border-radius:var(--radius-sm);
+  background:#fff;color:var(--ink);max-width:100%;
+}
+
+.jn-note{
+  font-size:12.5px;color:var(--ink-soft);line-height:1.7;
+  background:var(--soft);border-radius:var(--radius-sm);padding:12px 14px;margin-top:14px;
+}
+
+.jn-hidden{display:none!important}
+.jn-print-head{display:none}
+
+/* ── 인쇄: A4 1장 ────────────────────────────────────────── */
+
+/* ── 학년·학기별 과목 (화면) ─────────────────────────────── */
+.jn-terms{display:grid;grid-template-columns:1fr;gap:12px;margin-top:6px}
+@media(min-width:640px){.jn-terms{grid-template-columns:1fr 1fr}}
+.jn-term{border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);overflow:hidden}
+.jn-term__hd{
+  display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+  background:var(--soft);padding:8px 12px;border-bottom:1px solid var(--line);
+}
+.jn-term__hd>span:first-child{font-size:14px;font-weight:800;letter-spacing:-.3px}
+.jn-term__sum{font-size:12px;color:var(--ink-soft);font-weight:600;white-space:nowrap}
+.jn-term__list{list-style:none;padding:6px 0}
+.jn-term__list li{
+  display:flex;justify-content:space-between;gap:10px;
+  padding:5px 12px;font-size:13.5px;border-bottom:1px solid var(--soft);
+}
+.jn-term__list li:last-child{border-bottom:0}
+.jn-term__nm{color:var(--ink)}
+.jn-term__cr{color:var(--ink-soft);font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.jn-term__empty{color:var(--ink-faint);font-style:normal}
+
+/* ── 인쇄: 여러 페이지 전제 ──────────────────────────────── */
+@media print{
+  @page{size:A4 portrait;margin:16mm 15mm}
+  html,body{background:#fff!important;color:#000!important;font-size:9.6pt;line-height:1.5}
+  header,footer,.renewal-banner,.page-hero,.mobile-menu,
+  .jn-drop,.jn-actions,.jn-alert,.jn-noprint,.jn-check__link{display:none!important}
+  .wrap{max-width:none;padding:0}
+  .jn-main{padding:0}
+  .jn-card{border:none;box-shadow:none;padding:0;margin-bottom:7mm}
+  .jn-sec{margin-bottom:8mm}
+
+  /* 인쇄 머리글 — 매 페이지 상단 반복은 브라우저 지원이 고르지 않아
+     첫 페이지에만 표시하고, 페이지 번호는 @page 하단에 맡긴다 */
+  .jn-print-head{display:block;border-bottom:2px solid #000;padding-bottom:3mm;margin-bottom:5mm}
+  .jn-print-head .t{font-size:16pt;font-weight:800;letter-spacing:-.5px}
+  .jn-print-head .sub{font-size:9.5pt;color:#333;margin-top:2mm}
+
+  .jn-totals{gap:4mm}
+  .jn-total{background:#fff;border:1px solid #999;padding:2.5mm 3.5mm}
+  .jn-total dt{font-size:8.5pt}
+  .jn-total dd{font-size:14pt}
+  .jn-meta{margin-bottom:3mm}
+
+  /* 판정 카드 — 페이지 경계에서 잘리지 않게 */
+  .jn-checks{gap:3mm}
+  .jn-check{border:1px solid #bbb;border-left-width:4px;padding:2.5mm 3.5mm;break-inside:avoid}
+  .jn-check__detail{font-size:9pt;color:#111;line-height:1.5}
+  .jn-check__fix{font-size:8.8pt;color:#111;background:none;padding:0;margin-top:1.5mm}
+  .jn-check__ref{display:none}
+  .jn-badge{border:1px solid #666;background:#fff!important;color:#000!important}
+  .jn-table{font-size:9pt}
+  .jn-table th{background:#eee}
+  .jn-table th,.jn-table td{padding:1.4mm 1.5mm}
+  .jn-table tr[data-ok="false"] td{background:#f2f2f2}
+
+  /* 석차 목록 — 인쇄에서도 가로 흐름 (지면 절약) */
+  .jn-cols{grid-template-columns:1fr!important;gap:2mm!important;margin-top:2mm!important}
+  .jn-col{break-inside:avoid}
+  .jn-col h3{font-size:9pt;margin-bottom:1mm}
+  .jn-col ul{display:block;font-size:8.6pt;line-height:1.55;color:#111}
+  .jn-col ul li{display:inline}
+  .jn-col ul li::after{content:", "}
+  .jn-col ul li:last-child::after{content:""}
+  .jn-col .jn-fine{display:inline;font-size:8pt;color:#555}
+  .jn-col .jn-fine::before{content:" — "}
+
+  /* 학년·학기별 과목 — 표는 새 페이지에서 시작, 각 학기 카드는 통째로 유지 */
+  .jn-page-break{break-before:page}
+  .jn-terms{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+  .jn-term{border:1px solid #999;break-inside:avoid}
+  .jn-term__hd{background:#eee;padding:1.8mm 2.5mm;border-bottom:1px solid #999}
+  .jn-term__hd>span:first-child{font-size:9.5pt}
+  .jn-term__sum{font-size:8pt}
+  .jn-term__list{padding:1mm 0}
+  .jn-term__list li{padding:1mm 2.5mm;font-size:8.8pt;border-bottom:1px solid #eee}
+  .jn-term__cr{color:#333}
+
+  /* 각주 — 흐름상 마지막에 (매 페이지 고정은 지원 편차로 지양) */
+  .jn-footnote{display:block!important;margin-top:6mm;padding-top:3mm;border-top:1px solid #999;font-size:8.5pt;color:#333;break-inside:avoid}
+}
