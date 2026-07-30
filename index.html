@@ -117,7 +117,7 @@
 
   /* ─── 알림·소통 ─── */
   .board-sec{background:var(--soft)}
-  .board-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .board-grid{max-width:720px;margin:0 auto}
   .board-col{background:#fff;border-radius:var(--radius);padding:28px 30px;box-shadow:var(--shadow-sm)}
   .board-col h3{font-size:19px;font-weight:800;color:var(--brand);margin-bottom:18px;padding-bottom:14px;border-bottom:2px solid var(--soft);display:flex;justify-content:space-between;align-items:center}
   .board-col h3 a{font-size:13px;color:var(--ink-faint);font-weight:500}
@@ -145,7 +145,7 @@
     .quick{grid-template-columns:repeat(2,1fr)}
   }
   @media (max-width:680px){
-    .about-grid,.board-grid{grid-template-columns:1fr}
+    .about-grid{grid-template-columns:1fr}
     .scards,.quick{grid-template-columns:1fr}
     .hero{padding:44px 0 52px}
   }
@@ -161,11 +161,11 @@
     <div class="hero-grid">
       <div>
         <span class="hero-pill"><svg class="clover" width="15" height="15"><use href="#clv"/></svg> 학생 중심 충남 교육 · 학생 주도성을 키우는 고교학점제</span>
-        <h1>내가 선택하는 <em>나만의 교육과정</em>,<br>온마당이 함께 설계합니다</h1>
-        <p class="hero-desc">진로 탐색부터 과목 선택, 졸업 요건 점검까지. 진로·학업 설계와 4대 안전망을 한 곳에서 만나보세요.</p>
+        <h1>내가 선택하는 <br><em>나만의 교육과정</em>,<br>온마당이 함께<br>설계합니다</h1>
+        <p class="hero-desc">진로 탐색부터 과목 선택, 졸업 요건 점검까지.<br> 진로·학업 설계와 4대 안전망을 한 곳에서 만나보세요.</p>
         <div class="hero-btns">
           <a href="./design/" class="btn btn-primary">진로·학업 설계 시작 →</a>
-          <a href="./about/what-is.html" class="btn btn-ghost">고교학점제란?</a>
+          <a href="./about/index.html" class="btn btn-ghost">고교학점제 안내</a>
         </div>
       </div>
       <div class="hero-char">
@@ -177,15 +177,15 @@
     <div class="quick">
       <a href="./design/compass/">
         <span class="q-ic" style="background:#e7ecf8">🧭</span>
-        <span class="q-tx"><b>진로 나침반</b><span>흥미 유형 → 계열 탐색</span></span>
+        <span class="q-tx"><b>진로 나침반</b><span>흥미 유형 →<br> 계열 탐색</span></span>
+      </a>
+      <a href="./design/majors/">
+        <span class="q-ic" style="background:#d6effa">✅</span>
+        <span class="q-tx"><b>학과·과목 탐색</b><span>10개 계열<br>170여 학과를 탐색</span></span>
       </a>
       <a href="./design/selector/">
         <span class="q-ic" style="background:#e3f6e3">📋</span>
-        <span class="q-tx"><b>과목 선택 실습</b><span>우리 학교 편성표로 실습</span></span>
-      </a>
-      <a href="./design/check/">
-        <span class="q-ic" style="background:#d6effa">✅</span>
-        <span class="q-tx"><b>내 선택 점검</b><span>졸업 요건 7종 자동 점검</span></span>
+        <span class="q-tx"><b>과목 선택 실습</b><span>우리 학교<br>편성표로 실습</span></span>
       </a>
       <a href="./board/">
         <span class="q-ic" style="background:#f0e8f8">📢</span>
@@ -199,19 +199,19 @@
 <section class="block about-sec">
   <div class="wrap">
     <div class="sec-label">ABOUT</div>
-    <h2 class="sec-title">고교학점제, <em>처음이신가요?</em></h2>
+    <h2 class="sec-title">고교학점제, <em>제대로 알아봐요</em></h2>
     <p class="sec-desc">학생도 학부모도 쉽게 이해할 수 있도록 핵심부터 안내합니다.</p>
     <div class="about-grid">
       <a class="about-card c1" href="./about/what-is.html">
         <svg class="clover a-deco" width="120" height="120"><use href="#clv"/></svg>
         <h3>고교학점제란?</h3>
-        <p>학생이 진로에 따라 다양한 과목을 선택·이수하고, 누적 학점이 기준에 도달하면 졸업하는 제도입니다.</p>
+        <p>학생이 자신의 관심과 흥미에 따라 과목을 선택하고, 선택한 과목을 이수해야만 졸업할 수 있는, 학생 주도성을 이끌기 위한 고등학교 시스템입니다.</p>
         <span class="a-btn">제도 알아보기 →</span>
       </a>
       <a class="about-card c2" href="./about/student-agency.html">
         <svg class="clover a-deco" width="120" height="120"><use href="#clv"/></svg>
         <h3>학생 주도성과 고교학점제</h3>
-        <p>스스로 배움을 설계하는 힘. 충남 교육이 지향하는 학생 주도성의 의미를 함께 살펴봅니다.</p>
+        <p>왜 학생 주도성인지, 왜 고교학점제인지, 주도성이 왜 미래사회에 필수적인 역량이고, 그 역량을 키우기 위한 제도로 고교학점제가 왜 등장했는지, 자세히 살펴봅니다.</p>
         <span class="a-btn">자세히 보기 →</span>
       </a>
     </div>
@@ -271,30 +271,30 @@
   <div class="wrap">
     <div class="sec-label" style="color:var(--brand)">SAFETY NETS</div>
     <h2 class="sec-title">고교학점제 <em>4대 안전망</em></h2>
-    <p class="sec-desc">원하는 과목이 학교에 없어도 괜찮습니다. 단계별 안전망이 학생의 과목 선택을 보장합니다.</p>
+    <p class="sec-desc">학교에서, 학교 사이에서, 학교 밖에서, 단계별 안전망이 학생의 과목 선택을 보장합니다.</p>
     <div class="scards">
       <a class="scard" href="./safety/schoolcurriculum.html">
-        <div class="s-ic">🏫</div><div class="s-step">SAFETY NET 1</div>
-        <h3>학교 교육과정</h3>
-        <p>소속 학교가 개설한 과목을 우선 이수하며 기본 학업을 설계합니다.</p>
+        <div class="s-ic">🏫</div><div class="s-step"><h1>1</h1></div>
+        <h3>학생 선택 중심<br> 학교 교육과정</h3>
+        <p>학교 안에서 꼼꼼하게! 나의 진로와 적성에 맞춰 학교에 개설된 다양한 과목을 기본으로 선택합니다.</p>
         <span class="s-link">안내 보기 →</span>
       </a>
       <a class="scard" href="./safety/onlineschool.html">
-        <div class="s-ic">💻</div><div class="s-step">SAFETY NET 2</div>
-        <h3>충남온라인학교</h3>
-        <p>학교에 없는 과목을 온라인 공동교육과정 강좌로 수강합니다.</p>
+        <div class="s-ic">💻</div><div class="s-step"><h1>2</h1></div>
+        <h3>온배움<br>충남온라인학교</h3>
+        <p>수강생이 적어서 선생님이 안계셔서 열기 힘든 과목을, 우리 학교에서 정규 일과 시간 중에 수강할 수 있도록, 충남 온라인학교가 지원합니다.</p>
         <span class="s-link online">안내 보기 →</span>
       </a>
       <a class="scard" href="./safety/jointcurricula.html">
-        <div class="s-ic">🤝</div><div class="s-step">SAFETY NET 3</div>
-        <h3>공동교육과정</h3>
-        <p>인근 학교가 연합해 개설하는 거점형 과목을 수강신청합니다.</p>
+        <div class="s-ic">🤝</div><div class="s-step"><h1>3</h1></div>
+        <h3>참학력<br>공동교육과정</h3>
+        <p>한 학교에서 개설이 어려운 소인수·심화 과목 등을 학교와 학교가 힘을 합쳐 '공동'으로 교육과정을 운영합니다.</p>
         <span class="s-link">안내 보기 →</span>
       </a>
       <a class="scard" href="./safety/off-campus_courses.html">
-        <div class="s-ic">🌱</div><div class="s-step">SAFETY NET 4</div>
-        <h3>학교 밖 교육</h3>
-        <p>대학·기관과 연계한 학습 경험으로 진로를 넓힙니다.</p>
+        <div class="s-ic">🌱</div><div class="s-step"><h1>4</h1></div>
+        <h3>꿈키움<br>학교 밖 교육</h3>
+        <p>교실을 넘어 지역사회로! 대학, 연구기관, 지역 전문가와 연계된 전문적인 심화 프로그램을 통해 나의 꿈에 날개를 답니다.</p>
         <span class="s-link">안내 보기 →</span>
       </a>
     </div>
@@ -308,12 +308,6 @@
       <div class="board-col">
         <h3>공지사항 <a href="./board/">더보기 →</a></h3>
         <ul class="board-list" id="main-notices">
-          <li class="board-loading">불러오는 중…</li>
-        </ul>
-      </div>
-      <div class="board-col">
-        <h3>자료실 <a href="./board/resources.html">더보기 →</a></h3>
-        <ul class="board-list" id="main-resources">
           <li class="board-loading">불러오는 중…</li>
         </ul>
       </div>
@@ -369,25 +363,6 @@
       document.getElementById('main-notices').innerHTML='<li class="board-loading">불러오지 못했습니다.</li>';
     });
 
-  /* 자료실 로드 */
-  cachedFetch(BASE+'?state=open&labels=자료&per_page=5&direction=desc')
-    .then(function(res){return res.json()})
-    .then(function(issues){
-      var el=document.getElementById('main-resources');
-      if(!issues.length){el.innerHTML='<li class="board-loading">등록된 자료가 없습니다.</li>';return;}
-      var h='';
-      for(var i=0;i<issues.length;i++){
-        var issue=issues[i];
-        var url='./board/resource-view.html?id='+issue.number;
-        h+='<li><span class="file-ic">📎</span>'
-          +'<a href="'+url+'">'+escHtml(issue.title)+'</a>'
-          +'<time>'+fmtDate(issue.created_at)+'</time></li>';
-      }
-      el.innerHTML=h;
-    })
-    .catch(function(){
-      document.getElementById('main-resources').innerHTML='<li class="board-loading">불러오지 못했습니다.</li>';
-    });
 })();
 </script>
 <script data-goatcounter="https://onmadang.goatcounter.com/count"
