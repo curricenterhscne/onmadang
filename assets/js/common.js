@@ -50,11 +50,10 @@
   /* ── 서브메뉴 데이터 ── */
   var subMenus = {
     design: [
-      { label: '자기 이해',     href: L.design + '#step-1' },
-      { label: '교육과정 이해', href: L.design + '#step-2' },
-      { label: '진로설계 활동', href: L.design + '#step-3' },
-      { label: '과목 선택 실습', href: L.design + '#step-4' },
-      { label: '종합 보고서',   href: L.design + '#step-5' }
+      { label: '진로 나침반',    href: L.design + 'compass/'  },
+      { label: '학과·과목 탐색', href: L.majors               },
+      { label: '과목 선택 실습', href: L.selector             },
+      { label: '내 선택 점검',   href: L.design + 'check/'    }
     ],
     safety: [
       { label: '학교 교육과정',   href: base + 'safety/schoolcurriculum.html' },

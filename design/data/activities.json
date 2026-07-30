@@ -1,0 +1,218 @@
+{
+  "source": "충남교육청진로융합교육원, 진로설계를 위한 학생 활동 자료집(고등학교, 2023.8.)",
+  "steps": [
+    {
+      "id": "self",
+      "order": 1,
+      "title": "자기 이해와 직업 탐색",
+      "route": "/design/self/",
+      "activities": [
+        {
+          "no": 0,
+          "id": "prologue",
+          "title": "프롤로그. 나에게 물어봄",
+          "goal": "강점 확인과 삶의 핵심 키워드 4가지, 배움서약 작성",
+          "page": 8,
+          "doneKey": "step1.prologue"
+        },
+        {
+          "no": 1,
+          "id": "interest",
+          "title": "직업흥미검사(H형)",
+          "goal": "직업흥미검사(H형)를 통해 나의 흥미유형을 살펴볼 수 있다",
+          "page": 10,
+          "external": "careernet",
+          "doneKey": "step1.interest"
+        },
+        {
+          "no": 2,
+          "id": "aptitude",
+          "title": "직업적성검사",
+          "goal": "직업적성검사를 통해 나의 적성유형을 살펴볼 수 있다",
+          "page": 12,
+          "external": "careernet",
+          "doneKey": "step1.aptitude"
+        },
+        {
+          "no": 3,
+          "id": "values",
+          "title": "직업가치관 검사",
+          "goal": "직업가치관 검사를 통해 나의 직업 가치관을 알 수 있다",
+          "page": 14,
+          "external": "careernet",
+          "doneKey": "step1.values"
+        },
+        {
+          "no": 4,
+          "id": "jobs",
+          "title": "내 직업 미리 봄",
+          "goal": "미래 직업 세계 변화를 고려하여 관심 직업을 주도적으로 탐색할 수 있다",
+          "page": 16,
+          "doneKey": "step1.jobs"
+        },
+        {
+          "no": 5,
+          "id": "jobFuture",
+          "title": "관심 직업의 미래 변화 예측",
+          "goal": "관심 직업의 미래 변화에 대해 예측할 수 있다",
+          "page": 18,
+          "doneKey": "step1.jobFuture"
+        },
+        {
+          "no": 6,
+          "id": "summary",
+          "title": "종합 점검: 나를 다시 봄",
+          "goal": "점검표로 관심 진로(직업)와 자신의 상황이 맞는지 점검",
+          "page": 19,
+          "doneKey": "step1.summary"
+        }
+      ]
+    },
+    {
+      "id": "curriculum",
+      "order": 2,
+      "title": "교육과정 이해하기",
+      "route": "/design/curriculum/",
+      "activities": [
+        {
+          "no": 7,
+          "id": "structure",
+          "title": "2022 개정 교육과정 보통교과 과목 편제",
+          "page": 22,
+          "quiz": true,
+          "doneKey": "step2.structure",
+          "data": "curriculum.json"
+        },
+        {
+          "no": 8,
+          "id": "grading",
+          "title": "성적 산출 방식 (성취도 + 석차 5등급)",
+          "page": 24,
+          "quiz": true,
+          "doneKey": "step2.grading",
+          "data": "grading.json"
+        },
+        {
+          "no": 9,
+          "id": "hierarchy",
+          "title": "보통교과에서 과목의 위계",
+          "page": 26,
+          "quiz": true,
+          "doneKey": "step2.hierarchy",
+          "data": "subject-hierarchy.json"
+        },
+        {
+          "no": 10,
+          "id": "mySchool",
+          "title": "우리 학교 교육과정과 선택과목 이해하기",
+          "page": 28,
+          "route": "/design/selector/",
+          "doneKey": "step2.mySchool"
+        }
+      ]
+    },
+    {
+      "id": "majors",
+      "order": 3,
+      "title": "대학/계열/학과 탐색하기",
+      "route": "/design/majors/",
+      "activities": [
+        {
+          "no": 11,
+          "id": "university",
+          "title": "대학",
+          "page": 34,
+          "doneKey": "step3.university"
+        },
+        {
+          "no": 12,
+          "id": "field",
+          "title": "계열",
+          "page": 36,
+          "doneKey": "step3.field"
+        },
+        {
+          "no": 13,
+          "id": "department",
+          "title": "학과(부)",
+          "page": 38,
+          "doneKey": "step3.department"
+        },
+        {
+          "no": 14,
+          "id": "fieldSubjects",
+          "title": "계열과 선택과목",
+          "page": 40,
+          "doneKey": "step3.fieldSubjects"
+        },
+        {
+          "no": 15,
+          "id": "deptSubjects",
+          "title": "학과와 선택과목",
+          "page": 42,
+          "doneKey": "step3.deptSubjects"
+        },
+        {
+          "no": 16,
+          "id": "sameName",
+          "title": "같은 이름, 다른 학과",
+          "page": 44,
+          "doneKey": "step3.sameName"
+        }
+      ]
+    },
+    {
+      "id": "planner",
+      "order": 4,
+      "title": "진로학업설계서 작성하기",
+      "route": "/design/planner/",
+      "activities": [
+        {
+          "no": 17,
+          "id": "coursePlan",
+          "title": "과목 설계하기",
+          "page": 48,
+          "linksTo": "/design/selector/",
+          "doneKey": "step4.coursePlan"
+        },
+        {
+          "no": 18,
+          "id": "creditCard",
+          "title": "교육과정 수강 이력카드 작성하기",
+          "page": 56,
+          "auto": true,
+          "doneKey": "step4.creditCard"
+        },
+        {
+          "no": 19,
+          "id": "mandarat",
+          "title": "만다라트 기법으로 창의적체험활동 설계하기",
+          "page": 58,
+          "doneKey": "step4.mandarat"
+        },
+        {
+          "no": 20,
+          "id": "peerReview",
+          "title": "진로학업설계서를 친구들과 함께 수정·보완하기",
+          "page": 64,
+          "doneKey": "step4.peerReview"
+        },
+        {
+          "no": 21,
+          "id": "auditCheck",
+          "title": "학업 이수 현황 점검하기",
+          "page": 65,
+          "doneKey": "step4.auditCheck"
+        },
+        {
+          "no": 22,
+          "id": "roadmap",
+          "title": "진로 로드맵 작성하기",
+          "page": 66,
+          "doneKey": "step4.roadmap"
+        }
+      ]
+    }
+  ],
+  "curriculumVersion": "2022 (자료집 원문은 2015 개정 기준이나, 본 사이트는 2022 개정 기준으로 전면 재구성)"
+}
