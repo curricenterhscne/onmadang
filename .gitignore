@@ -1,0 +1,6 @@
+.DS_Store
+
+# 진로·학업 설계 개발용 (배포 산출물 아님)
+design/_dev/node_modules/
+design/_dev/package.json
+design/_dev/package-lock.json
