@@ -15,6 +15,7 @@
   /* ── 링크 맵 ── */
   var L = {
     home:     base + 'index.html',
+    about:    base + 'about/',
     design:   base + 'design/',
     safety:   base + 'safety/',
     board:    base + 'board/',
@@ -49,6 +50,10 @@
 
   /* ── 서브메뉴 데이터 ── */
   var subMenus = {
+    about: [
+      { label: '고교학점제란?',          href: L.about + 'what-is.html' },
+      { label: '학생 주도성과 고교학점제', href: L.about + 'student-agency.html' }
+    ],
     design: [
       { label: '진로 나침반',    href: L.design + 'compass/'  },
       { label: '학과·과목 탐색', href: L.majors               },
@@ -78,7 +83,7 @@
   /* ── GNB 메뉴 항목 (데스크톱) ── */
   function gnbItems() {
     return ''
-      + '<div class="gnb-item"><span class="nav-disabled" aria-disabled="true" title="준비 중">고교학점제</span></div>'
+      + '<div class="gnb-item"><a href="' + L.about + '" class="gnb-top' + (active === 'about' ? ' active' : '') + '">고교학점제</a>' + ddHtml(subMenus.about) + '</div>'
       + '<div class="gnb-item"><a href="' + L.design + '" class="gnb-top' + (active === 'design' ? ' active' : '') + '">진로\u00B7학업 설계</a>' + ddHtml(subMenus.design) + '</div>'
       + '<div class="gnb-item"><a href="' + L.safety + '" class="gnb-top' + (active === 'safety' ? ' active' : '') + '">4대 안전망</a>' + ddHtml(subMenus.safety) + '</div>'
       + '<div class="gnb-item"><a href="' + L.board  + '" class="gnb-top' + (active === 'board'  ? ' active' : '') + '">알림\u00B7소통 마당</a>' + ddHtml(subMenus.board) + '</div>';
@@ -87,7 +92,7 @@
   /* ── 모바일 메뉴 항목 ── */
   function mobileMenuItems() {
     var menus = [
-      { key: 'about',  label: '고교학점제',     href: null,      subs: null },
+      { key: 'about',  label: '고교학점제',     href: L.about,   subs: subMenus.about },
       { key: 'design', label: '진로\u00B7학업 설계', href: L.design, subs: subMenus.design },
       { key: 'safety', label: '4대 안전망',     href: L.safety,  subs: subMenus.safety },
       { key: 'board',  label: '알림\u00B7소통 마당', href: L.board,  subs: subMenus.board }
