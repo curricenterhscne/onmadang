@@ -8,6 +8,7 @@
 <!-- 꾸꾸클럽 디자인 시스템 v1.0 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/tokens/design-tokens.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/components/components.css">
+<link rel="stylesheet" href="../../assets/css/common.css">
 <style>
   :root {
     /* ── 꾸꾸클럽 디자인 시스템 브리지 레이어 ──────────────────────────────
@@ -133,6 +134,12 @@
     display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
     margin-bottom: 2px;
   }
+  .app-tools {
+    display: flex; align-items: center; gap: 8px;
+    margin-left: auto; flex-shrink: 0;
+  }
+  /* 학교 미선택 시 빈 상태를 가운데로 */
+  #curriculum-area:has(#placeholder) { grid-column: 1 / -1; }
   .year-pills {
     display: inline-flex; background: var(--line-soft); padding: 3px;
     border-radius: 99px; flex-shrink: 0;
@@ -396,6 +403,7 @@
   td.sem-cell.selectable { cursor: pointer; transition: background 0.1s; }
   td.sem-cell.selectable:hover { background: var(--brand-softer); }
   td.sem-cell.selected { background: var(--accent); color: #fff; font-weight: 700; }
+  td.sem-cell.selected:hover { background: var(--brand-2); }
   td.sem-cell.disabled-sem {
     background: repeating-linear-gradient(45deg, transparent, transparent 4px, var(--line) 4px, var(--line) 5px);
     cursor: not-allowed;
@@ -534,126 +542,31 @@
     @page { size: A4 landscape; margin: 10mm; }
   }
 
-  /* ── 온마당 공통 헤더/푸터/배너 ── */
-  .clover{display:inline-block;vertical-align:middle}
-  .renewal-banner{
-    background:#e8edf8;border-bottom:1px solid #c0cce8;
-    color:#3a539b;text-align:center;
-    font-size:13.5px;font-weight:600;padding:11px 20px;line-height:1.6;
-  }
-  .onmadang-header{
-    position:sticky;top:0;z-index:100;
-    background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line, #c5dcef);
-  }
-  .onmadang-nav{
-    display:flex;align-items:center;gap:16px;height:68px;
-    max-width:1180px;margin:0 auto;padding:0 24px;
-  }
-  .om-brand{display:flex;align-items:center;gap:11px;flex-shrink:0;text-decoration:none}
-  .brand-txt b{font-size:18px;color:#4F6EBE;font-weight:800;display:block;letter-spacing:-.4px;line-height:1.1}
-  .brand-txt span{font-size:10.5px;color:#51607d;font-weight:500}
-  .nav-links{display:flex;gap:4px;margin-left:20px;flex:1}
-  .nav-links a{
-    font-size:14px;font-weight:600;color:#51607d;
-    padding:8px 14px;border-radius:999px;transition:.18s;text-decoration:none;
-  }
-  .nav-links a:hover{background:#eef7fc;color:#4F6EBE}
-  .nav-links a.active{background:#4F6EBE;color:#fff}
-  .nav-disabled{
-    font-size:14px;font-weight:600;color:#bbc5d4;
-    padding:8px 13px;border-radius:999px;
-    cursor:default;pointer-events:none;user-select:none;
-  }
-  .head-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
-  .head-link{
-    display:flex;align-items:center;gap:5px;flex-shrink:0;
-    background:#fff;color:#4F6EBE;font-weight:700;font-size:13.5px;
-    padding:9px 16px;border-radius:999px;
-    border:1.5px solid #4F6EBE;transition:.18s;text-decoration:none;
-  }
-  .head-link:hover{background:#eef7fc}
-  .hamburger{
-    display:none;background:none;border:none;font-size:26px;
-    color:#4F6EBE;cursor:pointer;margin-left:auto;padding:4px;
-  }
-  .mobile-menu{
-    display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;
-    background:rgba(0,0,0,.4);opacity:0;transition:opacity .25s;
-  }
-  .mobile-menu.open{display:block;opacity:1}
-  .mobile-menu-panel{
-    position:absolute;top:0;right:0;width:min(320px,85vw);height:100%;
-    background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,.15);
-    padding:24px;overflow-y:auto;transform:translateX(100%);transition:transform .25s;
-  }
-  .mobile-menu.open .mobile-menu-panel{transform:translateX(0)}
-  .mobile-menu-close{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:none;background:#eef7fc;border-radius:50%;font-size:20px;cursor:pointer;margin-left:auto;margin-bottom:20px}
-  .mobile-menu-nav{display:flex;flex-direction:column;gap:4px}
-  .mobile-menu-nav a{display:block;font-size:15px;font-weight:600;color:#51607d;padding:12px 16px;border-radius:12px;transition:.15s;text-decoration:none}
-  .mobile-menu-nav a:hover{background:#eef7fc;color:#4F6EBE}
-  .mobile-menu-nav a.active{background:#4F6EBE;color:#fff}
-  .mobile-menu-nav .disabled{color:#bbc5d4;padding:12px 16px;font-size:15px;font-weight:600}
-  .mobile-menu-divider{height:1px;background:#c5dcef;margin:12px 0}
-  .mobile-menu-shortcuts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
-  .mobile-menu-shortcuts a{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#4F6EBE;padding:10px 14px;background:#eef7fc;border-radius:12px;transition:.15s;text-decoration:none}
-  .mobile-menu-shortcuts a:hover{background:#c5dcef}
-
-  .om-breadcrumb{background:#fff;border-bottom:1px solid #c5dcef;padding:10px 0;font-size:13px;color:#51607d}
-  .om-breadcrumb-inner{max-width:1180px;margin:0 auto;padding:0 28px}
-  .om-breadcrumb a{color:#4F6EBE;text-decoration:none}
-  .om-breadcrumb a:hover{text-decoration:underline}
-
-  .onmadang-footer{background:#3a539b;color:rgba(255,255,255,.7);padding:32px 0;text-align:center;font-size:13px}
-  .onmadang-footer a{color:rgba(255,255,255,.7);text-decoration:none}
-  .onmadang-footer a:hover{color:#fff}
-
-  @media(max-width:900px){
-    .head-link span{display:none}
-  }
-  @media(max-width:680px){
-    .nav-links,.nav-disabled,.head-tools{display:none}
-    .hamburger{display:block}
-  }
 </style>
 </head>
 <body>
 
-<!-- ── 클로버 SVG 심볼 ── -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-  <symbol id="clv" viewBox="0 0 100 100">
-    <circle cx="50" cy="32" r="17" fill="#7BCE7C"/>
-    <circle cx="32" cy="50" r="17" fill="#7BCE7C"/>
-    <circle cx="68" cy="50" r="17" fill="#7BCE7C"/>
-    <circle cx="50" cy="68" r="17" fill="#5fb260"/>
-    <circle cx="50" cy="50" r="8.5" fill="#4F6EBE"/>
-    <path d="M50 66 Q53 82 59 90" stroke="#5fb260" stroke-width="5" fill="none" stroke-linecap="round"/>
-  </symbol>
-</defs></svg>
+<div id="om-header" data-active="design"></div>
 
-<!-- ── 리뉴얼 안내 배너 ── -->
-<div class="renewal-banner" role="note">
-  ＜충남 고교학점제 종합지원 포털 온마당＞ 현재 리뉴얼 작업 중입니다.&ensp;(2026. 7. 1. ~ 7. 31.)
-</div>
-
-<!-- ── 온마당 헤더 ── -->
-<header class="onmadang-header">
-  <div class="onmadang-nav">
-    <a href="../../index.html" class="om-brand">
-      <svg class="clover" width="38" height="38"><use href="#clv"/></svg>
-      <span class="brand-txt"><b>온마당</b><span>충남 고교학점제 종합지원</span></span>
-    </a>
-    <nav class="nav-links" aria-label="주 메뉴">
-      <span class="nav-disabled" aria-disabled="true" title="준비 중">고교학점제 안내</span>
-      <a href="../">진로·학업 설계</a>
-      <a href="../../safety/">4대 안전망</a>
-      <a href="../../index.html">알림·소통 마당</a>
-    </nav>
-    <div class="head-tools">
-      <a href="../majors/" class="head-link">
-        <svg class="clover" width="15" height="15"><use href="#clv"/></svg>
-        <span>대학 학과 안내</span> →
-      </a>
+<div class="kk-header-toolbar">
+  <div class="h-subnav">
+  <div class="h-subnav__inner">
+  <div class="h-site-link">
+    <a href="../majors/">대학 학과와 권장 과목 안내 →</a>
+  </div>
+  <div class="h-toolbar">
+    <div class="year-pills">
+      <button class="year-pill" data-year="2025">2025</button>
+      <button class="year-pill active" data-year="2026">2026</button>
+    </div>
+    <div class="search-wrap">
+      <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="school-finder" class="search-input kk-input" placeholder="학교명·지역으로 검색 (예: 천안, 외고)" autocomplete="off" />
+      <ul id="finder-dropdown" style="display:none;"></ul>
+    </div>
+    <div class="school-meta" id="school-meta"></div>
+    <select id="dept-sel" class="kk-select" style="display:none;"></select>
+    <div class="app-tools">
       <a href="guide.html" class="guide-btn kk-btn kk-btn--secondary" id="guide-link" title="사용 설명서">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         <span>사용 설명서</span>
@@ -676,57 +589,6 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
       </button>
     </div>
-    <button class="hamburger" aria-label="메뉴 열기">☰</button>
-  </div>
-</header>
-
-<!-- 모바일 메뉴 -->
-<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-  <div class="mobile-menu-panel">
-    <button class="mobile-menu-close" aria-label="메뉴 닫기">✕</button>
-    <nav class="mobile-menu-nav" aria-label="모바일 메뉴">
-      <span class="disabled">고교학점제 안내</span>
-      <a href="../">진로·학업 설계</a>
-      <a href="../../safety/">4대 안전망</a>
-      <a href="../../index.html">알림·소통 마당</a>
-    </nav>
-    <div class="mobile-menu-divider"></div>
-    <div class="mobile-menu-shortcuts">
-      <a href="../majors/">
-        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 대학 학과 안내 →
-      </a>
-      <a href="guide.html">
-        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 사용 설명서
-      </a>
-    </div>
-  </div>
-</div>
-
-<!-- breadcrumb -->
-<div class="om-breadcrumb">
-  <div class="om-breadcrumb-inner">
-    <a href="../../index.html">홈</a> › <a href="../">진로·학업 설계</a> › <strong>과목 선택 실습</strong>
-  </div>
-</div>
-
-<div class="kk-header-toolbar">
-  <div class="h-subnav">
-  <div class="h-subnav__inner">
-  <div class="h-site-link">
-    <a href="../majors/">대학 학과와 권장 과목 안내 →</a>
-  </div>
-  <div class="h-toolbar">
-    <div class="year-pills">
-      <button class="year-pill" data-year="2025">2025</button>
-      <button class="year-pill active" data-year="2026">2026</button>
-    </div>
-    <div class="search-wrap">
-      <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="school-finder" class="search-input kk-input" placeholder="학교명·지역으로 검색 (예: 천안, 외고)" autocomplete="off" />
-      <ul id="finder-dropdown" style="display:none;"></ul>
-    </div>
-    <div class="school-meta" id="school-meta"></div>
-    <select id="dept-sel" class="kk-select" style="display:none;"></select>
   </div>
 
   <div class="reco-row" id="presets" style="display:none;">
@@ -1982,24 +1844,7 @@ async function exportToXLSX() {
 loadSchools();
 </script>
 
-<!-- ── 푸터 ── -->
-<footer class="onmadang-footer">
-  <p>© 2026 충청남도교육청</p>
-</footer>
-
-<script>
-// 모바일 메뉴 토글
-(function(){
-  var menu=document.getElementById('mobileMenu');
-  var openBtn=document.querySelector('.hamburger');
-  var closeBtn=menu.querySelector('.mobile-menu-close');
-  function open(){menu.classList.add('open');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
-  function close(){menu.classList.remove('open');menu.setAttribute('aria-hidden','true');document.body.style.overflow=''}
-  openBtn.addEventListener('click',open);
-  closeBtn.addEventListener('click',close);
-  menu.addEventListener('click',function(e){if(e.target===menu)close()});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open'))close()});
-})();
-</script>
+<div id="om-footer"></div>
+<script src="../../assets/js/common.js"></script>
 </body>
 </html>

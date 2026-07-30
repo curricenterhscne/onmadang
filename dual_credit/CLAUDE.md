@@ -1,6 +1,7 @@
 # CLAUDE.md — 고교-대학 연계 학점 인정 강좌 (dual_credit/)
 
 > 온마당 공통 헤더/푸터 사용. 강좌 데이터는 HTML 내 인라인.
+> 최종 검증 2026-07-24 — **함수명 오류 1건 정정**(`openDetail` → `openModal`)
 
 ## 개요
 
@@ -79,12 +80,18 @@ dual_credit/
 | `DATA[].수업요일시간` | `COURSE_DETAILS[].period` | 필드명 다름 |
 | `DATA[].비고` | (없음) | courses.html 전용 |
 
-## 주요 렌더링 함수
+## 주요 함수 (courses.html — 실측 8개)
 
-- **`render()`** — 필터(대학·계열·수업방식·검색어) 적용 후 카드 그리드 렌더링
-- **`buildScheduleHTML(schedule)`** — `일정` 배열 → 수업 일정 테이블 HTML
-- **`openDetail(idx)`** — DATA[idx]로 상세 모달 렌더링 (10개 섹션)
-- **`closeModal(e)`** — 오버레이/ESC로 모달 닫기
+| 함수 | 역할 |
+|---|---|
+| `render()` | 필터(대학·계열·수업방식·검색어) 적용 후 카드 그리드 렌더링 |
+| **`openModal(idx)`** | `DATA[idx]`로 상세 모달 렌더링. 카드의 `onclick`에서 호출 |
+| `closeModal(e)` | 오버레이 클릭 / ESC로 모달 닫기 |
+| `buildScheduleHTML(schedule)` | `일정` 배열 → 수업 일정 테이블 HTML |
+| `toggleField()` / `setInst()` / `clearFields()` | 필터 UI 조작 |
+| `goSignup()` | `apply/`로 이동 |
+
+> ⚠️ 이전 문서에 `openDetail(idx)`로 적혀 있었으나 **그런 함수는 존재하지 않는다.** 실제 이름은 `openModal(idx)`이다.
 
 ## 색상 맵
 
@@ -100,3 +107,4 @@ CARD_COLORS = {
 - DATA 배열만 수정하고 apply/_embed_data.js를 빠뜨리기 ❌
 - `일정`의 `시작`/`종료` 없이 `차시`의 `시작시간`만 채우기 ❌ (둘 다 채워야 함)
 - index.html의 통계 수치(대학 수, 강좌 수 등)를 DATA와 불일치시키기 ❌
+- 이 문서의 함수명·필드명을 확인 없이 신뢰하기 ❌ → 코드를 열어 대조할 것
