@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#DAF2FC">
+<meta name="description" content="학생 주도성과 고교학점제 — OECD Education 2030이 말하는 학생 주도성(Student Agency), 그리고 권한과 책임으로 그것을 길러내는 고교학점제 시스템.">
+<title>학생 주도성과 고교학점제 · 온마당</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../assets/css/common.css">
+<style>
+  .doc{padding:44px 0 80px}
+  .doc .wrap{max-width:900px}
+
+  .sec{background:var(--surface);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-sm);margin-bottom:24px}
+  .sec-eyebrow{font-size:12px;font-weight:800;letter-spacing:1px;color:var(--accent-d);margin-bottom:6px}
+  .sec h2{font-size:21px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
+  .sec .lead{font-size:14.5px;color:var(--ink-soft);margin-bottom:22px;line-height:1.85}
+  .sec p{font-size:14.5px;color:var(--ink-soft);line-height:1.9}
+  .sec p + p{margin-top:12px}
+  .sec strong{color:var(--brand-d)}
+
+  /* 도입 후크 */
+  .hook{background:linear-gradient(135deg,#2c5a34,var(--accent-d));color:#fff;border-radius:var(--radius);padding:36px 32px;margin-bottom:24px;position:relative;overflow:hidden}
+  .hook .q{font-size:23px;font-weight:800;letter-spacing:-.5px;line-height:1.4;position:relative;z-index:1}
+  .hook .q em{font-style:normal;color:#eafbe9}
+  .hook .sub{font-size:14.5px;opacity:.9;margin-top:14px;line-height:1.8;position:relative;z-index:1}
+  .hook .compass{position:absolute;right:-30px;top:50%;transform:translateY(-50%);opacity:.16;z-index:0}
+
+  /* OECD 개념 나침반 박스 */
+  .compass-box{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius);padding:26px 28px;margin-top:4px}
+  .compass-box .cvis{flex-shrink:0}
+  .compass-box h4{font-size:16px;font-weight:800;color:var(--brand);margin-bottom:8px}
+  .compass-box p{font-size:13.5px;color:var(--ink-soft);line-height:1.75;margin:0}
+
+  /* 변혁적 역량 3카드 */
+  .tc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+  .tc{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:20px 18px;text-align:center}
+  .tc .tc-ic{font-size:24px;margin-bottom:8px}
+  .tc h5{font-size:14px;font-weight:800;color:var(--brand);margin-bottom:5px}
+  .tc p{font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin:0}
+
+  /* 정의 강조 박스 */
+  .define{background:linear-gradient(135deg,var(--brand),var(--brand-l));color:#fff;border-radius:var(--radius);padding:36px 32px;margin-bottom:24px}
+  .define .tag{font-size:12px;font-weight:800;letter-spacing:1px;color:#eafbe9;margin-bottom:10px}
+  .define .big{font-size:20px;font-weight:800;line-height:1.6}
+  .define .big u{text-decoration-color:rgba(234,251,233,.6);text-underline-offset:4px}
+  .define .src{font-size:12.5px;opacity:.8;margin-top:14px;font-style:italic}
+
+  /* 3차원 카드 */
+  .dims{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+  .dim{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius);padding:24px 20px}
+  .dim .dim-ic{width:46px;height:46px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
+  .dim h4{font-size:15px;font-weight:800;margin-bottom:6px}
+  .dim p{font-size:13px;color:var(--ink-soft);line-height:1.6;margin:0}
+  .dim .en{display:block;font-size:11.5px;color:var(--ink-faint);font-weight:600;margin-top:6px}
+
+  /* co-agency 노트 */
+  .note{display:flex;gap:14px;align-items:flex-start;background:#f1faf1;border:1px solid #cceccd;border-radius:var(--radius-sm);padding:18px 20px;margin-top:16px}
+  .note .n-ic{font-size:22px;flex-shrink:0}
+  .note p{font-size:13.5px;color:var(--ink-soft);line-height:1.7;margin:0}
+  .note b{color:var(--accent-d)}
+
+  /* 핵심 주장 배너 */
+  .claim{background:var(--ink);color:#fff;border-radius:var(--radius);padding:34px 32px;margin-bottom:24px;text-align:center}
+  .claim .big{font-size:22px;font-weight:800;letter-spacing:-.5px;line-height:1.5}
+  .claim .big em{font-style:normal;color:var(--accent)}
+  .claim p{font-size:14px;color:rgba(255,255,255,.82);line-height:1.85;margin-top:14px;max-width:640px;margin-left:auto;margin-right:auto}
+
+  /* AAR 순환 */
+  .aar{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center;margin-top:8px}
+  .aar-node{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius);padding:22px 16px;text-align:center}
+  .aar-node .an-ic{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin:0 auto 12px}
+  .aar-node:nth-child(1) .an-ic{background:var(--brand)}
+  .aar-node:nth-child(3) .an-ic{background:var(--accent-d)}
+  .aar-node:nth-child(5) .an-ic{background:var(--online-d)}
+  .aar-node h4{font-size:15px;font-weight:800;margin-bottom:4px}
+  .aar-node .en{font-size:11px;color:var(--ink-faint);font-weight:700;letter-spacing:.5px;display:block;margin-bottom:8px}
+  .aar-node p{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:0}
+  .aar-arrow{font-size:22px;color:var(--ink-faint);font-weight:800}
+  .aar-loop{text-align:center;font-size:13px;color:var(--accent-d);font-weight:700;margin-top:14px}
+
+  /* 권한·책임 두 축 */
+  .axes{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+  .axis{border-radius:var(--radius);padding:28px 26px;position:relative;overflow:hidden}
+  .axis.auth{background:#eef3fc;border:1.5px solid var(--brand-l)}
+  .axis.resp{background:#f1faf1;border:1.5px solid var(--accent)}
+  .axis .a-label{font-size:12px;font-weight:800;letter-spacing:1px;margin-bottom:8px}
+  .axis.auth .a-label{color:var(--brand)}
+  .axis.resp .a-label{color:var(--accent-d)}
+  .axis h4{font-size:19px;font-weight:800;margin-bottom:10px}
+  .axis p{font-size:13.5px;color:var(--ink-soft);line-height:1.7;margin:0}
+  .axis .a-ic{font-size:30px;margin-bottom:12px}
+
+  /* 연결 등식 */
+  .equation{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;background:var(--soft);border:1px dashed var(--line);border-radius:var(--radius-sm);padding:20px;margin-top:18px;text-align:center}
+  .eq-item{font-size:14px;font-weight:700;color:var(--brand-d)}
+  .eq-op{font-size:18px;color:var(--ink-faint);font-weight:800}
+  .eq-result{font-size:15px;font-weight:800;color:var(--accent-d)}
+
+  /* 온마당 연결 카드 */
+  .bridge{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+  .bcard{display:block;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px 22px;transition:.2s}
+  .bcard:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--brand-l)}
+  .bcard .b-ic{font-size:28px;margin-bottom:10px}
+  .bcard h4{font-size:16px;font-weight:800;color:var(--brand);margin-bottom:6px}
+  .bcard p{font-size:13px;color:var(--ink-soft);line-height:1.6;margin:0}
+  .bcard .go{display:inline-block;margin-top:12px;font-size:13px;font-weight:700;color:var(--brand)}
+
+  /* 마무리 인용 */
+  .quote{background:linear-gradient(135deg,#2c5a34,var(--accent-d));color:#fff;border-radius:var(--radius);padding:38px 34px;margin-bottom:24px}
+  .quote .mark{font-size:46px;line-height:.6;opacity:.5;font-family:Georgia,serif}
+  .quote p{font-size:15.5px;line-height:1.9;margin-top:6px}
+  .quote p .hl{color:#eafbe9;font-weight:700}
+  .quote cite{display:block;font-size:13px;opacity:.85;margin-top:16px;font-style:italic}
+
+  /* 출처 */
+  .refs{font-size:12px;color:var(--ink-faint);line-height:1.7;background:var(--soft);border-radius:var(--radius-sm);padding:16px 20px;margin-bottom:24px}
+  .refs b{color:var(--ink-soft)}
+  .refs a{color:var(--online-d);text-decoration:underline}
+
+  /* 하단 이동 */
+  .nextnav{display:flex;justify-content:space-between;gap:12px;margin-top:12px}
+  .nextnav a{flex:1;background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px 20px;transition:.15s}
+  .nextnav a:hover{border-color:var(--brand);box-shadow:var(--shadow-sm)}
+  .nextnav .nl{font-size:11.5px;color:var(--ink-faint);font-weight:700}
+  .nextnav .nt{font-size:14.5px;font-weight:700;color:var(--brand);margin-top:2px}
+  .nextnav .r{text-align:right}
+
+  @media(max-width:760px){
+    .compass-box{grid-template-columns:1fr;text-align:center}
+    .compass-box .cvis{margin:0 auto}
+    .tc-grid,.dims,.bridge{grid-template-columns:1fr}
+    .axes{grid-template-columns:1fr}
+    .aar{grid-template-columns:1fr;gap:6px}
+    .aar-arrow{transform:rotate(90deg)}
+  }
+</style>
+</head>
+<body>
+
+<div id="om-header" data-active="about"></div>
+
+<!-- 페이지 헤더 -->
+<div class="page-hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="이동 경로">
+      <a href="../index.html">홈</a> › <a href="./index.html">고교학점제 안내</a> › <strong>학생 주도성과 고교학점제</strong>
+    </nav>
+    <h1>학생 주도성과 고교학점제</h1>
+    <p>왜 미래 사회는 ‘학생 주도성’을 요구하는가, 그리고 고교학점제는 어떻게 그것을 길러내는가.</p>
+  </div>
+</div>
+
+<main class="doc">
+  <div class="wrap">
+
+    <!-- 도입 후크 -->
+    <div class="hook">
+      <svg class="compass" width="220" height="220" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#fff" stroke-width="2"/>
+        <circle cx="50" cy="50" r="38" fill="none" stroke="#fff" stroke-width="1"/>
+        <polygon points="50,16 57,50 50,44 43,50" fill="#fff"/>
+        <polygon points="50,84 43,50 50,56 57,50" fill="#fff" opacity=".6"/>
+        <circle cx="50" cy="50" r="4" fill="#fff"/>
+      </svg>
+      <div class="q">정답이 정해지지 않은 세상에서,<br><em>아이들은 무엇을 배워야 할까요?</em></div>
+      <div class="sub">기술과 사회가 빠르게 바뀌는 불확실성의 시대. 이제 교육의 과제는 ‘정해진 답을 잘 외우는 사람’이 아니라, 낯선 상황에서 <b>스스로 방향을 찾아 나아가는 사람</b>을 길러내는 것입니다.</div>
+    </div>
+
+    <!-- 왜 지금 주도성인가 -->
+    <div class="sec">
+      <div class="sec-eyebrow">WHY · 미래 사회의 요구</div>
+      <h2>왜 지금 ‘학생 주도성’인가</h2>
+      <p class="lead">OECD는 <strong>Future of Education and Skills 2030</strong> 프로젝트를 통해 미래 교육의 방향을 <strong>‘OECD 학습 나침반 2030(Learning Compass 2030)’</strong>으로 제시했습니다. 목적지에 데려다주는 지도(GPS)가 아니라, <strong>나침반</strong>을 든 이유가 핵심입니다.</p>
+
+      <div class="compass-box">
+        <div class="cvis">
+          <svg width="96" height="96" viewBox="0 0 100 100" aria-label="나침반">
+            <circle cx="50" cy="50" r="46" fill="#fff" stroke="var(--brand)" stroke-width="2.5"/>
+            <circle cx="50" cy="50" r="36" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+            <polygon points="50,18 58,50 50,42 42,50" fill="#4F6EBE"/>
+            <polygon points="50,82 42,50 50,58 58,50" fill="#7BCE7C"/>
+            <circle cx="50" cy="50" r="4.5" fill="#1f2b44"/>
+          </svg>
+        </div>
+        <div>
+          <h4>왜 ‘나침반’일까?</h4>
+          <p>정해진 길을 그대로 따라가는 것이 아니라, <strong>낯설고 예측하기 어려운 상황</strong> 속에서 학생이 <strong>스스로 방향을 잡고 나아가도록</strong> 하기 위함입니다. 나침반이 가리키는 도착점은 시험 점수가 아니라 <strong>개인과 사회의 웰빙(Well-being 2030)</strong>입니다. 그 여정의 중심에 놓인 것이 바로 <strong>학생 주도성(Student Agency)</strong>입니다.</p>
+        </div>
+      </div>
+
+      <p style="margin-top:22px">미래를 이끌 학생에게 OECD가 요구하는 것은 세 가지 <strong>변혁적 역량(Transformative Competencies)</strong>입니다. 모두 ‘주어진 것을 받는’ 능력이 아니라 <strong>스스로 만들어내는</strong> 능력입니다.</p>
+      <div class="tc-grid">
+        <div class="tc"><div class="tc-ic">💡</div><h5>새로운 가치 창출</h5><p>정해진 답을 넘어 새로운 것을 만들어내기</p></div>
+        <div class="tc"><div class="tc-ic">⚖️</div><h5>긴장과 딜레마 조정</h5><p>서로 다른 관점·이해의 갈등을 조율하기</p></div>
+        <div class="tc"><div class="tc-ic">🫱</div><h5>책임감 갖기</h5><p>자기 행동의 결과를 성찰하고 책임지기</p></div>
+      </div>
+    </div>
+
+    <!-- 학생 주도성이란 -->
+    <div class="define">
+      <div class="tag">STUDENT AGENCY · 학생 주도성이란</div>
+      <div class="big">스스로 <u>목표를 세우고</u>, <u>성찰하며</u>, <u>책임감 있게 행동하여</u> 변화를 만들어내는 역량</div>
+      <div class="src">— OECD, “Student Agency for 2030” (Learning Compass 2030, 2019) · 학생은 자신의 삶과 세상에 긍정적 영향을 미칠 능력과 의지를 가진 존재라는 믿음에 뿌리를 둡니다.</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-eyebrow">WHAT · 세 가지 얼굴</div>
+      <h2>주도성은 이런 모습입니다</h2>
+      <div class="dims">
+        <div class="dim">
+          <div class="dim-ic">🚀</div>
+          <h4>행동의 주체</h4>
+          <p>남이 시켜서가 아니라, 스스로 움직입니다.<span class="en">acting, not being acted upon</span></p>
+        </div>
+        <div class="dim">
+          <div class="dim-ic">🌍</div>
+          <h4>세상을 만들어감</h4>
+          <p>주어진 환경을 받아들이기보다, 바꾸어 갑니다.<span class="en">shaping, not being shaped</span></p>
+        </div>
+        <div class="dim">
+          <div class="dim-ic">🧭</div>
+          <h4>책임 있는 선택</h4>
+          <p>남이 정해준 결정이 아니라, 스스로 판단합니다.<span class="en">responsible decision-making</span></p>
+        </div>
+      </div>
+      <div class="note">
+        <div class="n-ic">🤝</div>
+        <p>주도성은 <b>혼자</b> 크는 것이 아닙니다. OECD는 또래·교사·부모·지역사회와 서로를 지지하는 관계 속에서 함께 자라는 <b>협력적 주도성(Co-agency)</b>을 강조합니다. 학생을 둘러싼 관계와 환경이 주도성의 토양입니다.</p>
+      </div>
+    </div>
+
+    <!-- 핵심 주장 -->
+    <div class="claim">
+      <div class="big">주도성은 <em>‘주입’</em>이 아니라 <em>‘실천’</em>으로 자랍니다</div>
+      <p>나침반 사용법을 아무리 설명해도, 직접 길을 잡아보지 않으면 방향 감각은 생기지 않습니다. 주도성도 마찬가지입니다. “주도적으로 살아라”라고 가르친다고 길러지지 않습니다. <strong style="color:#fff">스스로 목표를 정하고, 선택하고, 그 결과를 책임지는 경험</strong>을 반복할 때 비로소 몸에 뱁니다.</p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-eyebrow">HOW · 실천의 순환</div>
+      <h2>스스로 돌리는 학습의 사이클</h2>
+      <p class="lead">OECD 학습 나침반은 주도성이 자라는 과정을 <strong>예상 → 행동 → 성찰</strong>이 반복되는 순환(AAR Cycle)으로 봅니다. 이 사이클은 누가 대신 돌려줄 수 없습니다. 학생이 <strong>직접 해봐야</strong> 돌아갑니다.</p>
+      <div class="aar">
+        <div class="aar-node">
+          <div class="an-ic">🔭</div>
+          <span class="en">ANTICIPATION</span>
+          <h4>예상</h4>
+          <p>내 선택이 가져올 결과를 내다보기</p>
+        </div>
+        <div class="aar-arrow">→</div>
+        <div class="aar-node">
+          <div class="an-ic">✏️</div>
+          <span class="en">ACTION</span>
+          <h4>행동</h4>
+          <p>목표를 향해 실제로 선택하고 실행하기</p>
+        </div>
+        <div class="aar-arrow">→</div>
+        <div class="aar-node">
+          <div class="an-ic">🔁</div>
+          <span class="en">REFLECTION</span>
+          <h4>성찰</h4>
+          <p>결과를 돌아보고 다음 선택을 다듬기</p>
+        </div>
+      </div>
+      <div class="aar-loop">↻ 예상 → 행동 → 성찰 → 다시 예상 … 이 반복 속에서 주도성이 자랍니다</div>
+    </div>
+
+    <!-- 그래서 고교학점제 -->
+    <div class="sec">
+      <div class="sec-eyebrow">SO · 그래서 고교학점제</div>
+      <h2>실천의 장을 ‘제도’로 만든 것, 고교학점제</h2>
+      <p class="lead">주도성을 기르려면 학생이 직접 선택하고 책임지는 <strong>실천의 장</strong>이 필요합니다. 고교학점제는 바로 그 장을 학교의 일상 제도로 설계합니다. 학생에게 두 가지를 함께 건넵니다 — <strong>권한</strong>과 <strong>책임</strong>.</p>
+      <div class="axes">
+        <div class="axis auth">
+          <div class="a-ic">🗝️</div>
+          <div class="a-label">권한 · AUTHORITY</div>
+          <h4>과목 선택권</h4>
+          <p>학생이 자신의 진로와 흥미에 따라 무엇을 배울지 <strong>스스로 고릅니다.</strong> 학교가 짜준 시간표를 받는 것이 아니라, 나의 교육과정을 내가 설계합니다.</p>
+        </div>
+        <div class="axis resp">
+          <div class="a-ic">🎯</div>
+          <div class="a-label">책임 · RESPONSIBILITY</div>
+          <h4>과목 이수 책임</h4>
+          <p>선택한 과목을 <strong>스스로 이수해야</strong> 학점을 얻고 졸업합니다. 선택에는 책임이 따르고, 그 책임이 학습의 동기를 끌어냅니다.</p>
+        </div>
+      </div>
+
+      <div class="equation">
+        <span class="eq-item">과목 선택(권한)</span>
+        <span class="eq-op">+</span>
+        <span class="eq-item">과목 이수(책임)</span>
+        <span class="eq-op">=</span>
+        <span class="eq-result">학교 일상에서 돌아가는 AAR 사이클</span>
+      </div>
+      <p style="margin-top:20px">선택은 곧 <strong>목표 설정</strong>이고, 이수의 과정은 곧 <strong>행동과 성찰, 그리고 책임</strong>입니다. 고교학점제는 학생 주도성의 순환을 <strong>학교 생활 그 자체</strong>로 만들어, 주도성을 ‘가르치는’ 것이 아니라 <strong>‘견인’</strong>합니다.</p>
+    </div>
+
+    <!-- 강조 배너 -->
+    <div class="claim" style="background:linear-gradient(135deg,var(--brand),var(--brand-d))">
+      <div class="big">왜 공부해야 하는지에 대해, <em style="color:#eafbe9">시스템으로 답을 줍니다</em></div>
+      <p>교사의 열정 어린 설득만이 아니라, 잘 설계된 제도가 학생의 행동을 이끕니다. 고교학점제는 ‘하고 싶은 것을 선택하고 책임지는’ 구조로 학생을 자기 학습의 주인으로 세웁니다.</p>
+    </div>
+
+    <!-- 온마당 연결 -->
+    <div class="sec">
+      <div class="sec-eyebrow">온마당에서 실천하기</div>
+      <h2>주도성을 연습하는 도구들</h2>
+      <p class="lead">온마당은 학생이 직접 선택하고 설계하며 주도성을 연습하도록 돕습니다.</p>
+      <div class="bridge">
+        <a class="bcard" href="../design/">
+          <div class="b-ic">🧭</div>
+          <h4>진로·학업 설계</h4>
+          <p>자기 이해에서 과목 선택 실습까지, 나만의 교육과정을 직접 설계해 봅니다.</p>
+          <span class="go">설계 시작하기 →</span>
+        </a>
+        <a class="bcard" href="../safety/index.html">
+          <div class="b-ic">🛟</div>
+          <h4>고교학점제 4대 안전망</h4>
+          <p>원하는 과목이 학교에 없어도, 선택의 폭을 넓혀주는 4단계 안전망이 있습니다.</p>
+          <span class="go">안전망 살펴보기 →</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 마무리 인용 -->
+    <div class="quote">
+      <div class="mark">“</div>
+      <p>
+        급변의 시대에 미래를 이어갈 사람은 <span class="hl">계속 배우는 학습자</span>이다.
+        배움을 끝낸 사람에게는 과거의 세계에서 살아갈 기술밖에 남아 있지 않다.
+      </p>
+      <cite>— Eric Hoffer (1973)</cite>
+    </div>
+
+    <!-- 출처 -->
+    <div class="refs">
+      <b>참고 자료</b> · OECD (2019), <i>Student Agency for 2030</i> 및 <i>OECD Learning Compass 2030</i>, Future of Education and Skills 2030.
+      <a href="https://www.oecd.org/en/data/tools/oecd-learning-compass-2030.html" target="_blank" rel="noopener">oecd.org — Learning Compass 2030</a>
+    </div>
+
+    <!-- 하단 이동 -->
+    <div class="nextnav">
+      <a href="./what-is.html"><div class="nl">◀ 이전</div><div class="nt">고교학점제란?</div></a>
+      <a href="../design/" class="r"><div class="nl">다음 ▶</div><div class="nt">진로·학업 설계 시작하기</div></a>
+    </div>
+
+  </div>
+</main>
+
+<div id="om-footer"></div>
+<script src="../assets/js/common.js"></script>
+<script data-goatcounter="https://onmadang.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
