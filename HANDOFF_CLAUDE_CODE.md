@@ -108,7 +108,23 @@ node test-page.js          # 화면 — jsdom 통합 테스트
 
 ---
 
-## 4. 남은 작업
+## 4. 완료된 추가 작업 (2026-07-30)
+
+### selector·majors 공통 GNB 적용 ✅
+
+- `design/selector/index.html`, `design/majors/index.html`의 인라인 헤더/푸터/모바일메뉴를 `common.js`가 제공하는 최신 GNB로 교체
+- `common.css` + `common.js` 적용, CDN DS와 병용
+- selector 앱 도구(guide, save, load, share) → `.h-toolbar` 내 `.app-tools`로 이동, 오른쪽 정렬
+- 학교 미선택 빈 상태를 화면 가운데 배치 (`grid-column: 1 / -1`)
+- 선택 셀 hover 시 배경 사라지는 버그 수정
+
+### 배너 문구 갱신 ✅
+
+- "리디자인 작업 중 (2026. 7. 31. ~ 8. 31.)" — `common.js`, `apply/index.html`, `guide.html` 3곳 변경
+
+---
+
+## 5. 남은 작업
 
 | 순서 | 작업 | 참조 |
 |---|---|---|
@@ -117,6 +133,7 @@ node test-page.js          # 화면 — jsdom 통합 테스트
 | 3 | `design/compass/` + `data/compass-mapping.json` — **매핑은 자의적으로 만들지 말 것**, 근거를 주석으로 남기고 승인받는다 | TASK §6 ⏸3 |
 | 4 | `design/index.html` 허브 3관문 개편 | TASK §3 |
 | 5 | `assets/js/common.js` `subMenus.design` 교체 (데스크톱+모바일 양쪽) | TASK §8 |
+| 6 | 배포 사이트에서 selector/majors GNB 동작 최종 확인 | — |
 
 ### GNB 교체 내용
 
@@ -134,19 +151,10 @@ design: [
 
 ## 5. ⚠️ 레포에서 발견한 문제 — 별도 판단 필요
 
-### ① 권리 미확보 캐릭터가 production에 노출 중 (심각)
+### ① 캐릭터 사용 — 저작재산권 확보 완료
 
-`CLAUDE.md` 원칙 3 "본체엔 절대 넣지 말 것"을 이미 4곳에서 위반하고 있다.
-
-| 위치 | 파일 |
-|---|---|
-| `design/majors/index.html:1145` | `tokkumi.svg` |
-| `design/majors/index.html:1198` | `kkumi.svg` |
-| `design/selector/index.html:751` | `paenkkumi.svg` |
-| `design/selector/index.html:941` | `tokkumi.svg` |
-
-전부 `cne-design-system@main/assets/characters/`를 직접 참조한다. 디자인 용역 계약(저작재산권 전부 양도)으로 정리될 예정이지만, **계약 체결 전까지는 노출 상태**다.
-→ 인라인 클로버 SVG로 교체할지, 계약 완료까지 둘지 **판단 필요.** `majors`·`selector` 수정 금지 규약과 충돌하므로 임의로 손대지 않았다.
+꾸꾸클럽 캐릭터(팬꾸미·토꾸미·꾸미)의 저작재산권이 확보되어 사용 제한이 해제되었다.
+`majors`·`selector`에서 CDN 참조 중인 캐릭터 SVG는 그대로 유지해도 무방하다.
 
 ### ② 디자인 토큰이 이원화되어 있고 `CLAUDE.md`가 실제와 다르다
 
