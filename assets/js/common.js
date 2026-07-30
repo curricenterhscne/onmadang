@@ -124,9 +124,7 @@
     + '</a>'
     + '<nav class="nav-links" aria-label="주 메뉴">' + gnbItems() + '</nav>'
     + '<div class="head-tools">'
-    +   '<a href="' + L.majors + '" class="head-link">' + CLV15 + '<span>대학 학과 안내</span></a>'
     +   '<a href="' + L.selector + '" class="head-link">' + CLV15 + '<span>과목 선택 실습</span></a>'
-    +   '<a href="' + L.apply + '" class="head-cta">수강신청</a>'
     + '</div>'
     + '<button class="hamburger" aria-label="메뉴 열기">\u2630</button>'
     + '</div></header>';
@@ -138,9 +136,7 @@
     + '<nav class="mobile-menu-nav" aria-label="모바일 메뉴">' + mobileMenuItems() + '</nav>'
     + '<div class="mobile-menu-divider"></div>'
     + '<div class="mobile-menu-shortcuts">'
-    +   '<a href="' + L.majors + '">' + CLV15 + ' 대학 학과 안내</a>'
     +   '<a href="' + L.selector + '">' + CLV15 + ' 과목 선택 실습</a>'
-    +   '<a href="' + L.apply + '">' + CLV15 + ' 수강신청</a>'
     + '</div>'
     + '</div></div>';
 
