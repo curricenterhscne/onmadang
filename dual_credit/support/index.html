@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026학년도 2학기 고교-대학 연계 학점 인정 학교 밖 교육 과목 수업 운영 안내 협의회</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#16305C;
+    --navy-deep:#0E2244;
+    --coral:#E15B2D;
+    --paper:#F7F4EC;
+    --card:#FFFFFF;
+    --ink:#232323ff;
+    --ink:#242424;
+    --muted:#6B6F76;
+    --hair:#DFD9C8;
+    --green:#2F8F5B;
+    --danger:#B4342A;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Sans KR","Pretendard",-apple-system,sans-serif;
+    line-height:1.72;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:#F2D9C9; }
+
+  /* ---------- Ribbon ---------- */
+  .ribbon{
+    height:10px;
+    width:100%;
+    background:linear-gradient(90deg, var(--coral) 0%, var(--coral) 22%, var(--navy) 55%, var(--navy-deep) 100%);
+  }
+
+  .wrap{ max-width:760px; margin:0 auto; padding:0 24px 100px; }
+
+  /* ---------- Header ---------- */
+  header.doc-head{
+    padding:56px 0 40px;
+    border-bottom:1px solid var(--hair);
+    position:relative;
+  }
+  .eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--coral); font-weight:600; margin-bottom:18px;
+  }
+  .eyebrow .dot{ width:6px;height:6px;border-radius:50%;background:var(--coral); }
+  h1{
+    font-family:"Noto Serif KR",serif;
+    font-weight:900;
+    font-size:clamp(26px, 4.4vw, 36px);
+    line-height:1.42;
+    margin:0 0 14px;
+    color:var(--navy-deep);
+    letter-spacing:-.01em;
+  }
+  .sub-title{
+    font-family:"Noto Serif KR",serif;
+    font-weight:500;
+    font-size:16px;
+    color:var(--coral);
+    margin:0 0 22px;
+  }
+  .host-line{
+    font-size:14px; color:var(--muted); font-weight:500;
+    display:flex; gap:8px; align-items:center;
+  }
+
+  /* seal */
+  .seal{
+    position:absolute; top:52px; right:0;
+    width:82px; height:82px; border-radius:50%;
+    border:2.4px solid var(--danger);
+    color:var(--danger);
+    display:flex; align-items:center; justify-content:center;
+    font-family:"Noto Serif KR",serif; font-weight:700;
+    font-size:13px; text-align:center; line-height:1.3;
+    transform:rotate(-8deg);
+    opacity:.82;
+  }
+  .seal span{ display:block; }
+
+  /* ---------- Key info card ---------- */
+  .notice-box{
+    margin-top:34px;
+    background:var(--card);
+    border:1px solid var(--hair);
+    border-left:5px solid var(--navy);
+    border-radius:4px;
+    padding:26px 28px;
+    box-shadow:0 1px 2px rgba(20,20,20,.03);
+  }
+  .notice-box h2{
+    margin:0 0 16px;
+    font-family:"Noto Serif KR",serif;
+    font-size:15px;
+    color:var(--navy);
+    letter-spacing:.02em;
+  }
+  dl.kv{ margin:0; display:grid; grid-template-columns:88px 1fr; row-gap:12px; column-gap:14px; }
+  dl.kv dt{ font-size:13px; color:var(--muted); font-weight:700; padding-top:1px;}
+  dl.kv dd{ margin:0; font-size:15.5px; font-weight:500; }
+  dl.kv dd b{ color:var(--navy-deep); font-weight:700; }
+  dl.kv dd small{ display:block; color:var(--muted); font-size:12.8px; font-weight:400; margin-top:3px; }
+
+  /* ---------- Download CTA ---------- */
+  .dl-row{
+    margin-top:22px;
+    display:flex; flex-wrap:wrap; gap:10px;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:9px;
+    font-size:14.5px; font-weight:700;
+    padding:12px 20px; border-radius:3px;
+    text-decoration:none; cursor:pointer;
+    border:1.4px solid var(--navy);
+    transition:transform .12s ease, background .15s ease, color .15s ease;
+  }
+  .btn-primary{ background:var(--navy); color:#fff; }
+  .btn-primary:hover{ background:var(--navy-deep); transform:translateY(-1px); }
+  .btn-ghost{ background:transparent; color:var(--navy); }
+  .btn-ghost:hover{ background:var(--navy); color:#fff; transform:translateY(-1px); }
+  .btn svg{ width:15px; height:15px; flex:none; }
+  .filesize{ font-size:12px; color:var(--muted); font-weight:400; margin-left:2px;}
+
+  /* ---------- Sections ---------- */
+  section{ margin-top:52px; }
+  .sec-head{
+    display:flex; align-items:baseline; gap:12px;
+    margin-bottom:20px;
+  }
+  .sec-num{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px; color:var(--coral); font-weight:600;
+  }
+  h2.sec-title{
+    font-family:"Noto Serif KR",serif;
+    font-size:21px; font-weight:700; color:var(--navy-deep);
+    margin:0; padding-bottom:0;
+  }
+  .sec-rule{ flex:1; height:1px; background:var(--hair); }
+
+  p{ margin:0 0 14px; font-size:15px; color:#333; }
+  ul.plain{ margin:0 0 14px; padding-left:20px; }
+  ul.plain li{ margin-bottom:8px; font-size:15px; }
+  .note{
+    font-size:13.4px; color:var(--muted); background:#F1EFE6; border-radius:3px;
+    padding:10px 14px; margin:10px 0 4px;
+  }
+
+  /* table */
+  table{ width:100%; border-collapse:collapse; margin:10px 0 6px; font-size:14.3px; }
+  th,td{ padding:11px 12px; border:1px solid var(--hair); text-align:left; vertical-align:top;}
+  thead th{ background:var(--navy); color:#fff; font-weight:600; font-size:13px; }
+  tbody tr:nth-child(even){ background:#FAF8F1; }
+  tfoot td{ font-weight:700; background:#EFE9DA; }
+  td.num, th.num{ text-align:center; }
+
+  /* subsection card */
+  .card{
+    background:var(--card); border:1px solid var(--hair); border-radius:4px;
+    padding:20px 22px; margin-bottom:14px;
+  }
+  .card h3{
+    margin:0 0 10px; font-size:15.5px; font-family:"Noto Serif KR",serif; color:var(--navy);
+  }
+
+  /* timeline (진행순서 — real chronology, so numbering/marker is meaningful) */
+  .timeline{ position:relative; margin-top:6px; padding-left:26px; }
+  .timeline::before{
+    content:""; position:absolute; left:6px; top:6px; bottom:6px; width:1.6px;
+    background:var(--hair);
+  }
+  .t-item{ position:relative; padding-bottom:22px; }
+  .t-item:last-child{ padding-bottom:0; }
+  .t-item::before{
+    content:""; position:absolute; left:-26px; top:4px; width:9px; height:9px; border-radius:50%;
+    background:var(--coral); border:2px solid var(--paper); box-shadow:0 0 0 1px var(--coral);
+  }
+  .t-time{
+    font-family:"IBM Plex Mono",monospace; font-size:12.6px; color:var(--coral); font-weight:600;
+    margin-bottom:3px;
+  }
+  .t-title{ font-weight:700; font-size:15px; color:var(--navy-deep); }
+  .t-desc{ font-size:13.6px; color:var(--muted); margin-top:2px; }
+
+  /* checklist for 학생 안내 사항 */
+  .checklist{ list-style:none; margin:0 0 14px; padding:0; }
+  .checklist li{
+    display:flex; gap:10px; font-size:14.6px; margin-bottom:10px; align-items:flex-start;
+  }
+  .checklist li::before{
+    content:"✓"; color:var(--green); font-weight:700; flex:none; margin-top:1px;
+  }
+
+  /* footer */
+  footer{
+    margin-top:64px; padding-top:26px; border-top:1px solid var(--hair);
+    font-size:12.8px; color:var(--muted);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  }
+  footer .org{ font-weight:700; color:var(--navy); }
+
+  @media (max-width:560px){
+    .seal{ position:static; margin-top:18px; transform:none; }
+    dl.kv{ grid-template-columns:1fr; row-gap:6px; }
+    dl.kv dt{ padding-top:6px; }
+  }
+
+  @media print{
+    .ribbon{ background:var(--navy) !important; -webkit-print-color-adjust:exact; }
+    .btn-primary{ background:var(--navy) !important; -webkit-print-color-adjust:exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ribbon"></div>
+
+<div class="wrap">
+
+  <header class="doc-head">
+    <div class="eyebrow"><span class="dot"></span>충청남도교육청 · 중등교육과 · 참가 안내</div>
+    <div class="sub-title">2026학년도 2학기 고교-대학 연계 학점 인정 학교 밖 교육 과목</div>
+    <h1>수업 운영 안내 협의회 운영 계획</h1>
+    <div class="host-line">주관 &nbsp;충청남도교육청 중등교육과</div>
+
+    
+
+    <div class="notice-box">
+      <h2>한눈에 보는 개요</h2>
+      <dl class="kv">
+        <dt>일시</dt>
+        <dd><b>2026. 8. 13.(목) 15:00 ~ 16:00</b><small>1시간 이내 진행</small></dd>
+        <dt>방식</dt>
+        <dd>비대면 원격회의 (화상회의 플랫폼 활용)<small>접속 주소는 별도 공문·문자로 안내드립니다 · 실시간 참여가 어려운 경우 녹화 영상·자료집 별도 배포</small></dd>
+        <dt>대상</dt>
+        <dd>2026학년도 2학기 지도교수 및 대학별 담당자<small>협약 5개교 · 12개 강좌 · 지도교수 20명(연인원)</small></dd>
+        <dt>운영근거</dt>
+        <dd>2026학년도 2학기 학교 밖 교육 고교-대학 연계 학점 인정 과정 운영 계획(중등교육과-12281, 2026. 6. 11.)<small>2026 고교-대학 연계 학점 인정 과목 공동관리위원회 운영 계획 (2026. 7. 24.)</small></dd>
+      </dl>
+
+      <div class="dl-row">
+        <a class="btn btn-primary" href="./2026_2학기_수업운영안내협의회_운영계획.pdf" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+          원본 PDF 다운로드 <span class="filesize">(운영계획 전문)</span>
+        </a>
+        <a class="btn btn-ghost" href="#program">진행 순서 보기</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. 목적 -->
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">목적</h2><div class="sec-rule"></div></div>
+    <p>2026학년도 2학기 고교-대학 연계 학점 인정 과목의 원활한 개강 준비 및 운영 내실화를 위해 수업 운영 관련 사전 안내 협의회를 실시합니다.</p>
+    <p>과목 운영 시 유의 사항, 학생 대상 사전 안내 사항, 이수·미이수 처리 및 학교생활기록부 기재(객관적 학습사실) 관련 사항 등을 공유하여 강좌별 운영 편차를 최소화하고 수업 만족도를 제고하고자 합니다.</p>
+  </section>
+
+  <!-- 2. 대학별 참여 현황 -->
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">대학별 참여 현황</h2><div class="sec-rule"></div></div>
+    <table>
+      <thead>
+        <tr><th>대학명</th><th class="num">개설 강좌</th><th class="num">참여 교수(강사)</th><th class="num">선정 학생</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>공주대학교</td><td class="num">1</td><td class="num">1</td><td class="num">15</td></tr>
+        <tr><td>단국대학교</td><td class="num">5</td><td class="num">5</td><td class="num">55</td></tr>
+        <tr><td>백석대학교</td><td class="num">2</td><td class="num">6</td><td class="num">30</td></tr>
+        <tr><td>순천향대학교</td><td class="num">3</td><td class="num">3</td><td class="num">40</td></tr>
+        <tr><td>충남대학교</td><td class="num">1</td><td class="num">5</td><td class="num">15</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td>계</td><td class="num">12개 강좌</td><td class="num">20명</td><td class="num">155명</td></tr>
+      </tfoot>
+    </table>
+    <p class="note">※ 참여 교수(강사) 수는 강좌별 공동 강의(복수 교수 운영 강좌 포함) 인원을 합산한 연인원입니다.</p>
+  </section>
+
+  <!-- 3. 주요 안내 사항 -->
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">세부 추진 내용 &nbsp;· 주요 안내 사항</h2><div class="sec-rule"></div></div>
+
+    <div class="card">
+      <h3>가. 사업 개요 및 추진 경과</h3>
+      <ul class="plain">
+        <li>협약 대학(5개교) 현황, 강좌별 개설 현황(과목명·운영 기간·요일·장소·정원) 안내</li>
+        <li>2026. 7. 7. 신설 승인 심의위원회 결과 및 2026. 7. 16. 수강 신청 결과(강좌별 신청 인원) 공유</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>나. 과목 운영 시 유의사항</h3>
+      <ul class="plain">
+        <li>승인·안내된 운영계획(강좌명·수업 장소·일정·정원 등)과 실제 운영 내용의 일치 원칙 — 변경이 불가피한 경우 사전에 담당자(대학·교육청)에게 고지 후 학생에게 공지</li>
+        <li>수업 장소 접근성 안내 표준화: 지도(네이버·카카오맵) 등록 확인, 건물·호실 안내판 확인, 첫 수업 시 집결 장소·이동 동선 사전 공지</li>
+        <li>지도 강사(교수)의 수업 장소 임장 지도 필수, 대학 소속 교원이 아닌 보조요원 활용 시 성범죄·아동학대·마약류 결격사유 조회 필수</li>
+        <li>출결 관리: 지도교수가 오프라인 출석부를 1차 작성 → 대학 담당자가 확인 후 2차 제출(원본은 대학 보관, 결과보고 시 스캔본 제출)</li>
+        <li>안전사고 발생 시: 응급처치·119 신고 → 학부모 유선 연락, 도교육청 중등교육과(041-640-7221) 및 학생 소속교 사안 공유 → 휴일·야간은 담당 장학사에게 우선 공유</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>다. 학생 대상 사전 안내 사항 <small style="font-weight:400;color:var(--muted);">(첫 시간 수업 중 재안내 필수)</small></h3>
+      <p style="margin-bottom:10px;">2학기 시작 직전, 학생 대상 과목별 일괄 문자 안내 예정 — ① 첫 수업 일시·장소(찾아오는 구체적 방법) ② 첫 수업 준비물 ③ 과목별 안내사항 ④ 공통 유의사항</p>
+      <ul class="checklist">
+        <li>이수 기준: 실제 운영 수업 횟수의 2/3(22차시) 이상 출석 시 이수 인정</li>
+        <li>수강 포기 가능 기간: 수업 시작 후 2주 이내 — 기간 후 이수 기준 미도달 시 학교생활기록부에 ‘미이수’ 기록</li>
+        <li>대학 학점 인정 범위·기간 등 대학별 기준을 수강 신청 전후로 재안내</li>
+        <li>평가를 실시하더라도 그 결과(성적)는 고교 학교생활기록부에 기재되지 않음</li>
+        <li>학생 이동은 학부모 책임하에 개별 이동이 원칙 — 강좌별 준비물·복장·실습 유의사항 사전 공지</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>라. 이수·미이수 처리 및 학교생활기록부 기재('객관적 학습사실')</h3>
+      <ul class="plain">
+        <li>이수 처리: 출결 결과를 바탕으로 이수 기준 충족 여부를 확인하여 학교에 통보</li>
+        <li>학교생활기록부에는 과목명·이수 학점·객관적 학습 내용(성적 미기재)을 입력하므로, 지도교수는 강좌 종료 시 ‘객관적 학습사실’을 구체적 사실 위주로 작성하여 제출</li>
+        <li>작성 원칙: 학생들이 실제 수행한 활동·과제·산출물 등을 사실에 근거하여 구체적으로 기술 — 추상적 평가어(우수함·성실함 등), 순위·서열 표현, 성적에 준하는 표현은 지양(학생별 기록이 아닌 이수 학생 공통 기록)</li>
+      </ul>
+      <p class="note">예시&nbsp; “○○실험을 설계·수행하고 결과를 분석하여 보고서를 작성함” 등 구체적 활동·산출물 중심 서술을 권장합니다.</p>
+      <p style="margin:8px 0 0; font-size:14px;">작성 기한·제출 방법·담당자 확인(상호 검토) 절차는 협의회 당일 별도 안내됩니다.</p>
+    </div>
+
+    <div class="card">
+      <h3>마. 향후 일정 예고</h3>
+      <ul class="plain">
+        <li>운영 종료 후 제출할 ‘학교 밖 교육 이수 결과 및 운영 결과 보고서’ 서식·기한 예고</li>
+        <li>강좌별 학생 만족도 조사(모바일) 실시 예정 안내 및 협조 요청</li>
+        <li>2026. 8. 25.(화) 공동관리위원회 정기 회의 일정 예고</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. 진행 순서 -->
+  <section id="program">
+    <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">진행 순서</h2><div class="sec-rule"></div></div>
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-time">15:00 – 15:05 · 5분</div>
+        <div class="t-title">인사말씀</div>
+      </div>
+      <div class="t-item">
+        <div class="t-time">15:05 – 15:10 · 5분</div>
+        <div class="t-title">2026학년도 2학기 운영 현황 안내</div>
+        <div class="t-desc">강좌·대학·학생 참여 현황</div>
+      </div>
+      <div class="t-item">
+        <div class="t-time">15:10 – 15:25 · 15분</div>
+        <div class="t-title">과목 운영 시 유의사항</div>
+        <div class="t-desc">운영계획 준수, 장소·일정 변경 절차, 출결·안전관리 등</div>
+      </div>
+      <div class="t-item">
+        <div class="t-time">15:25 – 15:35 · 10분</div>
+        <div class="t-title">학생 대상 사전 안내 사항</div>
+        <div class="t-desc">이수기준, 수강포기 가능기간, 안전수칙 등</div>
+      </div>
+      <div class="t-item">
+        <div class="t-time">15:35 – 15:50 · 15분</div>
+        <div class="t-title">이수·미이수 처리 및 학교생활기록부 기재</div>
+        <div class="t-desc">'객관적 학습사실' 작성 요령 포함</div>
+      </div>
+      <div class="t-item">
+        <div class="t-time">15:50 – 16:00 · 10분</div>
+        <div class="t-title">질의응답 및 마무리</div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:16px;">※ 진행 상황에 따라 세부 시간은 조정될 수 있습니다.</p>
+  </section>
+
+  <!-- 5. 실시간 미참석 지도교수 방안 -->
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">부득이 참석이 어려운 경우</h2><div class="sec-rule"></div></div>
+    <ul class="plain">
+      <li>협의회 전 과정을 녹화하여 협의회 종료 후 3일 이내 개별 링크로 배포</li>
+      <li>발표 자료(PPT), 유의사항 요약본, 객관적 학습사실 작성 가이드 및 예시집을 함께 배포 — 영상 시청만으로도 내용을 충분히 파악할 수 있도록 지원</li>
+      <li>자료 열람 여부는 대학별 담당자를 통해 확인하며, 미확인자에게는 개별 안내(유선·문자) 실시</li>
+    </ul>
+  </section>
+
+  <footer>
+    <div><span class="org">충청남도교육청 중등교육과</span> · 고교 교육과정 지원센터</div>
+    <div>문의&nbsp; 041-640-7221</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
