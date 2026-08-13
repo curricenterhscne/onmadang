@@ -3,6 +3,12 @@
 > 작성 2026-07-24 · 대상 레포 `curricenterhscne/onmadang`
 > 이 문서를 먼저 읽고, 상세 설계는 `TASK_진로학업설계_안B.md`를 참조한다.
 
+> ## ⚠️ 2026-08-13 — 이 인계는 완료되었다
+> **아래 「5. 남은 작업」의 항목(`outside/`, `compass/`, 허브 3관문 개편, GNB 교체)은 전부 끝났다.**
+> 이 문서는 **재편의 배경과 설계 의도를 남긴 기록**으로만 읽을 것. 할 일 목록으로 쓰지 말 것.
+> 현재 남은 작업은 `WORKLOG.md`의 「다음 할 일」이 기준이다.
+> 설계 원칙(완주 전제 금지·검사 미구현·판정 결과지)은 `design/CLAUDE.md`로 옮겨져 계속 유효하다.
+
 ---
 
 ## 0. 한 줄 요약
@@ -121,6 +127,7 @@ node test-page.js          # 화면 — jsdom 통합 테스트
 ### 배너 문구 갱신 ✅
 
 - "리디자인 작업 중 (2026. 7. 31. ~ 8. 31.)" — `common.js`, `apply/index.html`, `guide.html` 3곳 변경
+- ※ 08-03에 수강신청 앱이 `app.html`로 이동하면서 **배너 위치도 `apply/app.html`로 옮겨졌다.** 현재 3곳은 `common.js` · `apply/app.html` · `design/selector/guide.html`이다.
 
 ---
 

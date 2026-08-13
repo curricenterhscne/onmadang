@@ -2,7 +2,7 @@
 
 > 이 파일은 Claude Code가 세션 시작 시 자동으로 읽는 프로젝트 지침입니다.
 > 레포 루트(`onmadang/`)에 두세요.
-> 최종 갱신 2026-07-24
+> 최종 검증 2026-08-13 (폴더 실측 대조)
 
 ## 프로젝트 개요
 
@@ -97,7 +97,7 @@
 - `common.js`가 placeholder를 **`outerHTML`로 교체**한다. 실행 후 `#om-header`는 사라지는 것이 정상이다.
 - base 경로는 자기 `<script src>`에서 자동 계산하므로 경로를 정확히 쓸 것.
 - GNB·모바일 메뉴·리뉴얼 배너·클로버 SVG defs가 함께 주입된다.
-- `data-active` 값: `home` `design` `safety` `board`
+- `data-active` 값: `home` `about` `design` `safety` `board`
 
 ### 공통 헤더가 제공하는 전역 유틸
 
@@ -116,10 +116,12 @@
 
 | # | 대메뉴 | 폴더 | 하위 | 상태 |
 |---|---|---|---|---|
-| 1 | **고교학점제 안내** | `about/` | 고교학점제란? / 학생 주도성과 고교학점제 | ❌ 미구축 (P0) |
-| 2 | **진로·학업 설계** | `design/` | 아래 참조 | ⚠️ 재편 중 |
+| 1 | **고교학점제** | `about/` | 고교학점제란? / 학생 주도성과 고교학점제 | ✅ 완료 |
+| 2 | **진로·학업 설계** | `design/` | 아래 참조 | ✅ 3관문 재편 완료 |
 | 3 | **4대 안전망** | `safety/` | 학교 교육과정 / 충남온라인학교 / 공동교육과정 / 학교 밖 교육 | ✅ 완료 |
 | 4 | **알림·소통 마당** | `board/` | 공지사항 / 자료실 | ✅ 기능 완료 (게시글 입력만 남음) |
+
+> GNB 표기는 `common.js` 기준 **「고교학점제」**다(「고교학점제 안내」가 아니다).
 
 ### 「진로·학업 설계」 = 질문 3관문 구조 (2026-07 재편)
 
@@ -130,13 +132,13 @@
 
 > ① 뭘 골라야 할지 모르겠어요 · ② 우리 학교에 뭐가 있는지 모르겠어요 · ③ 내가 고른 게 맞는지 모르겠어요
 
-| 하위 | 경로 | 역할 |
-|---|---|---|
-| 진로 나침반 | `design/compass/` | 커리어넷 검사 결과 → 계열 후보 제시 (검사 자체는 만들지 않음) |
-| 학과·과목 탐색 | `design/majors/` | 학과 → 권장과목 → selector 브리지 |
-| 과목 선택 실습 | `design/selector/` | 학교 편성표 시뮬레이션 |
-| 내 선택 점검 | `design/check/` | selector 내보내기 파일 → 판정 7종 + A4 점검표 |
-| (본문 링크만) | `design/outside/` | 학교에 없는 과목 듣는 법 |
+| 하위 | 경로 | 역할 | 상태 |
+|---|---|---|---|
+| 진로 나침반 | `design/compass/` | 커리어넷 검사 결과 → 계열 후보 제시 (검사 자체는 만들지 않음) | ✅ |
+| 학과·과목 탐색 | `design/majors/` | 학과 → 권장과목 → selector 브리지 | ✅ |
+| 과목 선택 실습 | `design/selector/` | 학교 편성표 시뮬레이션 | ✅ |
+| 내 선택 점검 | `design/check/` | selector 내보내기 파일 → 판정 7종 + A4 점검표 | ✅ |
+| (본문 링크만) | `design/outside/` | 학교에 없는 과목 듣는 법 | ✅ |
 
 **설계 원칙**
 - 어느 지점에서 들어와도 그 화면 하나만으로 값을 준다. "1단계부터 하세요" 류 문구 금지. 번호는 순서가 아니라 이름표다.
@@ -157,6 +159,10 @@
 | ③ 공동교육과정 수강신청 | 외부 (신규 개발 중) → 현재 `safety/enrollment-closed.html`로 안내 | 외부 링크 |
 | ⓪ 디자인 시스템 | CDN (`curricenterhscne/cne-design-system`) | CDN 참조 |
 
+> **마감 안내 페이지가 두 개다. 용도가 다르니 섞지 말 것.**
+> `safety/enrollment-closed.html` = **공동교육과정** 수강신청 안내 (자산③)
+> `apply/index.html` = **고교-대학 연계 학점 인정(학교 밖 교육)** 수강신청 마감 안내
+
 **①↔② 브리지**: 학과 모달 → `?want=&core=&majorId=` → selector 자동선택 → 토스트.
 이 로직은 ①②가 이미 보유. 브리지 URL은 상대경로(`../selector/`).
 
@@ -173,24 +179,57 @@
 | `board/CLAUDE.md` | ✅ |
 | `design/CLAUDE.md` | ✅ |
 | `design/majors/CLAUDE.md` · `design/selector/CLAUDE.md` | ✅ (수정 금지 경계·데이터 명세) |
-| `dual_credit/CLAUDE.md` | ✅ |
-| `safety/` · `off-campus_courses/` | ❌ 없음 — 정적 콘텐츠 페이지라 별도 문서를 두지 않는다 |
+| `dual_credit/CLAUDE.md` | ✅ (`support/` 포함) |
+| `about/` · `safety/` · `off-campus_courses/` · `resources/` | ❌ 없음 — 정적 콘텐츠 페이지라 별도 문서를 두지 않는다 |
+
+### 학생·교사용 본체 (GNB에서 도달 가능)
 
 | 폴더 | 성격 | 공통 헤더/푸터 | 핵심 파일 | 비고 |
 |---|---|---|---|---|
-| `about/` | 고교학점제 안내 | ✅ 사용 | — | **미구축 (P0)** |
-| `apply/` | 수강신청 앱 (Supabase) | ❌ 독립 | `index.html`, `_embed_data.js` | 실시간 좌석 예약 |
+| `about/` | 고교학점제 안내 | ✅ 사용 | `index.html` `what-is.html` `student-agency.html` | ✅ 구축 완료 |
+| `apply/` | 수강신청 | 파일별로 다름 ⚠️ | **`app.html`**(앱, ❌독립) · `index.html`(마감 안내, ✅사용) · `_embed_data.js` | **앱은 `app.html`이다** — `apply/CLAUDE.md` 필독 |
 | `apply/admin/` | 수강신청 관리자 대시보드 | ❌ 독립 | `index.html` | Edge Functions API |
 | `board/` | 공지·자료실 | ✅ 사용 | `index.html` `notice.html` `resources.html` `resource-view.html` | GitHub Issues API (라벨 `공지`/`자료`) |
 | `dual_credit/` | 강좌 안내·카탈로그 | ✅ 사용 | `index.html`, `courses.html` | DATA 인라인 |
-| `design/` | 진로·학업 설계 허브 | ✅ 사용 | `index.html` | 3관문 구조로 재편 중 |
+| `design/` | 진로·학업 설계 허브 | ✅ 사용 | `index.html` | ✅ 3관문 재편 완료 |
 | `design/check/` | 내 선택 점검 | ✅ 사용 | `index.html` | 판정 7종 · A4 인쇄 |
-| `design/compass/` | 진로 나침반 | ✅ 사용 | — | 예정 |
-| `design/outside/` | 미개설 과목 대안 | ✅ 사용 | — | 예정 |
+| `design/compass/` | 진로 나침반 | ✅ 사용 | `index.html` | ✅ 구현 완료 |
+| `design/outside/` | 미개설 과목 대안 | ✅ 사용 | `index.html` | ✅ 구현 완료 (GNB 미노출, 허브 본문 링크) |
 | `design/majors/` | 대학 학과 안내 (자산①) | ✅ 사용 + CDN DS | `index.html`, `app.js` | 기존 로직 유지 |
 | `design/selector/` | 과목 선택 실습 (자산②) | ✅ 사용 + CDN DS | `index.html`, `guide.html` | 기존 로직 유지 |
-| `safety/` | 4대 안전망 페이지들 | ✅ 사용 | 5개 HTML | 정적 콘텐츠 |
-| `off-campus_courses/` | 학교 밖 교육 강좌 | ✅ 사용 | `index.html` | — |
+| `safety/` | 4대 안전망 페이지들 | ✅ 사용 | HTML 6개 (`index` + 4대 안전망 4개 + `enrollment-closed`) | 정적 콘텐츠. 기획 메모 `.md` 1개 동거 |
+
+### ⚠️ 링크되지 않는 부속 페이지 (직접 URL 배포용)
+
+**GNB·본문 어디에서도 링크되지 않는다.** 담당자가 URL을 직접 배포하는 문서형 페이지들이다.
+사이트를 훑어서는 발견되지 않으므로, **"죽은 링크 0" 점검이나 일괄 수정 작업에서 빠뜨리기 쉽다.**
+지워도 내부 죽은 링크는 생기지 않지만 **외부에 배포된 URL이 깨진다.** 임의로 정리하지 말 것.
+
+| 경로 | 규모 | 성격 | 공통 헤더 |
+|---|---|---|---|
+| `off-campus_courses/index.html` | 약 1,120줄 | 2026-2학기 학교 밖 교육 과목 **심의 자료** (학생용 강좌 안내가 아니다) | ❌ |
+| `off-campus_courses/dream_up_26-s.html` | 약 523줄 | 2026 여름방학 꿈키움 강좌 안내 | ❌ |
+| `off-campus_courses/dream_up26-1/` | 약 258줄 | 2026-1학기 꿈키움 이수 결과 확인 | ❌ |
+| `dual_credit/support/` | 약 401줄 + PDF | 수업 운영 안내 협의회 | ❌ |
+| `resources/teacher/online_class/` | 약 793줄 + PDF 19개 | 온라인 공동교육과정 교수·학습 도움 자료집 | ❌ |
+| `2015/index.html` | 22줄 | `onmadang.or.kr` 리다이렉트 (구 URL 호환) | ❌ |
+| `pilot001.html` | 약 556줄 | 홈 **구 시안**. DS v1.0을 인라인으로 들고 있다 | ❌ |
+
+> 학생 동선에 있는 **「학교 밖 교육」은 `safety/off-campus_courses.html`**이다.
+> 폴더 `off-campus_courses/`와 이름이 같지만 **다른 것**이다. 혼동 주의.
+
+### 접속 통계 — GoatCounter
+
+`https://onmadang.goatcounter.com/count` 스니펫을 페이지마다 **인라인으로** 넣는다 (`common.js`가 주입하지 않는다).
+
+```html
+<script data-goatcounter="https://onmadang.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+```
+
+- 적용됨(19개): `index.html`, `about/`(3), `apply/index.html`, `board/`(4), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `safety/`(6)
+- **미적용**: `apply/app.html`, `apply/admin/`, `design/check/`, `design/majors/`, `design/selector/`(+`guide.html`), `dual_credit/courses.html`, 위 「링크되지 않는 부속 페이지」 전부
+- 새 페이지를 만들면 **직접 넣어야 한다.** 관리자 페이지(`apply/admin/`)에는 넣지 않는다.
 
 ### 공유 모듈 (`design/`)
 
@@ -233,6 +272,8 @@
 - 절대경로 내부 링크 ❌
 - 빌드 도구·프레임워크 임의 도입 ❌
 - GNB 순서 변경 ❌
+- 「링크되지 않는 부속 페이지」를 안 쓰는 파일로 보고 정리 ❌ → 외부 배포 URL이 깨진다
+- 수강신청 앱을 고치라는 요청에 `apply/index.html`을 열기 ❌ → 앱은 `apply/app.html`이다
 - 본체 페이지에 `var(--color-*)` 사용 ❌ → 존재하지 않는 토큰이다
 - 학생 정보를 서버·localStorage에 저장 ❌
 - 완주를 전제하는 선형 구조 ❌ (실패 전례 있음)

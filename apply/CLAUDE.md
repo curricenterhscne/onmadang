@@ -1,18 +1,32 @@
 # CLAUDE.md — 수강신청 앱 (apply/)
 
-> **독립 앱**. 온마당 공통 헤더/푸터(`common.js`) 미사용 — 자체 헤더를 인라인으로 가짐. Supabase 백엔드 연동.
-> 최종 검증 2026-07-24 (수치·함수명·API 실측 대조 완료)
+> 폴더 안에 **성격이 다른 두 페이지**가 있다. 헤더 규칙이 서로 다르니 아래 표를 먼저 볼 것.
+> 최종 검증 2026-08-13 (실측)
 
 ## 개요
 
 고교-대학 연계 학점 인정 **수강신청 웹앱**.
 선착순 좌석 예약 → 3분 타이머 → 정보 입력 → 확정 흐름.
 
+## ★ index.html ≠ 앱 (2026-07-31 이후)
+
+수강신청이 마감되면서 **앱을 `app.html`로 옮기고, `index.html`은 마감 안내 페이지로 교체**했다.
+"apply 앱을 고쳐 달라"는 요청을 받으면 **`app.html`을 열 것.** `index.html`이 아니다.
+
+| 파일 | 성격 | 공통 헤더 | 비고 |
+|---|---|---|---|
+| `app.html` | 수강신청 앱 본체 (약 1,576줄) | ❌ 미사용 — 자체 헤더 인라인 | 독립 앱 |
+| `index.html` | 마감 안내 (약 60줄) | ✅ **사용** (`common.css` + `common.js`, `data-active="safety"`) | 정적 페이지 |
+
+- 다음 신청 기간이 열리면 `index.html`을 `app.html` 내용으로 되돌리거나 리다이렉트를 건다. 이때 **어느 쪽이 앱인지 이 표를 먼저 갱신할 것.**
+- `dual_credit/`의 "수강 신청하기" 버튼 4곳은 모두 `../apply/index.html`을 가리킨다. 마감 기간에는 안내 페이지로 가는 것이 **의도된 동작**이다. 신청 기간을 다시 열 때 이 링크들의 목적지를 함께 점검한다.
+
 ## 폴더 구조
 
 ```
 apply/
-├─ index.html       ← 수강신청 앱 전체 (약 1,580줄, 스타일·로직 인라인)
+├─ index.html       ← 마감 안내 페이지 (약 60줄, 공통 헤더 사용)
+├─ app.html         ← 수강신청 앱 전체 (약 1,576줄, 스타일·로직 인라인, 독립 헤더)
 ├─ _embed_data.js   ← 정적 데이터 (SCHOOLS 122개, COURSE_DETAILS 14개)
 │                     ⚠️ 파일 전체가 3줄. 한 줄에 거대 배열이 들어 있어 수동 편집 위험
 └─ admin/
@@ -72,13 +86,16 @@ _embed_data.js (정적)          Supabase RPC (실시간)
 ## 핵심 주의사항
 
 1. **_embed_data.js에 제어문자 금지** — `creditRecognition` 등 멀티라인 필드에 실제 줄바꿈(U+000A)이 들어가면 JS 파싱 실패 → 사이트 먹통. 반드시 JSON `\n` 이스케이프 사용. Python `json.dumps()`로 재직렬화하면 자동 처리됨.
-2. **Supabase 접속 정보** — `SUPABASE_URL`과 `SUPABASE_ANON_KEY`가 index.html에 하드코딩됨 (anon key이므로 RLS로 보호).
+2. **Supabase 접속 정보** — `SUPABASE_URL`과 `SUPABASE_ANON_KEY`가 **`app.html`**에 하드코딩됨 (anon key이므로 RLS로 보호).
 3. **serverTimeDiff** — 클라이언트-서버 시간차 보정. 모든 카운트다운은 `Date.now() + serverTimeDiff` 사용.
 4. **z-index 계층** (실측) — `.onmadang-header` 9000 · backdrop 9100 · 학교 자동완성 9200 · 토스트 9300 · `.om-mobile-menu` 9500.
    새 오버레이는 이 사이 값을 쓰고 목록을 갱신할 것.
 5. **학번 형식** — `학년-반(2자리)-번호(2자리)`, e.g. `"2-01-15"`.
 6. **학년 제한** — 전체 강좌가 1~2학년 대상이므로 3학년 옵션 제거됨. `gradeRestricted` 강좌는 확정 시 학년 검증하여 차단.
 7. **강좌 안내 링크** — `../dual_credit/`로 연결 (off-campus_courses 아님).
+8. **`app.html`의 GNB는 손으로 관리한다** — `common.js`를 안 쓰므로 GNB가 자동 동기화되지 않는다. 온마당 메뉴가 바뀌면 `app.html`의 데스크톱 nav(`.onmadang-links`)와 모바일 nav(`.om-mobile-nav`) **양쪽을 직접 고쳐야 한다.** (2026-08-13에 `알림·소통 마당`이 홈으로 가던 오류와 `고교학점제` 메뉴 누락을 이 방식으로 정정했다.)
+9. **리디자인 배너 문구는 3곳에 중복** — `assets/js/common.js`, **`apply/app.html`**, `design/selector/guide.html`. 수정 시 3곳 동시 변경. (`apply/index.html`은 `common.js`가 주입하므로 별도 수정 불필요.)
+10. **GoatCounter 미적용** — `index.html`(마감 안내)에는 있으나 `app.html`·`admin/`에는 없다. 루트 `CLAUDE.md`의 접속 통계 절 참조.
 
 ## 관리자 페이지 (admin/)
 
@@ -121,6 +138,8 @@ UPDATE courses SET enrolled_count = (
 
 ## 하지 말 것
 
-- 온마당 공통 헤더/푸터(`common.js`) 적용 ❌ — 독립 앱
+- **`app.html`에** 온마당 공통 헤더/푸터(`common.js`) 적용 ❌ — 독립 앱이다
+  (반대로 `index.html`은 공통 헤더를 **쓴다.** 여기서 걷어내지 말 것)
+- 앱을 고치라는 요청에 `index.html`을 열기 ❌ — 앱은 `app.html`이다
 - Supabase RPC 함수 시그니처 변경 ❌ — DB 함수와 일치해야 함
 - _embed_data.js를 수동 편집할 때 제어문자 삽입 ❌
