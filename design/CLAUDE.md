@@ -1,7 +1,7 @@
 # CLAUDE.md — 진로·학업 설계 (design/)
 
-> 온마당 공통 헤더/푸터 사용. 단 `majors/`·`selector/`는 예외(각 폴더 문서 참조).
-> 최종 갱신 2026-07-24
+> 온마당 공통 헤더/푸터 사용. `majors/`·`selector/`는 여기에 더해 CDN 디자인 시스템을 함께 쓴다(각 폴더 문서 참조).
+> 최종 검증 2026-08-13 (실측) — **3관문 재편 전 항목 완료**
 
 ## 개요
 
@@ -32,28 +32,29 @@ GNB 2번 「진로·학업 설계」. **학생이 자신의 진로·학업 설�
 
 ```
 design/
-├─ index.html          허브 (3관문)                      ⚠️ 아직 구 5단계 카드 — 개편 예정
-├─ compass/            ① 진로 나침반 — 검사 결과 → 계열 후보   ⏳ 미구현
+├─ index.html          허브 (3관문, 약 129줄)                ✅ 개편 완료
+├─ compass/            ① 진로 나침반 — 검사 결과 → 계열 후보   ✅ 약 237줄
 ├─ majors/             ① 학과·과목 탐색 (자산, 수정 금지)      ✅
 ├─ selector/           ② 과목 선택 실습 (자산, 수정 금지)      ✅
 ├─ check/              ③ 내 선택 점검 — 판정 7종 + A4 점검표   ✅ 구현·검증 완료
-├─ outside/            학교에 없는 과목 듣는 법 (GNB 미노출)    ⏳ 미구현
+├─ outside/            학교에 없는 과목 듣는 법 (GNB 미노출)    ✅ 약 101줄
 ├─ js/                 jinro-plan.js · jinro-verify.js      ✅
 ├─ css/                jinro.css (공용 + A4 인쇄)           ✅
 ├─ data/               콘텐츠 JSON 17종                     ✅
 └─ _dev/               테스트. 배포 산출물 아님               ✅
 ```
 
-> ⏳ 표시는 **아직 폴더가 없다.** 이 문서가 먼저 들어와 있는 것이므로, 없다고 해서 잘못된 상태가 아니다.
-> `design/index.html`도 아직 구 5단계 카드 구조이며 개편 대기 중이다.
+허브는 `.gate` 카드 3장 + 하단 `outside/` 안내 링크 구조다. `check/`·`compass/`·`outside/`는 `css/jinro.css`를 공유한다.
 
-### 진행 순서 (2026-07)
+### 진행 순서 (2026-07) — **전 항목 완료 (2026-08-13 확인)**
 
-1. `check/` A4 인쇄 실물 확인 → 넘치면 조정
-2. `outside/` 신규 (짧음)
-3. `compass/` + `data/compass-mapping.json` — **매핑은 자의적으로 만들지 말 것.** 근거를 주석으로 남기고 승인받는다
-4. `index.html` 허브 3관문 개편
-5. `assets/js/common.js`의 `subMenus.design` 교체 (데스크톱+모바일 양쪽)
+1. ✅ `check/` A4 인쇄 실물 확인
+2. ✅ `outside/` — `safety/`의 온라인학교·공동교육과정·학교 밖 교육 3개로 연결
+3. ✅ `compass/` + `data/compass-mapping.json` — 커리어넷 검사 3종(직업흥미 `INSPCT_SEQ=17`, 직업적성 `=6`, 직업가치관 `=5`) 링크 + `compass-mapping.json`·`holland-interest-types.json`·`recommended-subjects.json` fetch
+4. ✅ `index.html` 허브 3관문 개편
+5. ✅ `assets/js/common.js`의 `subMenus.design` 교체 — 나침반·탐색·실습·점검 4개 (데스크톱+모바일 공용 배열이라 한 곳만 고치면 된다)
+
+> **`compass/`의 매핑 근거는 아직 검토 대상이다.** 화면은 동작하지만 `compass-mapping.json`의 계열 연결 타당성은 별도 확인이 필요하다.
 
 ## 설계 원칙 (반드시 지킬 것)
 
@@ -127,6 +128,9 @@ cd design/_dev && npm install jsdom && node test-verify.js && node test-page.js
 ```
 
 기대값: `실행 성공 187건 / 실패 0건`, `판정 항목 수: 7`, `h1 개수: 1`
+
+`test-page.js`는 디버그 덤프 `_dev/sample-export.json`을 남긴다. **gitignore 대상이다.**
+(2026-08-13 이전에는 이 덤프를 **레포 루트**에 썼다. 루트 `sample-export.json`이 다시 보이면 이 경로가 되돌아간 것이니 고칠 것.)
 
 ## 하지 말 것
 

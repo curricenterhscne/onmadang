@@ -1,20 +1,39 @@
 # CLAUDE.md — 고교-대학 연계 학점 인정 강좌 (dual_credit/)
 
 > 온마당 공통 헤더/푸터 사용. 강좌 데이터는 HTML 내 인라인.
-> 최종 검증 2026-07-24 — **함수명 오류 1건 정정**(`openDetail` → `openModal`)
+> 최종 검증 2026-08-13 (실측) — apply 경로 정정 · `support/` 추가
 
 ## 개요
 
 고교-대학 연계 학점 인정 프로그램 **안내 + 강좌 카탈로그**.
-수강신청 자체는 `apply/index.html`에서 처리.
+수강신청 앱 본체는 **`apply/app.html`**이다 (`apply/index.html`이 아니다 — 자세한 내용은 `apply/CLAUDE.md`).
 
 ## 폴더 구조
 
 ```
 dual_credit/
 ├─ index.html     ← 프로그램 안내 랜딩 (정적, FAQ 아코디언)
-└─ courses.html   ← 강좌 카탈로그 (DATA 배열 인라인, 필터·검색·상세 모달)
+├─ courses.html   ← 강좌 카탈로그 (DATA 배열 인라인, 필터·검색·상세 모달)
+└─ support/
+   ├─ index.html  ← 수업 운영 안내 협의회 안내 (약 401줄, 공통 헤더 미사용)
+   └─ 2026_2학기_수업운영안내협의회_운영계획.pdf
 ```
+
+> `support/`는 **GNB·본문 어디에서도 링크되지 않는다.** 협의회 참석자에게 URL을 직접 배포하는 페이지다.
+> 지운다고 사이트에 죽은 링크가 생기지는 않지만, 외부에 뿌려진 URL이 깨진다.
+
+## 수강신청 링크 (⚠️ 마감 상태 확인 필요)
+
+"수강 신청하기" 버튼이 **4곳**에 있고 전부 `../apply/index.html`을 가리킨다.
+
+| 위치 | 형태 |
+|---|---|
+| `courses.html:231` | 상단 CTA |
+| `courses.html:278` | `goSignup()` — `window.location.href` |
+| `index.html:199` · `:359` · `:508` | 본문 CTA 3곳 |
+
+현재 `apply/index.html`은 **마감 안내 페이지**이므로 마감 기간에는 이것이 의도된 동작이다.
+**신청 기간을 다시 열 때 4곳의 목적지를 `app.html`로 바꿀지 함께 결정할 것.** 한 곳만 고치면 안 된다.
 
 ## courses.html DATA 배열 구조
 
@@ -89,7 +108,7 @@ dual_credit/
 | `closeModal(e)` | 오버레이 클릭 / ESC로 모달 닫기 |
 | `buildScheduleHTML(schedule)` | `일정` 배열 → 수업 일정 테이블 HTML |
 | `toggleField()` / `setInst()` / `clearFields()` | 필터 UI 조작 |
-| `goSignup()` | `apply/`로 이동 |
+| `goSignup()` | `../apply/index.html`로 이동 (현재 마감 안내) |
 
 > ⚠️ 이전 문서에 `openDetail(idx)`로 적혀 있었으나 **그런 함수는 존재하지 않는다.** 실제 이름은 `openModal(idx)`이다.
 
@@ -107,4 +126,5 @@ CARD_COLORS = {
 - DATA 배열만 수정하고 apply/_embed_data.js를 빠뜨리기 ❌
 - `일정`의 `시작`/`종료` 없이 `차시`의 `시작시간`만 채우기 ❌ (둘 다 채워야 함)
 - index.html의 통계 수치(대학 수, 강좌 수 등)를 DATA와 불일치시키기 ❌
+- 수강신청 링크 4곳 중 일부만 고치기 ❌
 - 이 문서의 함수명·필드명을 확인 없이 신뢰하기 ❌ → 코드를 열어 대조할 것
