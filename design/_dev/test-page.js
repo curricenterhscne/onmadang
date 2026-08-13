@@ -45,7 +45,8 @@ const exportFile = {
   selections: autoSelect(catalog, 1), preset: null,
   summary: { totalCredits: R0.totals.total, changcheCredits: R0.totals.changche, groupBreakdown: bd }
 };
-fs.writeFileSync(`${ROOT}/sample-export.json`, JSON.stringify(exportFile, null, 2));
+// 디버그용 덤프. 배포 대상이 아니므로 _dev/ 안에만 쓴다 (레포 루트로 새어나가지 않게).
+fs.writeFileSync(`${__dirname}/sample-export.json`, JSON.stringify(exportFile, null, 2));
 
 /* ── 로컬 파일 fetch 셰임 ──────────────────────────────────── */
 function makeFetch(baseDir) {

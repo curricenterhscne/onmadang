@@ -4,3 +4,7 @@
 design/_dev/node_modules/
 design/_dev/package.json
 design/_dev/package-lock.json
+design/_dev/sample-export.json
+
+# test-page.js가 예전에 레포 루트로 흘려보내던 덤프. 다시 생기면 안 된다.
+/sample-export.json
