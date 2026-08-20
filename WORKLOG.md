@@ -4,6 +4,19 @@
 
 ---
 
+## 2026-08-20 (4): `dual_credit/inform/` 문서 등록
+
+세션 밖(GitHub 웹)에서 `dual_credit/inform/`이 추가되어(`bb0fc17` `876fe02` `01c4ef4`) 문서에 등록했다.
+
+- `dual_credit_2026_2_start.html` (약 698줄) — **수강 확정 학생용 2026-2학기 수업 시작 안내**
+- 공통 헤더·GoatCounter 미적용, 자체 스타일(Noto Serif KR + Pretendard)
+- GNB·본문 어디서도 링크되지 않는다 → 루트 `CLAUDE.md`의 「링크되지 않는 부속 페이지」 표에 추가
+- 학기마다 새 파일이 늘 수 있다 (`dual_credit_{연도}_{학기}_start.html` 형태)
+
+> `support/`(협의회 참석자용)와 `inform/`(학생용)은 **대상이 다르다.** 섞지 말 것.
+
+---
+
 ## 2026-08-20 (3): 상단 「리디자인 작업 중」 배너 제거
 
 GNB 위에 떠 있던 안내 배너를 **3곳에서 모두** 걷어냈다.

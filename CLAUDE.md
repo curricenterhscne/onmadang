@@ -228,6 +228,7 @@
 | `off-campus_courses/dream_up_26-s.html` | 약 523줄 | 2026 여름방학 꿈키움 강좌 안내 | ❌ |
 | `off-campus_courses/dream_up26-1/` | 약 258줄 | 2026-1학기 꿈키움 이수 결과 확인 | ❌ |
 | `dual_credit/support/` | 약 401줄 + PDF | 수업 운영 안내 협의회 | ❌ |
+| `dual_credit/inform/dual_credit_2026_2_start.html` | 약 698줄 | 2026-2학기 고교-대학 연계 과목 **수업 시작 안내** (수강 확정 학생 대상). `readme.md` 동거 | ❌ |
 | `resources/teacher/online_class/` | 약 793줄 + PDF 19개 | 온라인 공동교육과정 교수·학습 도움 자료집 | ❌ |
 | `dual_credit/courses.html` | 약 520줄 | 학기별 개설 강좌 카탈로그. **2026-08-20에 링크를 걷어냈다** (`dual_credit/CLAUDE.md` 참조) | ✅ |
 | `2015/index.html` | 22줄 | `onmadang.or.kr` 리다이렉트 (구 URL 호환) | ❌ |
