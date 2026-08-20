@@ -23,13 +23,20 @@ dual_credit/
 ├─ curriculum.html   ← 과목 교육과정 문서 (전자책 레이아웃, 원본 문서를 스코프해 이식)
 ├─ courses.html      ← 강좌 카탈로그 (DATA 배열 인라인) — 현재 어디서도 링크되지 않음
 ├─ enroll.js         ← 수강 신청 기간 개폐 제어 (index·courses 공용)
-└─ support/
-   ├─ index.html  ← 수업 운영 안내 협의회 안내 (약 401줄, 공통 헤더 미사용)
-   └─ 2026_2학기_수업운영안내협의회_운영계획.pdf
+├─ support/
+│  ├─ index.html  ← 수업 운영 안내 협의회 안내 (약 401줄, 공통 헤더 미사용)
+│  └─ 2026_2학기_수업운영안내협의회_운영계획.pdf
+└─ inform/
+   ├─ dual_credit_2026_2_start.html  ← 2026-2학기 수업 시작 안내 (약 698줄, 공통 헤더 미사용)
+   └─ readme.md
 ```
 
-> `support/`는 **GNB·본문 어디에서도 링크되지 않는다.** 협의회 참석자에게 URL을 직접 배포하는 페이지다.
+> `support/`와 `inform/`은 **GNB·본문 어디에서도 링크되지 않는다.** 대상자에게 URL을 직접 배포하는 페이지다.
 > 지운다고 사이트에 죽은 링크가 생기지는 않지만, 외부에 뿌려진 URL이 깨진다.
+>
+> - `support/` — 수업 운영 안내 **협의회 참석자**(교사·대학 담당자)용
+> - `inform/` — **수강 확정 학생**용 수업 시작 안내. 자체 스타일(Noto Serif KR + Pretendard)을 쓰고 공통 헤더·GoatCounter 모두 미적용이다.
+>   학기마다 새 파일이 추가될 가능성이 있다 (`dual_credit_{연도}_{학기}_start.html` 형태).
 
 ### ⚠️ `courses.html`은 2026-08-20부터 링크되지 않는다
 
