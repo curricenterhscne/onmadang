@@ -50,6 +50,8 @@
 4. **디자인 토큰 우선** — raw 색값 직접 사용 금지. **아래 「디자인 토큰」 절의 실제 이름을 쓸 것.**
 5. **웹 접근성(KWCAG)** — svg `aria-label`, 이미지 `alt`, landmark, 키보드 포커스, 색대비 준수.
    - 상태·판정은 **색만으로 구분하지 않는다.** 텍스트를 항상 병기한다.
+5-1. **문체 — 건조하고 정중하게 사실만.** 홍보·설득 톤을 쓰지 않는다. 느낌표·구호·감탄 표현을 쓰지 않고, 혜택을 단정하는 대신 조건을 함께 적는다.
+   (예: ❌ "고교 학점과 대학 학점을 동시에!" → ✅ "이수한 학생에게 고등학교 학점을 인정하며, 해당 대학에 진학하는 경우 그 대학의 학칙에 따라 대학 학점을 추가로 인정합니다.")
 6. **회원가입·서버 저장 0** — 학생 개인정보를 서버로 보내지 않는다. `apply/`의 Supabase는 수강신청 전용이며 다른 기능에서 접근 금지.
 7. **2022 개정 교육과정 단일 기준** — 2015 개정 데이터·분기를 새로 만들지 않는다.
 8. **★ 추정하지 말고 실측할 것** — 토큰 이름, 데이터 구조, 내보내기 스키마는 **문서가 아니라 실제 파일을 열어 확인한다.** 이 문서의 기술도 시간이 지나면 어긋날 수 있다. (2026-07 시점에 실제로 토큰 이름과 데이터 신뢰도가 문서와 달랐던 전례가 있다.)
@@ -98,6 +100,18 @@
 - base 경로는 자기 `<script src>`에서 자동 계산하므로 경로를 정확히 쓸 것.
 - GNB·모바일 메뉴·리뉴얼 배너·클로버 SVG defs가 함께 주입된다.
 - `data-active` 값: `home` `about` `design` `safety` `board`
+
+### ⚠️ `common.css`는 요소 선택자에도 스타일을 건다
+
+외부에서 만든 문서를 이 사이트로 이식할 때 **클래스 충돌만 보면 안 된다.**
+
+| 선택자 | 효과 | 이식 시 조치 |
+|---|---|---|
+| `header{position:sticky;top:0;z-index:100}` | 문서 안의 `<header>`가 화면 상단에 고정되어 **GNB를 침범한다** | `<div>`로 바꾼다 |
+| `.wrap{max-width:var(--maxw)}` | 원본이 `.wrap`을 쓰면 폭이 깨진다 | 원본 CSS를 자체 래퍼 클래스 아래로 스코프 |
+| `*{margin:0;padding:0}` · `a{color:inherit}` | 원본의 기본 여백·링크색이 사라진다 | 필요한 값을 스코프 안에서 다시 지정 |
+
+(2026-08-20 `dual_credit/curriculum.html` 이식 때 `header`와 `.wrap` 둘 다 실제로 깨졌다.)
 
 ### 공통 헤더가 제공하는 전역 유틸
 
@@ -157,6 +171,7 @@
 | ① 대학 학과·권장 과목 | `design/majors/` (폴더 통합) | 내부 상대경로 |
 | ② 과목 선택 실습 | `design/selector/` (폴더 통합) | 내부 상대경로 |
 | ③ 공동교육과정 수강신청 | 외부 (신규 개발 중) → 현재 `safety/enrollment-closed.html`로 안내 | 외부 링크 |
+| ④ 고교-대학 연계 과목 교육과정 | `dual_credit/curriculum.html` (원본 문서 이식) | 내부 상대경로 |
 | ⓪ 디자인 시스템 | CDN (`curricenterhscne/cne-design-system`) | CDN 참조 |
 
 > **마감 안내 페이지가 두 개다. 용도가 다르니 섞지 말 것.**
@@ -190,7 +205,7 @@
 | `apply/` | 수강신청 | 파일별로 다름 ⚠️ | **`app.html`**(앱, ❌독립) · `index.html`(마감 안내, ✅사용) · `_embed_data.js` | **앱은 `app.html`이다** — `apply/CLAUDE.md` 필독 |
 | `apply/admin/` | 수강신청 관리자 대시보드 | ❌ 독립 | `index.html` | Edge Functions API |
 | `board/` | 공지·자료실 | ✅ 사용 | `index.html` `notice.html` `resources.html` `resource-view.html` | GitHub Issues API (라벨 `공지`/`자료`) |
-| `dual_credit/` | 강좌 안내·카탈로그 | ✅ 사용 | `index.html`, `courses.html` | DATA 인라인 |
+| `dual_credit/` | 고교-대학 연계 안내 + 신청 개폐 | ✅ 사용 | `index.html`(제도 안내), `curriculum.html`(과목 교육과정) | 신청 링크는 `enroll.js`가 제어. `courses.html`은 **링크 비노출** |
 | `design/` | 진로·학업 설계 허브 | ✅ 사용 | `index.html` | ✅ 3관문 재편 완료 |
 | `design/check/` | 내 선택 점검 | ✅ 사용 | `index.html` | 판정 7종 · A4 인쇄 |
 | `design/compass/` | 진로 나침반 | ✅ 사용 | `index.html` | ✅ 구현 완료 |
@@ -212,6 +227,7 @@
 | `off-campus_courses/dream_up26-1/` | 약 258줄 | 2026-1학기 꿈키움 이수 결과 확인 | ❌ |
 | `dual_credit/support/` | 약 401줄 + PDF | 수업 운영 안내 협의회 | ❌ |
 | `resources/teacher/online_class/` | 약 793줄 + PDF 19개 | 온라인 공동교육과정 교수·학습 도움 자료집 | ❌ |
+| `dual_credit/courses.html` | 약 520줄 | 학기별 개설 강좌 카탈로그. **2026-08-20에 링크를 걷어냈다** (`dual_credit/CLAUDE.md` 참조) | ✅ |
 | `2015/index.html` | 22줄 | `onmadang.or.kr` 리다이렉트 (구 URL 호환) | ❌ |
 | `pilot001.html` | 약 556줄 | 홈 **구 시안**. DS v1.0을 인라인으로 들고 있다 | ❌ |
 
@@ -227,7 +243,7 @@
         async src="//gc.zgo.at/count.js"></script>
 ```
 
-- 적용됨(19개): `index.html`, `about/`(3), `apply/index.html`, `board/`(4), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `safety/`(6)
+- 적용됨(20개): `index.html`, `about/`(3), `apply/index.html`, `board/`(4), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `dual_credit/curriculum.html`, `safety/`(6)
 - **미적용**: `apply/app.html`, `apply/admin/`, `design/check/`, `design/majors/`, `design/selector/`(+`guide.html`), `dual_credit/courses.html`, 위 「링크되지 않는 부속 페이지」 전부
 - 새 페이지를 만들면 **직접 넣어야 한다.** 관리자 페이지(`apply/admin/`)에는 넣지 않는다.
 

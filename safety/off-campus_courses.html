@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#DAF2FC">
-<meta name="description" content="꿈키움 학교 밖 교육 — 고교학점제 4대 안전망">
+<meta name="description" content="학교 밖 교육 — 고교학점제 4대 안전망. 지역 대학·기관 연계 과목 이수 제도 안내">
 <title>학교 밖 교육 · 4대 안전망 · 온마당</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="../assets/css/common.css">
@@ -22,6 +22,19 @@
   .table-wrap th,.table-wrap td{border:1px solid var(--line);padding:12px 14px;text-align:left;vertical-align:top}
   .table-wrap th{background:var(--soft);font-weight:700;color:var(--ink);white-space:nowrap}
   .table-wrap td{color:var(--ink-soft);line-height:1.65}
+
+  /* 고교-대학 연계 바로가기 카드 */
+  .dc-links{display:grid;gap:12px;margin:22px 0 20px}
+  .dc-card{display:flex;align-items:center;gap:16px;
+    background:var(--soft);border:1.5px solid var(--line);border-radius:var(--radius-sm);
+    padding:18px 20px;transition:.18s}
+  .dc-card:hover{border-color:#7b5ea7;box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+  .dc-card.dc-main{background:#f3edfb;border-color:#d6c6ee}
+  .dc-ic{font-size:24px;flex-shrink:0}
+  .dc-txt{flex:1;min-width:0}
+  .dc-txt strong{display:block;font-size:15px;font-weight:800;color:var(--ink);margin-bottom:3px}
+  .dc-txt em{display:block;font-style:normal;font-size:12.5px;color:var(--ink-soft);line-height:1.6;word-break:keep-all}
+  .dc-arr{flex-shrink:0;font-size:16px;font-weight:800;color:#7b5ea7}
 
   .other-nets{margin-top:40px}
   .other-nets h2{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:16px}
@@ -47,45 +60,67 @@
     <nav class="breadcrumb" aria-label="이동 경로">
       <a href="../index.html">홈</a> › <a href="./index.html">4대 안전망</a> › <strong>학교 밖 교육</strong>
     </nav>
-    <h1>🌱 꿈키움 학교 밖 교육</h1>
-    <p>교실을 넘어 지역사회로! 대학, 연구기관, 지역 전문가와 연계된 전문적인 심화 프로그램을 통해 나의 꿈에 날개를 답니다.</p>
+    <h1>학교 밖 교육</h1>
+    <p>학교에서 개설하기 어려운 과목과 활동을 지역 대학·기관과 연계하여 이수하는 제도입니다.</p>
   </div>
 </div>
 
 <main class="content-wrap">
   <div class="wrap">
     <div class="content-card">
-      <h2>학교 밖 교육이란?</h2>
-      <p>2019년부터 이어져온 대학연계 공동교육과정이 고교학점제를 맞아 '학교 밖 교실'로 업그레이드 되었습니다. 지역 대학 교수님들이 준비한 다채로운 창체-진로활동 프로그램과 함께 나의 꿈을 키워요.</p>
+      <h2>학교 밖 교육이란</h2>
+      <p>소속 학교에서 개설하기 어려운 과목과 활동을, 교육감이 승인한 지역 대학·공공기관을 통해 이수하는 제도입니다. 주말과 방학 기간을 이용해 운영하며, 유형에 따라 학점 인정 방식이 다릅니다.</p>
 
-      <h3>대학연계 학점 인정 과목 vs 창의적체험활동</h3>
+      <h3>유형별 비교</h3>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>고교-대학 연계 학점 인정 과목</th>
-              <th>창의적체험활동</th>
+              <th scope="col">구분</th>
+              <th scope="col">고교-대학 연계 학점 인정 과목</th>
+              <th scope="col">창의적 체험활동</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>지역의 대학이 문을 활짝 열고 고등학생들의 한발 앞선 도전을 응원해요. 주말이나 방과 후에 진짜 대학교 캠퍼스로 등교해서 교수님께 심화 과목을 배우고, 고등학교는 물론 훗날 대학교 학점으로도 인정받아요.</td>
-              <td>지역의 대학과 공공기관이 든든한 배움터가 되어 우리 아이들의 꿈을 품어줘요. 주말이나 방학에 지역사회 기관(대학)으로 찾아가, 전문가 교수님, 선생님과 함께 생생한 실험과 실습을 직접 경험하며 진로를 탐색해요.</td>
+              <th scope="row">내용</th>
+              <td>교육청과 협약을 맺은 지역 대학이 고등학생 수준에 맞춘 심화·진로 탐색 과목을 개설하여 운영합니다. 대학의 교수진과 시설을 활용합니다.</td>
+              <td>학교 내 개설이 어려운 창의적 체험활동을 교육감이 승인한 지역사회 기관을 통해 이수합니다. 실험·실습 중심의 대면 활동으로 운영합니다.</td>
             </tr>
             <tr>
-              <td>교육청과 업무협약을 맺은 지역 대학이 고등학생 수준에 맞춘 심화 및 진로 탐색 과목을 개설하여 운영하는 고교-대학 연계 교육과정. 대학의 전문 교수진과 우수한 인적·물적 자원을 활용하며, 과목 이수 시 고교 학점 인정은 물론 향후 해당 대학 진학 시 대학 학점으로도 추가 연계 인정됨.</td>
-              <td>학교 내 개설이 어려운 창의적 체험활동을 교육감이 승인한 지역사회 기관(대학, 지자체 운영 기관 등)을 통해 이수하는 프로그램. 학생 수요를 바탕으로 대학 등의 자원을 활용해 실험·실습 위주의 대면 체험활동을 주말 및 방학 기간에 운영.</td>
+              <th scope="row">학점·기록</th>
+              <td>이수 시 고등학교 학점을 인정하며, 해당 대학에 진학하는 경우 그 대학의 학칙에 따라 대학 학점을 추가로 인정합니다.</td>
+              <td>창의적 체험활동 이수 내용으로 기록합니다.</td>
+            </tr>
+            <tr>
+              <th scope="row">운영 시기</th>
+              <td>학기 중 방과 후 및 주말</td>
+              <td>주말 및 방학</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div style="margin-top:32px;background:linear-gradient(135deg,#e9effe,#f0f4ff);border:1.5px solid #c5d0f0;border-radius:var(--radius);padding:24px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
-        <div style="flex:1;min-width:200px">
-          <h3 style="font-size:16px;font-weight:800;color:#152460;margin:0 0 6px">🎓 고교-대학 연계 학점 인정 과목</h3>
-          <p style="font-size:13px;color:#3c4a6b;margin:0;line-height:1.7">5개 대학, 14개 강좌 — 고교 학점과 대학 학점을 동시에! 제도 안내, 강좌 목록, 수강 신청까지 한눈에 확인하세요.</p>
-        </div>
-        <a href="../dual_credit/index.html" style="display:inline-flex;align-items:center;gap:6px;background:#152460;color:#fff;font-size:13px;font-weight:700;padding:12px 24px;border-radius:30px;text-decoration:none;white-space:nowrap;transition:background .2s;flex-shrink:0">안내 및 수강 신청 →</a>
+      <h3>고교-대학 연계 학점 인정 과목</h3>
+      <p>5개 대학이 14개 과목을 개설하였습니다. 이 과목들은 계속 유지되며, 매 학년도 1학기와 2학기에 개설될 수 있습니다. 수강 신청은 학기마다 지정된 기간에만 접수합니다.</p>
+
+      <div class="dc-links">
+        <a class="dc-card dc-main" href="../dual_credit/curriculum.html">
+          <span class="dc-ic" aria-hidden="true">📘</span>
+          <span class="dc-txt">
+            <strong>과목 교육과정</strong>
+            <em>14개 과목의 개관 및 목표, 내용 체계, 교수·학습 내용, 평가 방법</em>
+          </span>
+          <span class="dc-arr" aria-hidden="true">→</span>
+        </a>
+        <a class="dc-card" href="../dual_credit/index.html">
+          <span class="dc-ic" aria-hidden="true">🎓</span>
+          <span class="dc-txt">
+            <strong>제도 안내</strong>
+            <em>학점 인정 방식, 개설 과목 목록, 수강 신청 절차와 유의 사항</em>
+          </span>
+          <span class="dc-arr" aria-hidden="true">→</span>
+        </a>
       </div>
     </div>
 

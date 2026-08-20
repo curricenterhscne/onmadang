@@ -1,543 +1,320 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>고교-대학 연계 학점 인정 과정 · 충청남도교육청</title>
-<meta name="description" content="충남교육청이 지역 5개 대학과 협약하여 운영하는 고교-대학 연계 학점 인정 과정 안내 및 수강 신청"/>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23152460'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-size='20'%3E🎓%3C/text%3E%3C/svg%3E"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"/>
-<link rel="stylesheet" href="../assets/css/common.css"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#DAF2FC">
+<meta name="description" content="고교-대학 연계 학점 인정 학교 밖 교육 제도 안내 — 학점 인정 방식, 개설 과목, 수강 신청 절차">
+<title>고교-대학 연계 학점 인정 과정 · 학교 밖 교육 · 온마당</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../assets/css/common.css">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#152460;--blue:#2952d9;--sky:#e9effe;--gold:#e8970f;--gold-d:#c67e0a;
-  --mint:#0f9e7b;--mint-bg:#d6f5ee;
-  --white:#fff;--g50:#f7f8fc;--g100:#eef0f8;--g200:#dde1f0;
-  --g300:#c4c9db;--g400:#8892b0;--g700:#3c4a6b;--text:#111827;
-  --r:14px;--r-btn:30px;
-  --sh:0 2px 16px rgba(21,36,96,.08);--sh2:0 8px 36px rgba(21,36,96,.18);
-  --max-w:820px;
-}
-html{scroll-behavior:smooth}
-body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+  .page-hero{background:linear-gradient(135deg,var(--plum),#8b6fbf)}
 
-/* ── Layout ── */
-.wrap{max-width:var(--max-w);margin:0 auto;padding:0 20px}
-section{padding:56px 0}
-section:nth-child(even){background:var(--white)}
+  .content-wrap{padding:40px 0 80px}
+  .content-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:36px 40px;margin-bottom:20px}
+  .content-card h2{font-size:20px;font-weight:800;color:#7b5ea7;margin-bottom:14px;letter-spacing:-.4px}
+  .content-card h3{font-size:17px;font-weight:700;color:var(--ink);margin:26px 0 10px}
+  .content-card h3:first-of-type{margin-top:20px}
+  .content-card p{font-size:15px;color:var(--ink-soft);line-height:1.8;margin-bottom:18px}
+  .content-card p:last-child{margin-bottom:0}
 
-/* ── Hero ── */
-.hero{background:var(--navy);
-  padding:60px 20px 52px;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 30% 80%,rgba(41,82,217,.3) 0%,transparent 50%),
-             radial-gradient(ellipse at 85% 15%,rgba(232,151,15,.15) 0%,transparent 45%)}
-.hero-in{position:relative;z-index:1;max-width:var(--max-w);margin:0 auto}
-.hero-badge{display:inline-block;background:var(--gold);color:var(--navy);
-  font-size:11px;font-weight:800;padding:5px 16px;border-radius:20px;letter-spacing:.5px;margin-bottom:20px}
-.hero h1{font-family:'Noto Serif KR',serif;font-size:clamp(24px,5vw,36px);
-  font-weight:700;color:#fff;margin-bottom:14px;line-height:1.4;word-break:keep-all;
-  text-shadow:0 2px 12px rgba(0,0,0,.35)}
-.hero-sub{color:rgba(255,255,255,.85);font-size:15px;line-height:1.8;margin-bottom:32px;word-break:keep-all}
-.hero-stats{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
-.hero-stat{text-align:center;min-width:70px}
-.hero-stat strong{font-size:30px;font-weight:900;color:var(--gold);display:block;line-height:1.2}
-.hero-stat span{font-size:11.5px;color:rgba(255,255,255,.7);letter-spacing:.3px}
-.hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:13px 28px;border-radius:var(--r-btn);
-  font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;border:2px solid transparent;cursor:pointer}
-.btn-gold{background:var(--gold);color:var(--navy);border-color:var(--gold)}
-.btn-gold:hover{background:var(--gold-d);border-color:var(--gold-d);transform:translateY(-2px);box-shadow:0 6px 20px rgba(232,151,15,.35)}
-.btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
-.btn-outline:hover{border-color:#fff;background:rgba(255,255,255,.08);transform:translateY(-2px)}
-.btn-navy{background:var(--navy);color:#fff;border-color:var(--navy)}
-.btn-navy:hover{background:#1a2f78;transform:translateY(-2px);box-shadow:var(--sh)}
-.btn-gold-lg{background:var(--gold);color:var(--navy);border-color:var(--gold);font-size:16px;padding:16px 36px}
-.btn-gold-lg:hover{background:var(--gold-d);border-color:var(--gold-d);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,151,15,.35)}
-.open-notice{display:inline-block;background:rgba(255,255,255,.12);color:#fff;
-  font-size:13px;font-weight:700;padding:10px 24px;border-radius:var(--r-btn);
-  border:1.5px solid rgba(255,255,255,.25);letter-spacing:.3px;backdrop-filter:blur(4px)}
+  /* 표 */
+  .table-wrap{overflow-x:auto;margin-bottom:24px;-webkit-overflow-scrolling:touch}
+  .table-wrap table{width:100%;border-collapse:collapse;min-width:520px;font-size:14px}
+  .table-wrap th,.table-wrap td{border:1px solid var(--line);padding:12px 14px;text-align:left;vertical-align:top}
+  .table-wrap th{background:var(--soft);font-weight:700;color:var(--ink);white-space:nowrap}
+  .table-wrap td{color:var(--ink-soft);line-height:1.65}
+  .table-wrap td a{color:var(--brand-d);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+  .table-wrap td a:hover{color:var(--brand)}
+  .col-univ{white-space:nowrap;font-weight:600;color:var(--ink)}
+  .col-grade{white-space:nowrap}
 
-/* ── Section titles ── */
-.sec-title{font-family:'Noto Serif KR',serif;font-size:clamp(20px,3.5vw,26px);
-  font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.3}
-.sec-lead{font-size:14px;color:var(--g400);margin-bottom:32px;line-height:1.7}
+  /* 번호 목록 · 점검 목록 */
+  .steps{list-style:none;counter-reset:s;margin:0 0 24px;padding:0}
+  .steps li{counter-increment:s;position:relative;padding:12px 0 12px 44px;border-bottom:1px solid var(--soft);
+    font-size:14.5px;color:var(--ink-soft);line-height:1.75;word-break:keep-all}
+  .steps li:last-child{border-bottom:0}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:13px;
+    width:26px;height:26px;border-radius:var(--radius-pill);background:var(--soft);border:1px solid var(--line);
+    color:var(--brand-d);font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .steps li b{color:var(--ink);font-weight:700}
 
-/* ── Card ── */
-.card{background:var(--white);border:1px solid var(--g200);border-radius:var(--r);
-  padding:32px;box-shadow:var(--sh)}
-.def-box{background:var(--sky);border-radius:var(--r);padding:24px 28px;
-  font-size:14.5px;line-height:1.85;color:var(--text);margin-bottom:36px;border-left:4px solid var(--navy)}
-.def-box strong{color:var(--navy)}
+  .notes{list-style:none;margin:0 0 24px;padding:0}
+  .notes li{position:relative;padding:10px 0 10px 20px;border-bottom:1px solid var(--soft);
+    font-size:14.5px;color:var(--ink-soft);line-height:1.75;word-break:keep-all}
+  .notes li:last-child{border-bottom:0}
+  .notes li::before{content:'';position:absolute;left:2px;top:19px;width:5px;height:5px;border-radius:50%;background:var(--ink-faint)}
 
-/* ── Flow ── */
-.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px}
-.flow-step{background:var(--white);border:1px solid var(--g200);border-radius:var(--r);
-  padding:24px 20px;text-align:center;position:relative}
-.flow-step .step-n{font-size:11px;font-weight:800;color:var(--gold);letter-spacing:.6px;margin-bottom:6px}
-.flow-step h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px}
-.flow-step p{font-size:12.5px;color:var(--g700);line-height:1.65}
-.flow-arrow{display:none}
-@media(min-width:641px){
-  .flow-step:not(:last-child)::after{content:'→';position:absolute;right:-14px;top:50%;
-    transform:translateY(-50%);font-size:20px;color:var(--g300);font-weight:700;z-index:1}
-}
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
+  .fact{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px 18px}
+  .fact dt{font-size:12px;font-weight:700;color:var(--ink-faint);margin-bottom:4px}
+  .fact dd{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.5;word-break:keep-all}
 
-/* ── Compare table ── */
-.compare-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:0}
-.compare{width:100%;border-collapse:collapse;min-width:480px;font-size:13.5px}
-.compare th,.compare td{padding:14px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--g200)}
-.compare thead th{background:var(--navy);color:#fff;font-weight:700;font-size:12px;letter-spacing:.3px}
-.compare thead th:first-child{background:var(--g100);color:var(--g700)}
-.compare tbody th{background:var(--g100);font-weight:600;color:var(--g700);white-space:nowrap;width:100px}
-.compare tbody td:last-child{color:var(--navy);font-weight:600}
+  /* 신청 상태 패널 */
+  .enroll-panel{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:22px 24px;margin-bottom:24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .enroll-panel .ep-body{flex:1;min-width:220px}
+  .enroll-panel .ep-label{font-size:12px;font-weight:700;color:var(--ink-faint);margin-bottom:4px}
+  .enroll-panel .ep-state{font-size:15px;font-weight:700;color:var(--ink);line-height:1.6;word-break:keep-all}
+  .om-btn{display:inline-flex;align-items:center;gap:6px;flex-shrink:0;
+    font-size:14px;font-weight:700;padding:12px 24px;border-radius:var(--radius-pill);
+    border:1.5px solid var(--brand);background:var(--brand);color:#fff;transition:.18s}
+  .om-btn:hover{background:var(--brand-d);border-color:var(--brand-d)}
+  .om-btn.enroll-shut{background:var(--surface);border-color:var(--line);color:var(--ink-faint);cursor:default}
+  .om-btn.enroll-shut:hover{background:var(--surface);border-color:var(--line)}
+  .om-btn-ghost{background:var(--surface);color:var(--brand)}
+  .om-btn-ghost:hover{background:var(--brand);color:#fff}
 
-/* ── Univ chips ── */
-.univ-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
-.univ-chip{background:var(--sky);color:var(--navy);font-size:13px;font-weight:600;
-  padding:8px 18px;border-radius:var(--r-btn);border:1px solid rgba(41,82,217,.12)}
+  /* 바로가기 */
+  .link-box{display:flex;align-items:center;gap:14px;background:var(--soft);border:1px solid var(--line);
+    border-radius:var(--radius-sm);padding:20px 24px;margin-bottom:12px;transition:.18s}
+  .link-box:hover{border-color:#7b5ea7;box-shadow:var(--shadow-sm)}
+  .link-box .lb-icon{font-size:26px;flex-shrink:0}
+  .link-box .lb-body{flex:1;min-width:0}
+  .link-box .lb-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:2px}
+  .link-box .lb-desc{font-size:12.5px;color:var(--ink-faint);line-height:1.6;word-break:keep-all}
+  .link-box .lb-arrow{font-size:14px;color:#7b5ea7;font-weight:700;flex-shrink:0}
 
-/* ── Course table ── */
-.course-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.course-table{width:100%;border-collapse:collapse;min-width:520px;font-size:13px}
-.course-table th,.course-table td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--g200);vertical-align:top}
-.course-table thead th{background:var(--navy);color:#fff;font-weight:600;font-size:12px;white-space:nowrap}
-.course-table tbody tr:hover{background:var(--sky)}
-.course-table .univ{font-weight:600;color:var(--navy);white-space:nowrap}
-.field-badge{display:inline-block;font-size:10.5px;font-weight:600;padding:3px 10px;
-  border-radius:20px;background:var(--g100);color:var(--g700)}
-.course-link{display:inline-flex;align-items:center;gap:4px;margin-top:20px}
+  /* 문답 */
+  .qa{border:1px solid var(--line);border-radius:var(--radius-sm);margin-bottom:8px;background:var(--surface);overflow:hidden}
+  .qa[open]{border-color:var(--brand-l)}
+  .qa summary{list-style:none;cursor:pointer;padding:16px 20px;
+    font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.6;
+    display:flex;align-items:flex-start;gap:10px;word-break:keep-all}
+  .qa summary::-webkit-details-marker{display:none}
+  .qa summary:hover{background:var(--soft)}
+  .qa summary::after{content:'＋';margin-left:auto;flex-shrink:0;color:var(--ink-faint);font-weight:700}
+  .qa[open] summary::after{content:'－';color:var(--brand)}
+  .qa .qa-a{padding:0 20px 18px 20px;font-size:14px;color:var(--ink-soft);line-height:1.85;word-break:keep-all}
+  .qa .qa-a strong{color:var(--ink)}
 
-/* ── Timeline ── */
-.timeline{position:relative;padding-left:28px;margin-bottom:36px}
-.timeline::before{content:'';position:absolute;left:9px;top:8px;bottom:8px;width:2px;background:var(--g200)}
-.tl-item{position:relative;padding:0 0 28px 20px}
-.tl-item:last-child{padding-bottom:0}
-.tl-dot{position:absolute;left:-23px;top:5px;width:16px;height:16px;border-radius:50%;border:3px solid;background:var(--white)}
-.tl-done .tl-dot{border-color:var(--mint);background:var(--mint)}
-.tl-now .tl-dot{border-color:var(--gold);background:var(--gold);box-shadow:0 0 0 4px rgba(232,151,15,.2)}
-.tl-future .tl-dot{border-color:var(--g300);background:var(--g300)}
-.tl-label{font-size:11px;font-weight:700;letter-spacing:.3px;margin-bottom:2px}
-.tl-done .tl-label{color:var(--mint)}
-.tl-now .tl-label{color:var(--gold)}
-.tl-future .tl-label{color:var(--g400)}
-.tl-title{font-size:14.5px;font-weight:700;color:var(--text);margin-bottom:2px}
-.tl-desc{font-size:12.5px;color:var(--g700);line-height:1.6}
+  .contact{font-size:14.5px;color:var(--ink-soft);line-height:1.9}
+  .contact b{color:var(--ink)}
 
-/* ── Checklist ── */
-.checklist{list-style:none;margin-bottom:32px}
-.checklist li{position:relative;padding:10px 0 10px 28px;font-size:13.5px;color:var(--g700);
-  line-height:1.7;border-bottom:1px solid var(--g100)}
-.checklist li::before{content:'';position:absolute;left:0;top:14px;width:16px;height:16px;
-  border-radius:4px;background:var(--g100)}
-.checklist li.warn::before{background:#fff3cd;border:1.5px solid #f0c040}
-.checklist li.info::before{background:var(--sky);border:1.5px solid var(--blue)}
-
-/* ── FAQ accordion ── */
-.faq-list{display:flex;flex-direction:column;gap:8px}
-.faq-item{background:var(--white);border:1px solid var(--g200);border-radius:var(--r);overflow:hidden;transition:border-color .2s}
-.faq-item.open{border-color:var(--navy)}
-.faq-q{display:flex;align-items:center;gap:12px;padding:18px 22px;cursor:pointer;
-  font-size:14.5px;font-weight:600;color:var(--text);background:none;border:none;width:100%;
-  text-align:left;font-family:inherit;line-height:1.55;transition:background .15s}
-.faq-q:hover{background:var(--g50)}
-.faq-q .q-badge{flex-shrink:0;width:28px;height:28px;border-radius:50%;
-  background:var(--navy);color:#fff;font-size:12px;font-weight:800;
-  display:flex;align-items:center;justify-content:center}
-.faq-q .arrow{margin-left:auto;flex-shrink:0;width:20px;height:20px;transition:transform .25s;color:var(--g400)}
-.faq-item.open .faq-q .arrow{transform:rotate(180deg);color:var(--navy)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
-.faq-a-inner{padding:0 22px 22px 62px;font-size:13.5px;color:var(--g700);line-height:1.85}
-.faq-a-inner strong{color:var(--text)}
-
-/* ── Responsive ── */
-@media(max-width:640px){
-  .hero{padding:40px 16px 36px}
-  .hero h1{font-size:22px}
-  .hero-stats{gap:16px}
-  .hero-stat strong{font-size:22px}
-  .hero-ctas{flex-direction:column;align-items:stretch}
-  .hero-ctas .btn{justify-content:center}
-  section{padding:40px 0}
-  .wrap{padding:0 16px}
-  .card{padding:24px 18px}
-  .def-box{padding:18px 16px}
-  .flow{grid-template-columns:1fr;gap:12px}
-  .flow-step::after{display:none !important}
-  .sec-title{font-size:20px}
-  .faq-q{padding:14px 16px;font-size:13.5px}
-  .faq-a-inner{padding:0 16px 18px 46px;font-size:13px}
-  .faq-q .q-badge{width:24px;height:24px;font-size:11px}
-}
+  @media(max-width:680px){
+    .content-card{padding:24px 20px}
+    .enroll-panel{padding:18px 16px}
+    .om-btn{width:100%;justify-content:center}
+  }
 </style>
 </head>
 <body>
 
 <div id="om-header" data-active="safety"></div>
 
-<!-- ══════════════════════════════════════════════════════ -->
-<!-- SECTION 1 : Hero -->
-<!-- ══════════════════════════════════════════════════════ -->
-<section class="hero">
-  <div class="hero-in">
-    <div class="hero-badge">2026학년도 2학기 · 충청남도교육청</div>
-    <h1>고등학교에서 대학 강의를,<br>고교 학점과 대학 학점을 동시에</h1>
-    <p class="hero-sub">충남교육청이 지역 5개 대학과 협약하여 운영하는<br>고교-대학 연계 학점 인정 과정입니다.</p>
-
-    <div class="hero-stats">
-      <div class="hero-stat"><strong>5</strong><span>협약 대학</span></div>
-      <div class="hero-stat"><strong>14</strong><span>개설 강좌</span></div>
-      <div class="hero-stat"><strong>2</strong><span>이수 학점</span></div>
-      <div class="hero-stat"><strong>15</strong><span>강좌당 최대</span></div>
-    </div>
-
-    <div class="hero-ctas">
-      <a href="./courses.html" class="btn btn-outline">강좌 보러 가기 →</a>
-      <a href="../apply/index.html" class="btn btn-gold">수강 신청하기 →</a>
-    </div>
-
-    <div class="open-notice">수강 신청: 2026. 7. 16.(목) 18:00 ~ 선착순</div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════ -->
-<!-- SECTION 2 : 이 과정이 뭔가요? -->
-<!-- ══════════════════════════════════════════════════════ -->
-<section>
+<div class="page-hero">
   <div class="wrap">
-    <h2 class="sec-title">고교-대학 연계 학점 인정 과정이란</h2>
-    <p class="sec-lead">대학의 문을 먼저 열고, 고교 학점과 대학 학점을 동시에 쌓는 심화 과정입니다.</p>
-
-    <div class="def-box">
-      대학의 전문성을 기반으로 고등학교 단계에 맞게 새롭게 구성한 심화 과목으로, 충청남도교육청과 협약을 맺은 대학이 직접 개설·운영합니다. 이수한 학생에게 <strong>고등학교 학점</strong>을 인정하고, 해당 대학에 진학할 경우 <strong>대학 학점도 추가로 인정</strong>합니다.
-    </div>
-
-    <div class="flow">
-      <div class="flow-step">
-        <div class="step-n">STEP 1</div>
-        <h3>고등학생 수강</h3>
-        <p>대학 교수가 진행하는<br>심화 과목 이수<br>(토/일, 주말 운영)</p>
-      </div>
-      <div class="flow-step">
-        <div class="step-n">STEP 2</div>
-        <h3>고교 학점 인정</h3>
-        <p>학교생활기록부에<br>과목명·이수학점·<br>학습 내용 기재</p>
-      </div>
-      <div class="flow-step">
-        <div class="step-n">STEP 3</div>
-        <h3>대학 학점 추가 인정</h3>
-        <p>해당 대학 진학 시<br>대학 자체 학칙에 따라<br>교양 2학점 인정</p>
-      </div>
-    </div>
-
-    <h3 class="sec-title" style="font-size:18px;margin-bottom:20px">기존 학교 수업과 뭐가 달라요?</h3>
-    <div class="compare-wrap">
-      <table class="compare">
-        <thead>
-          <tr><th></th><th>일반 선택과목</th><th>이 과정</th></tr>
-        </thead>
-        <tbody>
-          <tr><th>수업 주체</th><td>소속 학교 교사</td><td>대학 교수</td></tr>
-          <tr><th>수업 장소</th><td>학교 교실</td><td>대학 캠퍼스</td></tr>
-          <tr><th>수업 시간</th><td>정규 일과 중</td><td>방과 후·주말</td></tr>
-          <tr><th>학점 인정</th><td>고교 학점만</td><td>고교 + 대학 학점</td></tr>
-          <tr><th>성적 기재</th><td>성적 기재</td><td>성적 미기재, 이수 사실만</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <nav class="breadcrumb" aria-label="이동 경로">
+      <a href="../index.html">홈</a> › <a href="../safety/index.html">4대 안전망</a> ›
+      <a href="../safety/off-campus_courses.html">학교 밖 교육</a> › <strong>고교-대학 연계</strong>
+    </nav>
+    <h1>고교-대학 연계 학점 인정 과정</h1>
+    <p>협약 대학이 개설한 과목을 이수하고 고등학교 학점을 인정받는 제도입니다.</p>
   </div>
-</section>
+</div>
 
-<!-- ══════════════════════════════════════════════════════ -->
-<!-- SECTION 3 : 참여 대학과 강좌 -->
-<!-- ══════════════════════════════════════════════════════ -->
-<section>
+<main class="content-wrap">
   <div class="wrap">
-    <h2 class="sec-title">5개 대학, 14개 강좌</h2>
-    <p class="sec-lead">충남 지역 5개 대학이 고등학생을 위한 심화 과목을 개설했습니다.</p>
 
-    <div class="univ-chips">
-      <span class="univ-chip">국립공주대학교</span>
-      <span class="univ-chip">단국대학교(천안)</span>
-      <span class="univ-chip">백석대학교</span>
-      <span class="univ-chip">순천향대학교</span>
-      <span class="univ-chip">충남대학교</span>
-    </div>
+    <!-- ── 제도 개요 ── -->
+    <section class="content-card">
+      <h2>제도 개요</h2>
+      <p>충청남도교육청과 협약을 맺은 지역 대학이 고등학생을 대상으로 심화 과목을 개설·운영하는 제도입니다. 과목을 이수한 학생에게 고등학교 학점을 인정하며, 해당 과목을 개설한 대학에 진학하는 경우 그 대학의 학칙에 따라 대학 학점을 추가로 인정합니다.</p>
 
-    <div class="card">
-      <div class="course-table-wrap">
-        <table class="course-table">
+      <dl class="facts">
+        <div class="fact"><dt>협약 대학</dt><dd>5개교</dd></div>
+        <div class="fact"><dt>개설 과목</dt><dd>14개 과목</dd></div>
+        <div class="fact"><dt>이수 학점</dt><dd>과목당 2학점</dd></div>
+        <div class="fact"><dt>수강 인원</dt><dd>과목당 5~15명</dd></div>
+      </dl>
+
+      <h3>학점 인정 방식</h3>
+      <ol class="steps">
+        <li><b>과목 이수</b> — 협약 대학의 교수가 운영하는 과목을 방과 후 또는 주말에 이수합니다.</li>
+        <li><b>고등학교 학점 인정</b> — 이수한 학생에게 2학점을 인정합니다. 학교생활기록부 교과학습발달상황에 과목명, 이수 학점, 객관적 학습 사실이 기재되며 <b>성적은 기재하지 않습니다</b>.</li>
+        <li><b>대학 학점 인정</b> — 해당 과목을 개설한 대학에 진학하는 경우에 한하여, 그 대학의 학칙에 따라 교양 2학점을 인정합니다.</li>
+      </ol>
+
+      <h3>학교 개설 선택과목과의 차이</h3>
+      <div class="table-wrap">
+        <table>
           <thead>
-            <tr><th>대학</th><th>강좌명</th><th>분야</th><th>대상</th></tr>
+            <tr><th scope="col">구분</th><th scope="col">학교 개설 선택과목</th><th scope="col">고교-대학 연계 과목</th></tr>
           </thead>
           <tbody>
-            <tr><td class="univ">국립공주대학교</td><td>교육과 심리학의 이해</td><td><span class="field-badge">인문·사회</span></td><td>2학년</td></tr>
-            <tr><td class="univ">단국대학교</td><td>몽골학으로 읽는 AI 시대</td><td><span class="field-badge">인문·어문</span></td><td>1·2학년</td></tr>
-            <tr><td class="univ">단국대학교</td><td>아랍어와 아랍문화</td><td><span class="field-badge">인문·어문</span></td><td>1·2학년</td></tr>
-            <tr><td class="univ">단국대학교</td><td>베트남 이해와 탐구 프로젝트</td><td><span class="field-badge">인문·사회</span></td><td>1·2학년</td></tr>
-            <tr><td class="univ">단국대학교</td><td>포르투갈·브라질 언어와 문화의 이해</td><td><span class="field-badge">인문·어문</span></td><td>1·2학년</td></tr>
-            <tr><td class="univ">단국대학교</td><td>글로벌 이슈 탐구와 영어 학술 연구 실제</td><td><span class="field-badge">인문·어문</span></td><td>1·2학년</td></tr>
-            <tr><td class="univ">단국대학교</td><td>미적분학 핵심 개념 탐구</td><td><span class="field-badge">수학·과학</span></td><td>2학년</td></tr>
-            <tr><td class="univ">단국대학교</td><td>화학분석기기의 이해 및 실습</td><td><span class="field-badge">수학·과학</span></td><td>2학년</td></tr>
-            <tr><td class="univ">백석대학교</td><td>보건과 건강관리</td><td><span class="field-badge">의약·보건</span></td><td>1·2학년</td></tr>
-            <tr><td class="univ">백석대학교</td><td>베이킹과 조리 실습</td><td><span class="field-badge">식품·조리</span></td><td>1·2학년</td></tr>
-            <tr><td class="univ">순천향대학교</td><td>사건으로 읽는 법과학</td><td><span class="field-badge">법·사회</span></td><td>1·2학년</td></tr>
-            <tr><td class="univ">순천향대학교</td><td>호텔리어의 이해</td><td><span class="field-badge">관광·서비스</span></td><td>1·2학년</td></tr>
-            <tr><td class="univ">순천향대학교</td><td>예술활용 심리상담</td><td><span class="field-badge">심리·예술</span></td><td>1·2학년</td></tr>
-            <tr><td class="univ">충남대학교</td><td>네 가지 시선으로 탐험하는 생명과학</td><td><span class="field-badge">생명과학</span></td><td>1·2학년</td></tr>
+            <tr><th scope="row">운영 주체</th><td>소속 학교 교사</td><td>협약 대학 교수</td></tr>
+            <tr><th scope="row">운영 장소</th><td>소속 학교</td><td>대학 캠퍼스 (과목에 따라 온라인 병행)</td></tr>
+            <tr><th scope="row">운영 시간</th><td>정규 일과 중</td><td>방과 후 및 주말</td></tr>
+            <tr><th scope="row">학점 인정</th><td>고등학교 학점</td><td>고등학교 학점, 해당 대학 진학 시 대학 학점</td></tr>
+            <tr><th scope="row">성적 기재</th><td>기재</td><td>미기재 (이수 사실만 기재)</td></tr>
           </tbody>
         </table>
       </div>
-      <a href="./courses.html" class="btn btn-navy course-link">전체 강좌 자세히 보기 →</a>
-    </div>
+    </section>
+
+    <!-- ── 개설 과목 ── -->
+    <section class="content-card">
+      <h2>개설 과목</h2>
+      <p>5개 대학이 14개 과목을 개설하였습니다. 이 과목들은 계속 유지되며, 매 학년도 1학기와 2학기에 개설될 수 있습니다. 과목명을 누르면 해당 과목의 교육과정을 확인할 수 있습니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">대학</th><th scope="col">과목명</th><th scope="col">분야</th><th scope="col">대상</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-univ">국립공주대학교</td><td><a href="./curriculum.html#course-1">교육과 심리학의 이해</a></td><td>인문·사회</td><td class="col-grade">2학년</td></tr>
+            <tr><td class="col-univ">단국대학교</td><td><a href="./curriculum.html#course-2">몽골학으로 읽는 AI 시대</a></td><td>인문·어문</td><td class="col-grade">1·2학년</td></tr>
+            <tr><td class="col-univ">단국대학교</td><td><a href="./curriculum.html#course-3">아랍어와 아랍문화</a></td><td>인문·어문</td><td class="col-grade">1·2학년</td></tr>
+            <tr><td class="col-univ">단국대학교</td><td><a href="./curriculum.html#course-4">베트남 이해와 탐구 프로젝트</a></td><td>인문·사회</td><td class="col-grade">1·2학년</td></tr>
+            <tr><td class="col-univ">단국대학교</td><td><a href="./curriculum.html#course-5">포르투갈·브라질 언어와 문화의 이해</a></td><td>인문·어문</td><td class="col-grade">1·2학년</td></tr>
+            <tr><td class="col-univ">단국대학교</td><td><a href="./curriculum.html#course-6">글로벌 이슈 탐구와 영어 학술 연구 실제</a></td><td>인문·어문</td><td class="col-grade">1·2학년</td></tr>
+            <tr><td class="col-univ">단국대학교</td><td><a href="./curriculum.html#course-7">미적분학 핵심 개념 탐구</a></td><td>수학·과학</td><td class="col-grade">2학년</td></tr>
+            <tr><td class="col-univ">단국대학교</td><td><a href="./curriculum.html#course-8">화학분석기기의 이해 및 실습</a></td><td>수학·과학</td><td class="col-grade">2학년</td></tr>
+            <tr><td class="col-univ">백석대학교</td><td><a href="./curriculum.html#course-9">보건과 건강관리</a></td><td>의약·보건</td><td class="col-grade">1·2학년</td></tr>
+            <tr><td class="col-univ">백석대학교</td><td><a href="./curriculum.html#course-10">베이킹과 조리 실습</a></td><td>식품·조리</td><td class="col-grade">1·2학년</td></tr>
+            <tr><td class="col-univ">순천향대학교</td><td><a href="./curriculum.html#course-11">사건으로 읽는 법과학</a></td><td>법·사회</td><td class="col-grade">1·2학년</td></tr>
+            <tr><td class="col-univ">순천향대학교</td><td><a href="./curriculum.html#course-12">호텔리어의 이해</a></td><td>관광·서비스</td><td class="col-grade">1·2학년</td></tr>
+            <tr><td class="col-univ">순천향대학교</td><td><a href="./curriculum.html#course-13">예술활용 심리상담</a></td><td>심리·예술</td><td class="col-grade">1·2학년</td></tr>
+            <tr><td class="col-univ">충남대학교</td><td><a href="./curriculum.html#course-14">네 가지 시선으로 탐험하는 생명과학</a></td><td>생명과학</td><td class="col-grade">1·2학년</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <a class="link-box" href="./curriculum.html">
+        <span class="lb-icon" aria-hidden="true">📘</span>
+        <div class="lb-body">
+          <div class="lb-title">과목 교육과정</div>
+          <div class="lb-desc">14개 과목의 개관 및 목표, 내용 체계, 교수·학습 내용, 평가 방법</div>
+        </div>
+        <span class="lb-arrow" aria-hidden="true">→</span>
+      </a>
+    </section>
+
+    <!-- ── 수강 신청 ── -->
+    <section class="content-card">
+      <h2>수강 신청</h2>
+      <p>수강 신청은 학기마다 지정된 기간에만 온라인으로 접수합니다. 현재 상태는 아래와 같습니다.</p>
+
+      <div class="enroll-panel">
+        <div class="ep-body">
+          <div class="ep-label">수강 신청 상태</div>
+          <div class="ep-state" data-enroll="notice">수강 신청 일정을 확인하는 중입니다.</div>
+        </div>
+        <a class="om-btn" data-enroll="cta">수강 신청</a>
+      </div>
+
+      <p data-enroll="closed-only" hidden style="font-size:14px">다음 수강 신청 일정은 <a href="../board/notice.html" style="color:var(--brand-d);font-weight:700;text-decoration:underline">공지사항</a>에 게시합니다. 신청 기간이 아니어도 과목 교육과정은 확인할 수 있습니다.</p>
+
+      <h3>신청 조건</h3>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><th scope="row">신청 대상</th><td>충청남도 관내 고등학교 1·2학년 (과목에 따라 2학년으로 제한)</td></tr>
+            <tr><th scope="row">신청 방법</th><td>학생 개별 온라인 신청, 선착순</td></tr>
+            <tr><th scope="row">신청 한도</th><td>1인 1과목</td></tr>
+            <tr><th scope="row">수강 인원</th><td>과목당 최소 5명, 최대 15명</td></tr>
+            <tr><th scope="row">수강료</th><td>없음 (수업 장소까지의 교통비는 개인 부담)</td></tr>
+            <tr><th scope="row">이수 기준</th><td>총 수업 시수의 3분의 2 이상 출석</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>운영 절차</h3>
+      <ol class="steps">
+        <li><b>개설 과목 확정</b> — 협약 대학이 해당 학기에 운영할 과목을 확정합니다.</li>
+        <li><b>강좌 안내</b> — 과목별 운영 일정, 장소, 강사, 준비물은 수강 신청 시 안내합니다.</li>
+        <li><b>수강 신청</b> — 지정된 기간에 온라인으로 접수합니다. 기간이 아닌 때에는 신청할 수 없습니다.</li>
+        <li><b>확정 안내</b> — 신청 마감 후 공문과 문자로 개별 안내합니다. 신청 인원이 5명 미만인 과목은 개설되지 않을 수 있습니다.</li>
+        <li><b>수업 운영</b> — 학기 중 방과 후 또는 주말에 진행합니다.</li>
+        <li><b>이수 처리</b> — 이수 기준을 충족한 학생에 대해 학점을 인정하고 학교생활기록부에 기재합니다.</li>
+      </ol>
+
+      <h3>유의 사항</h3>
+      <ul class="notes">
+        <li>1인 1과목만 신청할 수 있으며, 추가 모집은 하지 않습니다.</li>
+        <li>과목마다 운영 일시와 장소가 다릅니다. 수강 신청 시 안내되는 과목별 운영 정보를 확인한 뒤 신청하시기 바랍니다.</li>
+        <li>수업 시작 후 2주 이내에는 수강을 포기할 수 있으며, 이 경우 학교생활기록부에 기재되지 않습니다. 2주가 지난 뒤 이수 기준을 충족하지 못하면 '미이수'로 기재됩니다.</li>
+        <li>수업 장소까지의 이동은 학부모 책임하에 개별적으로 합니다. 교육청은 이동을 지원하지 않습니다.</li>
+        <li>고교학점제 학교 밖 교육의 이수 학점은 3년간 8학점 이내입니다.</li>
+      </ul>
+    </section>
+
+    <!-- ── 문답 ── -->
+    <section class="content-card">
+      <h2>자주 묻는 질문</h2>
+
+      <details class="qa">
+        <summary>이수하면 학교생활기록부에 기재되나요?</summary>
+        <div class="qa-a">기재됩니다. 교과학습발달상황에 과목명과 이수 학점이 기재되고, 특기사항에 '객관적 학습 사실'이 기재됩니다. 객관적 학습 사실은 해당 과목에서 배운 내용을 서술한 것으로, 이수한 모든 학생에게 동일한 내용이 기재됩니다. <strong>성적과 평가 결과는 기재하지 않습니다.</strong></div>
+      </details>
+
+      <details class="qa">
+        <summary>대학 학점은 어느 대학에 진학해도 인정되나요?</summary>
+        <div class="qa-a">아닙니다. <strong>해당 과목을 개설한 대학에 진학하는 경우에만</strong> 인정됩니다. 예를 들어 단국대학교가 개설한 과목을 이수한 학생은 단국대학교에 입학할 때 학점을 인정받습니다. 다른 대학에 진학하면 대학 학점은 인정되지 않으나, 고등학교 학점과 학교생활기록부 기재는 그대로 유지됩니다. 인정 학점 수와 인정 방식은 대학마다 다릅니다.</div>
+      </details>
+
+      <details class="qa">
+        <summary>1학년도 신청할 수 있나요?</summary>
+        <div class="qa-a">대부분의 과목은 1·2학년 모두 신청할 수 있습니다. 다만 다음 세 과목은 2학년으로 제한됩니다. 국립공주대학교 「교육과 심리학의 이해」, 단국대학교 「미적분학 핵심 개념 탐구」, 단국대학교 「화학분석기기의 이해 및 실습」. 2022 개정 교육과정을 적용받는 학년만 이수할 수 있습니다.</div>
+      </details>
+
+      <details class="qa">
+        <summary>수업은 어디에서 진행되며, 이동은 어떻게 하나요?</summary>
+        <div class="qa-a">원칙적으로 협약 대학의 캠퍼스에서 진행하며, 대면과 온라인을 병행하는 과목도 있습니다. 이동은 <strong>학부모 책임하에 학생이 개별적으로</strong> 하며, 교육청은 이동을 지원하지 않습니다. 신청 전에 수업 장소와 이동 방법을 가정에서 확인하시기 바랍니다.</div>
+      </details>
+
+      <details class="qa">
+        <summary>수강을 포기하면 어떻게 되나요?</summary>
+        <div class="qa-a">수업 시작 후 2주 이내에는 수강을 포기할 수 있으며, 이 경우 학교생활기록부에 기재되지 않습니다. 2주가 지난 뒤 이수 기준(총 수업 시수의 3분의 2 이상 출석)을 충족하지 못하면 <strong>'미이수'로 기재</strong>됩니다.</div>
+      </details>
+
+      <details class="qa">
+        <summary>출석 기준은 어떻게 되나요?</summary>
+        <div class="qa-a">총 수업 시수의 <strong>3분의 2 이상</strong> 출석해야 이수로 인정됩니다. 예를 들어 총 32차시인 과목은 22차시 이상 출석해야 합니다. 출석은 담당 교수가 확인하고 대학 담당자가 최종 점검합니다.</div>
+      </details>
+
+      <details class="qa">
+        <summary>왜 1과목만 신청할 수 있나요?</summary>
+        <div class="qa-a">선착순으로 운영하며 과목당 수강 인원이 최대 15명으로 제한되어 있어, 신청 기회를 나누기 위해 1인 1과목으로 운영합니다. 또한 주말에 하루 4시간 이상 진행되는 수업 특성상 두 과목을 동시에 이수하면 학업 부담이 커집니다.</div>
+      </details>
+
+      <details class="qa">
+        <summary>신청 시기는 언제인가요?</summary>
+        <div class="qa-a">학기마다 지정된 기간에 온라인으로 접수합니다. 해당 학기의 신청 일정은 이 페이지의 「수강 신청」 항목에 표시되며, 공지사항과 학교 공문으로도 안내합니다. 추가 모집은 하지 않습니다.</div>
+      </details>
+
+      <details class="qa">
+        <summary>수강료가 있나요?</summary>
+        <div class="qa-a">수강료는 없습니다. 강사료와 실습비 등 운영 경비는 충청남도교육청과 해당 대학이 부담합니다. 수업 장소까지의 교통비는 개인 부담입니다.</div>
+      </details>
+
+      <details class="qa">
+        <summary>대학 입시에 어떤 영향이 있나요?</summary>
+        <div class="qa-a">성적이 기재되지 않으므로 교과 성적에는 영향이 없습니다. 학교생활기록부에 대학 수준 심화 과목의 이수 사실이 기재되므로 진로·전공 관련 활동의 근거로 활용될 수 있습니다. 다만 활용 방식은 지원 대학과 전형에 따라 다르므로, 담임 교사 또는 진로진학 상담 교사와 상의하시기 바랍니다.</div>
+      </details>
+
+      <details class="qa">
+        <summary>신청 인원이 5명 미만이면 어떻게 되나요?</summary>
+        <div class="qa-a">해당 과목은 개설되지 않을 수 있습니다. 개설되지 않는 경우 신청 학생에게 개별 통보하며, 신청에 따른 불이익은 없습니다. 다른 과목으로 다시 신청하는 방법은 별도로 안내합니다.</div>
+      </details>
+    </section>
+
+    <!-- ── 문의 ── -->
+    <section class="content-card">
+      <h2>문의</h2>
+      <p class="contact">
+        <b>충청남도교육청 중등교육과 고교 교육과정지원센터</b><br>
+        전화 041-640-7221, 041-640-7224
+      </p>
+    </section>
+
   </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════ -->
-<!-- SECTION 4 : 수강 신청 안내 -->
-<!-- ══════════════════════════════════════════════════════ -->
-<section>
-  <div class="wrap">
-    <h2 class="sec-title">신청 방법과 일정</h2>
-    <p class="sec-lead">선착순 온라인 수강 신청, 주요 일정을 확인하세요.</p>
-
-    <div class="card" style="margin-bottom:32px">
-      <div class="timeline">
-        <div class="tl-item tl-done">
-          <div class="tl-dot"></div>
-          <div class="tl-label">완료 · 2026. 4. 3.</div>
-          <div class="tl-title">① 협약 체결</div>
-          <div class="tl-desc">5개 대학과 업무협약 완료</div>
-        </div>
-        <div class="tl-item tl-done">
-          <div class="tl-dot"></div>
-          <div class="tl-label">완료 · 2026. 7. 초</div>
-          <div class="tl-title">② 강좌 개설 확정</div>
-          <div class="tl-desc">14개 강좌 승인 완료</div>
-        </div>
-        <div class="tl-item tl-now">
-          <div class="tl-dot"></div>
-          <div class="tl-label">진행 중 · 2026. 7. 9.</div>
-          <div class="tl-title">③ 강좌 안내 공개</div>
-          <div class="tl-desc">수업 일정·장소 상세 안내</div>
-        </div>
-        <div class="tl-item tl-future">
-          <div class="tl-dot"></div>
-          <div class="tl-label">예정 · 2026. 7. 16.</div>
-          <div class="tl-title">④ 수강 신청 오픈</div>
-          <div class="tl-desc">18:00~ 온라인 선착순</div>
-        </div>
-        <div class="tl-item tl-future">
-          <div class="tl-dot"></div>
-          <div class="tl-label">예정 · 신청 마감 후</div>
-          <div class="tl-title">⑤ 확정 안내</div>
-          <div class="tl-desc">공문 및 SMS 개별 안내</div>
-        </div>
-        <div class="tl-item tl-future">
-          <div class="tl-dot"></div>
-          <div class="tl-label">예정 · 2026. 8. 22. ~ 12. 13.</div>
-          <div class="tl-title">⑥ 수업 운영</div>
-          <div class="tl-desc">2학기 중 주말 수업 진행</div>
-        </div>
-      </div>
-    </div>
-
-    <h3 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:16px">신청 유의사항</h3>
-    <ul class="checklist">
-      <li class="warn">1인 1강좌만 신청 가능합니다</li>
-      <li class="warn">선착순이며, 추가 모집은 없습니다</li>
-      <li class="warn">강좌마다 운영 일시·장소가 다릅니다 — 수업 계획서를 꼭 확인하세요</li>
-      <li class="warn">수강 포기 가능 기간(수업 시작 후 2주) 이후에는 미이수가 학생부에 기재됩니다</li>
-      <li class="info">이동은 학부모 책임하에 개별 이동합니다 (교육청 이동 지원 없음)</li>
-      <li class="info">수강 인원: 강좌별 최소 5명 이상 / 최대 15명 이내</li>
-    </ul>
-
-    <div style="text-align:center">
-      <a href="../apply/index.html" class="btn btn-gold-lg">수강 신청하기 →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════ -->
-<!-- SECTION 5 : Q&A -->
-<!-- ══════════════════════════════════════════════════════ -->
-<section>
-  <div class="wrap">
-    <h2 class="sec-title">자주 묻는 질문</h2>
-    <p class="sec-lead">학생·학부모님이 가장 많이 궁금해하시는 질문을 모았습니다.</p>
-
-    <div class="faq-list">
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="q-badge">Q1</span>
-          <span>이 수업을 들으면 생활기록부에 기록되나요?</span>
-          <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">
-          기록됩니다. 교과학습발달상황에 새로운 과목으로 들어갑니다. 단, 성적 등 평가는 들어가지 않고, <strong>이수 사실과 학점</strong> 그리고 '객관적 학습 사실'이 특기사항에 기록됩니다. '객관적 학습사실'은 그 과목에서 무엇을 배웠다는 내용이며, 이수한 모든 학생에게 동일한 내용으로 기입됩니다.
-        </div></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="q-badge">Q2</span>
-          <span>대학 학점은 어떤 대학에 가도 인정되나요?</span>
-          <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">
-          아닙니다. <strong>해당 강좌를 개설한 대학에 진학할 때만</strong> 인정됩니다. 예를 들어, 단국대학교 강좌를 이수했다면 단국대학교에 입학할 때 학점을 인정받습니다. 다른 대학에 진학하면 대학 학점은 인정받지 못하지만, 고교 학점과 학생부 기재는 유지됩니다. 인정 학점 수, 인정 방식(교양 필수/선택 등)은 대학마다 다르니 강좌 안내 자료를 확인하세요.
-        </div></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="q-badge">Q3</span>
-          <span>고등학교 1학년도 신청할 수 있나요?</span>
-          <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">
-          대부분의 강좌는 <strong>1·2학년 모두 신청 가능</strong>합니다. 단, 일부 강좌는 2학년만 수강 가능하도록 제한되어 있습니다. (공주대 「교육과 심리학의 이해」, 단국대 「미적분학 핵심 개념 탐구」, 「화학분석기기의 이해 및 실습」) 강좌별 대상 학년은 강좌 안내 페이지에서 확인하세요. ※ 2022 개정 교육과정 기반 과목으로, 2026학년도 2학기에는 1·2학년만 이수 가능합니다.
-        </div></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="q-badge">Q4</span>
-          <span>수업 장소는 대학교 캠퍼스인가요? 이동은 어떻게 하나요?</span>
-          <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">
-          네, 원칙적으로 <strong>협약 대학 캠퍼스에서 수업이 진행</strong>됩니다. 대면과 온라인을 병행(혼합형)하는 강좌도 있습니다. 이동은 학부모 책임하에 학생이 개별 이동하는 것이 원칙이며, 교육청의 이동 지원은 없습니다. 강좌 신청 전, 수업 장소와 이동 방법을 반드시 가정에서 확인하시기 바랍니다.
-        </div></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="q-badge">Q5</span>
-          <span>수강 포기하면 어떻게 되나요?</span>
-          <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">
-          수업 시작 후 <strong>2주 이내에는 수강 포기가 가능</strong>하며, 이 경우 학생부에 아무런 기록이 남지 않습니다. 그러나 2주가 지난 후 이수 기준(수업 횟수의 2/3 이상 출석)을 충족하지 못하면, 학교생활기록부에 '미이수'가 기재됩니다. 신청 전 강좌 일정과 본인의 학교 일정(시험 기간 등)을 충분히 비교한 뒤 신청하시기 바랍니다.
-        </div></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="q-badge">Q6</span>
-          <span>수업에 빠지면 어떻게 되나요? 출석 기준이 어떻게 되나요?</span>
-          <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">
-          총 수업 횟수의 <strong>2/3 이상 출석</strong>해야 이수로 인정됩니다. 예를 들어 총 32차시라면 22차시 이상 출석해야 합니다. 출석 확인은 담당 교수가 오프라인 출석부로 1차 관리하고, 대학 담당자가 최종 확인합니다. 결석이 누적되어 이수 기준에 미달하면 '미이수'가 학생부에 기재되므로 주의하세요.
-        </div></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="q-badge">Q7</span>
-          <span>왜 1개 강좌만 신청할 수 있나요?</span>
-          <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">
-          이 과정은 선착순으로 운영되며, 강좌당 최대 15명으로 수강 인원이 제한됩니다. <strong>더 많은 학생에게 기회를 드리기 위해</strong> 1인 1강좌로 운영합니다. 또한 주말에 하루 4시간 이상 진행되는 수업 특성상, 두 강좌를 동시에 수강하면 학업 부담이 상당히 커질 수 있습니다.
-        </div></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="q-badge">Q8</span>
-          <span>선착순이면 언제 신청해야 하나요?</span>
-          <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">
-          수강 신청은 <strong>2026년 7월 16일(목) 18:00</strong>부터 온라인으로 시작됩니다. 인기 강좌는 빠르게 마감될 수 있으니, 미리 원하는 강좌를 결정해 두세요. 추가 모집은 없으니 신청 기간을 놓치지 마세요.
-        </div></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="q-badge">Q9</span>
-          <span>수업료(수강료)가 있나요?</span>
-          <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">
-          없습니다. <strong>수강료는 전액 무료</strong>입니다. 강좌 운영에 필요한 경비(강사료, 실습비 등)는 충청남도교육청과 해당 대학의 예산으로 지원됩니다. 단, 수업 장소까지의 이동 교통비는 개인 부담입니다.
-        </div></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="q-badge">Q10</span>
-          <span>이 과목이 입시(학생부종합전형)에 도움이 되나요?</span>
-          <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">
-          직접적인 성적 향상 효과는 없습니다. 이 과목은 성적이 기재되지 않기 때문입니다. 다만, 학생부에 <strong>'대학 수준 심화 과목 이수 사실'이 기재</strong>되므로, 관련 진로·전공에 대한 관심과 노력을 보여주는 활동 근거가 될 수 있습니다. 특히 해당 대학 관련 학과 진학을 희망하는 학생에게는 진로 적합성을 나타내는 의미 있는 기록이 될 수 있습니다. 다만 입시 전략은 학생 개인의 상황과 지원 대학에 따라 다르므로, 담임 교사 또는 진로진학 상담 교사와 상의하시기 바랍니다.
-        </div></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="q-badge">Q11</span>
-          <span>신청 인원이 5명 미만이면 강좌가 폐강되나요?</span>
-          <svg class="arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">
-          네, 수강 신청 인원이 <strong>5명 미만이면 강좌가 개설되지 않을 수 있습니다</strong>. 폐강이 결정되면 신청 학생에게 개별 통보하며, 이미 신청한 경우에는 아무런 불이익이 없습니다. 다른 강좌로 재신청하고 싶으신 경우, 별도 안내에 따라 주세요.
-        </div></div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════ -->
-<!-- SECTION 6 : 문의 + 바로가기 -->
-<!-- ══════════════════════════════════════════════════════ -->
-<section style="background:var(--navy);padding:40px 0;text-align:center">
-  <div class="wrap">
-    <p style="color:rgba(255,255,255,.65);font-size:13px;margin-bottom:6px">충청남도교육청 중등교육과</p>
-    <p style="color:#fff;font-size:15px;font-weight:700;margin-bottom:20px">☎ 041-640-7221, 7224</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a href="./courses.html" class="btn btn-outline" style="font-size:13px;padding:10px 22px">전체 강좌 안내 보기</a>
-      <a href="../apply/index.html" class="btn btn-gold" style="font-size:13px;padding:10px 22px">수강 신청하기 →</a>
-    </div>
-  </div>
-</section>
+</main>
 
 <div id="om-footer"></div>
-
-<!-- ── FAQ Accordion JS ── -->
-<script>
-(function(){
-  var items = document.querySelectorAll('.faq-item');
-  items.forEach(function(item){
-    var btn = item.querySelector('.faq-q');
-    var answer = item.querySelector('.faq-a');
-    btn.addEventListener('click', function(){
-      var isOpen = item.classList.contains('open');
-      // close all
-      items.forEach(function(other){
-        other.classList.remove('open');
-        other.querySelector('.faq-q').setAttribute('aria-expanded','false');
-        other.querySelector('.faq-a').style.maxHeight = null;
-      });
-      // open clicked if was closed
-      if(!isOpen){
-        item.classList.add('open');
-        btn.setAttribute('aria-expanded','true');
-        answer.style.maxHeight = answer.scrollHeight + 'px';
-      }
-    });
-  });
-})();
-</script>
-
+<script src="./enroll.js"></script>
 <script src="../assets/js/common.js"></script>
 <script data-goatcounter="https://onmadang.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
