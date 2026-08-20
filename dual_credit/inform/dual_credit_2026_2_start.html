@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026학년도 2학기 고교-대학 연계 학점 인정 학교 밖 교육 과목 수업 안내</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;800;900&family=Roboto+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  @font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2') format('woff2-variations');
+    font-weight: 45 920;
+  }
+</style>
+<style>
+  :root{
+    --ink:#14213D;
+    --ink-soft:#3B455E;
+    --paper:#F6F3EC;
+    --paper-card:#FFFDF8;
+    --line:#E4DECF;
+    --accent:#EF6C4D;
+    --muted:#6B7280;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Pretendard','Noto Sans KR',-apple-system,system-ui,sans-serif;
+    font-size:15px;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:64px;
+  }
+
+  /* ---------- header ---------- */
+  header.top{
+    position:relative;
+    padding:40px 20px 92px;
+    background:
+      radial-gradient(140% 100% at 10% -10%, #1D2C50 0%, #14213D 55%, #101A32 100%);
+    color:#F4F1E8;
+    overflow:hidden;
+    text-align:center;
+  }
+  header.top::after{
+    content:"";
+    position:absolute; inset:auto 0 0 0; height:6px;
+    background:linear-gradient(90deg,#EF6C4D,#B5654B,#6A4C93,#1D4E89,#2D6A4F,#A98307);
+  }
+  .ticket-mark{
+    width:46px;height:46px;border-radius:10px;
+    border:2px dashed rgba(244,241,232,.55);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Pretendard','Noto Sans KR',-apple-system,system-ui,sans-serif;
+    font-weight:700;font-size:11px;
+    letter-spacing:.03em;color:#F4F1E8; margin:0 auto 18px;
+    text-align:center; line-height:1.3;
+  }
+  .eyebrow{
+    font-family:'Pretendard','Noto Sans KR',-apple-system,system-ui,sans-serif;
+    font-weight:600;
+    font-size:12.5px; letter-spacing:.08em;
+    color:#EF9C86; margin:0 0 10px;
+  }
+  h1.page-title{
+    font-family:'Noto Serif KR',serif;
+    font-weight:800;
+    font-size:clamp(22px,5.4vw,32px);
+    line-height:1.35;
+    margin:0 auto 14px;
+    max-width:640px;
+  }
+  .page-sub{
+    color:#C9CEDD; font-size:14.5px; line-height:1.7; max-width:480px; margin:0 auto;
+  }
+
+  /* jump select + chips, floats over header bottom */
+  .finder{
+    position:relative;
+    max-width:720px; margin:-56px auto 0; padding:0 20px;
+  }
+  .finder-card{
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    box-shadow:0 18px 30px -20px rgba(20,33,61,.45);
+    padding:18px 18px 16px;
+  }
+  .finder-label{
+    font-size:12.5px; font-weight:700; color:var(--ink-soft);
+    margin-bottom:8px; display:block;
+  }
+  select#jump{
+    width:100%;
+    appearance:none;
+    font:inherit; font-size:15px; font-weight:600; color:var(--ink);
+    padding:12px 14px;
+    border-radius:10px;
+    border:1.5px solid var(--line);
+    background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="9"><path d="M1 1l6 6 6-6" stroke="%2314213D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat right 14px center;
+    background-color:#fff;
+  }
+
+  /* ---------- body ---------- */
+  main{max-width:640px; margin:0 auto; padding:30px 20px 0;}
+
+  .placeholder{
+    text-align:center; padding:48px 20px;
+    color:var(--muted); font-size:14px; line-height:1.8;
+  }
+  .placeholder strong{display:block; color:var(--ink-soft); font-size:15px; margin-bottom:6px;}
+
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:13px; font-weight:700; color:var(--ink-soft);
+    text-decoration:none; margin-bottom:16px;
+  }
+  .back-link::before{content:"←";}
+
+  .cards{display:flex; flex-direction:column; gap:12px;}
+
+  .card{
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:4px solid var(--accent);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .card-head{
+    width:100%; padding:18px 16px 14px;
+  }
+  .card-title{display:block;}
+  .card-univ{
+    display:block; font-size:11.5px; font-weight:700; color:var(--accent);
+    letter-spacing:.02em; margin-bottom:4px;
+  }
+  .card-name{
+    display:block; font-weight:800; font-size:16.5px; color:var(--ink);
+    font-family:'Noto Serif KR',serif; line-height:1.4;
+  }
+  .card-place{
+    display:block; font-size:12.5px; color:var(--muted); margin-top:5px; line-height:1.5;
+  }
+
+  .card-body{
+    padding:0 16px 18px;
+  }
+
+  .perforation{
+    height:1px; margin:0 0 14px;
+    background-image:repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 12px);
+  }
+
+  .row{display:flex; gap:14px; font-size:13.5px; line-height:1.65; padding:6px 0;}
+  .row-label{
+    flex:0 0 78px; font-weight:700; color:var(--ink-soft); font-size:12.5px; padding-top:1px;
+  }
+  .row-value{flex:1 1 auto; color:var(--ink);}
+  .row:first-of-type .row-value{font-size:14.5px;}
+  .mono-strong{
+    font-family:'Roboto Mono','Courier New',monospace;
+    font-weight:700; color:var(--ink);
+  }
+  .dow{
+    font-family:'Pretendard','Noto Sans KR',-apple-system,system-ui,sans-serif;
+    font-weight:700; color:var(--ink);
+  }
+  .row-alert .row-value{color:#9A4A2F; font-weight:600;}
+  .row-action{
+    margin-top:8px; padding-top:12px; border-top:1px solid var(--line);
+    align-items:center; justify-content:space-between;
+  }
+  .map-btn{
+    display:inline-block; font-size:13px; font-weight:700; color:#fff;
+    background:var(--ink); padding:9px 16px; border-radius:8px; text-decoration:none;
+  }
+  .notice-link{font-size:12.5px; color:var(--muted); text-decoration:underline; text-underline-offset:3px;}
+
+  /* ---------- common notice ---------- */
+  section#common{
+    max-width:640px; margin:36px auto 0; padding:0 20px;
+    scroll-margin-top:20px;
+  }
+  .common-box{
+    background:var(--ink); color:#EDEBE2;
+    border-radius:16px; padding:24px 22px;
+  }
+  .common-box h2{
+    font-family:'Noto Serif KR',serif; font-size:17px; margin:0 0 14px;
+    color:#fff;
+  }
+  .common-box ul{margin:0; padding-left:18px; font-size:13.5px; line-height:1.85; color:#D8D6CB;}
+  .common-box li{margin-bottom:4px;}
+  .common-box .phone{
+    display:inline-block; margin-top:14px;
+    font-family:'Pretendard','Noto Sans KR',-apple-system,system-ui,sans-serif;
+    font-size:13.5px; font-weight:600; color:#fff; text-decoration:none; border-bottom:1px solid #EF6C4D;
+    padding-bottom:2px;
+  }
+  .common-box .phone .num{
+    font-family:'Roboto Mono','Courier New',monospace;
+    font-weight:700;
+  }
+
+  footer.foot{
+    max-width:640px; margin:26px auto 0; padding:0 20px 10px;
+    font-size:11.5px; color:var(--muted); text-align:center;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+
+  .flash{animation:flash 1.6s ease;}
+  @keyframes flash{
+    0%{box-shadow:0 0 0 3px var(--accent);}
+    70%{box-shadow:0 0 0 3px var(--accent);}
+    100%{box-shadow:0 0 0 0 transparent;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="ticket-mark">고교<br>↕<br>대학</div>
+  <p class="eyebrow">2026학년도 2학기 · 학교 밖 교육</p>
+  <h1 class="page-title">고교-대학 연계 학점 인정 과목<br>첫 수업 안내</h1>
+  <p class="page-sub">신청하신 과목을 선택하면 첫 수업 일시·장소·오시는 길을 확인할 수 있습니다.</p>
+</header>
+
+<div class="finder">
+  <div class="finder-card">
+    <label class="finder-label" for="jump">신청 과목 선택</label>
+    <select id="jump">
+      <option value="" selected>과목을 선택하세요</option>
+      <optgroup label="국립공주대학교">
+<option value="GD26C001">교육과 심리학의 이해</option>
+</optgroup>
+<optgroup label="단국대학교">
+<option value="GD26C002">몽골학으로 읽는 AI 시대</option>
+<option value="GD26C005">포르투갈·브라질 언어와 문화의 이해</option>
+<option value="GD26C006">글로벌 이슈 탐구와 영어 학술 연구 실제</option>
+<option value="GD26C007">미적분학 핵심 개념 탐구</option>
+<option value="GD26C008">화학분석기기의 이해 및 실습</option>
+</optgroup>
+<optgroup label="백석대학교">
+<option value="GD26C009">보건과 건강관리</option>
+<option value="GD26C010">베이킹과 조리 실습</option>
+</optgroup>
+<optgroup label="순천향대학교">
+<option value="GD26C011">사건으로 읽는 법과학</option>
+<option value="GD26C012">호텔리어의 이해</option>
+<option value="GD26C013">예술활용 심리상담</option>
+</optgroup>
+<optgroup label="충남대학교">
+<option value="GD26C014">네 가지 시선으로 탐험하는 생명과학</option>
+</optgroup>
+    </select>
+  </div>
+</div>
+
+<main>
+  <div id="placeholder" class="placeholder">
+    <strong>과목을 선택해 주세요</strong>
+    위의 상자에서 신청하신 과목을 고르면<br>첫 수업 정보가 이 자리에 표시됩니다.
+  </div>
+  <div id="results" class="cards">
+    <a href="#" id="backLink" class="back-link" style="display:none">다른 과목 선택</a>
+
+        <article class="card" id="GD26C001" data-code="GD26C001" data-name="교육과 심리학의 이해" style="display:none; --accent:#2D6A4F">
+          <div class="card-head">
+            <span class="card-title">
+              <span class="card-univ">국립공주대학교</span>
+              <span class="card-name">교육과 심리학의 이해</span>
+              <span class="card-place">국립공주대학교 천안캠퍼스 산학협력관 5층 비즈온 회의실(창의 6실)</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="perforation" aria-hidden="true"></div>
+            <div class="row">
+              <span class="row-label">첫 수업 일시</span>
+              <span class="row-value"><span class="mono-strong">2026.09.05.</span> <span class="dow">(토)</span> <span class="mono-strong">13:00~16:50</span></span>
+            </div>
+            <div class="row">
+              <span class="row-label">오시는 길</span>
+              <span class="row-value">천안캠퍼스 정문에서 직진 약 300m, 4공학관과 5공학관 사이를 통과 → 산학협력관(E동) 1층 엘리베이터로 5층 이동 후 우측</span>
+            </div>
+            <div class="row">
+              <span class="row-label">준비물</span>
+              <span class="row-value">필기도구, 노트</span>
+            </div>
+            <div class="row row-action">
+              <a class="map-btn" href="https://naver.me/GRuhIFwz" target="_blank" rel="noopener">지도에서 길찾기</a>
+              <a class="notice-link" href="#common">공통 안내 보기 ↓</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" id="GD26C002" data-code="GD26C002" data-name="몽골학으로 읽는 AI 시대" style="display:none; --accent:#1D4E89">
+          <div class="card-head">
+            <span class="card-title">
+              <span class="card-univ">단국대학교</span>
+              <span class="card-name">몽골학으로 읽는 AI 시대</span>
+              <span class="card-place">단국대학교 외국어대학 321-01호</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="perforation" aria-hidden="true"></div>
+            <div class="row">
+              <span class="row-label">첫 수업 일시</span>
+              <span class="row-value"><span class="mono-strong">2026.08.22.</span> <span class="dow">(토)</span> <span class="mono-strong">09:00~12:50</span></span>
+            </div>
+            <div class="row">
+              <span class="row-label">오시는 길</span>
+              <span class="row-value">천안캠퍼스 인문과학관(외국어대학 건물) 1층 카페 옆 계단으로 3층 이동</span>
+            </div>
+            <div class="row">
+              <span class="row-label">준비물</span>
+              <span class="row-value">필기도구, 노트</span>
+            </div>
+            <div class="row row-action">
+              <a class="map-btn" href="https://naver.me/FoE5RADD" target="_blank" rel="noopener">지도에서 길찾기</a>
+              <a class="notice-link" href="#common">공통 안내 보기 ↓</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" id="GD26C005" data-code="GD26C005" data-name="포르투갈·브라질 언어와 문화의 이해" style="display:none; --accent:#1D4E89">
+          <div class="card-head">
+            <span class="card-title">
+              <span class="card-univ">단국대학교</span>
+              <span class="card-name">포르투갈·브라질 언어와 문화의 이해</span>
+              <span class="card-place">단국대학교 외국어대학 316-1호</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="perforation" aria-hidden="true"></div>
+            <div class="row">
+              <span class="row-label">첫 수업 일시</span>
+              <span class="row-value"><span class="mono-strong">2026.08.29.</span> <span class="dow">(토)</span> <span class="mono-strong">13:00~16:50</span></span>
+            </div>
+            <div class="row">
+              <span class="row-label">오시는 길</span>
+              <span class="row-value">천안캠퍼스 인문과학관(외국어대학 건물) 1층 카페 옆 계단으로 3층 이동 후 왼쪽 복도 끝</span>
+            </div>
+            <div class="row">
+              <span class="row-label">준비물</span>
+              <span class="row-value">필기 도구</span>
+            </div>
+              <div class="row row-alert">
+                <span class="row-label">기타 안내</span>
+                <span class="row-value">대학 사정으로 수업 시작일이 8월 29일(토)로 변경되었습니다.</span>
+              </div>
+            <div class="row row-action">
+              <a class="map-btn" href="https://naver.me/FoE5RADD" target="_blank" rel="noopener">지도에서 길찾기</a>
+              <a class="notice-link" href="#common">공통 안내 보기 ↓</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" id="GD26C006" data-code="GD26C006" data-name="글로벌 이슈 탐구와 영어 학술 연구 실제" style="display:none; --accent:#1D4E89">
+          <div class="card-head">
+            <span class="card-title">
+              <span class="card-univ">단국대학교</span>
+              <span class="card-name">글로벌 이슈 탐구와 영어 학술 연구 실제</span>
+              <span class="card-place">단국대학교 외국어대학 327호</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="perforation" aria-hidden="true"></div>
+            <div class="row">
+              <span class="row-label">첫 수업 일시</span>
+              <span class="row-value"><span class="mono-strong">2026.08.22.</span> <span class="dow">(토)</span> <span class="mono-strong">09:00~12:50</span></span>
+            </div>
+            <div class="row">
+              <span class="row-label">오시는 길</span>
+              <span class="row-value">천안캠퍼스 인문과학관(외국어대학 건물) 1층 카페 옆 계단으로 3층 이동</span>
+            </div>
+            <div class="row">
+              <span class="row-label">준비물</span>
+              <span class="row-value">노트, 필기구(2주차부터 태블릿 또는 노트북 지참) / 교재: Folse &amp; Pugh, Great Writing 5(National Geographic Learning)</span>
+            </div>
+              <div class="row row-alert">
+                <span class="row-label">기타 안내</span>
+                <span class="row-value">전 회차 대면 수업으로 진행됩니다. 8주간 대면 참여가 어려운 경우 수강포기 가능 기간(수업 시작 후 2주 이내) 중 의사를 밝혀 주세요.</span>
+              </div>
+            <div class="row row-action">
+              <a class="map-btn" href="https://naver.me/FoE5RADD" target="_blank" rel="noopener">지도에서 길찾기</a>
+              <a class="notice-link" href="#common">공통 안내 보기 ↓</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" id="GD26C007" data-code="GD26C007" data-name="미적분학 핵심 개념 탐구" style="display:none; --accent:#1D4E89">
+          <div class="card-head">
+            <span class="card-title">
+              <span class="card-univ">단국대학교</span>
+              <span class="card-name">미적분학 핵심 개념 탐구</span>
+              <span class="card-place">단국대학교 제1과학관(자연1관) 308호</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="perforation" aria-hidden="true"></div>
+            <div class="row">
+              <span class="row-label">첫 수업 일시</span>
+              <span class="row-value"><span class="mono-strong">2026.08.22.</span> <span class="dow">(토)</span> <span class="mono-strong">13:00~16:50</span></span>
+            </div>
+            <div class="row">
+              <span class="row-label">오시는 길</span>
+              <span class="row-value">단국대 방면 11번 버스 탑승 후 운동장이 보이는 정류장 하차 → 학생회관 방향 이동 → 세 갈래 길 중 가운데 길의 5층 건물(자연1관)</span>
+            </div>
+            <div class="row">
+              <span class="row-label">준비물</span>
+              <span class="row-value">노트, 필기구(태블릿 등 가능) / 교재: 미분적분학 2판(James Stewart, 수학 교재 편찬위원회 옮김, 교우사)</span>
+            </div>
+            <div class="row row-action">
+              <a class="map-btn" href="https://naver.me/GQ1Eurkk" target="_blank" rel="noopener">지도에서 길찾기</a>
+              <a class="notice-link" href="#common">공통 안내 보기 ↓</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" id="GD26C008" data-code="GD26C008" data-name="화학분석기기의 이해 및 실습" style="display:none; --accent:#1D4E89">
+          <div class="card-head">
+            <span class="card-title">
+              <span class="card-univ">단국대학교</span>
+              <span class="card-name">화학분석기기의 이해 및 실습</span>
+              <span class="card-place">단국대학교 산학협력관 113호</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="perforation" aria-hidden="true"></div>
+            <div class="row">
+              <span class="row-label">첫 수업 일시</span>
+              <span class="row-value"><span class="mono-strong">2026.08.22.</span> <span class="dow">(토)</span> <span class="mono-strong">09:00~12:50</span></span>
+            </div>
+            <div class="row">
+              <span class="row-label">오시는 길</span>
+              <span class="row-value">단국대 방면 11번 버스 탑승 후 단국대 정문에서 보이는 왼쪽 첫 번째 건물(스타벅스 맞은편) 1층 113호</span>
+            </div>
+            <div class="row">
+              <span class="row-label">준비물</span>
+              <span class="row-value">노트, 필기구(태블릿 또는 노트북 가능)</span>
+            </div>
+            <div class="row row-action">
+              <a class="map-btn" href="https://naver.me/GYC6ts4S" target="_blank" rel="noopener">지도에서 길찾기</a>
+              <a class="notice-link" href="#common">공통 안내 보기 ↓</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" id="GD26C009" data-code="GD26C009" data-name="보건과 건강관리" style="display:none; --accent:#B5654B">
+          <div class="card-head">
+            <span class="card-title">
+              <span class="card-univ">백석대학교</span>
+              <span class="card-name">보건과 건강관리</span>
+              <span class="card-place">백석대학교 조형관 605호</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="perforation" aria-hidden="true"></div>
+            <div class="row">
+              <span class="row-label">첫 수업 일시</span>
+              <span class="row-value"><span class="mono-strong">2026.08.22.</span> <span class="dow">(토)</span> <span class="mono-strong">10:00~13:50</span></span>
+            </div>
+            <div class="row">
+              <span class="row-label">오시는 길</span>
+              <span class="row-value">지도 링크 참고, 첫 수업 집결 장소는 조형관 605호입니다.</span>
+            </div>
+            <div class="row">
+              <span class="row-label">준비물</span>
+              <span class="row-value">노트 또는 태블릿</span>
+            </div>
+              <div class="row row-alert">
+                <span class="row-label">기타 안내</span>
+                <span class="row-value">팀티칭 강좌로 전공 교육 내용에 따라 주차별 강의실이 달라질 수 있습니다. 강의실은 매주 사전 안내드립니다.</span>
+              </div>
+            <div class="row row-action">
+              <a class="map-btn" href="https://naver.me/F1rV65Cm" target="_blank" rel="noopener">지도에서 길찾기</a>
+              <a class="notice-link" href="#common">공통 안내 보기 ↓</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" id="GD26C010" data-code="GD26C010" data-name="베이킹과 조리 실습" style="display:none; --accent:#B5654B">
+          <div class="card-head">
+            <span class="card-title">
+              <span class="card-univ">백석대학교</span>
+              <span class="card-name">베이킹과 조리 실습</span>
+              <span class="card-place">백석대학교 글로벌외식관 301호</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="perforation" aria-hidden="true"></div>
+            <div class="row">
+              <span class="row-label">첫 수업 일시</span>
+              <span class="row-value"><span class="mono-strong">2026.08.22.</span> <span class="dow">(토)</span> <span class="mono-strong">10:00~13:50</span></span>
+            </div>
+            <div class="row">
+              <span class="row-label">오시는 길</span>
+              <span class="row-value">지도 링크 참고, 첫 수업 집결 장소는 글로벌외식관 301호입니다.</span>
+            </div>
+            <div class="row">
+              <span class="row-label">준비물</span>
+              <span class="row-value">필기도구, 노트</span>
+            </div>
+            <div class="row row-action">
+              <a class="map-btn" href="https://naver.me/GzEKvUKj" target="_blank" rel="noopener">지도에서 길찾기</a>
+              <a class="notice-link" href="#common">공통 안내 보기 ↓</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" id="GD26C011" data-code="GD26C011" data-name="사건으로 읽는 법과학" style="display:none; --accent:#6A4C93">
+          <div class="card-head">
+            <span class="card-title">
+              <span class="card-univ">순천향대학교</span>
+              <span class="card-name">사건으로 읽는 법과학</span>
+              <span class="card-place">순천향대학교 유니토피아관 307호</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="perforation" aria-hidden="true"></div>
+            <div class="row">
+              <span class="row-label">첫 수업 일시</span>
+              <span class="row-value"><span class="mono-strong">2026.09.05.</span> <span class="dow">(토)</span> <span class="mono-strong">09:00~12:50</span></span>
+            </div>
+            <div class="row">
+              <span class="row-label">오시는 길</span>
+              <span class="row-value">지도 링크 참고, 첫 수업 집결 장소는 유니토피아관 307호입니다.</span>
+            </div>
+            <div class="row">
+              <span class="row-label">준비물</span>
+              <span class="row-value">필기도구, 노트</span>
+            </div>
+            <div class="row row-action">
+              <a class="map-btn" href="https://naver.me/5ZJW7jc1" target="_blank" rel="noopener">지도에서 길찾기</a>
+              <a class="notice-link" href="#common">공통 안내 보기 ↓</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" id="GD26C012" data-code="GD26C012" data-name="호텔리어의 이해" style="display:none; --accent:#6A4C93">
+          <div class="card-head">
+            <span class="card-title">
+              <span class="card-univ">순천향대학교</span>
+              <span class="card-name">호텔리어의 이해</span>
+              <span class="card-place">순천향대학교 유니토피아관 U210호</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="perforation" aria-hidden="true"></div>
+            <div class="row">
+              <span class="row-label">첫 수업 일시</span>
+              <span class="row-value"><span class="mono-strong">2026.08.30.</span> <span class="dow">(일)</span> <span class="mono-strong">13:00~16:50</span></span>
+            </div>
+            <div class="row">
+              <span class="row-label">오시는 길</span>
+              <span class="row-value">지도 링크 참고, 첫 수업 집결 장소는 유니토피아관 U210호입니다.</span>
+            </div>
+            <div class="row">
+              <span class="row-label">준비물</span>
+              <span class="row-value">필기도구, 노트</span>
+            </div>
+            <div class="row row-action">
+              <a class="map-btn" href="https://naver.me/5ZJW7jc1" target="_blank" rel="noopener">지도에서 길찾기</a>
+              <a class="notice-link" href="#common">공통 안내 보기 ↓</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" id="GD26C013" data-code="GD26C013" data-name="예술활용 심리상담" style="display:none; --accent:#6A4C93">
+          <div class="card-head">
+            <span class="card-title">
+              <span class="card-univ">순천향대학교</span>
+              <span class="card-name">예술활용 심리상담</span>
+              <span class="card-place">순천향대학교 미디어랩스관 ML524호</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="perforation" aria-hidden="true"></div>
+            <div class="row">
+              <span class="row-label">첫 수업 일시</span>
+              <span class="row-value"><span class="mono-strong">2026.09.12.</span> <span class="dow">(토)</span> <span class="mono-strong">09:00~12:50</span></span>
+            </div>
+            <div class="row">
+              <span class="row-label">오시는 길</span>
+              <span class="row-value">지도 링크 참고, 첫 수업 집결 장소는 미디어랩스관 ML524호입니다.</span>
+            </div>
+            <div class="row">
+              <span class="row-label">준비물</span>
+              <span class="row-value">필기도구, 노트</span>
+            </div>
+            <div class="row row-action">
+              <a class="map-btn" href="https://naver.me/xa5bYPLq" target="_blank" rel="noopener">지도에서 길찾기</a>
+              <a class="notice-link" href="#common">공통 안내 보기 ↓</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" id="GD26C014" data-code="GD26C014" data-name="네 가지 시선으로 탐험하는 생명과학" style="display:none; --accent:#A98307">
+          <div class="card-head">
+            <span class="card-title">
+              <span class="card-univ">충남대학교</span>
+              <span class="card-name">네 가지 시선으로 탐험하는 생명과학</span>
+              <span class="card-place">충남대학교 생명시스템과학대학(건물번호 N11) 1층 103호</span>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="perforation" aria-hidden="true"></div>
+            <div class="row">
+              <span class="row-label">첫 수업 일시</span>
+              <span class="row-value"><span class="mono-strong">2026.08.29.</span> <span class="dow">(토)</span> <span class="mono-strong">10:00~14:50</span></span>
+            </div>
+            <div class="row">
+              <span class="row-label">오시는 길</span>
+              <span class="row-value">대중교통: 충남대 동물병원 앞 하차 후 학내 진입 → 생활과학대학(N14) 옆 생명시스템과학대학(N11). 정문에서 도보 20분 이상 소요됩니다.</span>
+            </div>
+            <div class="row">
+              <span class="row-label">준비물</span>
+              <span class="row-value">노트 또는 태블릿</span>
+            </div>
+            <div class="row row-action">
+              <a class="map-btn" href="https://naver.me/GgWbF5sw" target="_blank" rel="noopener">지도에서 길찾기</a>
+              <a class="notice-link" href="#common">공통 안내 보기 ↓</a>
+            </div>
+          </div>
+        </article>
+  </div>
+</main>
+
+<section id="common">
+  <div class="common-box">
+    <h2>공통 안내</h2>
+    <ul>
+      <li>이수기준: 전체 수업의 2/3(22차시) 이상 출석 시 이수 인정되며, 미도달 시 학교생활기록부에 '미이수'로 기록됩니다.</li>
+      <li>수강포기는 수업 시작 후 2주 이내 가능합니다.</li>
+      <li>이동은 보호자 책임 하에 개별로 이동해 주시기 바랍니다.</li>
+    </ul>
+    <a class="phone" href="tel:041-640-7221">문의 · 충남교육청 중등교육과 <span class="num">041-640-7221</span></a>
+  </div>
+</section>
+
+<footer class="foot">충청남도교육청 중등교육과 · 2026학년도 2학기 고교-대학 연계 학점 인정 학교 밖 교육</footer>
+
+<script>
+  var select = document.getElementById('jump');
+  var placeholder = document.getElementById('placeholder');
+  var backLink = document.getElementById('backLink');
+  var allCards = document.querySelectorAll('.card');
+
+  function showCourse(code, opts){
+    var card = document.getElementById(code);
+    if(!card) return;
+    allCards.forEach(function(c){ c.style.display = (c === card) ? '' : 'none'; });
+    placeholder.style.display = 'none';
+    backLink.style.display = '';
+    select.value = code;
+    if(!opts || !opts.noScroll){
+      setTimeout(function(){
+        card.scrollIntoView({behavior:'smooth', block:'start'});
+      }, 30);
+    }
+  }
+
+  function resetView(){
+    allCards.forEach(function(c){ c.style.display = 'none'; });
+    placeholder.style.display = '';
+    backLink.style.display = 'none';
+    select.value = '';
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+
+  select.addEventListener('change', function(e){
+    if(e.target.value) showCourse(e.target.value);
+    else resetView();
+  });
+
+  backLink.addEventListener('click', function(e){
+    e.preventDefault();
+    resetView();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  window.addEventListener('load', function(){
+    var hash=(location.hash||'').replace('#','');
+    if(hash && hash!=='common'){
+      showCourse(hash, {noScroll:true});
+    }
+  });
+</script>
+
+</body>
+</html>
