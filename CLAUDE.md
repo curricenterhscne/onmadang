@@ -98,7 +98,9 @@
 
 - `common.js`가 placeholder를 **`outerHTML`로 교체**한다. 실행 후 `#om-header`는 사라지는 것이 정상이다.
 - base 경로는 자기 `<script src>`에서 자동 계산하므로 경로를 정확히 쓸 것.
-- GNB·모바일 메뉴·리뉴얼 배너·클로버 SVG defs가 함께 주입된다.
+- GNB·모바일 메뉴·상단 안내 배너·클로버 SVG defs가 함께 주입된다.
+- **상단 안내 배너는 현재 비어 있다** (2026-08-20에 「리디자인 작업 중」 문구 삭제). `common.js`의 `var banner = ''`에 문구를 채우면 다시 뜬다. `.renewal-banner` 스타일은 `common.css`에 남아 있다.
+  다시 쓸 때는 `common.js`를 안 쓰는 **`apply/app.html`·`design/selector/guide.html`의 인라인 배너도 함께** 넣어야 한다 (총 3곳).
 - `data-active` 값: `home` `about` `design` `safety` `board`
 
 ### ⚠️ `common.css`는 요소 선택자에도 스타일을 건다

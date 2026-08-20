@@ -43,10 +43,11 @@
     + '<path d="M50 66 Q53 82 59 90" stroke="#5fb260" stroke-width="5" fill="none" stroke-linecap="round"/>'
     + '</symbol></defs></svg>';
 
-  /* ── 리뉴얼 배너 ── */
-  var banner = '<div class="renewal-banner" role="note">'
-    + '\uFF1C충남 고교학점제 종합지원 포털 온마당\uFF1E 현재 리디자인 작업 중입니다.&ensp;(2026. 7. 31. ~ 8. 31.)'
-    + '</div>';
+  /* ── 상단 안내 배너 ──
+     띄울 문구가 있을 때만 banner를 '<div class="renewal-banner" role="note">…</div>' 형태로 채운다.
+     빈 문자열이면 배너가 렌더링되지 않는다. (.renewal-banner 스타일은 common.css에 남겨 두었다.)
+     ⚠️ 다시 쓸 때는 apply/app.html·design/selector/guide.html의 인라인 배너도 함께 볼 것. */
+  var banner = '';
 
   /* ── 서브메뉴 데이터 ── */
   var subMenus = {
