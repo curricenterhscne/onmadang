@@ -31,7 +31,8 @@
   }
   .hero h1 em{font-style:normal;color:var(--brand);position:relative}
   .hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:10px;background:rgba(123,206,124,.4);z-index:-1;border-radius:3px}
-  .hero p.hero-desc{font-size:16.5px;color:var(--ink-soft);margin-bottom:30px;max-width:480px;animation:fadeUp .6s .16s both}
+  .hero p.hero-lead{font-size:19px;font-weight:700;color:var(--ink);line-height:1.55;letter-spacing:-.5px;margin-bottom:12px;max-width:480px;word-break:keep-all;animation:fadeUp .6s .12s both}
+  .hero p.hero-desc{font-size:16.5px;color:var(--ink-soft);margin-bottom:30px;max-width:480px;word-break:keep-all;animation:fadeUp .6s .16s both}
   .hero-btns{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .6s .24s both}
   .btn{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:700;padding:14px 26px;border-radius:14px;transition:.18s;cursor:pointer}
   .btn-primary{background:var(--brand);color:#fff;box-shadow:0 6px 18px rgba(79,110,190,.3)}
@@ -161,8 +162,9 @@
     <div class="hero-grid">
       <div>
         <span class="hero-pill"><svg class="clover" width="15" height="15"><use href="#clv"/></svg> 학생 중심 충남 교육 · 학생 주도성을 키우는 고교학점제</span>
-        <h1>내가 선택하는 <br><em>나만의 교육과정</em>,<br>온마당이 함께<br>설계합니다</h1>
-        <p class="hero-desc">진로 탐색부터 과목 선택, 졸업 요건 점검까지.<br> 진로·학업 설계와 4대 안전망을 한 곳에서 만나보세요.</p>
+        <h1>충남 고교학점제<br><em>종합지원 포털</em></h1>
+        <p class="hero-lead">학생이 선택하는 교육과정, 설계와 점검을 지원합니다.</p>
+        <p class="hero-desc">진로 탐색, 과목 선택, 졸업 요건 점검을 위한 도구와 4대 안전망 안내를 제공합니다.</p>
         <div class="hero-btns">
           <a href="./design/" class="btn btn-primary">진로·학업 설계 시작 →</a>
           <a href="./about/index.html" class="btn btn-ghost">고교학점제 안내</a>
@@ -213,8 +215,8 @@
 <section class="block about-sec">
   <div class="wrap">
     <div class="sec-label">ABOUT</div>
-    <h2 class="sec-title">고교학점제, <em>제대로 알아봐요</em></h2>
-    <p class="sec-desc">학생도 학부모도 쉽게 이해할 수 있도록 핵심부터 안내합니다.</p>
+    <h2 class="sec-title"><em>고교학점제</em> 안내</h2>
+    <p class="sec-desc">제도의 정의와 등장 배경, 학생 주도성과의 관계를 정리했습니다.</p>
     <div class="about-grid">
       <a class="about-card c1" href="./about/what-is.html">
         <svg class="clover a-deco" width="120" height="120"><use href="#clv"/></svg>
@@ -236,7 +238,7 @@
 <section class="block design-sec">
   <div class="wrap">
     <div class="sec-label">CAREER &amp; ACADEMIC DESIGN</div>
-    <h2 class="sec-title">진로·학업 설계, <em>어디서든 시작하세요</em></h2>
+    <h2 class="sec-title"><em>진로·학업 설계</em></h2>
     <p class="sec-desc">지금 궁금한 것부터 골라 보세요. 어느 질문에서 시작해도 괜찮습니다.</p>
     <div class="gates">
       <!-- 관문 1 -->
@@ -290,7 +292,7 @@
       <a class="scard" href="./safety/schoolcurriculum.html">
         <div class="s-ic">🏫</div><div class="s-step"><h1>1</h1></div>
         <h3>학생 선택 중심<br> 학교 교육과정</h3>
-        <p>학교 안에서 꼼꼼하게! 나의 진로와 적성에 맞춰 학교에 개설된 다양한 과목을 기본으로 선택합니다.</p>
+        <p>소속 학교가 개설한 과목 중에서 진로와 적성에 맞는 과목을 우선 이수합니다.</p>
         <span class="s-link">안내 보기 →</span>
       </a>
       <a class="scard" href="./safety/onlineschool.html">
@@ -308,7 +310,7 @@
       <a class="scard" href="./safety/off-campus_courses.html">
         <div class="s-ic">🌱</div><div class="s-step"><h1>4</h1></div>
         <h3>꿈키움<br>학교 밖 교육</h3>
-        <p>교실을 넘어 지역사회로! 대학, 연구기관, 지역 전문가와 연계된 전문적인 심화 프로그램을 통해 나의 꿈에 날개를 답니다.</p>
+        <p>지역 대학·연구기관과 연계한 심화 과목과 체험활동을 이수합니다.</p>
         <span class="s-link">안내 보기 →</span>
       </a>
     </div>

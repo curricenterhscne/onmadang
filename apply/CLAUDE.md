@@ -104,7 +104,7 @@ _embed_data.js (정적)          Supabase RPC (실시간)
 6. **학년 제한** — 전체 강좌가 1~2학년 대상이므로 3학년 옵션 제거됨. `gradeRestricted` 강좌는 확정 시 학년 검증하여 차단.
 7. **강좌 안내 링크** — `../dual_credit/`로 연결 (off-campus_courses 아님).
 8. **`app.html`의 GNB는 손으로 관리한다** — `common.js`를 안 쓰므로 GNB가 자동 동기화되지 않는다. 온마당 메뉴가 바뀌면 `app.html`의 데스크톱 nav(`.onmadang-links`)와 모바일 nav(`.om-mobile-nav`) **양쪽을 직접 고쳐야 한다.** (2026-08-13에 `알림·소통 마당`이 홈으로 가던 오류와 `고교학점제` 메뉴 누락을 이 방식으로 정정했다.)
-9. **리디자인 배너 문구는 3곳에 중복** — `assets/js/common.js`, **`apply/app.html`**, `design/selector/guide.html`. 수정 시 3곳 동시 변경. (`apply/index.html`은 `common.js`가 주입하므로 별도 수정 불필요.)
+9. **상단 안내 배너는 2026-08-20에 제거됨** — 「리디자인 작업 중」 문구를 3곳(`assets/js/common.js`, **`apply/app.html`**, `design/selector/guide.html`)에서 모두 지웠다. 다시 띄울 때도 **3곳 동시 작업**이다: `common.js`는 `var banner`에 HTML을 채우고, `app.html`·`guide.html`은 `common.js`를 안 쓰므로 `<div class="renewal-banner" role="note">`를 인라인으로 직접 넣는다. (`apply/index.html`은 `common.js`가 주입하므로 별도 수정 불필요.)
 10. **GoatCounter 미적용** — `index.html`(마감 안내)에는 있으나 `app.html`·`admin/`에는 없다. 루트 `CLAUDE.md`의 접속 통계 절 참조.
 
 ## 관리자 페이지 (admin/)
