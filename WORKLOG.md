@@ -4,6 +4,57 @@
 
 ---
 
+## 2026-08-20: 고교-대학 연계 — 과목 교육과정 게시 + 수강신청 기간 개폐 자동화
+
+「학교 밖 교육」 아래를 **수강신청 중심에서 과목 안내 중심으로** 재편했다.
+14개 과목은 계속 유지되고 매 학년도 1·2학기에 개설될 수 있으므로, 특정 학기 날짜에 매인 문구를 걷어냈다.
+
+### 1. `dual_credit/curriculum.html` 신설 — 과목 교육과정 문서 (전자책 레이아웃)
+
+충남교육청 발간 원본(`2026 고교-대학 연계 학점 인정 학교 밖 교육 과목 교육과정.html`, 14개 과목)을 이식했다.
+
+- **레이아웃**: 왼쪽에 목차를 계속 띄우는 전자책 형태(`.ebook` 그리드 = sticky 사이드바 + 본문). 960px 이하에서는 목차가 위로 쌓인다.
+- **스크롤스파이**: 현재 읽고 있는 과목을 목차에서 `aria-current`로 표시하고, 목차 스크롤도 따라간다.
+- 원본 CSS를 **전부 `.doc-wrap` 아래로 스코프**. 원본의 `.wrap`이 공통 헤더의 `.wrap`과 충돌한다.
+- ⚠️ **원본의 `<header class="c-head">`를 `<div>`로 교체.** `common.css`가 요소 선택자로 `header{position:sticky;top:0;z-index:100}`을 걸어 두어서, 그대로 두면 **과목 제목이 GNB 위에 고정되어 겹친다.** 실제로 이 증상이 나왔고 이렇게 고쳤다.
+- 원본 표지는 제거하고 공통 `.page-hero`가 제목을 맡음. 목차 → `#course-1`~`#course-14` 앵커.
+- 앵커 재정렬은 `load` 후 `scrollIntoView({behavior:'instant'})`. smooth는 로딩 중 끊긴다.
+- 인쇄용 `@media print` 추가. GoatCounter 적용.
+- 생성 스크립트: 세션 scratchpad의 `build_curriculum.py` (원본이 갱신되면 같은 규칙으로 다시 이식할 것).
+
+### 2. `dual_credit/enroll.js` 신설 — 수강신청 개폐 일원화
+
+이전에는 `../apply/index.html`이 **4곳에 하드코딩**되어 있어 기간이 바뀔 때마다 전부 찾아 고쳐야 했다. 전부 걷어냈다.
+
+- `OM_ENROLL.periods` 배열 하나로 상태 판정 → `open` / `upcoming` / `closed`
+- `data-enroll="cta|notice|term|open-only|closed-only"` 훅으로 화면 반영
+- 기간 밖이면 버튼의 `href`를 제거해 눌리지 않게 하고 문구를 바꾼다 (**색이 아니라 문구로 구분** — KWCAG)
+- 동적 DOM(`courses.html` 모달)은 `window.OM_ENROLL_APPLY()` 재호출로 갱신
+- **다음 학기를 열 때 고칠 곳은 `enroll.js` 한 파일뿐이다.**
+
+### 3. 기존 페이지 정리
+
+| 파일 | 변경 |
+|---|---|
+| `dual_credit/index.html` | **전면 재작성.** 자체 navy/gold 팔레트와 Noto 서체를 걷어내고 `common.css` 토큰 + `.content-card` 구조로 통일. 날짜 박힌 타임라인 → 매 학기 공통 운영 절차 6단계. 과목 표의 과목명에 `curriculum.html#course-N` 링크. FAQ 아코디언 JS → `<details>` (JS 제거). 문의 절 추가 |
+| `dual_credit/courses.html` | 신청 버튼을 `data-enroll="cta"`로. 상세 모달에 「과목 교육과정」 섹션 추가(`#course-${연번}`). 모달 안 신청 안내의 고정 날짜 제거. `goSignup()`을 상태 인식형으로. **단, 이 페이지로 가는 링크는 전부 제거했다(아래)** |
+| `safety/off-campus_courses.html` | 「안내 및 수강 신청」 단일 버튼 → **과목 교육과정 / 제도 안내** 2카드. 유형 비교표를 구분·학점기록·운영시기 3행 표로 정리 |
+| `apply/index.html` | "2026-2학기 마감" → 학기 비의존 안내로. `dual_credit`으로 되돌아가는 링크 2개. `<title>`도 갱신 |
+
+### 4. 노출 정리 — 학생 동선은 「과목 교육과정」·「제도 안내」 둘뿐
+
+`courses.html`(개설 강좌)로 가는 **내부 링크를 전부 제거**했다. 파일과 기능은 그대로이며 직접 URL로만 접근한다.
+학기별 운영 일정·장소·강사·준비물은 **수강 신청 시 안내**하는 것을 전제로 문구를 고쳤다.
+
+### 5. 문체 정리 — 홍보 톤 제거
+
+전 페이지의 문구를 **건조하고 정중하게 사실만 전달하는 쪽**으로 바꿨다. 느낌표·구호·감탄 표현을 걷어냈다.
+루트 `CLAUDE.md`의 기술 원칙에 **5-1 문체** 항목으로 남겨 두었다.
+
+> ⚠️ `curriculum.html`의 과목 순서 = `courses.html`의 `DATA[].연번` = `apply/_embed_data.js` 순서. **셋이 같아야 과목 교육과정 링크가 맞는다.**
+
+---
+
 ## 2026-08-13: 폴더 실측 ↔ CLAUDE.md 대조 및 문서 정합화
 
 07-24 이후 코드가 크게 움직였는데 문서가 따라가지 못해, 전 폴더를 실측해 대조하고 어긋난 곳을 맞췄다.
@@ -131,7 +182,8 @@ design/
 - [ ] **`compass/` 매핑 근거 검토** — 화면은 동작하나 `design/data/compass-mapping.json`의 흥미유형 → 계열 연결 타당성은 미검증. **자의적으로 만들지 말 것**이라는 원칙에 따라 근거 확인 후 승인 필요.
 - [ ] **GoatCounter 누락 페이지 보완 여부 결정** — `design/check/`, `design/majors/`, `design/selector/`, `dual_credit/courses.html`, `apply/app.html`. 앱 계열에도 통계를 붙일지 판단.
 - [ ] **공동교육과정 수강신청** (③) — 신규 시스템 개발 중, 완성 시 `safety/enrollment-closed.html` 교체.
-- [ ] **다음 수강신청 기간 개시 준비** — `apply/index.html`을 앱으로 되돌릴지 결정 + `dual_credit`의 "수강 신청하기" 링크 4곳 목적지 점검 (`apply/CLAUDE.md` 참조).
+- [ ] **다음 수강신청 기간 개시** — `dual_credit/enroll.js`의 `periods`에 기간 한 줄 추가. **이것만 하면 된다** (08-20에 자동화). 지난 기간은 지우지 말 것.
+- [ ] **`curriculum.html` 학기 갱신 절차 정하기** — 과목이 추가·교체되면 원본 문서를 다시 이식해야 한다. `.doc-wrap` 스코프 규칙과 `#course-N` 순서 일치(= `courses.html` `DATA[].연번`)를 지킬 것.
 - [ ] **`verify` 필드 데이터 대조** — `design/data/`의 `curriculum` `subject-hierarchy` `recommended-subjects`를 NCIC·교육부 고시·대교협 확정본과 대조 (배포 전).
 
 ### 정리 판단 보류
