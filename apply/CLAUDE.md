@@ -5,8 +5,14 @@
 
 ## 개요
 
-고교-대학 연계 학점 인정 **수강신청 웹앱**.
-선착순 좌석 예약 → 3분 타이머 → 정보 입력 → 확정 흐름.
+**수강신청 웹앱.** 선착순 좌석 예약 → 3분 타이머 → 정보 입력 → 확정 흐름.
+
+**현재 운영 대상 (2026-09-03 전환)** — 2026학년도 2학기 **꿈키움 학교 밖 교육 창의적체험활동(진로활동)**.
+원천 데이터는 `dream_up/index.html`의 `DATA`(66강좌)이며, 이전의 고교-대학 연계 14강좌는 대체되었다.
+
+- 66강좌 · 15개 기관 · 7개 지역 · 14개 계열 · 강좌당 16차시 · **정원 일괄 15명**
+- 운영 2026-10-17 ~ 11-29 · 대상 **고등학교 1~3학년** (학년 제한 강좌 없음)
+- ⚠️ **학점이 아니라 창의적체험활동 시수 인정이다.** `creditRecognition` 필드는 쓰지 않는다 (아래 참조)
 
 ## ★ index.html ≠ 앱 (2026-07-31 이후)
 
@@ -37,7 +43,7 @@
 apply/
 ├─ index.html       ← 마감 안내 페이지 (약 60줄, 공통 헤더 사용)
 ├─ app.html         ← 수강신청 앱 전체 (약 1,576줄, 스타일·로직 인라인, 독립 헤더)
-├─ _embed_data.js   ← 정적 데이터 (SCHOOLS 122개, COURSE_DETAILS 14개)
+├─ _embed_data.js   ← 정적 데이터 (SCHOOLS 122개, COURSE_DETAILS 66개)
 │                     ⚠️ 파일 전체가 3줄. 한 줄에 거대 배열이 들어 있어 수동 편집 위험
 └─ admin/
    └─ index.html    ← 관리자 대시보드 (약 600줄)
@@ -61,7 +67,7 @@ _embed_data.js (정적)          Supabase RPC (실시간)
 
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| `code` | string | 강좌 코드 (PK), e.g. `"GD26C014"` |
+| `code` | string | 강좌 코드 (PK), e.g. `"DC26C001"` |
 | `field` | string | 계열 (필터용), e.g. `"생명·자연과학"` |
 | `target` | string | 수강 대상 |
 | `period` | string | 기간·시간 요약 텍스트 |
@@ -70,8 +76,11 @@ _embed_data.js (정적)          Supabase RPC (실시간)
 | `method` | string | 수업 방식 |
 | `supply` | string | 준비물 |
 | `university` | string | 대학명 |
-| `gradeRestricted` | boolean | 학년 제한 여부 |
-| `creditRecognition` | string | 학점 인정 문구 (**줄바꿈 포함 가능**) |
+| `gradeRestricted` | boolean | 학년 제한 여부. **현재 66강좌 전부 `false`** |
+| ~~`creditRecognition`~~ | — | **2026-09-03부터 쓰지 않는다.** 창의적체험활동은 학점이 아니라 시수 인정이고 원천 데이터에 해당 값이 없다. 지어내지 말 것 |
+| `activityArea` | string | 창의적체험활동 영역, 현재 전부 `"진로활동"` |
+| `region` | string | 지역 (7종) |
+| `sessionCount` | number | 총 차시 수 (현재 전부 16) |
 | `recommendedFor` | string | 추천 대상 |
 | `learningGoals` | array\<string\> | 학습 목표 |
 | `instructorBio` | string | 강사 약력 |
@@ -81,17 +90,82 @@ _embed_data.js (정적)          Supabase RPC (실시간)
 | `scheduleByDay` | array | `[{date, weekday, start, end, sessionCount}]` |
 | `sessions` | array | `[{no, date, time, content, instructor}]` |
 
-## dual_credit/courses.html과의 관계
+## 원천 데이터: `dream_up/index.html`
 
-**동일한 14개 강좌**가 두 파일에 각각 존재한다.
-강좌 데이터(시간, 내용, 강사 등) 수정 시 **반드시 양쪽 동시 수정** 필요.
+`COURSE_DETAILS`는 손으로 쓰지 않는다. **`dream_up/index.html`의 `DATA`(66강좌)에서 생성한다.**
+필드명이 한글이라 아래처럼 매핑된다.
 
-| 이 파일 (apply) | courses.html | 비고 |
+| dream_up `DATA` | `COURSE_DETAILS` | 비고 |
 |---|---|---|
-| `COURSE_DETAILS[].sessions` | `DATA[].차시` | 필드명 다름 |
-| `COURSE_DETAILS[].scheduleByDay` | `DATA[].일정` | 필드명 다름 |
-| `COURSE_DETAILS[].instructors` | `DATA[].강사` | 필드명 다름 |
-| `code` | `강좌코드` | 동일 값 |
+| `강좌코드` | `code` | 동일 값 |
+| `분야` (배열) | `field` | **`' · '`로 join.** 앱이 `d.field.split(' · ')`로 되쪼갠다. 분야값 자체의 `·`는 공백이 없어 충돌하지 않는다 |
+| `학습목표1`·`학습목표2` | `learningGoals` (배열) | 빈 값은 제외 |
+| `강사` `[{성명,소속,전공}]` | `instructors` `[{name,affiliation,major}]` | |
+| `차시` `[{차시,일자,시작시간,내용,담당강사}]` | `sessions` `[{no,date,time,content,instructor}]` | |
+| (파생) | `scheduleByDay` | 원천에 없다 — 아래 참조 |
+
+### ⚠️ `scheduleByDay`의 종료시각은 파생값이다
+
+원천 `차시`에는 **시작시간만 있고 종료시간이 없다.** 그래서 `end = 마지막 차시 시작 + 50분`으로 계산한다.
+
+근거(실측): 차시 간격은 60분이 대부분(737건)이라 **수업 50분 + 휴식 10분** 구조다. DC26C001은 `16:30 + 50 = 17:20`으로 원천 `수업요일시간` 선언값과 정확히 일치하고, DC26C004는 50분 간격으로 붙어 있다.
+
+> **`수업요일시간`을 시간 범위 근거로 쓰지 말 것.** 66개 중 시:분~시:분 범위를 담은 것은 **2개뿐**이고, 표기가 26가지로 제각각이다(`매주 토 / 4시간`, `토,일,토/6,5,5`, `매주 토 ~일/ 4시간`). `period` 필드에 원문 그대로 담아 두되 계산에는 쓰지 않는다.
+
+**원천 데이터 자체의 불일치 2건** (고칠 때 원천을 먼저 확인할 것):
+- `DC26C005` — 선언 `14:00~16:50`인데 실제 차시는 `14:00·15:00·16:00·17:00`(4차시). 차시 쪽이 맞다고 보고 계산했다
+- `DC26C001` — 11/14 차시 시작이 `13:30`인데 선언은 `14:30`
+
+점심시간이 있는 강좌(`DC26C055`·`DC26C056`, 차시 간격 120분)는 `scheduleByDay`가 하루 1행이라 `09:00~15:50`처럼 점심을 포함한 전체 구간으로 보인다. 정확한 시각은 모달의 차시별 표에서 확인된다.
+
+### 재생성 방법
+
+수정은 **`dream_up/index.html`의 `DATA`를 고친 뒤 재생성**한다. `_embed_data.js`를 직접 편집하지 말 것 (파일 전체가 3줄이라 수동 편집이 위험하다).
+
+생성 스크립트는 `dream_up`의 `DATA`를 괄호 균형으로 파싱해 `SCHOOLS`는 그대로 두고 `COURSE_DETAILS`만 교체하며, `json.dumps`로 직렬화해 제어문자 혼입을 막는다. 생성 후 **제어문자 0건·3줄 구조**를 반드시 확인한다.
+
+## Supabase courses 테이블 교체
+
+**강좌 목록·정원·잔여석은 `_embed_data.js`가 아니라 `get_course_status()` RPC가 공급한다.**
+`_embed_data.js`는 코드(`code`)로 매칭되는 설명文만 덧붙인다. 따라서 **강좌를 바꾸려면 DB를 반드시 함께 바꿔야 한다.**
+코드가 어긋나면 카드가 제목만 남고 내용이 빈 채로 렌더링된다.
+
+- 교체 SQL: **`supabase/sql/courses_2026_2_creative.sql`** (66행 INSERT, 정원 15, 트랜잭션). `gen_embed.py`가 생성하므로 직접 편집하지 말 것
+- 실행은 Supabase 대시보드 SQL Editor에서 한다 (레포에 마이그레이션 체계가 없다)
+
+### `courses` 테이블 컬럼 (2026-09-03 `information_schema` 실측)
+
+| 컬럼 | 타입 | NULL | 기본값 |
+|---|---|---|---|
+| `code` `name` `org` `region` | text | NO | — |
+| `capacity` | integer | NO | 15 |
+| `enrolled_count` | integer | NO | 0 |
+| `min_open` | integer | NO | 5 |
+| `is_registerable` | boolean | NO | true |
+| `is_closed_manual` | boolean | NO | false |
+
+- `min_open`은 **폐강 기준 인원**이다. 관리자 대시보드의 「폐강 위험」이 이 값을 쓴다. **테이블 기본값은 5지만 2026-2학기는 8로 상향**되어 INSERT에 명시했다. 바뀌면 `gen_embed.py`의 `MIN_OPEN`을 고쳐 재생성할 것
+- ⚠️ **RLS가 스키마 노출을 막아 anon 키로는 이 표를 다시 확인할 수 없다.** `get_course_status()` RPC 반환값은 여기에 계산 필드(`remaining`·`is_full`)가 더 붙은 것이며 테이블 컬럼과 같지 않다
+- SQL은 `reservations` 테이블이 있을 때만 지우도록 `DO $$` 블록으로 방어해 두었다
+
+## 신청 기간 (2026-2학기)
+
+| 구분 | 일시 (KST) |
+|---|---|
+| 1차 신청 | 2026. 9. 10.(목) 18:00 ~ 9. 13.(일) 15:00 |
+| 2차 신청 | 2026. 9. 15.(화) 18:00 ~ 22:00 |
+| 개설강좌 확정 안내 | 2026. 9. 17.(목) |
+
+**개폐 판정은 `get_open_status()` RPC가 한다.** 반환 필드는 `phase` `is_open` `open_at` `open2_at` `close1_at` `close2_at` `server_now`이며 **시각은 UTC**다 (`09:00Z` = `18:00 KST`).
+
+- 저장 위치: **`public.settings`** 테이블의 `open_at` `close1_at` `open2_at` `close2_at` (2026-09-03 확인)
+- 설정 SQL: **`supabase/sql/open_schedule_2026_2.sql`**
+- 컬럼이 `timestamptz`라 **KST 시각에 `+09`를 붙여 그대로 넣으면 된다** (`'2026-09-10 18:00:00+09'`)
+- ⚠️ `settings`가 2행 이상이면 `UPDATE`에 `WHERE`를 붙일 것. SQL [1단계]에서 행 수를 먼저 확인한다
+- `phase` 값: `before_open` → `open1` → `between` → `open2` → `closed`. `between`은 1차 마감~2차 오픈 대기 구간이며 앱이 2차 시작 카운트다운을 띄운다
+- **화면 문구는 `app.html` 안내 박스에 하드코딩되어 있다.** 일정이 바뀌면 **DB와 `app.html`을 함께** 고쳐야 한다 (히어로 태그 + 안내 ⑤ 일정, 총 2곳)
+
+> `dual_credit/enroll.js`의 `periods`는 **고교-대학 연계**용이며 이 앱과 무관하다. 창의적체험활동 진입점은 `dream_up/index.html`의 「수강신청 바로가기」 버튼(`goSignup()` → `../apply/app.html`)이다.
 
 ## 핵심 주의사항
 
@@ -101,7 +175,7 @@ _embed_data.js (정적)          Supabase RPC (실시간)
 4. **z-index 계층** (실측) — `.onmadang-header` 9000 · backdrop 9100 · 학교 자동완성 9200 · 토스트 9300 · `.om-mobile-menu` 9500.
    새 오버레이는 이 사이 값을 쓰고 목록을 갱신할 것.
 5. **학번 형식** — `학년-반(2자리)-번호(2자리)`, e.g. `"2-01-15"`.
-6. **학년 제한** — 전체 강좌가 1~2학년 대상이므로 3학년 옵션 제거됨. `gradeRestricted` 강좌는 확정 시 학년 검증하여 차단.
+6. **학년 제한** — 현재 66강좌 전부 **1~3학년** 대상이라 학년 선택에 **3학년이 있다**(`app.html`의 `my-grade`·`r-grade` 두 곳). `gradeRestricted` 로직은 남아 있으나 현재 해당 강좌가 없다. 학년 제한 강좌가 생기면 `gradeRestricted:true` + `target`에 「N학년」 표기를 넣으면 확정 시 자동 차단된다.
 7. **강좌 안내 링크** — `../dual_credit/`로 연결 (off-campus_courses 아님).
 8. **`app.html`의 GNB는 손으로 관리한다** — `common.js`를 안 쓰므로 GNB가 자동 동기화되지 않는다. 온마당 메뉴가 바뀌면 `app.html`의 데스크톱 nav(`.onmadang-links`)와 모바일 nav(`.om-mobile-nav`) **양쪽을 직접 고쳐야 한다.** (2026-08-13에 `알림·소통 마당`이 홈으로 가던 오류와 `고교학점제` 메뉴 누락을 이 방식으로 정정했다.)
 9. **상단 안내 배너는 2026-08-20에 제거됨** — 「리디자인 작업 중」 문구를 3곳(`assets/js/common.js`, **`apply/app.html`**, `design/selector/guide.html`)에서 모두 지웠다. 다시 띄울 때도 **3곳 동시 작업**이다: `common.js`는 `var banner`에 HTML을 채우고, `app.html`·`guide.html`은 `common.js`를 안 쓰므로 `<div class="renewal-banner" role="note">`를 인라인으로 직접 넣는다. (`apply/index.html`은 `common.js`가 주입하므로 별도 수정 불필요.)
