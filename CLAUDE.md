@@ -64,7 +64,7 @@
 
 ### ① 본체 페이지 — `assets/css/common.css`
 
-`design/index.html`, `design/check/`, `safety/`, `board/`, `dual_credit/`, `off-campus_courses/`, 신규 페이지 전부.
+`design/index.html`, `design/check/`, `safety/`, `board/`, `dual_credit/`, 신규 페이지 전부.
 
 ```
 --bg #DAF2FC   --brand #4F6EBE   --brand-d #3a539b   --brand-l #6d8ad6
@@ -197,7 +197,7 @@
 | `design/CLAUDE.md` | ✅ |
 | `design/majors/CLAUDE.md` · `design/selector/CLAUDE.md` | ✅ (수정 금지 경계·데이터 명세) |
 | `dual_credit/CLAUDE.md` | ✅ (`support/` 포함) |
-| `about/` · `safety/` · `off-campus_courses/` · `resources/` | ❌ 없음 — 정적 콘텐츠 페이지라 별도 문서를 두지 않는다 |
+| `about/` · `safety/` · `resources/` · `dream_up/` | ❌ 없음 — 정적 콘텐츠 페이지라 별도 문서를 두지 않는다 |
 
 ### 학생·교사용 본체 (GNB에서 도달 가능)
 
@@ -224,18 +224,26 @@
 
 | 경로 | 규모 | 성격 | 공통 헤더 |
 |---|---|---|---|
-| `off-campus_courses/index.html` | 약 1,120줄 | 2026-2학기 학교 밖 교육 과목 **심의 자료** (학생용 강좌 안내가 아니다) | ❌ |
-| `off-campus_courses/dream_up_26-s.html` | 약 523줄 | 2026 여름방학 꿈키움 강좌 안내 | ❌ |
-| `off-campus_courses/dream_up26-1/` | 약 258줄 | 2026-1학기 꿈키움 이수 결과 확인 | ❌ |
+| `dream_up/index.html` | 약 517줄 | 2026-2학기 꿈키움 학교 밖 교육 **강좌 안내** | ❌ |
+| `dream_up/check/index.html` | 약 226줄 | 여름방학 창의적체험활동 **이수 결과 확인** (학번+이름 조회) | ❌ |
+| `dream_up/attendance/index.html` | 약 64줄 | 출석부 **열람 종료 안내**. 2026-09-03에 뷰어를 내리고 공지로 교체 | ✅ |
 | `dual_credit/support/` | 약 401줄 + PDF | 수업 운영 안내 협의회 | ❌ |
 | `dual_credit/inform/dual_credit_2026_2_start.html` | 약 698줄 | 2026-2학기 고교-대학 연계 과목 **수업 시작 안내** (수강 확정 학생 대상). `readme.md` 동거 | ❌ |
 | `resources/teacher/online_class/` | 약 793줄 + PDF 19개 | 온라인 공동교육과정 교수·학습 도움 자료집 | ❌ |
 | `dual_credit/courses.html` | 약 520줄 | 학기별 개설 강좌 카탈로그. **2026-08-20에 링크를 걷어냈다** (`dual_credit/CLAUDE.md` 참조) | ✅ |
 | `2015/index.html` | 22줄 | `onmadang.or.kr` 리다이렉트 (구 URL 호환) | ❌ |
-| `pilot001.html` | 약 556줄 | 홈 **구 시안**. DS v1.0을 인라인으로 들고 있다 | ❌ |
 
-> 학생 동선에 있는 **「학교 밖 교육」은 `safety/off-campus_courses.html`**이다.
-> 폴더 `off-campus_courses/`와 이름이 같지만 **다른 것**이다. 혼동 주의.
+> 학생 동선에 있는 **「학교 밖 교육」은 `safety/off-campus_courses.html`**이다. 파일 하나이며, 같은 이름의 폴더는 이제 없다.
+
+#### 2026-09-03에 삭제한 것 — 되살리지 말 것
+
+담당자 판단으로 아래를 지웠다. **외부에 배포된 URL이 있다면 깨진다**(내부 죽은 링크는 없었다 — 삭제 전 인바운드 링크 0건 확인).
+
+| 삭제한 경로 | 사유 |
+|---|---|
+| `off-campus_courses/` 전체 (3개 문서) | 내용이 `dream_up/`으로 이전됨. 원본은 담당자가 별도 백업 보유 |
+| `dream_up/attendance/pages/` (JPG 159장) | 열람 기간 종료. **학생 명단이 담긴 스캔본이라 무인증 공개 상태였다** → 재게시 시 접근 통제 필요 |
+| `pilot001.html` | 홈 구 시안. 정식 홈은 `index.html` |
 
 ### 접속 통계 — GoatCounter
 
@@ -246,8 +254,8 @@
         async src="//gc.zgo.at/count.js"></script>
 ```
 
-- 적용됨(20개): `index.html`, `about/`(3), `apply/index.html`, `board/`(4), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `dual_credit/curriculum.html`, `safety/`(6)
-- **미적용**: `apply/app.html`, `apply/admin/`, `design/check/`, `design/majors/`, `design/selector/`(+`guide.html`), `dual_credit/courses.html`, 위 「링크되지 않는 부속 페이지」 전부
+- 적용됨(21개): `index.html`, `about/`(3), `apply/index.html`, `board/`(4), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `dual_credit/curriculum.html`, `safety/`(6), `dream_up/attendance/`
+- **미적용**: `apply/app.html`, `apply/admin/`, `design/check/`, `design/majors/`, `design/selector/`(+`guide.html`), `dual_credit/courses.html`, 위 「링크되지 않는 부속 페이지」 전부 (`dream_up/attendance/` 제외 — 만료 후 유입 확인용으로 넣었다)
 - 새 페이지를 만들면 **직접 넣어야 한다.** 관리자 페이지(`apply/admin/`)에는 넣지 않는다.
 
 ### 공유 모듈 (`design/`)

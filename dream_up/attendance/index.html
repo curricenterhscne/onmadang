@@ -2,457 +2,63 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026학년도 여름방학 꿈키움 출석부 열람</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#DAF2FC">
+<meta name="description" content="2026학년도 여름방학 꿈키움 학교 밖 교육 출석부 열람 종료 안내 — 온마당">
+<title>출석부 열람 종료 · 꿈키움 학교 밖 교육 · 온마당</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../../assets/css/common.css">
 <style>
-  :root {
-    --navy: #1b2a4a;
-    --navy-dim: #2e3f63;
-    --paper: #f6f4ef;
-    --paper-line: #e4e0d6;
-    --ink: #23262b;
-    --ink-soft: #6b7078;
-    --accent: #b5502e;
-    --accent-soft: #f1e2d8;
-    --card: #ffffff;
-    --focus: #2e6fb0;
+  body{display:flex;flex-direction:column;min-height:100vh}
+
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:60px 24px}
+  .closed-card{
+    background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:56px 48px;text-align:center;max-width:560px;width:100%;
   }
-
-  * { box-sizing: border-box; }
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: "Pretendard", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  .closed-icon{font-size:56px;margin-bottom:20px}
+  .closed-card h1{font-size:22px;font-weight:800;color:var(--ink);margin-bottom:14px;letter-spacing:-.4px}
+  .closed-card p{font-size:15px;color:var(--ink-soft);line-height:1.8;margin-bottom:8px}
+  .closed-note{
+    display:block;margin-top:20px;text-align:left;
+    background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:16px 20px;font-size:14px;color:var(--ink-soft);line-height:1.75;
   }
-
-  body { display: flex; flex-direction: column; }
-
-  header {
-    background: var(--navy);
-    color: #f2efe8;
-    padding: 14px 20px;
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-    flex-wrap: wrap;
-    border-bottom: 3px solid var(--accent);
+  .closed-back{
+    display:inline-flex;align-items:center;gap:6px;margin-top:28px;
+    font-size:14px;font-weight:700;color:var(--brand);
+    padding:10px 20px;border:1.5px solid var(--brand);border-radius:var(--radius-pill);transition:.18s;
   }
+  .closed-back:hover{background:var(--brand);color:#fff}
 
-  header h1 { font-size: 17px; margin: 0; font-weight: 700; letter-spacing: -0.2px; }
-  header .sub { font-size: 12.5px; color: #c7cede; }
-
-  .layout {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    min-height: 0;
-  }
-
-  /* Sidebar */
-  #sidebar {
-    background: #fff;
-    border-right: 1px solid var(--paper-line);
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
-  .sidebar-tools {
-    padding: 12px;
-    border-bottom: 1px solid var(--paper-line);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  #search {
-    width: 100%;
-    padding: 9px 10px;
-    border: 1px solid #d6d2c6;
-    border-radius: 6px;
-    font-size: 13.5px;
-    font-family: inherit;
-  }
-  #search:focus { outline: 2px solid var(--focus); outline-offset: 1px; }
-
-  .sort-row {
-    display: flex;
-    gap: 6px;
-    font-size: 12px;
-  }
-  .sort-btn {
-    flex: 1;
-    padding: 5px 8px;
-    border: 1px solid #d6d2c6;
-    background: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-    color: var(--ink-soft);
-  }
-  .sort-btn.active {
-    background: var(--navy);
-    color: #fff;
-    border-color: var(--navy);
-  }
-
-  #course-count { font-size: 12px; color: var(--ink-soft); padding: 8px 12px 4px; }
-
-  #course-list {
-    list-style: none;
-    margin: 0;
-    padding: 0 10px 16px;
-    overflow-y: auto;
-    flex: 1;
-  }
-
-  .group-label {
-    font-size: 11.5px;
-    font-weight: 700;
-    color: var(--navy);
-    padding: 12px 4px 4px;
-    position: sticky;
-    top: 0;
-    background: #fff;
-  }
-
-  .course-item {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    padding: 8px;
-    border-radius: 8px;
-    cursor: pointer;
-    border: 1px solid transparent;
-    margin-bottom: 6px;
-    background: var(--card);
-    box-shadow: 0 1px 2px rgba(20, 20, 20, 0.04);
-  }
-
-  .course-item:hover { border-color: #d6d2c6; background: #fbfaf7; }
-  .course-item.active { border-color: var(--accent); background: var(--accent-soft); }
-
-  .course-num {
-    flex: none;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--navy);
-    color: #fff;
-    font-size: 11.5px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1px;
-  }
-  .course-item.active .course-num { background: var(--accent); }
-
-  .course-info { flex: 1; min-width: 0; }
-
-  .course-name {
-    font-size: 13.5px;
-    font-weight: 600;
-    line-height: 1.35;
-    margin-bottom: 2px;
-    word-break: keep-all;
-  }
-
-  .course-meta {
-    font-size: 11.5px;
-    color: var(--ink-soft);
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .course-code {
-    font-family: "SFMono-Regular", Consolas, monospace;
-    font-size: 10.5px;
-    color: #8a7a6a;
-    background: #f1ede4;
-    padding: 1px 5px;
-    border-radius: 3px;
-  }
-
-  .pagecount {
-    flex: none;
-    font-size: 10.5px;
-    color: var(--ink-soft);
-    margin-top: 2px;
-  }
-
-  mark {
-    background: #ffe3a8;
-    color: inherit;
-    border-radius: 2px;
-    padding: 0 1px;
-  }
-
-  /* Main viewer */
-  #viewer { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
-
-  #viewer-header {
-    padding: 14px 22px;
-    border-bottom: 1px solid var(--paper-line);
-    background: #fff;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  #viewer-title-wrap { min-width: 0; }
-
-  #viewer-title { font-size: 16px; font-weight: 700; }
-  #viewer-title .n { color: var(--accent); }
-  #viewer-sub { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
-  #viewer-sub .code { font-family: "SFMono-Regular", Consolas, monospace; }
-
-  .page-tabs { display: flex; gap: 6px; margin-left: auto; flex: none; }
-
-  .page-tab {
-    padding: 6px 14px;
-    border-radius: 6px;
-    border: 1px solid #d6d2c6;
-    background: #fff;
-    font-size: 13px;
-    cursor: pointer;
-    color: var(--ink);
-  }
-  .page-tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
-
-  .page-tab:focus-visible, .course-item:focus-visible, #search:focus-visible {
-    outline: 2px solid var(--focus);
-    outline-offset: 2px;
-  }
-
-  #viewer-body {
-    flex: 1;
-    overflow: auto;
-    display: flex;
-    justify-content: center;
-    padding: 22px;
-    background: repeating-linear-gradient(45deg, #f0eee7, #f0eee7 10px, #ece9e1 10px, #ece9e1 20px);
-  }
-
-  #viewer-body img {
-    max-width: 100%;
-    height: auto;
-    background: #fff;
-    box-shadow: 0 4px 18px rgba(20, 20, 20, 0.18);
-    border-radius: 2px;
-  }
-
-  #empty-state { margin: auto; text-align: center; color: var(--ink-soft); max-width: 360px; }
-  #empty-state .big { font-size: 40px; margin-bottom: 10px; }
-
-  footer {
-    padding: 8px 20px;
-    font-size: 11.5px;
-    color: var(--ink-soft);
-    background: #fff;
-    border-top: 1px solid var(--paper-line);
-  }
-
-  @media (max-width: 760px) {
-    .layout { grid-template-columns: 1fr; grid-template-rows: 45vh 1fr; }
-    #sidebar { border-right: none; border-bottom: 1px solid var(--paper-line); }
+  @media(max-width:680px){
+    .closed-card{padding:40px 24px}
   }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>2026학년도 여름방학 꿈키움 학교 밖 교육 창의적체험활동</h1>
-  <span class="sub">강좌별 출석부 열람 · 전체 79개 강좌</span>
-</header>
+<div id="om-header" data-active="safety"></div>
 
-<div class="layout">
-  <aside id="sidebar">
-    <div class="sidebar-tools">
-      <input id="search" type="text" placeholder="강좌명, 대학명, 강좌코드(DC26B001)로 검색" autocomplete="off">
-      <div class="sort-row">
-        <button class="sort-btn active" data-sort="num">번호순</button>
-        <button class="sort-btn" data-sort="uni">대학순</button>
-        <button class="sort-btn" data-sort="code">코드순</button>
-      </div>
-    </div>
-    <div id="course-count">79개 강좌</div>
-    <ul id="course-list"></ul>
-  </aside>
+<main>
+  <div class="closed-card">
+    <div class="closed-icon">🗂️</div>
+    <h1>출석부 열람 기간이 종료되었습니다</h1>
+    <p>2026학년도 여름방학 꿈키움 학교 밖 교육 창의적체험활동<br>출석부 열람은 종료되었습니다.</p>
+    <span class="closed-note">
+      출석부에는 학생 명단이 포함되어 있어, 열람 기간이 끝난 자료는 이 사이트에 보관하지 않습니다.
+      출석 사항 확인이 필요한 경우 소속 학교의 담당 교사에게 문의하시기 바랍니다.
+    </span>
+    <br>
+    <a class="closed-back" href="../index.html">꿈키움 학교 밖 교육 안내 보기 →</a>
+    <br>
+    <a class="closed-back" href="../../index.html" style="margin-top:12px">온마당 홈으로 →</a>
+  </div>
+</main>
 
-  <main id="viewer">
-    <div id="viewer-header" style="display:none;">
-      <div id="viewer-title-wrap">
-        <div id="viewer-title"><span class="n"></span></div>
-        <div id="viewer-sub"></div>
-      </div>
-      <div class="page-tabs" id="page-tabs"></div>
-    </div>
-    <div id="viewer-body">
-      <div id="empty-state">
-        <div class="big">📋</div>
-        왼쪽 목록에서 강좌를 선택하면<br>해당 출석부가 이곳에 표시됩니다.
-      </div>
-    </div>
-    <footer>
-      <span class="kbd-hint">← → 방향키로 강좌 이동 · 페이지가 여러 장인 강좌는 상단 탭으로 전환</span>
-    </footer>
-  </main>
-</div>
-
-<script>
-const COURSES = [{"n": 1, "pages": [1, 2], "code": "DC26B001", "name": "마음의 색과 모양을 찾는 아트 프로젝트", "uni": "공주교육대학교"}, {"n": 2, "pages": [3, 4], "code": "DC26B002", "name": "뉴로피드백 뇌파로 체험하는 K-치유관광", "uni": "국립공주대학교"}, {"n": 3, "pages": [5, 6], "code": "DC26B003", "name": "다양한 화학의 세계", "uni": "국립공주대학교"}, {"n": 4, "pages": [7, 8], "code": "DC26B004", "name": "마케팅과 광고", "uni": "국립공주대학교"}, {"n": 5, "pages": [9, 10], "code": "DC26B005", "name": "센서기반 물리학 실험", "uni": "국립공주대학교"}, {"n": 6, "pages": [11, 12], "code": "DC26B006", "name": "식물의 구조생리와 파이토케미컬의 탐구 및 활용", "uni": "국립공주대학교"}, {"n": 7, "pages": [13, 14], "code": "DC26B007", "name": "경찰 사격과 실전 체포술", "uni": "중부대학교"}, {"n": 8, "pages": [15, 16], "code": "DC26B010", "name": "간호 체험 아카데미", "uni": "신성대학교"}, {"n": 9, "pages": [17, 18], "code": "DC26B011", "name": "교직 진로 탐색 - 미래 교사 체험", "uni": "신성대학교"}, {"n": 10, "pages": [19, 20], "code": "DC26B012", "name": "뷰티 및 헤어 미용사 진로 체험", "uni": "신성대학교"}, {"n": 11, "pages": [21, 22], "code": "DC26B013", "name": "제과제빵 파티쉐", "uni": "신성대학교"}, {"n": 12, "pages": [23, 24], "code": "DC26B017", "name": "광고로 배우는 심리", "uni": "선문대학교"}, {"n": 13, "pages": [25, 26], "code": "DC26B020", "name": "물리치료 체험 및 실습", "uni": "선문대학교"}, {"n": 14, "pages": [27, 28], "code": "DC26B015", "name": "AI 연계 지능형 시스템 설계(파이썬 연계 아두이노 설계 및 제작)", "uni": "선문대학교"}, {"n": 15, "pages": [29, 30], "code": "DC26B021", "name": "미디어의 디지털화에 대한 이해", "uni": "선문대학교"}, {"n": 16, "pages": [31, 32], "code": "DC26B028", "name": "임상실험과 헬스케어 창업", "uni": "선문대학교"}, {"n": 17, "pages": [33, 34], "code": "DC26B023", "name": "분자생물학 실험의 이해", "uni": "선문대학교"}, {"n": 18, "pages": [35, 36], "code": "DC26B024", "name": "생활 속 헌법 이야기", "uni": "선문대학교"}, {"n": 19, "pages": [37, 38], "code": "DC26B019", "name": "단백질 전기영동으로 탐구하는 미생물의 세계", "uni": "선문대학교"}, {"n": 20, "pages": [39, 40], "code": "DC26B029", "name": "물고기의 면역세포를 알아보는 생명과학 탐구교실", "uni": "선문대학교"}, {"n": 21, "pages": [41, 42], "code": "DC26B016", "name": "관광·호텔 산업에서 찾는 나의 미래", "uni": "선문대학교"}, {"n": 22, "pages": [43, 44], "code": "DC26B022", "name": "미리 덴탈 캠퍼스 - 치위생학과 전공체험", "uni": "선문대학교"}, {"n": 23, "pages": [45, 46], "code": "DC26B027", "name": "일본 톺아보기 - 여성 총리 시대 일본, 변화의 이야기", "uni": "선문대학교"}, {"n": 24, "pages": [47, 48], "code": "DC26B018", "name": "글로벌 세계, 동아시아 그리고 한국과 일본", "uni": "선문대학교"}, {"n": 25, "pages": [49, 50], "code": "DC26B030", "name": "CSI 과학수사와 미생물 이야기", "uni": "순천향대학교"}, {"n": 26, "pages": [51, 52], "code": "DC26B032", "name": "진짜 CEO처럼 생각하라 - 문제 발견부터 모의 IR까지", "uni": "순천향대학교"}, {"n": 27, "pages": [53, 54], "code": "DC26B031", "name": "생명과학의 이해", "uni": "순천향대학교"}, {"n": 28, "pages": [55, 56], "code": "DC26B033", "name": "3D 부품설계 및 3D 프린팅", "uni": "한국폴리텍대학 아산캠퍼스"}, {"n": 29, "pages": [57, 58], "code": "DC26B034", "name": "미래 반도체와 스네이크 로봇 제작", "uni": "한국폴리텍대학 아산캠퍼스"}, {"n": 30, "pages": [59, 60], "code": "DC26B036", "name": "실습으로 재미있게 배우는 항공안전보안과 객실서비스", "uni": "호서대학교"}, {"n": 31, "pages": [61, 62], "code": "DC26B037", "name": "경찰되는 방법, 범죄 프로파일과 과학수사 기법 살펴보기", "uni": "나사렛대학교"}, {"n": 32, "pages": [63, 64], "code": "DC26B038", "name": "마케팅과 광고", "uni": "나사렛대학교"}, {"n": 33, "pages": [65, 66], "code": "DC26B039", "name": "영화 속 수어(수화언어)로 만나는 새로운 소통", "uni": "나사렛대학교"}, {"n": 34, "pages": [67, 68], "code": "DC26B040", "name": "골든타임 챌린지 - 재난응급간호 시뮬레이션실습", "uni": "남서울대학교"}, {"n": 35, "pages": [69, 70], "code": "DC26B041", "name": "나도 웹툰 작가! 웹툰 제작 첫걸음", "uni": "남서울대학교"}, {"n": 36, "pages": [71, 72], "code": "DC26B042", "name": "도수치료와 키네지오 테이핑", "uni": "남서울대학교"}, {"n": 37, "pages": [73, 74], "code": "DC26B043", "name": "미래 직업과 ESG 시민리더 아카데미", "uni": "남서울대학교"}, {"n": 38, "pages": [75, 76], "code": "DC26B044", "name": "스포츠메디컬 트레이너 아카데미 - 선수케어와 퍼포먼스 평가 실습", "uni": "남서울대학교"}, {"n": 39, "pages": [77, 78], "code": "DC26B045", "name": "운동처방재활실습", "uni": "남서울대학교"}, {"n": 40, "pages": [79, 80], "code": "DC26B046", "name": "인체 기능 해부학 및 슬링실습", "uni": "남서울대학교"}, {"n": 41, "pages": [81, 82], "code": "DC26B047", "name": "커피 바리스타와 디저트 콜라보", "uni": "남서울대학교"}, {"n": 42, "pages": [83, 84], "code": "DC26B048", "name": "하트비트(heartbeat): 나의 꿈이 뛰는 5일", "uni": "남서울대학교"}, {"n": 43, "pages": [85, 86], "code": "DC26B049", "name": "칩(chip) 위의 실험실", "uni": "단국대학교"}, {"n": 44, "pages": [87, 88], "code": "DC26B050", "name": "건강과 위생", "uni": "단국대학교"}, {"n": 45, "pages": [89, 90], "code": "DC26B051", "name": "구강 건강과 치위생의 이해", "uni": "단국대학교"}, {"n": 46, "pages": [91, 92], "code": "DC26B052", "name": "물리치료학 기초 실습", "uni": "단국대학교"}, {"n": 47, "pages": [93, 94], "code": "DC26B053", "name": "미래 에너지와 나노기술", "uni": "단국대학교"}, {"n": 48, "pages": [95, 96], "code": "DC26B054", "name": "미래 에너지의 비밀 - 전기화학 에너지 저장 변환", "uni": "단국대학교"}, {"n": 49, "pages": [97, 98], "code": "DC26B055", "name": "미생물 탐정 - 균을 추적하라", "uni": "단국대학교"}, {"n": 50, "pages": [99, 100], "code": "DC26B056", "name": "약과 건강", "uni": "단국대학교"}, {"n": 51, "pages": [101, 102], "code": "DC26B057", "name": "차세대 디스플레이 소재 설계 및 광학 소재 제조 실습 프로그램", "uni": "단국대학교"}, {"n": 52, "pages": [103, 104], "code": "DC26B058", "name": "치의학 파헤치기", "uni": "단국대학교"}, {"n": 53, "pages": [105, 106], "code": "DC26B059", "name": "유아, 다문화, 특수교육 진로 캠프", "uni": "백석대학교"}, {"n": 54, "pages": [107, 108], "code": "DC26B060", "name": "나를 가꾸는 연극놀이터", "uni": "백석대학교"}, {"n": 55, "pages": [109, 110], "code": "DC26B062", "name": "베이커리 카페 메뉴 만들기", "uni": "백석대학교"}, {"n": 56, "pages": [111, 112], "code": "DC26B063", "name": "호텔 쿠킹 클래스", "uni": "백석대학교"}, {"n": 57, "pages": [113, 114], "code": "DC26B061", "name": "미래를 여는 금융", "uni": "백석대학교"}, {"n": 58, "pages": [115, 116], "code": "DC26B064", "name": "간호학 꿈키움 실습", "uni": "백석문화대학교"}, {"n": 59, "pages": [117, 118], "code": "DC26B065", "name": "실용음악학과 전공 진로 특강 - 보컬, 기타, 건반 중심", "uni": "백석문화대학교"}, {"n": 60, "pages": [119, 120], "code": "DC26B066", "name": "오늘은 내가 카페 베이커리 사장님!", "uni": "백석문화대학교"}, {"n": 61, "pages": [121, 122], "code": "DC26B067", "name": "자기이해와 상담기법 이해하기", "uni": "백석문화대학교"}, {"n": 62, "pages": [123, 124], "code": "DC26B068", "name": "쿡 앤 드림", "uni": "백석문화대학교"}, {"n": 63, "pages": [125, 126, 127], "code": "DC26B069", "name": "퍼스널 컬러로 찾는 나의 뷰티 메이크업", "uni": "백석문화대학교"}, {"n": 64, "pages": [128, 129], "code": "DC26B070", "name": "3D를 통한 나만의 카페 공간 만들기", "uni": "상명대학교"}, {"n": 65, "pages": [130, 131], "code": "DC26B071", "name": "AI 로봇 메이커 스쿨: 아두이노·초음파 센서로 만드는 스마트 생활 로봇", "uni": "상명대학교"}, {"n": 66, "pages": [132, 133], "code": "DC26B073", "name": "디자인 씽킹과 메이킹", "uni": "상명대학교"}, {"n": 67, "pages": [134, 135], "code": "DC26B075", "name": "스토리텔링 글쓰기 체험", "uni": "상명대학교"}, {"n": 68, "pages": [136, 137], "code": "DC26B074", "name": "바이오센서 제작실습 - 4차 산업혁명시대 융합기술", "uni": "상명대학교"}, {"n": 69, "pages": [138, 139], "code": "DC26B076", "name": "신소재·나노공학과 반도체 - PDMS 제작 및 컨택 프린팅 실습", "uni": "한국기술교육대학교"}, {"n": 70, "pages": [140, 141], "code": "DC26B077", "name": "실험으로 배우는 물리의 세계", "uni": "한국기술교육대학교"}, {"n": 71, "pages": [142, 143], "code": "DC26B078", "name": "파이썬으로 자동화 프로그램 만들기", "uni": "한국기술교육대학교"}, {"n": 72, "pages": [144, 145], "code": "DC26B079", "name": "게임 개발 체험", "uni": "호서대학교"}, {"n": 73, "pages": [146, 147], "code": "DC26B080", "name": "고등학생을 위한 전자공학 입문 - 기초부터 실습까지", "uni": "호서대학교"}, {"n": 74, "pages": [148, 149], "code": "DC26B081", "name": "대학 경영과 무역 관련 예비 전공자를 위한 마케팅 기초", "uni": "호서대학교"}, {"n": 75, "pages": [150, 151], "code": "DC26B082", "name": "반도체 공정의 이해", "uni": "호서대학교"}, {"n": 76, "pages": [152, 153], "code": "DC26B084", "name": "유아놀이지도", "uni": "호서대학교"}, {"n": 77, "pages": [154, 155], "code": "DC26B087", "name": "미래 간호인 로드맵 - 실습으로 만나는 간호의 첫걸음", "uni": "혜전대학교"}, {"n": 78, "pages": [156, 157], "code": "DC26B088", "name": "바이오헬스 진단검사의 이해와 실습", "uni": "혜전대학교"}, {"n": 79, "pages": [158, 159], "code": "DC26B089", "name": "반려동물과 함께 여는 미래", "uni": "혜전대학교"}];
-
-let currentN = null;
-let currentPageIdx = 0;
-let sortMode = 'num';
-
-const listEl = document.getElementById('course-list');
-const searchEl = document.getElementById('search');
-const countEl = document.getElementById('course-count');
-const viewerHeader = document.getElementById('viewer-header');
-const viewerBody = document.getElementById('viewer-body');
-const viewerTitleN = document.querySelector('#viewer-title .n');
-const viewerSub = document.getElementById('viewer-sub');
-const pageTabs = document.getElementById('page-tabs');
-
-function pad3(n) { return String(n).padStart(3, '0'); }
-
-function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-function highlight(text, q) {
-  if (!q) return escapeHtml(text);
-  const idx = text.toLowerCase().indexOf(q.toLowerCase());
-  if (idx === -1) return escapeHtml(text);
-  return escapeHtml(text.slice(0, idx)) + '<mark>' + escapeHtml(text.slice(idx, idx+q.length)) + '</mark>' + escapeHtml(text.slice(idx+q.length));
-}
-
-function matches(c, q) {
-  if (!q) return true;
-  const hay = (c.name + ' ' + c.uni + ' ' + c.code + ' ' + c.n).toLowerCase();
-  return hay.indexOf(q.toLowerCase()) !== -1;
-}
-
-function sortedCourses() {
-  const arr = COURSES.slice();
-  if (sortMode === 'num') {
-    arr.sort((a,b) => a.n - b.n);
-  } else if (sortMode === 'uni') {
-    arr.sort((a,b) => a.uni.localeCompare(b.uni, 'ko') || a.n - b.n);
-  } else if (sortMode === 'code') {
-    arr.sort((a,b) => a.code.localeCompare(b.code));
-  }
-  return arr;
-}
-
-function renderList() {
-  const q = searchEl.value.trim();
-  const arr = sortedCourses().filter(c => matches(c, q));
-  listEl.innerHTML = '';
-
-  let lastGroup = null;
-  arr.forEach(c => {
-    if (sortMode === 'uni') {
-      if (c.uni !== lastGroup) {
-        lastGroup = c.uni;
-        const gl = document.createElement('li');
-        gl.className = 'group-label';
-        gl.textContent = c.uni;
-        listEl.appendChild(gl);
-      }
-    }
-
-    const li = document.createElement('li');
-    li.className = 'course-item' + (c.n === currentN ? ' active' : '');
-    li.tabIndex = 0;
-    li.setAttribute('role', 'button');
-    li.setAttribute('aria-label', c.name);
-    li.innerHTML = `
-      <div class="course-num">${c.n}</div>
-      <div class="course-info">
-        <div class="course-name">${highlight(c.name, q)}</div>
-        <div class="course-meta">
-          <span>${highlight(c.uni, q)}</span>
-          <span class="course-code">${highlight(c.code, q)}</span>
-        </div>
-      </div>
-      <div class="pagecount">${c.pages.length}p</div>
-    `;
-    li.addEventListener('click', () => selectCourse(c.n));
-    li.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCourse(c.n); }
-    });
-    listEl.appendChild(li);
-  });
-
-  countEl.textContent = arr.length + '개 강좌' + (q ? ` (검색: "${q}")` : '');
-}
-
-function selectCourse(n) {
-  currentN = n;
-  currentPageIdx = 0;
-  renderList();
-  renderViewer();
-  const activeItem = listEl.querySelector('.course-item.active');
-  if (activeItem) activeItem.scrollIntoView({ block: 'nearest' });
-}
-
-function renderViewer() {
-  const c = COURSES.find(x => x.n === currentN);
-  if (!c) return;
-  viewerHeader.style.display = 'flex';
-  viewerTitleN.textContent = c.name;
-  viewerSub.innerHTML = c.uni + ' &nbsp;·&nbsp; <span class="code">' + c.code + '</span> &nbsp;·&nbsp; 강좌 ' + c.n;
-
-  pageTabs.innerHTML = '';
-  if (c.pages.length > 1) {
-    c.pages.forEach((p, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'page-tab' + (i === currentPageIdx ? ' active' : '');
-      btn.textContent = (i === 0 ? '명단' : (i === c.pages.length - 1 ? '출석기록' : (i+1) + '쪽'));
-      btn.addEventListener('click', () => { currentPageIdx = i; renderViewer(); });
-      pageTabs.appendChild(btn);
-    });
-  }
-
-  const pageNum = c.pages[currentPageIdx];
-  viewerBody.innerHTML = `<img src="pages/page_${pad3(pageNum)}.jpg" alt="${escapeHtml(c.name)} ${currentPageIdx+1}쪽">`;
-}
-
-searchEl.addEventListener('input', renderList);
-
-document.querySelectorAll('.sort-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    sortMode = btn.dataset.sort;
-    document.querySelectorAll('.sort-btn').forEach(b => b.classList.toggle('active', b === btn));
-    renderList();
-  });
-});
-
-document.addEventListener('keydown', (e) => {
-  if (document.activeElement === searchEl) return;
-  const arr = sortedCourses().filter(c => matches(c, searchEl.value.trim()));
-  const idx = arr.findIndex(c => c.n === currentN);
-  if (e.key === 'ArrowRight') {
-    if (idx >= 0 && idx < arr.length - 1) selectCourse(arr[idx+1].n);
-    else if (idx === -1 && arr.length) selectCourse(arr[0].n);
-    e.preventDefault();
-  } else if (e.key === 'ArrowLeft') {
-    if (idx > 0) selectCourse(arr[idx-1].n);
-    e.preventDefault();
-  }
-});
-
-renderList();
-</script>
-
+<div id="om-footer"></div>
+<script src="../../assets/js/common.js"></script>
+<script data-goatcounter="https://onmadang.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
