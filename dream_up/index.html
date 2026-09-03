@@ -241,7 +241,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
   <div class="tb-inner">
     <div class="search-wrap">
       <span class="si">🔍</span>
-      <input type="text" id="search" placeholder="강좌명, 기관명, 강좌코드 검색…" oninput="render()"/>
+      <input type="search" id="search" placeholder="강좌명, 기관명, 강좌코드 검색…" oninput="render()" autocomplete="off" role="searchbox"/>
     </div>
     <select class="fsel" id="f-inst" onchange="setInst(this.value)">
       <option value="">전체 기관</option><option value="건양대학교">건양대학교</option><option value="국립공주대학교">국립공주대학교</option><option value="나사렛대학교">나사렛대학교</option><option value="남서울대학교">남서울대학교</option><option value="백석대학교">백석대학교</option><option value="백석문화대학교">백석문화대학교</option><option value="상명대학교">상명대학교</option><option value="선문대학교">선문대학교</option><option value="신성대학교">신성대학교</option><option value="중부대학교">중부대학교</option><option value="한국기술교육대학교">한국기술교육대학교</option><option value="한국폴리텍대학 아산캠퍼스">한국폴리텍대학 아산캠퍼스</option><option value="한국폴리텍대학 충남캠퍼스">한국폴리텍대학 충남캠퍼스</option><option value="혜전대학교">혜전대학교</option><option value="호서대학교">호서대학교</option>
