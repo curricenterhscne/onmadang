@@ -305,3 +305,4 @@
 - 학생 정보를 서버·localStorage에 저장 ❌
 - 완주를 전제하는 선형 구조 ❌ (실패 전례 있음)
 - 비주얼 완성도에 시간 쏟기 ❌ → 껍데기는 디자인 업체가 교체한다
+- `oninput`으로 실시간 필터링하는 검색창에 `autocomplete="off"` 누락 ❌ → 브라우저가 과거 입력값을 자동완성 제안하고, 방문자가 선택하면 필터가 의도치 않게 걸린다. `dream_up/index.html`·`dual_credit/courses.html`에서 실제로 발생(2026-09-03). 새 검색창은 `type="search"` + `autocomplete="off"` + `role="searchbox"`로 만들 것 (`apply/app.html`의 `.search-box`가 검증된 패턴)
