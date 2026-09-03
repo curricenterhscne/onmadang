@@ -251,7 +251,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
   <div class="tb-inner">
     <div class="search-wrap">
       <span class="si">🔍</span>
-      <input type="text" id="search" placeholder="과목명, 대학명, 강좌코드 검색…" oninput="render()"/>
+      <input type="search" id="search" placeholder="과목명, 대학명, 강좌코드 검색…" oninput="render()" autocomplete="off" role="searchbox"/>
     </div>
     <select class="fsel" id="f-method" onchange="render()">
       <option value="">전체 방식</option><option value="강의형">강의형</option><option value="실험·실습형">실험·실습형</option><option value="혼합형">혼합형</option>
