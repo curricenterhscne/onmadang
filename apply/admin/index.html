@@ -176,7 +176,7 @@
         <div class="card-value red" id="stat-closed">-</div>
       </div>
       <div class="card">
-        <div class="card-label">폐강 위험 (신청 &lt; 5)</div>
+        <div class="card-label">폐강 위험 (최소 인원 미만)</div>
         <div class="card-value yellow" id="stat-low">-</div>
       </div>
     </div>
@@ -302,7 +302,7 @@
       c.is_closed_manual || (c.enrolled_count >= c.capacity)
     ).length;
     const lowCount = registerable.filter(c =>
-      (c.enrolled_count || 0) < 5 && !c.is_closed_manual
+      (c.enrolled_count || 0) < (c.min_open ?? 8) && !c.is_closed_manual
     ).length;
 
     document.getElementById('stat-total').textContent = totalEnrolled;
@@ -317,7 +317,7 @@
     for (const c of courses) {
       const remaining = c.capacity - (c.enrolled_count || 0);
       const isFull = remaining <= 0;
-      const isLow = (c.enrolled_count || 0) < 5 && !c.is_closed_manual && c.is_registerable !== false;
+      const isLow = (c.enrolled_count || 0) < (c.min_open ?? 8) && !c.is_closed_manual && c.is_registerable !== false;
       const tr = document.createElement('tr');
       if (isFull || c.is_closed_manual) tr.className = 'row-full';
       else if (isLow) tr.className = 'row-low';
@@ -438,7 +438,7 @@
     document.getElementById('stat-closed').textContent =
       registerable.filter(c => c.is_closed_manual || (c.enrolled_count >= c.capacity)).length;
     document.getElementById('stat-low').textContent =
-      registerable.filter(c => (c.enrolled_count || 0) < 5 && !c.is_closed_manual).length;
+      registerable.filter(c => (c.enrolled_count || 0) < (c.min_open ?? 8) && !c.is_closed_manual).length;
   }
 
   // ── Modal ──────────────────────────────────────────────────────────────────
