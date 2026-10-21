@@ -10,37 +10,40 @@
 <link rel="stylesheet" href="./assets/css/common.css">
 <style>
   /* ─────────── 히어로 ─────────── */
-  .hero{position:relative;overflow:hidden;padding:64px 0 72px}
+  .hero{position:relative;overflow:hidden;padding:64px 0 72px;color:#fff}
   .hero::before{
     content:"";position:absolute;inset:0;z-index:-1;
-    background:
-      radial-gradient(circle at 85% 12%,rgba(123,206,124,.3),transparent 38%),
-      radial-gradient(circle at 12% 88%,rgba(126,200,227,.4),transparent 42%),
-      var(--bg);
+    background-image:
+      linear-gradient(100deg,rgba(31,43,105,.8),rgba(31,43,105,.48) 55%,rgba(31,43,105,.7)),
+      url("./assets/img/home/hero-bg.jpg");
+    background-image:
+      linear-gradient(100deg,rgba(31,43,105,.8),rgba(31,43,105,.48) 55%,rgba(31,43,105,.7)),
+      image-set(url("./assets/img/home/hero-bg.webp") 1x,url("./assets/img/home/hero-bg@2x.webp") 2x);
+    background-size:cover;background-position:center;
   }
   .hero-grid{display:grid;grid-template-columns:1fr 340px;gap:40px;align-items:center}
   .hero-pill{
-    display:inline-flex;align-items:center;gap:7px;background:#fff;
-    border:1px solid var(--line);color:var(--brand);font-size:13px;font-weight:700;
+    display:inline-flex;align-items:center;gap:7px;background:var(--sunny);
+    border:none;color:var(--ink);font-size:13px;font-weight:700;
     padding:7px 15px;border-radius:var(--radius-pill);margin-bottom:22px;box-shadow:var(--shadow-sm);
     animation:fadeUp .6s both;
   }
   .hero h1{
-    font-size:clamp(30px,4.4vw,46px);font-weight:800;line-height:1.25;
+    font-size:clamp(30px,4.4vw,46px);font-weight:800;line-height:1.25;color:#fff;
     letter-spacing:-1.4px;margin-bottom:18px;animation:fadeUp .6s .08s both;
   }
-  .hero h1 em{font-style:normal;color:var(--brand);position:relative}
-  .hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:10px;background:rgba(123,206,124,.4);z-index:-1;border-radius:3px}
-  .hero p.hero-lead{font-size:19px;font-weight:700;color:var(--ink);line-height:1.55;letter-spacing:-.5px;margin-bottom:12px;max-width:480px;word-break:keep-all;animation:fadeUp .6s .12s both}
-  .hero p.hero-desc{font-size:16.5px;color:var(--ink-soft);margin-bottom:30px;max-width:480px;word-break:keep-all;animation:fadeUp .6s .16s both}
+  .hero h1 em{font-style:normal;color:#fff;position:relative}
+  .hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:10px;background:rgba(255,255,196,.55);z-index:-1;border-radius:3px}
+  .hero p.hero-lead{font-size:19px;font-weight:700;color:#fff;line-height:1.55;letter-spacing:-.5px;margin-bottom:12px;max-width:480px;word-break:keep-all;animation:fadeUp .6s .12s both}
+  .hero p.hero-desc{font-size:16.5px;color:rgba(255,255,255,.88);margin-bottom:30px;max-width:480px;word-break:keep-all;animation:fadeUp .6s .16s both}
   .hero-btns{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .6s .24s both}
   .btn{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:700;padding:14px 26px;border-radius:14px;transition:.18s;cursor:pointer}
-  .btn-primary{background:var(--brand);color:#fff;box-shadow:0 6px 18px rgba(79,110,190,.3)}
+  .btn-primary{background:var(--brand);color:#fff;box-shadow:0 6px 18px rgba(31,43,105,.35)}
   .btn-primary:hover{background:var(--brand-d);transform:translateY(-2px)}
-  .btn-ghost{background:#fff;color:var(--brand);border:1px solid var(--line)}
+  .btn-ghost{background:#fff;color:var(--brand);border:1px solid transparent}
   .btn-ghost:hover{border-color:var(--brand);transform:translateY(-2px)}
   .hero-char{display:flex;justify-content:center;animation:floaty 4s ease-in-out infinite,fadeUp .7s .3s both}
-  .hero-char svg{filter:drop-shadow(0 16px 30px rgba(79,110,190,.25))}
+  .hero-char svg{filter:drop-shadow(0 16px 30px rgba(0,0,0,.3))}
 
   @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
   @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
@@ -50,6 +53,7 @@
   .quick a{
     display:flex;align-items:center;gap:13px;background:#fff;border:1px solid var(--line);
     border-radius:var(--radius);padding:18px 20px;transition:.2s;box-shadow:var(--shadow-sm);
+    color:var(--ink);
   }
   .quick a:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
   .quick .q-ic{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:23px;flex-shrink:0}
@@ -64,11 +68,13 @@
   .sec-desc{font-size:15.5px;color:var(--ink-soft);text-align:center;max-width:560px;margin:0 auto 44px}
 
   /* ─── 고교학점제 안내 배너 ─── */
-  .about-sec{background:var(--soft)}
+  .about-sec{background:var(--soft);position:relative;overflow:hidden}
+  .about-deco{position:absolute;left:calc(50% - 480px);top:50px;width:84px;height:auto;opacity:.95}
+  @media (max-width:1200px){.about-deco{display:none}}
   .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
   .about-card{border-radius:var(--radius);padding:34px 32px;position:relative;overflow:hidden}
-  .about-card.c1{background:linear-gradient(135deg,#4F6EBE,#6d8ad6);color:#fff}
-  .about-card.c2{background:linear-gradient(135deg,#7BCE7C,#5fb260);color:#fff}
+  .about-card.c1{background:linear-gradient(135deg,var(--brand),var(--brand-l));color:#fff}
+  .about-card.c2{background:linear-gradient(135deg,#2c5a34,var(--accent-d));color:#fff}
   .about-card h3{font-size:21px;font-weight:800;margin-bottom:10px}
   .about-card p{font-size:14px;opacity:.92;margin-bottom:20px;line-height:1.65}
   .about-card .a-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;font-weight:700;font-size:13.5px;padding:10px 18px;border-radius:var(--radius-pill);transition:.18s}
@@ -76,16 +82,17 @@
   .about-card .a-deco{position:absolute;right:-10px;bottom:-10px;opacity:.22}
 
   /* ─── 진로·학업 설계 3관문 ─── */
-  .design-sec{background:var(--surface)}
-  .gates{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  /* 관문 배색: ①brand ②accent(그린) ③plum(보라) — 시안 실측(점검표_2026-10-14.md) 기준 */
+  .design-sec{background:var(--surface);position:relative;overflow:hidden}
+  .gates{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;position:relative}
   .gate{
     background:var(--soft);border:1px solid var(--line);border-radius:var(--radius);
     padding:28px 22px;position:relative;overflow:hidden;transition:.2s;display:flex;flex-direction:column;
   }
-  .gate::before{content:"";position:absolute;top:0;left:0;right:0;height:5px}
+  .gate::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;border-radius:var(--radius) var(--radius) 0 0}
   .gate:nth-child(1)::before{background:var(--brand)}
-  .gate:nth-child(2)::before{background:var(--online)}
-  .gate:nth-child(3)::before{background:var(--accent)}
+  .gate:nth-child(2)::before{background:var(--accent)}
+  .gate:nth-child(3)::before{background:var(--plum)}
   .gate:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);background:#fff}
   .gate-q{font-size:18px;font-weight:800;letter-spacing:-.4px;margin-bottom:12px;line-height:1.4}
   .gate-desc{font-size:13.5px;color:var(--ink-soft);line-height:1.7;margin-bottom:18px;flex:1}
@@ -96,29 +103,55 @@
     padding:10px 16px;background:#fff;border-radius:var(--radius-sm);transition:.15s;
   }
   .gate-link:hover{background:var(--brand);color:#fff}
-  .gate-link .gl-ic{font-size:18px;flex-shrink:0}
+  .gate:nth-child(2) .gate-link{color:var(--accent-d)}
+  .gate:nth-child(2) .gate-link:hover{background:var(--accent-d);color:#fff}
+  .gate:nth-child(3) .gate-link{color:var(--plum-d)}
+  .gate:nth-child(3) .gate-link:hover{background:var(--plum-d);color:#fff}
+  .gate-link .gl-ic{width:18px;height:18px;flex-shrink:0}
   .gate-link .gl-arr{margin-left:auto;font-size:12px;opacity:.7}
+  .gate-char{position:absolute;right:-6px;bottom:-8px;width:72px;height:auto;opacity:.85;pointer-events:none}
+  @media (max-width:980px){.gate-char{display:none}}
 
-  /* ─── 4대 안전망 ─── */
+  /* ─── 4대 안전망 — 원 4분원 ───
+     업체 SVG 파일이 없어 CSS로 직접 그린다: 2×2 grid를 원형으로 자르면
+     수평·수직 지름선으로 나뉜 4분원이 된다 (시안 실측 - 반원 아님).
+     ④(학교 밖 교육)만 --plum 대신 --plum-d 사용: 흰 글자 대비가 --plum에서는
+     3.96:1로 미달이라 시안과 달리 한 단계 어둡게 했다 (아래 .snet-note 참고). */
   .safety-sec{background:linear-gradient(180deg,var(--bg),#cfeaf7)}
-  .scards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-  .scard{background:#fff;border-radius:var(--radius);padding:30px 22px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:.2s}
-  .scard::before{content:"";position:absolute;top:0;left:0;right:0;height:5px}
-  .scard:nth-child(1)::before{background:var(--brand)}
-  .scard:nth-child(2)::before{background:var(--online)}
-  .scard:nth-child(3)::before{background:var(--accent)}
-  .scard:nth-child(4)::before{background:var(--plum)}
-  .scard:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
-  .s-ic{font-size:34px;margin-bottom:14px}
-  .s-step{font-size:11px;font-weight:800;color:var(--ink-faint);letter-spacing:1px;margin-bottom:4px}
-  .scard h3{font-size:18px;font-weight:800;margin-bottom:8px}
-  .scard p{font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:14px}
+  .snet-circle{
+    display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+    width:min(620px,100%);aspect-ratio:1;margin:0 auto 20px;border-radius:50%;
+    overflow:hidden;box-shadow:var(--shadow-lg);
+  }
+  .snet-q{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+    text-align:center;padding:14px;transition:filter .15s,transform .15s;position:relative;
+  }
+  .snet-q:hover{filter:brightness(1.06)}
+  .snet-q:focus-visible{outline:3px solid #fff;outline-offset:-7px;z-index:1}
+  .snet-q1{background:var(--brand);color:#fff}
+  .snet-q2{background:var(--online);color:var(--ink)}
+  .snet-q3{background:var(--accent);color:var(--ink);flex-direction:column-reverse}
+  .snet-q4{background:var(--plum-d);color:#fff;flex-direction:column-reverse}
+  .snet-ic{width:30px;height:30px;flex-shrink:0}
+  .snet-tt{font-size:14.5px;font-weight:800;line-height:1.35}
+  .snet-note{font-size:12.5px;color:var(--ink-faint);text-align:center;max-width:560px;margin:0 auto 44px}
+  .snet-details{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .snet-detail{background:#fff;border-radius:var(--radius);padding:22px 20px;box-shadow:var(--shadow-sm)}
+  .snet-detail .sd-step{font-size:11px;font-weight:800;color:var(--ink-faint);letter-spacing:1px;margin-bottom:4px}
+  .snet-detail h3{font-size:15.5px;font-weight:800;margin-bottom:8px}
+  .snet-detail p{font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:12px}
   .s-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--brand)}
   .s-link.online{color:var(--online-d)}
+  .s-link.accent{color:var(--accent-d)}
+  .s-link.plum{color:var(--plum-d)}
+  @media (max-width:560px){.snet-circle{border-radius:14px}}
 
   /* ─── 알림·소통 ─── */
-  .board-sec{background:var(--surface)}
-  .board-grid{max-width:720px;margin:0 auto}
+  .board-sec{background:linear-gradient(180deg,#cfeaf7,var(--bg));position:relative;overflow:hidden}
+  .board-grid{max-width:720px;margin:0 auto;position:relative}
+  .board-deco{position:absolute;left:calc(50% - 540px);bottom:0;width:150px;height:auto}
+  @media (max-width:1240px){.board-deco{display:none}}
   .board-col{background:#fff;border-radius:var(--radius);padding:28px 30px;box-shadow:var(--shadow-sm)}
   .board-col h3{font-size:19px;font-weight:800;color:var(--brand);margin-bottom:18px;padding-bottom:14px;border-bottom:2px solid var(--soft);display:flex;justify-content:space-between;align-items:center}
   .board-col h3 a{font-size:13px;color:var(--ink-faint);font-weight:500}
@@ -142,12 +175,13 @@
   @media (max-width:980px){
     .hero-grid{grid-template-columns:1fr} .hero-char{display:none}
     .gates{grid-template-columns:1fr}
-    .scards{grid-template-columns:repeat(2,1fr)}
+    .snet-details{grid-template-columns:repeat(2,1fr)}
     .quick{grid-template-columns:repeat(2,1fr)}
   }
   @media (max-width:680px){
     .about-grid{grid-template-columns:1fr}
-    .scards,.quick{grid-template-columns:1fr}
+    .snet-details,.quick{grid-template-columns:1fr}
+    .snet-circle{width:min(420px,100%)}
     .hero{padding:44px 0 52px}
   }
 </style>
@@ -197,22 +231,9 @@
   </div>
 </section>
 
-<!-- ═══ 알림·소통 마당 ═══ -->
-<section class="block board-sec">
-  <div class="wrap">
-    <div class="board-grid">
-      <div class="board-col">
-        <h3>공지사항 <a href="./board/">더보기 →</a></h3>
-        <ul class="board-list" id="main-notices">
-          <li class="board-loading">불러오는 중…</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══ 고교학점제 안내 배너 ═══ -->
 <section class="block about-sec">
+  <img class="about-deco" src="./assets/img/home/char-about-start.svg" alt="" aria-hidden="true">
   <div class="wrap">
     <div class="sec-label">ABOUT</div>
     <h2 class="sec-title"><em>고교학점제</em> 안내</h2>
@@ -247,14 +268,17 @@
         <p class="gate-desc">나의 흥미·적성부터 알아보고, 어울리는 계열과 학과를 찾아봅니다. 학과에서 권장하는 과목도 함께 확인할 수 있습니다.</p>
         <div class="gate-links">
           <a class="gate-link" href="./design/compass/">
-            <span class="gl-ic" aria-hidden="true">🧭</span> 진로 나침반
+            <svg class="gl-ic" aria-hidden="true" viewBox="0 0 20 20"><path fill="currentColor" d="M10,1C5.05,1,1,5.05,1,10s4.05,9,9,9,9-4.05,9-9S14.95,1,10,1ZM10.9,17.11v-.81c0-.54-.36-.9-.9-.9s-.9.36-.9.9v.81c-3.24-.45-5.85-2.97-6.21-6.21h.81c.54,0,.9-.36.9-.9s-.36-.9-.9-.9h-.81c.36-3.24,2.97-5.85,6.21-6.21v.81c0,.54.36.9.9.9s.9-.36.9-.9v-.81c3.24.45,5.85,2.97,6.21,6.21h-.81c-.54,0-.9.36-.9.9s.36.9.9.9h.81c-.36,3.24-2.97,5.85-6.21,6.21ZM12.79,6.04l-4.5,1.89c-.18.09-.36.27-.45.45l-1.89,4.5c-.18.36-.09.72.18.99.18.18.36.27.63.27.09,0,.27,0,.36-.09l4.5-1.89c.18-.09.36-.27.45-.45l1.89-4.5c.18-.45,0-.99-.45-1.17-.18-.18-.45-.18-.72,0h0ZM10.63,10.54l-2.07.9.9-2.07,2.07-.9-.9,2.07Z"/></svg>
+            진로 나침반
             <span class="gl-arr" aria-hidden="true">→</span>
           </a>
           <a class="gate-link" href="./design/majors/">
-            <span class="gl-ic" aria-hidden="true">🎓</span> 학과·과목 탐색
+            <svg class="gl-ic" aria-hidden="true" viewBox="0 0 20 20"><path fill="currentColor" d="M17.52,16.39l-2.97-2.97c2.49-3.13,2.01-7.63-1.12-10.19-3.13-2.57-7.63-1.93-10.11,1.12-2.49,3.05-2.01,7.71,1.12,10.19,2.65,2.09,6.42,2.09,9.07,0l2.97,2.97c.32.32.8.32,1.12,0,.24-.32.24-.8-.08-1.12ZM8.93,14.54c-3.13,0-5.62-2.49-5.62-5.62s2.49-5.62,5.62-5.62,5.62,2.49,5.62,5.62-2.49,5.62-5.62,5.62h0Z"/></svg>
+            학과·과목 탐색
             <span class="gl-arr" aria-hidden="true">→</span>
           </a>
         </div>
+        <img class="gate-char" src="./assets/img/home/char-gate1.svg" alt="" aria-hidden="true">
       </div>
       <!-- 관문 2 -->
       <div class="gate">
@@ -262,10 +286,12 @@
         <p class="gate-desc">소속 학교의 실제 편성표를 보면서 3년간 과목을 직접 선택해 봅니다. 학과별 권장과목이 자동 반영됩니다.</p>
         <div class="gate-links">
           <a class="gate-link" href="./design/selector/">
-            <span class="gl-ic" aria-hidden="true">📋</span> 과목 선택 실습
+            <svg class="gl-ic" aria-hidden="true" viewBox="0 0 20 20"><path fill="currentColor" d="M16.69,3.45c-.63-.63-1.5-.87-2.38-.55L3.15,6.62c-1.19.4-1.9,1.66-1.5,2.85.24.63.71,1.19,1.35,1.43l4.12,1.58c.16.08.32.24.4.4l1.58,4.2c.32.87,1.19,1.5,2.14,1.5h.08c.95,0,1.82-.63,2.14-1.58l3.72-11.24c.4-.79.16-1.74-.48-2.3ZM15.82,5.27l-3.8,11.24c-.08.32-.4.48-.63.48-.32,0-.55-.16-.71-.48l-1.58-4.2c-.24-.63-.71-1.11-1.35-1.35l-4.2-1.58c-.24,0-.4-.32-.4-.63s.24-.55.48-.63l11.24-3.72c.4-.16.79,0,.95.4.08.16.08.32,0,.48h0Z"/></svg>
+            과목 선택 실습
             <span class="gl-arr" aria-hidden="true">→</span>
           </a>
         </div>
+        <img class="gate-char" src="./assets/img/home/char-gate2.svg" alt="" aria-hidden="true">
       </div>
       <!-- 관문 3 -->
       <div class="gate">
@@ -273,10 +299,12 @@
         <p class="gate-desc">과목 선택 실습에서 저장한 파일을 올리면 졸업 학점, 필수이수, 위계, 석차등급 등 7가지를 자동 점검합니다.</p>
         <div class="gate-links">
           <a class="gate-link" href="./design/check/">
-            <span class="gl-ic" aria-hidden="true">✅</span> 내 선택 점검
+            <svg class="gl-ic" aria-hidden="true" viewBox="0 0 20 20"><path fill="currentColor" d="M13.26,7.53l-4.23,4.23-1.62-1.71c-.36-.36-.9-.36-1.26,0-.36.36-.36.9,0,1.26l2.34,2.34c.36.36.9.36,1.26,0l4.86-4.86c.36-.36.36-.9,0-1.26-.36-.36-.99-.27-1.35,0h0ZM10.29,1.41C5.34,1.41,1.29,5.46,1.29,10.41c0,2.07.72,4.05,2.07,5.67l-1.8,1.8c-.27.27-.36.63-.18.99.09.36.45.54.81.54h8.1c4.95,0,9-4.05,9-9S15.24,1.41,10.29,1.41ZM10.29,17.61h-5.94l.81-.81c.36-.36.36-.9,0-1.26-2.79-2.79-2.79-7.38,0-10.17s7.38-2.79,10.17,0,2.79,7.38,0,10.17c-1.26,1.35-3.15,2.07-5.04,2.07Z"/></svg>
+            내 선택 점검
             <span class="gl-arr" aria-hidden="true">→</span>
           </a>
         </div>
+        <img class="gate-char" src="./assets/img/home/char-gate3.svg" alt="" aria-hidden="true">
       </div>
     </div>
   </div>
@@ -288,31 +316,70 @@
     <div class="sec-label" style="color:var(--brand)">SAFETY NETS</div>
     <h2 class="sec-title">고교학점제 <em>4대 안전망</em></h2>
     <p class="sec-desc">학교에서, 학교 사이에서, 학교 밖에서, 단계별 안전망이 학생의 과목 선택을 보장합니다.</p>
-    <div class="scards">
-      <a class="scard" href="./safety/schoolcurriculum.html">
-        <div class="s-ic">🏫</div><div class="s-step"><h1>1</h1></div>
-        <h3>학생 선택 중심<br> 학교 교육과정</h3>
-        <p>소속 학교가 개설한 과목 중에서 진로와 적성에 맞는 과목을 우선 이수합니다.</p>
-        <span class="s-link">안내 보기 →</span>
+
+    <div class="snet-circle">
+      <a class="snet-q snet-q1" href="./safety/schoolcurriculum.html">
+        <svg class="snet-ic" aria-hidden="true" viewBox="0 0 90 90"><path fill="currentColor" d="M61.3,87.32H28.7c-.42,0-.75-.34-.75-.75v-53.47c0-.42.34-.75.75-.75h32.6c.42,0,.75.34.75.75v53.47c0,.42-.34.75-.75.75ZM29.45,85.82h31.1v-51.97h-31.1v51.97Z"/><path fill="currentColor" d="M85.94,87.32h-24.64c-.42,0-.75-.34-.75-.75v-34.66c0-.42.34-.75.75-.75h24.64c.42,0,.75.34.75.75v34.66c0,.42-.34.75-.75.75ZM62.05,85.82h23.13v-33.16h-23.13v33.16Z"/><path fill="currentColor" d="M28.7,87.32H4.06c-.42,0-.75-.34-.75-.75v-34.66c0-.42.34-.75.75-.75h24.63c.42,0,.75.34.75.75v34.66c0,.42-.34.75-.75.75ZM4.82,85.82h23.13v-33.16H4.82v33.16Z"/><path fill="currentColor" d="M61.3,33.85H28.7c-.3,0-.58-.18-.69-.46-.12-.28-.05-.6.16-.82l16.3-16.3c.14-.14.33-.22.53-.22h0c.2,0,.39.08.53.22l16.3,16.3c.22.22.28.54.16.82-.12.28-.39.46-.69.46ZM30.51,32.34h28.97l-14.49-14.49-14.49,14.49Z"/><path fill="currentColor" d="M55.21,11.31h-10.21c-.42,0-.75-.34-.75-.75V3.43c0-.42.34-.75.75-.75h10.21c.42,0,.75.34.75.75v7.12c0,.42-.34.75-.75.75ZM45.75,9.8h8.71v-5.62h-8.71v5.62Z"/><path fill="currentColor" d="M45,17.74c-.42,0-.75-.34-.75-.75v-6.44c0-.42.34-.75.75-.75s.75.34.75.75v6.44c0,.42-.34.75-.75.75Z"/><path fill="currentColor" d="M45,52.66c-3.53,0-6.39-2.87-6.39-6.39s2.87-6.4,6.39-6.4,6.39,2.87,6.39,6.4-2.87,6.39-6.39,6.39ZM45,41.37c-2.7,0-4.89,2.19-4.89,4.89s2.19,4.89,4.89,4.89,4.89-2.19,4.89-4.89-2.19-4.89-4.89-4.89Z"/><path fill="currentColor" d="M50.64,87.32h-11.28c-.42,0-.75-.34-.75-.75v-26.81c0-.42.34-.75.75-.75h11.28c.42,0,.75.34.75.75v26.81c0,.42-.34.75-.75.75ZM40.11,85.82h9.78v-25.3h-9.78v25.3Z"/><path fill="currentColor" d="M19.65,67.05h-6.54c-.42,0-.75-.34-.75-.75v-6.54c0-.42.34-.75.75-.75h6.54c.42,0,.75.34.75.75v6.54c0,.42-.34.75-.75.75ZM13.87,65.55h5.03v-5.03h-5.03v5.03Z"/><path fill="currentColor" d="M19.65,79.92h-6.54c-.42,0-.75-.34-.75-.75v-6.54c0-.42.34-.75.75-.75h6.54c.42,0,.75.34.75.75v6.54c0,.42-.34.75-.75.75ZM13.87,78.41h5.03v-5.03h-5.03v5.03Z"/><path fill="currentColor" d="M76.89,67.05h-6.54c-.42,0-.75-.34-.75-.75v-6.54c0-.42.34-.75.75-.75h6.54c.42,0,.75.34.75.75v6.54c0,.42-.34.75-.75.75ZM71.1,65.55h5.03v-5.03h-5.03v5.03Z"/><path fill="currentColor" d="M76.89,79.92h-6.54c-.42,0-.75-.34-.75-.75v-6.54c0-.42.34-.75.75-.75h6.54c.42,0,.75.34.75.75v6.54c0,.42-.34.75-.75.75ZM71.1,78.41h5.03v-5.03h-5.03v5.03Z"/></svg>
+        <span class="snet-tt">학생 선택 중심<br>학교 교육과정</span>
       </a>
-      <a class="scard" href="./safety/onlineschool.html">
-        <div class="s-ic">💻</div><div class="s-step"><h1>2</h1></div>
+      <a class="snet-q snet-q2" href="./safety/onlineschool.html">
+        <svg class="snet-ic" aria-hidden="true" viewBox="0 0 90 90"><path fill="currentColor" d="M80.1,76.17H9.9c-4.16,0-7.55-3.39-7.55-7.55v-5.23c0-.42.34-.75.75-.75h33.33c.38,0,.7.29.75.67.35,3.05,2.93,5.35,6,5.35h3.64c3.07,0,5.65-2.3,6-5.35.04-.38.36-.67.75-.67h33.33c.42,0,.75.34.75.75v5.23c0,4.16-3.39,7.55-7.55,7.55ZM3.85,64.14v4.48c0,3.33,2.71,6.05,6.05,6.05h70.2c3.33,0,6.05-2.71,6.05-6.05v-4.48h-31.93c-.72,3.47-3.78,6.01-7.39,6.01h-3.64c-3.61,0-6.67-2.54-7.39-6.01H3.85Z"/><path fill="currentColor" d="M79.93,64.14c-.42,0-.75-.34-.75-.75V15.33H10.83v48.06c0,.42-.34.75-.75.75s-.75-.34-.75-.75V14.58c0-.42.34-.75.75-.75h69.85c.42,0,.75.34.75.75v48.81c0,.42-.34.75-.75.75Z"/><path fill="currentColor" d="M39.66,47.92c-.13,0-.26-.03-.38-.1-.23-.13-.38-.38-.38-.65v-15.57c0-.27.14-.52.38-.65.23-.13.52-.13.75,0l13.48,7.79c.23.13.38.38.38.65s-.14.52-.38.65l-13.48,7.78c-.12.07-.25.1-.38.1ZM40.41,32.9v12.96l11.23-6.48-11.23-6.48Z"/><path fill="currentColor" d="M64.18,61.49s-.03,0-.04,0c-.3-.02-.55-.2-.66-.48l-6.14-15.84c-.11-.29-.03-.62.19-.83.23-.21.56-.26.84-.12l15.21,7.59c.26.13.43.41.42.7-.01.3-.19.56-.47.67l-3.52,1.43,2.68,2.94c.28.31.26.78-.05,1.06l-2.29,2.09c-.31.28-.78.26-1.06-.05l-2.68-2.94-1.75,3.37c-.13.25-.39.4-.67.4ZM66.43,55.65c.21,0,.41.09.56.25l2.9,3.19,1.18-1.08-2.9-3.18c-.17-.18-.23-.43-.18-.67.05-.24.22-.44.45-.53l2.98-1.21-11.98-5.98,4.84,12.48,1.48-2.85c.11-.22.33-.37.57-.4.03,0,.06,0,.1,0Z"/><path fill="currentColor" d="M58.85,54.36h-28.82c-3.62,0-6.57-2.95-6.57-6.57v-16.81c0-3.62,2.95-6.57,6.57-6.57h28.82c3.62,0,6.57,2.95,6.57,6.57v16.81c0,.42-.34.75-.75.75s-.75-.34-.75-.75v-16.81c0-2.79-2.27-5.07-5.07-5.07h-28.82c-2.79,0-5.07,2.27-5.07,5.07v16.81c0,2.79,2.27,5.07,5.07,5.07h28.82c.72,0,1.41-.15,2.07-.44.38-.17.82,0,.99.38.17.38,0,.82-.38.99-.85.38-1.75.57-2.68.57Z"/></svg>
+        <span class="snet-tt">온배움<br>충남온라인학교</span>
+      </a>
+      <a class="snet-q snet-q4" href="./safety/off-campus_courses.html">
+        <svg class="snet-ic" aria-hidden="true" viewBox="0 0 90 90"><path fill="currentColor" d="M20.93,60.2h-1.5V12.85c0-.42.34-.75.75-.75h21.23v1.5h-20.48v46.6Z"/><path fill="currentColor" d="M30.8,37.5c-3.76,0-6.83-3.06-6.83-6.83s3.06-6.83,6.83-6.83,6.83,3.06,6.83,6.83-3.06,6.83-6.83,6.83ZM30.8,25.35c-2.94,0-5.32,2.39-5.32,5.33s2.39,5.33,5.32,5.33,5.33-2.39,5.33-5.33-2.39-5.33-5.33-5.33Z"/><path fill="currentColor" d="M61.27,60.2h-1.5V3.26h-17.61v46.62h-1.5V2.51c0-.42.34-.75.75-.75h19.11c.42,0,.75.34.75.75v57.69Z"/><path fill="currentColor" d="M81.37,46.69h-1.5V10.88h-19.34v-1.5h20.09c.42,0,.75.34.75.75v36.56Z"/><rect fill="currentColor" x="41.41" y="23.43" width="19.11" height="1.5"/><rect fill="currentColor" x="41.41" y="15.91" width="19.11" height="1.5"/><rect fill="currentColor" x="20.18" y="18.63" width="21.23" height="1.5"/><rect fill="currentColor" x="60.52" y="15.91" width="20.09" height="1.5"/><rect fill="currentColor" x="60.52" y="34.68" width="20.09" height="1.5"/><rect fill="currentColor" x="60.52" y="40.94" width="20.09" height="1.5"/><path fill="currentColor" d="M31.17,76.1c-.19,0-.38-.07-.53-.22l-13.02-13.02c-.15-.15-.23-.35-.22-.56,0-.21.1-.4.26-.54l13.4-11.69c1.03-.9,2.36-1.4,3.73-1.4h18.08c1.78.01,5.13,1.16,5.13,5.39s-3.17,5.56-4.88,5.69l-1.59.27h9.86l12.13-12.27c1.62-1.64,3.8-2.52,5.97-2.42,2.67.13,4.41,1.45,5.05,3.81.64,2.38-.11,5.01-1.97,6.86l-15.8,15.8c-1.23,1.23-2.87,1.91-4.62,1.91h-28.3l-2.15,2.15c-.15.15-.34.22-.53.22ZM19.26,62.37l11.92,11.92,1.84-1.84c.14-.14.33-.22.53-.22h28.61c1.34,0,2.61-.52,3.55-1.47l15.8-15.8c1.48-1.47,2.08-3.55,1.58-5.41-.46-1.71-1.66-2.59-3.67-2.69-1.75-.09-3.5.63-4.82,1.97l-12.35,12.49c-.14.14-.33.22-.53.22h-18.93c-.39,0-.72-.3-.75-.69-.03-.39.24-.74.62-.81l10.26-1.77s.05,0,.08,0c.36-.03,3.52-.37,3.52-4.19s-3.48-3.89-3.63-3.89h-18.07c-1.01,0-1.98.36-2.74,1.03l-12.8,11.16Z"/><path fill="currentColor" d="M27.16,88.24c-.71,0-1.37-.27-1.87-.77l-19.28-19.28c-.5-.49-.77-1.16-.78-1.86,0-.71.27-1.37.78-1.87l5.8-5.8c.49-.5,1.16-.77,1.86-.77h0c.71,0,1.37.27,1.87.77l19.28,19.28c.5.5.78,1.16.78,1.87s-.27,1.37-.77,1.87l-5.8,5.8c-.5.5-1.16.77-1.87.77h0ZM13.68,59.38h0c-.3,0-.59.12-.8.33l-5.8,5.8c-.22.22-.34.5-.34.81,0,.3.12.59.33.8l19.28,19.28c.22.22.5.33.81.33h0c.3,0,.59-.12.8-.33h0s5.8-5.8,5.8-5.8c.22-.22.33-.51.33-.81s-.12-.59-.33-.8l-19.28-19.28c-.22-.22-.5-.33-.81-.33Z"/></svg>
+        <span class="snet-tt">꿈키움<br>학교 밖 교육</span>
+      </a>
+      <a class="snet-q snet-q3" href="./safety/jointcurricula.html">
+        <svg class="snet-ic" aria-hidden="true" viewBox="0 0 90 90"><path fill="currentColor" d="M53.73,49.71c-.34,0-.64-.23-.73-.57-.1-.4.14-.81.55-.91,12.29-3.08,20.87-12.56,20.87-23.05v-7.75H15.58v7.75c0,10.49,8.58,19.97,20.87,23.05.4.1.65.51.55.91-.1.4-.51.65-.91.55-12.96-3.25-22.01-13.33-22.01-24.51v-8.5c0-.42.34-.75.75-.75h60.34c.42,0,.75.34.75.75v8.5c0,11.18-9.05,21.26-22.01,24.51-.06.02-.12.02-.18.02Z"/><path fill="currentColor" d="M51.57,17.43c-.42,0-.75-.34-.75-.75v-2.65c0-3.21-2.61-5.81-5.81-5.81s-5.82,2.61-5.82,5.81v2.65c0,.42-.34.75-.75.75s-.75-.34-.75-.75v-2.65c0-4.04,3.28-7.32,7.32-7.32s7.32,3.28,7.32,7.32v2.65c0,.42-.34.75-.75.75Z"/><path fill="currentColor" d="M65.11,82.45H24.89c-1.1,0-2.14-.48-2.85-1.31-.72-.83-1.04-1.94-.88-3.03,1.74-11.7,11.99-20.52,23.83-20.52s22.09,8.82,23.83,20.52c.16,1.09-.15,2.19-.87,3.03-.72.83-1.76,1.31-2.85,1.31ZM45,59.1c-11.1,0-20.71,8.27-22.35,19.23-.1.66.09,1.32.53,1.82.43.5,1.05.79,1.71.79h40.21c.66,0,1.28-.29,1.71-.79.43-.5.62-1.17.52-1.82-1.63-10.97-11.24-19.23-22.35-19.23Z"/><path fill="currentColor" d="M76.81,79.49c-.42,0-.75-.34-.75-.75s.34-.75.75-.75c4.26,0,7.73-3.47,7.73-7.73v-13.19c0-4.26-3.47-7.73-7.73-7.73-.42,0-.75-.34-.75-.75s.34-.75.75-.75c5.09,0,9.23,4.14,9.23,9.23v13.19c0,5.09-4.14,9.23-9.23,9.23Z"/><path fill="currentColor" d="M13.18,79.49c-5.09,0-9.23-4.14-9.23-9.23v-13.19c0-5.09,4.14-9.23,9.23-9.23.42,0,.75.34.75.75s-.34.75-.75.75c-4.26,0-7.73,3.47-7.73,7.73v13.19c0,4.26,3.47,7.73,7.73,7.73.42,0,.75.34.75.75s-.34.75-.75.75Z"/><path fill="currentColor" d="M32.74,17.43c-.42,0-.75-.34-.75-.75V5.07c0-.88-.71-1.59-1.59-1.59h-8.72c-.88,0-1.59.71-1.59,1.59v11.61c0,.42-.34.75-.75.75s-.75-.34-.75-.75V5.07c0-1.71,1.39-3.09,3.09-3.09h8.72c1.71,0,3.09,1.39,3.09,3.09v11.61c0,.42-.34.75-.75.75Z"/><path fill="currentColor" d="M70.82,17.43c-.42,0-.75-.34-.75-.75V5.07c0-.88-.71-1.59-1.59-1.59h-8.72c-.88,0-1.59.71-1.59,1.59v11.61c0,.42-.34.75-.75.75s-.75-.34-.75-.75V5.07c0-1.71,1.39-3.09,3.09-3.09h8.72c1.71,0,3.09,1.39,3.09,3.09v11.61c0,.42-.34.75-.75.75Z"/><path fill="currentColor" d="M66.96,88.02H23.04c-5.79,0-10.51-4.71-10.51-10.51v-43.92c0-1.95.56-3.87,1.61-5.55.22-.35.69-.46,1.04-.24.35.22.46.68.24,1.04-.9,1.44-1.38,3.08-1.38,4.75v43.92c0,4.96,4.04,9,9,9h43.92c4.96,0,9-4.04,9-9v-43.92c0-1.67-.48-3.31-1.38-4.75-.22-.35-.11-.82.24-1.04.35-.22.82-.11,1.04.24,1.05,1.68,1.61,3.6,1.61,5.55v43.92c0,5.79-4.71,10.51-10.51,10.51Z"/><path fill="currentColor" d="M53.73,53.95h-17.47c-.42,0-.75-.34-.75-.75v-7.47c0-.42.34-.75.75-.75h17.47c.42,0,.75.34.75.75v7.47c0,.42-.34.75-.75.75ZM37.02,52.44h15.96v-5.96h-15.96v5.96Z"/></svg>
+        <span class="snet-tt">참학력<br>공동교육과정</span>
+      </a>
+    </div>
+    <p class="snet-note">보라 칸(학교 밖 교육)은 흰 글자 대비 확보를 위해 시안의 보라보다 한 단계 어둡게 조정했습니다.</p>
+
+    <div class="snet-details">
+      <div class="snet-detail">
+        <div class="sd-step">01 · 학교 교육과정</div>
+        <h3>학생 선택 중심<br>학교 교육과정</h3>
+        <p>소속 학교가 개설한 과목 중에서 진로와 적성에 맞는 과목을 우선 이수합니다.</p>
+        <a class="s-link" href="./safety/schoolcurriculum.html">안내 보기 →</a>
+      </div>
+      <div class="snet-detail">
+        <div class="sd-step">02 · 충남온라인학교</div>
         <h3>온배움<br>충남온라인학교</h3>
         <p>수강생이 적어서 선생님이 안계셔서 열기 힘든 과목을, 우리 학교에서 정규 일과 시간 중에 수강할 수 있도록, 충남 온라인학교가 지원합니다.</p>
-        <span class="s-link online">안내 보기 →</span>
-      </a>
-      <a class="scard" href="./safety/jointcurricula.html">
-        <div class="s-ic">🤝</div><div class="s-step"><h1>3</h1></div>
+        <a class="s-link online" href="./safety/onlineschool.html">안내 보기 →</a>
+      </div>
+      <div class="snet-detail">
+        <div class="sd-step">03 · 공동교육과정</div>
         <h3>참학력<br>공동교육과정</h3>
         <p>한 학교에서 개설이 어려운 소인수·심화 과목 등을 학교와 학교가 힘을 합쳐 '공동'으로 교육과정을 운영합니다.</p>
-        <span class="s-link">안내 보기 →</span>
-      </a>
-      <a class="scard" href="./safety/off-campus_courses.html">
-        <div class="s-ic">🌱</div><div class="s-step"><h1>4</h1></div>
+        <a class="s-link accent" href="./safety/jointcurricula.html">안내 보기 →</a>
+      </div>
+      <div class="snet-detail">
+        <div class="sd-step">04 · 학교 밖 교육</div>
         <h3>꿈키움<br>학교 밖 교육</h3>
         <p>지역 대학·연구기관과 연계한 심화 과목과 체험활동을 이수합니다.</p>
-        <span class="s-link">안내 보기 →</span>
-      </a>
+        <a class="s-link plum" href="./safety/off-campus_courses.html">안내 보기 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 알림·소통 마당 ═══ -->
+<section class="block board-sec">
+  <div class="wrap">
+    <div class="sec-label">NOTICE &amp; COMMUNITY</div>
+    <h2 class="sec-title">알림·소통 <em>마당</em></h2>
+    <p class="sec-desc">고교학점제 관련 공지와 자료를 확인하세요.</p>
+    <div class="board-grid">
+      <img class="board-deco" src="./assets/img/home/char-board-goal.svg" alt="" aria-hidden="true">
+      <div class="board-col">
+        <h3>공지사항 <a href="./board/">더보기 →</a></h3>
+        <ul class="board-list" id="main-notices">
+          <li class="board-loading">불러오는 중…</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
