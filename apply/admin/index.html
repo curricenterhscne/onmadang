@@ -16,7 +16,7 @@
   }
   .login-card {
     background: #fff; border-radius: 12px; padding: 40px 36px;
-    box-shadow: 0 4px 24px rgba(0,0,0,.12); width: 340px; text-align: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,.12); width: 360px; text-align: center;
   }
   .login-card h1 { font-size: 1.3rem; margin-bottom: 6px; }
   .login-card p { color: #666; font-size: .9rem; margin-bottom: 24px; }
@@ -25,12 +25,16 @@
     font-size: 1rem; margin-bottom: 12px; outline: none;
   }
   .login-card input:focus { border-color: #4F6EBE; }
-  .login-card button {
+  .login-card button.submit {
     width: 100%; padding: 11px; background: #4F6EBE; color: #fff;
     border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;
   }
-  .login-card button:hover { background: #3a539b; }
+  .login-card button.submit:hover { background: #3a539b; }
   .login-error { color: #e53e3e; font-size: .85rem; margin-top: 8px; min-height: 20px; }
+  .login-toggle { margin-top: 16px; font-size: .82rem; color: #888; }
+  .login-toggle a { color: #4F6EBE; cursor: pointer; text-decoration: underline; }
+  #legacy-login-block { display: none; }
+  .login-hint { font-size: .75rem; color: #999; margin: -4px 0 14px; text-align: left; }
 
   /* Dashboard */
   #dashboard { display: none; }
@@ -38,9 +42,11 @@
     background: #fff; padding: 14px 24px;
     display: flex; align-items: center; justify-content: space-between;
     box-shadow: 0 1px 4px rgba(0,0,0,.08); position: sticky; top: 0; z-index: 100;
+    flex-wrap: wrap; gap: 10px;
   }
   header h1 { font-size: 1.1rem; font-weight: 700; }
-  .header-actions { display: flex; gap: 8px; }
+  #whoami-badge { font-size: .78rem; color: #666; background: #eef1f7; padding: 3px 10px; border-radius: 10px; margin-left: 10px; }
+  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .btn {
     padding: 7px 14px; border-radius: 7px; border: none; cursor: pointer;
     font-size: .85rem; font-weight: 500;
@@ -54,6 +60,14 @@
   .btn-sm { padding: 4px 10px; font-size: .8rem; border-radius: 5px; }
 
   main { padding: 20px 24px; max-width: 1400px; margin: 0 auto; }
+
+  /* Program tabs */
+  .tab-row { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 7px 16px; border-radius: 999px; border: 1px solid #d7deea;
+    background: #fff; color: #444; font-size: .85rem; cursor: pointer;
+  }
+  .tab-btn.active { background: #4F6EBE; color: #fff; border-color: #4F6EBE; }
 
   /* Summary cards */
   .summary-row { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -73,7 +87,7 @@
   }
   .table-toolbar {
     padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0; flex-wrap: wrap; gap: 8px;
   }
   .table-toolbar span { font-size: .9rem; color: #555; }
   table { width: 100%; border-collapse: collapse; font-size: .88rem; }
@@ -116,6 +130,7 @@
     width: 680px; max-width: 95vw; max-height: 90vh;
     display: flex; flex-direction: column; box-shadow: 0 8px 40px rgba(0,0,0,.18);
   }
+  .modal.modal-wide { width: 860px; }
   .modal-header {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 16px;
@@ -126,7 +141,7 @@
     cursor: pointer; color: #888; line-height: 1;
   }
   .modal-close:hover { color: #333; }
-  .modal-actions { margin-bottom: 14px; display: flex; justify-content: flex-end; }
+  .modal-actions { margin-bottom: 14px; display: flex; justify-content: flex-end; gap: 8px; }
   .modal-table-wrap { overflow-y: auto; flex: 1; }
   .modal-table-wrap table td, .modal-table-wrap table th { padding: 8px 10px; }
   .empty-msg { text-align: center; padding: 32px; color: #aaa; font-size: .9rem; }
@@ -140,6 +155,38 @@
   #loading-bar {
     text-align: center; padding: 60px; color: #888; font-size: 1rem;
   }
+
+  /* Course form */
+  #course-form { overflow-y: auto; flex: 1; padding-right: 4px; }
+  .form-section { margin-bottom: 18px; }
+  .form-section h3 {
+    font-size: .85rem; color: #4F6EBE; margin-bottom: 10px;
+    border-bottom: 1px solid #eef1f7; padding-bottom: 6px;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+  .form-grid .full { grid-column: 1 / -1; }
+  .form-field label {
+    display: block; font-size: .78rem; color: #666; margin-bottom: 4px;
+  }
+  .form-field input, .form-field select, .form-field textarea {
+    width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px;
+    font-size: .88rem; font-family: inherit;
+  }
+  .form-field textarea { resize: vertical; min-height: 56px; }
+  .form-field input:disabled { background: #f3f4f6; color: #888; }
+  .form-checkrow { display: flex; align-items: center; gap: 8px; font-size: .85rem; }
+  .form-checkrow input { width: auto; margin: 0; }
+  .repeat-row { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
+  .repeat-row input { flex: 1; }
+  .repeat-add { font-size: .78rem; color: #4F6EBE; background: none; border: none; cursor: pointer; text-decoration: underline; }
+  .form-save-error { color: #e53e3e; font-size: .85rem; margin-top: 10px; min-height: 18px; }
+  .field-hint { font-size: .72rem; color: #999; margin-top: -2px; margin-bottom: 4px; }
+
+  /* Staff table */
+  .staff-status { padding: 2px 9px; border-radius: 10px; font-size: .75rem; font-weight: 600; }
+  .staff-status.pending { background: #fffbeb; color: #b45309; }
+  .staff-status.approved { background: #ecfdf3; color: #15803d; }
+  .staff-status.rejected { background: #fef2f2; color: #b91c1c; }
 </style>
 </head>
 <body>
@@ -148,24 +195,49 @@
 <div id="login-screen">
   <div class="login-card">
     <h1>온마당 관리자</h1>
-    <p>관리자 비밀번호를 입력하세요</p>
-    <input type="password" id="pw-input" placeholder="비밀번호" autocomplete="current-password">
-    <button id="login-btn">로그인</button>
+    <p>개인 계정으로 로그인하세요</p>
+
+    <div id="email-login-block">
+      <input type="email" id="email-input" placeholder="이메일" autocomplete="username">
+      <input type="password" id="email-pw-input" placeholder="비밀번호" autocomplete="current-password">
+      <button class="submit" id="email-login-btn">로그인</button>
+    </div>
+
+    <div id="legacy-login-block">
+      <div class="login-hint">기존 공유 비밀번호 방식입니다. 개인 계정이 생기면 더 이상 쓰지 않습니다.</div>
+      <input type="password" id="pw-input" placeholder="공유 비밀번호" autocomplete="current-password">
+      <button class="submit" id="login-btn">로그인</button>
+    </div>
+
     <div class="login-error" id="login-error"></div>
+    <div class="login-toggle">
+      <a id="toggle-legacy">공유 비밀번호로 로그인</a>
+      <span id="toggle-email-wrap" style="display:none">
+        <a id="toggle-email">개인 계정으로 로그인</a>
+      </span>
+      · <a id="toggle-register">지역청/기관 담당자 가입 신청</a>
+    </div>
   </div>
 </div>
 
 <!-- Dashboard -->
 <div id="dashboard">
   <header>
-    <h1>온마당 수강신청 관리자</h1>
+    <div style="display:flex;align-items:center;flex-wrap:wrap">
+      <h1>온마당 수강신청 관리자</h1>
+      <span id="whoami-badge" style="display:none"></span>
+    </div>
     <div class="header-actions">
+      <button class="btn btn-outline" id="staff-btn" style="display:none">가입 승인</button>
       <button class="btn btn-outline" id="refresh-btn">새로고침</button>
+      <button class="btn btn-primary" id="new-course-btn">+ 강좌 등록</button>
       <button class="btn btn-primary" id="export-all-btn">전체 엑셀</button>
       <button class="btn btn-danger" id="logout-btn">로그아웃</button>
     </div>
   </header>
   <main>
+    <div class="tab-row" id="program-tabs"></div>
+
     <div class="summary-row">
       <div class="card">
         <div class="card-label">전체 신청자</div>
@@ -184,6 +256,11 @@
     <div class="table-wrap">
       <div class="table-toolbar">
         <span id="table-count">강좌 목록</span>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-outline btn-sm" id="template-download-btn">엑셀 양식 다운로드</button>
+          <button class="btn btn-outline btn-sm" id="bulk-upload-btn">엑셀 일괄 등록</button>
+          <input type="file" id="bulk-upload-input" accept=".xlsx,.xls" style="display:none">
+        </div>
       </div>
       <div id="loading-bar">불러오는 중...</div>
       <table id="course-table" style="display:none">
@@ -199,6 +276,8 @@
             <th>정원수정</th>
             <th>명단</th>
             <th>엑셀</th>
+            <th>수정</th>
+            <th>삭제</th>
           </tr>
         </thead>
         <tbody id="course-tbody"></tbody>
@@ -230,62 +309,338 @@
   </div>
 </div>
 
+<!-- Course Upsert Modal -->
+<div class="modal-overlay" id="course-modal">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h2 id="course-modal-title">강좌 등록</h2>
+      <button class="modal-close" id="course-modal-close-btn">&times;</button>
+    </div>
+    <div id="course-form">
+      <div class="form-section">
+        <h3>기본 정보</h3>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>강좌 코드 *</label>
+            <input id="f-code" placeholder="예: JR26C001">
+            <div class="field-hint">등록 후에는 바꿀 수 없습니다.</div>
+          </div>
+          <div class="form-field">
+            <label>프로그램 *</label>
+            <select id="f-program"></select>
+          </div>
+          <div class="form-field full">
+            <label>강좌명 *</label>
+            <input id="f-name">
+          </div>
+          <div class="form-field">
+            <label>운영 기관</label>
+            <input id="f-org">
+          </div>
+          <div class="form-field">
+            <label>지역(지원청)</label>
+            <input id="f-region">
+          </div>
+          <div class="form-field">
+            <label>정원 *</label>
+            <input id="f-capacity" type="number" min="1" value="15">
+          </div>
+          <div class="form-field">
+            <label>최소 개설 인원</label>
+            <input id="f-min_open" type="number" min="1" value="8">
+          </div>
+          <div class="form-field">
+            <div class="form-checkrow"><input type="checkbox" id="f-is_registerable" checked><label for="f-is_registerable" style="margin:0">신청 가능(목록 노출)</label></div>
+          </div>
+          <div class="form-field">
+            <div class="form-checkrow"><input type="checkbox" id="f-grade_restricted"><label for="f-grade_restricted" style="margin:0">학년 제한 강좌</label></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>강좌 상세</h3>
+        <div class="form-grid">
+          <div class="form-field"><label>계열</label><input id="f-field"></div>
+          <div class="form-field"><label>수강 대상</label><input id="f-target"></div>
+          <div class="form-field full"><label>한줄 소개</label><textarea id="f-intro"></textarea></div>
+          <div class="form-field"><label>수업 방식</label><input id="f-method"></div>
+          <div class="form-field"><label>수업 장소</label><input id="f-place"></div>
+          <div class="form-field"><label>준비물</label><input id="f-supply"></div>
+          <div class="form-field"><label>창의적체험활동 영역</label><input id="f-activity_area"></div>
+          <div class="form-field"><label>추천 대상</label><input id="f-recommended_for"></div>
+          <div class="form-field full"><label>강사 소개</label><textarea id="f-instructor_bio"></textarea></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>일정</h3>
+        <div class="form-grid">
+          <div class="form-field"><label>시작일</label><input id="f-start_date" type="date"></div>
+          <div class="form-field"><label>종료일</label><input id="f-end_date" type="date"></div>
+          <div class="form-field"><label>총 차시</label><input id="f-session_count" type="number" min="1"></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>강사진</h3>
+        <div id="instructors-rows"></div>
+        <button type="button" class="repeat-add" id="add-instructor-btn">+ 강사 추가</button>
+      </div>
+
+      <div class="form-section">
+        <h3>차시별 계획</h3>
+        <div id="sessions-rows"></div>
+        <button type="button" class="repeat-add" id="add-session-btn">+ 차시 추가</button>
+      </div>
+
+      <div class="form-section">
+        <h3>학습 목표</h3>
+        <div class="form-field">
+          <textarea id="f-learning_goals" placeholder="한 줄에 목표 하나씩 입력"></textarea>
+          <div class="field-hint">줄바꿈으로 구분됩니다.</div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>요일별 일정 (선택, 고급)</h3>
+        <div class="form-field">
+          <textarea id="f-schedule_by_day" placeholder='[{"date":"2026-11-01","weekday":"토","start":"09:00","end":"12:00","sessionCount":2}]'></textarea>
+          <div class="field-hint">JSON 형식입니다. 모르면 비워두세요 — 필수 항목이 아닙니다.</div>
+        </div>
+      </div>
+
+      <div class="form-save-error" id="course-form-error"></div>
+    </div>
+    <div class="modal-actions" style="margin-top:10px">
+      <button class="btn btn-outline" id="course-cancel-btn">취소</button>
+      <button class="btn btn-primary" id="course-save-btn">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- Staff Approval Modal -->
+<div class="modal-overlay" id="staff-modal">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h2>담당자 계정 승인</h2>
+      <button class="modal-close" id="staff-modal-close-btn">&times;</button>
+    </div>
+    <div class="modal-table-wrap">
+      <table>
+        <thead>
+          <tr><th>이름</th><th>역할</th><th>소관</th><th>상태</th><th>가입일</th><th>처리</th></tr>
+        </thead>
+        <tbody id="staff-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <script>
-  const SUPABASE_FN = 'https://yhrgvnttjlitukrxdfdo.supabase.co/functions/v1';
-  let PASSWORD = '';
+  const SUPABASE_URL = 'https://yhrgvnttjlitukrxdfdo.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlocmd2bnR0amxpdHVrcnhkZmRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMDYzNDAsImV4cCI6MjA5Nzc4MjM0MH0.FKtEr-59H1hl1Aucb-x1MFQkAC--ylV0BEX5gg1lpg8';
+  const SUPABASE_FN = `${SUPABASE_URL}/functions/v1`;
+
+  let TOKEN = '';
+  let REFRESH_TOKEN = '';
+  let ME = null;
   let coursesData = [];
+  let programsData = [];
+  let currentProgram = '';
   let modalCode = '';
+  let editingCourseCode = null;
+
+  const ROLE_LABEL = { province: '도교육청', region: '지역청 담당', org: '기관 담당' };
 
   function authHeaders() {
     return {
-      'Authorization': `Bearer ${PASSWORD}`,
+      'Authorization': `Bearer ${TOKEN}`,
       'Content-Type': 'application/json',
     };
   }
 
+  // 토큰(JWT) 만료 시 refresh_token으로 1회 재시도하는 공용 fetch 래퍼.
+  // 공유 비밀번호 로그인은 REFRESH_TOKEN이 없으므로 그냥 401로 끝난다(로그아웃 처리).
+  async function authFetch(url, opts = {}) {
+    const headers = { ...authHeaders(), ...(opts.headers || {}) };
+    let res = await fetch(url, { ...opts, headers });
+    if (res.status === 401 && REFRESH_TOKEN) {
+      const refreshed = await tryRefreshToken();
+      if (refreshed) {
+        res = await fetch(url, { ...opts, headers: { ...authHeaders(), ...(opts.headers || {}) } });
+      }
+    }
+    return res;
+  }
+
+  async function tryRefreshToken() {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refresh_token: REFRESH_TOKEN }),
+      });
+      if (!res.ok) return false;
+      const data = await res.json();
+      TOKEN = data.access_token;
+      REFRESH_TOKEN = data.refresh_token || REFRESH_TOKEN;
+      sessionStorage.setItem('admin_token', TOKEN);
+      sessionStorage.setItem('admin_refresh', REFRESH_TOKEN);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   // ── Login ──────────────────────────────────────────────────────────────────
+  document.getElementById('toggle-legacy').addEventListener('click', () => {
+    document.getElementById('email-login-block').style.display = 'none';
+    document.getElementById('legacy-login-block').style.display = 'block';
+    document.getElementById('toggle-legacy').parentElement.querySelector('#toggle-legacy').style.display = 'none';
+    document.getElementById('toggle-email-wrap').style.display = 'inline';
+    document.getElementById('login-error').textContent = '';
+  });
+  document.getElementById('toggle-email').addEventListener('click', () => {
+    document.getElementById('email-login-block').style.display = 'block';
+    document.getElementById('legacy-login-block').style.display = 'none';
+    document.getElementById('toggle-legacy').style.display = 'inline';
+    document.getElementById('toggle-email-wrap').style.display = 'none';
+    document.getElementById('login-error').textContent = '';
+  });
+  document.getElementById('toggle-register').addEventListener('click', () => {
+    const email = prompt('가입에 사용할 이메일을 입력하세요');
+    if (!email) return;
+    const password = prompt('비밀번호(8자 이상)를 입력하세요');
+    if (!password) return;
+    const name = prompt('이름을 입력하세요') || '';
+    const role = (prompt('역할을 입력하세요 (region=지역청 / org=기관·대학)') || '').trim();
+    if (role !== 'region' && role !== 'org') { alert('region 또는 org만 입력 가능합니다.'); return; }
+    const scope_value = prompt(role === 'region' ? '소속 지원청 이름을 입력하세요 (courses.region과 정확히 일치해야 함)' : '소속 기관/대학 이름을 입력하세요 (courses.org와 정확히 일치해야 함)');
+    if (!scope_value) return;
+    fetch(`${SUPABASE_FN}/register-staff`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, name, role, scope_value }),
+    }).then(async res => {
+      const data = await res.json().catch(() => ({}));
+      alert(res.ok ? data.message : `가입 실패: ${data.error || res.status}`);
+    }).catch(e => alert('가입 실패: ' + e.message));
+  });
+
   document.getElementById('pw-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('login-btn').click();
+  });
+  document.getElementById('email-pw-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('email-login-btn').click();
   });
 
   document.getElementById('login-btn').addEventListener('click', async () => {
     const pw = document.getElementById('pw-input').value.trim();
     if (!pw) return;
-    document.getElementById('login-error').textContent = '';
-    document.getElementById('login-btn').disabled = true;
-    document.getElementById('login-btn').textContent = '확인 중...';
-
-    try {
-      const res = await fetch(`${SUPABASE_FN}/admin-courses`, {
-        headers: { 'Authorization': `Bearer ${pw}` }
-      });
-      if (res.status === 401) {
-        document.getElementById('login-error').textContent = '비밀번호가 올바르지 않습니다.';
-        return;
-      }
+    await doLogin(async () => {
+      const res = await fetch(`${SUPABASE_FN}/admin-courses`, { headers: { Authorization: `Bearer ${pw}` } });
+      if (res.status === 401) throw new Error('비밀번호가 올바르지 않습니다.');
       if (!res.ok) throw new Error(`서버 오류 ${res.status}`);
-      PASSWORD = pw;
-      sessionStorage.setItem('admin_pw', pw);
-      showDashboard(await res.json());
+      TOKEN = pw;
+      REFRESH_TOKEN = '';
+      sessionStorage.setItem('admin_token', pw);
+      sessionStorage.removeItem('admin_refresh');
+    }, document.getElementById('login-btn'), '로그인');
+  });
+
+  document.getElementById('email-login-btn').addEventListener('click', async () => {
+    const email = document.getElementById('email-input').value.trim();
+    const password = document.getElementById('email-pw-input').value;
+    if (!email || !password) return;
+    await doLogin(async () => {
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error_description || data.msg || '로그인 실패');
+      TOKEN = data.access_token;
+      REFRESH_TOKEN = data.refresh_token || '';
+      sessionStorage.setItem('admin_token', TOKEN);
+      sessionStorage.setItem('admin_refresh', REFRESH_TOKEN);
+    }, document.getElementById('email-login-btn'), '로그인');
+  });
+
+  async function doLogin(fn, btn, label) {
+    document.getElementById('login-error').textContent = '';
+    btn.disabled = true;
+    btn.textContent = '확인 중...';
+    try {
+      await fn();
+      await afterLoginSuccess();
     } catch (e) {
       document.getElementById('login-error').textContent = e.message;
     } finally {
-      document.getElementById('login-btn').disabled = false;
-      document.getElementById('login-btn').textContent = '로그인';
+      btn.disabled = false;
+      btn.textContent = label;
     }
-  });
-
-  // ── Dashboard ──────────────────────────────────────────────────────────────
-  function showDashboard(courses) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    renderCourses(courses);
   }
 
+  async function afterLoginSuccess() {
+    await loadWhoami();
+    await loadPrograms();
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    await loadCourses();
+  }
+
+  async function loadWhoami() {
+    const res = await authFetch(`${SUPABASE_FN}/admin-whoami`);
+    if (!res.ok) { ME = null; return; }
+    ME = await res.json();
+    const badge = document.getElementById('whoami-badge');
+    if (ME) {
+      const roleLabel = ROLE_LABEL[ME.role] || ME.role;
+      badge.textContent = ME.scope_value ? `${ME.name || ''} · ${roleLabel} (${ME.scope_value})` : `${ME.name || ''} · ${roleLabel}`;
+      badge.style.display = 'inline-block';
+    }
+    document.getElementById('staff-btn').style.display = (ME && ME.role === 'province') ? 'inline-block' : 'none';
+  }
+
+  async function loadPrograms() {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/programs?select=*&order=code`, {
+      headers: { apikey: SUPABASE_ANON_KEY },
+    }).catch(() => null);
+    programsData = (res && res.ok) ? await res.json() : [];
+    renderProgramTabs();
+    renderProgramSelect();
+  }
+
+  function renderProgramTabs() {
+    const wrap = document.getElementById('program-tabs');
+    wrap.innerHTML = '';
+    const allBtn = document.createElement('button');
+    allBtn.className = 'tab-btn' + (currentProgram === '' ? ' active' : '');
+    allBtn.textContent = '전체';
+    allBtn.addEventListener('click', () => { currentProgram = ''; renderProgramTabs(); loadCourses(); });
+    wrap.appendChild(allBtn);
+    for (const p of programsData) {
+      const btn = document.createElement('button');
+      btn.className = 'tab-btn' + (currentProgram === p.code ? ' active' : '');
+      btn.textContent = p.display_name;
+      btn.addEventListener('click', () => { currentProgram = p.code; renderProgramTabs(); loadCourses(); });
+      wrap.appendChild(btn);
+    }
+  }
+
+  function renderProgramSelect() {
+    const sel = document.getElementById('f-program');
+    sel.innerHTML = programsData.map(p => `<option value="${p.code}">${p.display_name}</option>`).join('');
+  }
+
+  // ── Courses ────────────────────────────────────────────────────────────────
   async function loadCourses() {
     document.getElementById('loading-bar').style.display = 'block';
     document.getElementById('course-table').style.display = 'none';
-    const res = await fetch(`${SUPABASE_FN}/admin-courses`, { headers: authHeaders() });
+    const qs = currentProgram ? `?program=${encodeURIComponent(currentProgram)}` : '';
+    const res = await authFetch(`${SUPABASE_FN}/admin-courses${qs}`);
     if (res.status === 401) { logout(); return; }
     const data = await res.json();
     renderCourses(data);
@@ -346,6 +701,8 @@
         </td>
         <td><button class="btn btn-outline btn-sm list-btn" data-code="${c.code}" data-name="${c.name}">명단</button></td>
         <td><button class="btn btn-outline btn-sm csv-btn" data-code="${c.code}">엑셀</button></td>
+        <td><button class="btn btn-outline btn-sm edit-btn" data-code="${c.code}">수정</button></td>
+        <td><button class="btn-del del-course-btn" data-code="${c.code}">삭제</button></td>
       `;
       tbody.appendChild(tr);
     }
@@ -357,9 +714,8 @@
         const newVal = btn.dataset.val === 'true' ? false : true;
         btn.disabled = true;
         try {
-          const res = await fetch(`${SUPABASE_FN}/admin-toggle-close`, {
+          const res = await authFetch(`${SUPABASE_FN}/admin-toggle-close`, {
             method: 'POST',
-            headers: authHeaders(),
             body: JSON.stringify({ code, value: newVal }),
           });
           if (res.status === 401) { logout(); return; }
@@ -399,9 +755,8 @@
         const span = input.previousElementSibling;
         if (isNaN(cap) || cap < 1) { input.style.display = 'none'; span.style.display = ''; return; }
         try {
-          const res = await fetch(`${SUPABASE_FN}/admin-set-capacity`, {
+          const res = await authFetch(`${SUPABASE_FN}/admin-set-capacity`, {
             method: 'POST',
-            headers: authHeaders(),
             body: JSON.stringify({ code, capacity: cap }),
           });
           if (res.status === 401) { logout(); return; }
@@ -429,6 +784,19 @@
     tbody.querySelectorAll('.csv-btn').forEach(btn => {
       btn.addEventListener('click', () => downloadExcel(btn.dataset.code));
     });
+
+    // Edit course
+    tbody.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const course = coursesData.find(c => c.code === btn.dataset.code);
+        if (course) openCourseModal(course);
+      });
+    });
+
+    // Delete course
+    tbody.querySelectorAll('.del-course-btn').forEach(btn => {
+      btn.addEventListener('click', () => deleteCourse(btn.dataset.code));
+    });
   }
 
   function updateStats() {
@@ -441,7 +809,347 @@
       registerable.filter(c => (c.enrolled_count || 0) < (c.min_open ?? 8) && !c.is_closed_manual).length;
   }
 
-  // ── Modal ──────────────────────────────────────────────────────────────────
+  async function deleteCourse(code) {
+    if (!confirm(`강좌 [${code}]를 삭제하시겠습니까?\n신청자가 있으면 삭제되지 않습니다.`)) return;
+    try {
+      const res = await authFetch(`${SUPABASE_FN}/admin-delete-course`, {
+        method: 'POST',
+        body: JSON.stringify({ code }),
+      });
+      if (res.status === 401) { logout(); return; }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `서버 오류 ${res.status}`);
+      loadCourses();
+    } catch (e) {
+      alert('삭제 오류: ' + e.message);
+    }
+  }
+
+  // ── Course upsert modal ──────────────────────────────────────────────────
+  const COURSE_FIELD_IDS = [
+    'name','org','region','capacity','min_open','field','target','intro','method',
+    'place','supply','activity_area','recommended_for','instructor_bio',
+    'start_date','end_date','session_count',
+  ];
+
+  function addInstructorRow(data = {}) {
+    const wrap = document.getElementById('instructors-rows');
+    const row = document.createElement('div');
+    row.className = 'repeat-row';
+    row.innerHTML = `
+      <input placeholder="이름" class="ins-name" value="${data.name || ''}">
+      <input placeholder="소속" class="ins-affiliation" value="${data.affiliation || ''}">
+      <input placeholder="전공" class="ins-major" value="${data.major || ''}">
+      <button type="button" class="btn-del">삭제</button>
+    `;
+    row.querySelector('.btn-del').addEventListener('click', () => row.remove());
+    wrap.appendChild(row);
+  }
+
+  function addSessionRow(data = {}) {
+    const wrap = document.getElementById('sessions-rows');
+    const row = document.createElement('div');
+    row.className = 'repeat-row';
+    row.innerHTML = `
+      <input placeholder="차시" style="flex:0 0 50px" class="ses-no" value="${data.no ?? ''}">
+      <input placeholder="날짜" style="flex:0 0 110px" class="ses-date" value="${data.date || ''}">
+      <input placeholder="시간" style="flex:0 0 100px" class="ses-time" value="${data.time || ''}">
+      <input placeholder="내용" class="ses-content" value="${data.content || ''}">
+      <input placeholder="강사" style="flex:0 0 100px" class="ses-instructor" value="${data.instructor || ''}">
+      <button type="button" class="btn-del">삭제</button>
+    `;
+    row.querySelector('.btn-del').addEventListener('click', () => row.remove());
+    wrap.appendChild(row);
+  }
+
+  document.getElementById('add-instructor-btn').addEventListener('click', () => addInstructorRow());
+  document.getElementById('add-session-btn').addEventListener('click', () => addSessionRow());
+
+  function openCourseModal(course) {
+    editingCourseCode = course ? course.code : null;
+    document.getElementById('course-modal-title').textContent = course ? `강좌 수정 — ${course.code}` : '강좌 등록';
+    document.getElementById('course-form-error').textContent = '';
+
+    document.getElementById('f-code').value = course ? course.code : '';
+    document.getElementById('f-code').disabled = !!course;
+    document.getElementById('f-program').value = course ? course.program : (currentProgram || (programsData[0] && programsData[0].code) || '');
+    document.getElementById('f-program').disabled = !!course;
+
+    for (const id of COURSE_FIELD_IDS) {
+      const el = document.getElementById('f-' + id);
+      if (el) el.value = course && course[id] != null ? course[id] : (id === 'capacity' ? 15 : id === 'min_open' ? 8 : '');
+    }
+    document.getElementById('f-is_registerable').checked = course ? course.is_registerable !== false : true;
+    document.getElementById('f-grade_restricted').checked = course ? !!course.grade_restricted : false;
+
+    // region/org 담당자는 자기 소관 값으로 잠금
+    const regionInput = document.getElementById('f-region');
+    const orgInput = document.getElementById('f-org');
+    regionInput.disabled = false; orgInput.disabled = false;
+    if (ME && ME.role === 'region') { regionInput.value = ME.scope_value || ''; regionInput.disabled = true; }
+    if (ME && ME.role === 'org') { orgInput.value = ME.scope_value || ''; orgInput.disabled = true; }
+
+    document.getElementById('instructors-rows').innerHTML = '';
+    (course && Array.isArray(course.instructors) ? course.instructors : []).forEach(addInstructorRow);
+    document.getElementById('sessions-rows').innerHTML = '';
+    (course && Array.isArray(course.sessions) ? course.sessions : []).forEach(addSessionRow);
+
+    document.getElementById('f-learning_goals').value =
+      (course && Array.isArray(course.learning_goals)) ? course.learning_goals.join('\n') : '';
+    document.getElementById('f-schedule_by_day').value =
+      (course && course.schedule_by_day) ? JSON.stringify(course.schedule_by_day) : '';
+
+    document.getElementById('course-modal').classList.add('active');
+  }
+
+  document.getElementById('new-course-btn').addEventListener('click', () => openCourseModal(null));
+  document.getElementById('course-modal-close-btn').addEventListener('click', () => document.getElementById('course-modal').classList.remove('active'));
+  document.getElementById('course-cancel-btn').addEventListener('click', () => document.getElementById('course-modal').classList.remove('active'));
+  document.getElementById('course-modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('course-modal')) document.getElementById('course-modal').classList.remove('active');
+  });
+
+  document.getElementById('course-save-btn').addEventListener('click', async () => {
+    const errEl = document.getElementById('course-form-error');
+    errEl.textContent = '';
+    const code = document.getElementById('f-code').value.trim();
+    const program = document.getElementById('f-program').value;
+    const name = document.getElementById('f-name').value.trim();
+    if (!code || !program || !name) { errEl.textContent = '강좌 코드, 프로그램, 강좌명은 필수입니다.'; return; }
+
+    const payload = { code, program, name };
+    for (const id of COURSE_FIELD_IDS) {
+      if (id === 'name') continue;
+      const el = document.getElementById('f-' + id);
+      if (!el) continue;
+      const v = el.value.trim();
+      if (v === '') continue;
+      if (id === 'capacity' || id === 'min_open' || id === 'session_count') payload[id] = parseInt(v, 10);
+      else payload[id] = v;
+    }
+    payload.is_registerable = document.getElementById('f-is_registerable').checked;
+    payload.grade_restricted = document.getElementById('f-grade_restricted').checked;
+
+    payload.instructors = Array.from(document.querySelectorAll('#instructors-rows .repeat-row')).map(row => ({
+      name: row.querySelector('.ins-name').value.trim(),
+      affiliation: row.querySelector('.ins-affiliation').value.trim(),
+      major: row.querySelector('.ins-major').value.trim(),
+    })).filter(i => i.name);
+
+    payload.sessions = Array.from(document.querySelectorAll('#sessions-rows .repeat-row')).map(row => ({
+      no: row.querySelector('.ses-no').value.trim(),
+      date: row.querySelector('.ses-date').value.trim(),
+      time: row.querySelector('.ses-time').value.trim(),
+      content: row.querySelector('.ses-content').value.trim(),
+      instructor: row.querySelector('.ses-instructor').value.trim(),
+    })).filter(s => s.content || s.date);
+
+    const goalsRaw = document.getElementById('f-learning_goals').value;
+    payload.learning_goals = goalsRaw.split('\n').map(s => s.trim()).filter(Boolean);
+
+    const scheduleRaw = document.getElementById('f-schedule_by_day').value.trim();
+    if (scheduleRaw) {
+      try { payload.schedule_by_day = JSON.parse(scheduleRaw); }
+      catch { errEl.textContent = '요일별 일정 JSON 형식이 올바르지 않습니다.'; return; }
+    }
+
+    const btn = document.getElementById('course-save-btn');
+    btn.disabled = true;
+    btn.textContent = '저장 중...';
+    try {
+      const res = await authFetch(`${SUPABASE_FN}/admin-upsert-course`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      if (res.status === 401) { logout(); return; }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `서버 오류 ${res.status}`);
+      document.getElementById('course-modal').classList.remove('active');
+      loadCourses();
+    } catch (e) {
+      errEl.textContent = e.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '저장';
+    }
+  });
+
+  // ── Bulk course upload (Excel) ───────────────────────────────────────────
+  // instructors/sessions/learning_goals/schedule_by_day처럼 중첩 구조인 필드는
+  // 엑셀 한 행으로 표현하기 어려워 일괄 등록 대상에서 뺐다 — 등록 후 "수정"에서
+  // 개별 입력한다. 템플릿 컬럼 순서와 BULK_COLUMNS 순서는 반드시 같아야 한다.
+  const BULK_COLUMNS = [
+    { header: '코드',            field: 'code' },
+    { header: '프로그램',         field: 'program', kind: 'program' },
+    { header: '강좌명',           field: 'name' },
+    { header: '운영기관',         field: 'org' },
+    { header: '지역',            field: 'region' },
+    { header: '정원',            field: 'capacity', kind: 'int' },
+    { header: '최소개설인원',      field: 'min_open', kind: 'int' },
+    { header: '계열',            field: 'field' },
+    { header: '수강대상',         field: 'target' },
+    { header: '소개',            field: 'intro' },
+    { header: '수업방식',         field: 'method' },
+    { header: '장소',            field: 'place' },
+    { header: '준비물',           field: 'supply' },
+    { header: '창체영역',         field: 'activity_area' },
+    { header: '추천대상',         field: 'recommended_for' },
+    { header: '강사소개',         field: 'instructor_bio' },
+    { header: '시작일',           field: 'start_date' },
+    { header: '종료일',           field: 'end_date' },
+    { header: '총차시',           field: 'session_count', kind: 'int' },
+    { header: '학년제한(Y/N)',    field: 'grade_restricted', kind: 'bool' },
+    { header: '신청가능(Y/N)',    field: 'is_registerable', kind: 'bool', defaultYes: true },
+  ];
+
+  document.getElementById('template-download-btn').addEventListener('click', () => {
+    const headers = BULK_COLUMNS.map(c => c.header);
+    const exampleProgram = (programsData[0] && programsData[0].display_name) || '지역연계 공동교육과정';
+    const example = [
+      'JR26C001', exampleProgram, '인공지능 기초', 'OO교육지원청', 'OO교육지원청',
+      20, 8, '공학계열', '1~2학년', '인공지능의 기본 개념을 배웁니다', '대면',
+      'OO고 2층 컴퓨터실', '필기구', '진로활동', '공학 계열 희망자', 'OO대학교 OOO교수',
+      '2026-11-01', '2026-12-20', 8, 'N', 'Y',
+    ];
+    const ws = XLSX.utils.aoa_to_sheet([headers, example]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, '강좌목록');
+    XLSX.writeFile(wb, 'course_template.xlsx');
+  });
+
+  document.getElementById('bulk-upload-btn').addEventListener('click', () => {
+    document.getElementById('bulk-upload-input').value = '';
+    document.getElementById('bulk-upload-input').click();
+  });
+
+  document.getElementById('bulk-upload-input').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const buf = await file.arrayBuffer();
+      const wb = XLSX.read(buf, { type: 'array' });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+      if (!rows.length) { alert('엑셀에 데이터 행이 없습니다.'); return; }
+      await runBulkUpload(rows);
+    } catch (err) {
+      alert('엑셀을 읽는 중 오류: ' + err.message);
+    }
+  });
+
+  async function runBulkUpload(rows) {
+    if (!confirm(`${rows.length}건을 등록/수정하시겠습니까?`)) return;
+    const successes = [];
+    const failures = [];
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const rowLabel = `${i + 2}행 (${row['코드'] || '코드없음'})`;
+      try {
+        const payload = {};
+        for (const col of BULK_COLUMNS) {
+          let v = row[col.header];
+          if (v === '' || v === undefined || v === null) {
+            if (col.kind === 'bool' && col.defaultYes) v = 'Y';
+            else continue;
+          }
+          if (col.kind === 'int') v = parseInt(v, 10);
+          else if (col.kind === 'bool') v = String(v).trim().toUpperCase() === 'Y';
+          else if (col.kind === 'program') {
+            const match = programsData.find(p => p.display_name === String(v).trim() || p.code === String(v).trim());
+            if (!match) throw new Error(`알 수 없는 프로그램: ${v}`);
+            v = match.code;
+          } else {
+            v = String(v).trim();
+          }
+          payload[col.field] = v;
+        }
+        if (!payload.code || !payload.program || !payload.name) {
+          throw new Error('코드·프로그램·강좌명은 필수입니다');
+        }
+        // region/org 담당자는 본인 소관 값으로 강제 — 엑셀에 다른 값을 적어도 덮어쓴다
+        if (ME && ME.role === 'region') payload.region = ME.scope_value;
+        if (ME && ME.role === 'org') payload.org = ME.scope_value;
+
+        const res = await authFetch(`${SUPABASE_FN}/admin-upsert-course`, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        });
+        if (res.status === 401) { logout(); return; }
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || `서버 오류 ${res.status}`);
+        successes.push(rowLabel);
+      } catch (err) {
+        failures.push(`${rowLabel}: ${err.message}`);
+      }
+    }
+
+    let summary = `성공 ${successes.length}건 / 실패 ${failures.length}건`;
+    if (failures.length) summary += '\n\n실패 내역:\n' + failures.join('\n');
+    alert(summary);
+    loadCourses();
+  }
+
+  // ── Staff approval modal ─────────────────────────────────────────────────
+  document.getElementById('staff-btn').addEventListener('click', openStaffModal);
+  document.getElementById('staff-modal-close-btn').addEventListener('click', () => document.getElementById('staff-modal').classList.remove('active'));
+  document.getElementById('staff-modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('staff-modal')) document.getElementById('staff-modal').classList.remove('active');
+  });
+
+  async function openStaffModal() {
+    document.getElementById('staff-modal').classList.add('active');
+    const tbody = document.getElementById('staff-tbody');
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-msg">불러오는 중...</td></tr>';
+    try {
+      const res = await authFetch(`${SUPABASE_FN}/admin-list-staff`);
+      if (!res.ok) throw new Error(await res.text());
+      const rows = await res.json();
+      renderStaffRows(rows);
+    } catch (e) {
+      tbody.innerHTML = `<tr><td colspan="6" class="empty-msg">오류: ${e.message}</td></tr>`;
+    }
+  }
+
+  function renderStaffRows(rows) {
+    const tbody = document.getElementById('staff-tbody');
+    tbody.innerHTML = '';
+    if (!rows.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-msg">가입 신청이 없습니다.</td></tr>'; return; }
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      const created = r.created_at ? new Date(r.created_at).toLocaleDateString('ko-KR') : '-';
+      const actions = r.status === 'pending'
+        ? `<button class="btn btn-primary btn-sm staff-approve-btn" data-id="${r.id}">승인</button>
+           <button class="btn btn-danger btn-sm staff-reject-btn" data-id="${r.id}">거부</button>`
+        : '-';
+      tr.innerHTML = `
+        <td>${r.name || '-'}</td>
+        <td>${ROLE_LABEL[r.role] || r.role}</td>
+        <td>${r.scope_value || '-'}</td>
+        <td><span class="staff-status ${r.status}">${r.status === 'pending' ? '대기' : r.status === 'approved' ? '승인됨' : '거부됨'}</span></td>
+        <td>${created}</td>
+        <td>${actions}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+    tbody.querySelectorAll('.staff-approve-btn').forEach(btn => btn.addEventListener('click', () => decideStaff(btn.dataset.id, 'approve')));
+    tbody.querySelectorAll('.staff-reject-btn').forEach(btn => btn.addEventListener('click', () => decideStaff(btn.dataset.id, 'reject')));
+  }
+
+  async function decideStaff(staff_id, action) {
+    try {
+      const res = await authFetch(`${SUPABASE_FN}/admin-approve-staff`, {
+        method: 'POST',
+        body: JSON.stringify({ staff_id, action }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      openStaffModal();
+    } catch (e) {
+      alert('처리 오류: ' + e.message);
+    }
+  }
+
+  // ── Enrollment modal ─────────────────────────────────────────────────────
   async function openModal(code, name) {
     modalCode = code;
     document.getElementById('modal-title').textContent = `[${code}] ${name} 신청자 명단`;
@@ -449,7 +1157,7 @@
     document.getElementById('enroll-modal').classList.add('active');
 
     try {
-      const res = await fetch(`${SUPABASE_FN}/admin-enrollments?code=${encodeURIComponent(code)}`, { headers: authHeaders() });
+      const res = await authFetch(`${SUPABASE_FN}/admin-enrollments?code=${encodeURIComponent(code)}`);
       if (res.status === 401) { logout(); return; }
       const data = await res.json();
       renderModalRows(data);
@@ -489,19 +1197,17 @@
     btn.disabled = true;
     btn.textContent = '삭제중…';
     try {
-      const res = await fetch(`${SUPABASE_FN}/admin-delete-enrollment`, {
+      const res = await authFetch(`${SUPABASE_FN}/admin-delete-enrollment`, {
         method: 'POST',
-        headers: authHeaders(),
         body: JSON.stringify({ id }),
       });
       if (res.status === 401) { logout(); return; }
       if (!res.ok) throw new Error(await res.text());
       btn.closest('tr').remove();
-      // 명단이 비었으면 안내 표시
       if (!document.getElementById('modal-tbody').children.length) {
         document.getElementById('modal-tbody').innerHTML = '<tr><td colspan="6" class="empty-msg">신청자가 없습니다.</td></tr>';
       }
-      loadCourses(); // 대시보드 카운트 갱신
+      loadCourses();
     } catch (e) {
       alert('삭제 오류: ' + e.message);
       btn.disabled = false;
@@ -525,7 +1231,8 @@
     try {
       let url = `${SUPABASE_FN}/admin-enrollments?includeSchool=true`;
       if (code) url += `&code=${encodeURIComponent(code)}`;
-      const res = await fetch(url, { headers: authHeaders() });
+      else if (currentProgram) url += `&program=${encodeURIComponent(currentProgram)}`;
+      const res = await authFetch(url);
       if (res.status === 401) { logout(); return; }
       if (!res.ok) throw new Error(`서버 오류 ${res.status}`);
       const rows = await res.json();
@@ -547,7 +1254,6 @@
 
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.aoa_to_sheet(aoa);
-      // 학번(C)·연락처(G) 열 → 텍스트 형식
       const textCols = [2, 6];
       const range = XLSX.utils.decode_range(ws['!ref']);
       for (let row = 1; row <= range.e.r; row++) {
@@ -570,25 +1276,29 @@
   document.getElementById('logout-btn').addEventListener('click', logout);
 
   function logout() {
-    PASSWORD = '';
-    sessionStorage.removeItem('admin_pw');
+    TOKEN = ''; REFRESH_TOKEN = ''; ME = null;
+    sessionStorage.removeItem('admin_token');
+    sessionStorage.removeItem('admin_refresh');
     document.getElementById('dashboard').style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('pw-input').value = '';
+    document.getElementById('email-pw-input').value = '';
     document.getElementById('login-error').textContent = '';
   }
 
   // ── Auto-login from sessionStorage ────────────────────────────────────────
   (async () => {
-    const saved = sessionStorage.getItem('admin_pw');
+    const saved = sessionStorage.getItem('admin_token');
     if (!saved) return;
-    PASSWORD = saved;
-    const res = await fetch(`${SUPABASE_FN}/admin-courses`, { headers: authHeaders() }).catch(() => null);
+    TOKEN = saved;
+    REFRESH_TOKEN = sessionStorage.getItem('admin_refresh') || '';
+    const res = await authFetch(`${SUPABASE_FN}/admin-courses`).catch(() => null);
     if (res && res.ok) {
-      showDashboard(await res.json());
+      await afterLoginSuccess();
     } else {
-      PASSWORD = '';
-      sessionStorage.removeItem('admin_pw');
+      TOKEN = ''; REFRESH_TOKEN = '';
+      sessionStorage.removeItem('admin_token');
+      sessionStorage.removeItem('admin_refresh');
     }
   })();
 </script>

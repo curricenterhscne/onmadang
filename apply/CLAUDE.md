@@ -16,12 +16,23 @@
   **버그 수정 포함**: 기존 `confirm_enrollment`/`get_my_enrollment`/`cancel_enrollment`는 중복신청·조회·취소를 **프로그램 구분 없이 전체 테이블**에서 검사했다(학교+학번 OR 전화 매칭) — 그대로 두면 같은 학생이 두 프로그램에 동시 신청하는 것 자체가 막힌다. 재정의 버전은 프로그램 단위로 스코프하고, `programs.term_subject_limit`(지역연계=2)이 있는 프로그램은 "개수 상한" 체크로, 없는 프로그램(꿈키움/고교대학연계)은 기존과 동일한 "1건만" 체크로 분기한다. `cancel_enrollment`의 취소 UPDATE도 "식별자 일치 전부"가 아니라 "찾아낸 신청 1건(course_code 일치)"만 취소하도록 좁혔다(다건-활성 신청 시 전부 취소되는 잠재 버그 예방). `p_program` 생략 시(꿈키움 기존 호출) 전부 예전과 동일하게 동작 — `get_open_status()` 회귀 테스트로 확인됨(`phase:closed`, 신청접수 9/15 마감 후 상태 그대로 재현, 꿈키움 운영에 영향 없음).
 - ✅ `supabase/functions/_shared/authz.ts` 신설 — 기존 `ADMIN_PASSWORD` 공유 비밀번호 인증을 Supabase Auth 개인 계정(`staff_profiles.role: province|region|org`) 기반으로 바꾸는 공용 헬퍼. **기존 공유 비밀번호도 당분간 그대로 동작**(과도기 호환, `legacyPasswordProfile()`).
 - ✅ 기존 Edge Function 5개(`admin-courses`·`admin-enrollments`·`admin-set-capacity`·`admin-toggle-close`·`admin-delete-enrollment`)에 scope 필터링 추가 — province는 전체, region/org는 자기 소관(`courses.region`/`courses.org`)만.
-- ✅ 신규 Edge Function 5개 작성: `admin-upsert-course`(강좌 등록/수정, `_embed_data.js` 편집 워크플로를 대체), `admin-delete-course`, `register-staff`(지역청/기관 담당자 셀프 가입 신청), `admin-approve-staff`/`admin-list-staff`(도교육청 승인).
-- ❌ **아직 배포 안 됨** — `npx supabase functions deploy {함수명} --no-verify-jwt`로 9개 함수(5개 수정분 + 5개 신규) 전부 재배포 필요. `_shared/authz.ts`는 별도 배포 대상 아님(import되는 공용 코드).
-- ❌ `app.html`/`admin/index.html` 프런트는 **아직 안 건드림** — 지금은 기존 그대로 단일 프로그램(꿈키움)으로만 동작.
-- ❌ 다음 턴 최우선 작업: 9개 Edge Function 배포(`npx supabase functions deploy {함수명} --no-verify-jwt`) + 도교육청(`province`) 담당자용 `staff_profiles` 계정 1개 수동 생성.
+- ✅ 신규 Edge Function 6개 작성 + 배포 완료(2026-10-21): `admin-upsert-course`(강좌 등록/수정, `_embed_data.js` 편집 워크플로를 대체), `admin-delete-course`, `register-staff`(지역청/기관 담당자 셀프 가입 신청), `admin-approve-staff`/`admin-list-staff`(도교육청 승인), `admin-whoami`(로그인 계정 본인 정보 조회 — admin UI가 역할·소관 표시 및 승인화면 노출 여부 판단에 씀).
+- ✅ **11개 Edge Function 전부 배포 완료(2026-10-21)** — 기존 5개(scope 필터 추가분) + 신규 6개. `npx supabase login --token`은 비대화형 환경이라 개인 액세스 토큰으로 로그인(대시보드 > Account > Access Tokens에서 발급).
+- ✅ 레거시 공유 비밀번호 경로 회귀 확인됨(배포 직후 기존 관리자 비밀번호로 로그인해 강좌/신청자 목록 정상 확인).
+- ✅ 도교육청(`province`) `staff_profiles` 계정 1개 생성 완료(Supabase 대시보드 Auth에서 수동 생성 + SQL INSERT).
+- ✅ `apply/admin/index.html` 전면 개편(B2) 완료, 로컬 HTTP 서버로 렌더링·콘솔 에러 없음 확인:
+  - 로그인: 이메일+비밀번호(Supabase Auth) 기본, "공유 비밀번호로 로그인" 토글로 레거시 방식 유지, "지역청/기관 담당자 가입 신청" 링크(브라우저 prompt 연속 입력 → `register-staff` 호출 — V1은 간단한 prompt 기반, 정교한 폼은 아님)
+  - JWT 만료 시 `refresh_token`으로 1회 자동 재시도하는 `authFetch()` 래퍼 추가(레거시 비밀번호는 refresh_token이 없어 그냥 재로그인)
+  - 로그인 후 `admin-whoami` 호출 결과를 헤더 배지로 표시(이름·역할·소관), `role==='province'`일 때만 "가입 승인" 버튼 노출
+  - 프로그램 탭(전체/꿈키움/고교-대학 연계/지역연계, `programs` 테이블을 anon key로 직접 조회해 구성) — 탭 클릭 시 `admin-courses?program=`으로 재조회
+  - "+ 강좌 등록"/"수정" 모달 — `admin-upsert-course` 호출. `instructors`/`sessions`는 반복 입력 행(추가/삭제 버튼), `learning_goals`는 줄바꿈 textarea, `schedule_by_day`는 고급 옵션으로 raw JSON textarea(비워도 됨) — **V1 간소화**, 추후 전용 서브 UI로 교체 가능
+  - "삭제" 버튼 — `admin-delete-course` 호출(신청자 있으면 409로 거부, 서버 메시지 그대로 표시)
+  - region/org 역할 로그인 시 강좌 등록 폼의 지역/기관 필드를 본인 `scope_value`로 잠금(다른 지역 강좌를 실수로 못 만듦)
+  - "가입 승인" 모달 — `admin-list-staff` 조회 + 대기중 계정에 승인/거부 버튼(`admin-approve-staff`)
+  - **엑셀 일괄 등록** — "엑셀 양식 다운로드"(SheetJS로 헤더+예시행 1개짜리 `.xlsx` 생성)·"엑셀 일괄 등록"(업로드 파싱 → 행별로 `admin-upsert-course` 순차 호출 → 성공/실패 건수 요약). `instructors`/`sessions`/`learning_goals`/`schedule_by_day`는 중첩 구조라 일괄 등록 대상에서 제외 — 등록 후 개별 "수정"에서 입력. region/org 계정으로 업로드하면 엑셀의 지역/기관 값과 무관하게 본인 `scope_value`로 강제됨.
+- ❌ 아직 안 한 것: `apply/app.html`(학생용 신청 화면) 쪽 멀티프로그램 대응(`?program=` 파싱, RPC 호출에 `p_program` 전달, GNB 등) — B3 범위.
 
-**지금 운영 중인 꿈키움(2026-10-17~11-29) 신청에는 영향 없다** — 배포하지 않았으니 당연하지만, 나중에 9개 함수를 재배포해도 기존 `ADMIN_PASSWORD` 경로가 유지되고 `program` 필터도 꿈키움엔 기본값(`dream_up`)으로 동일하게 걸리므로 하위 호환된다.
+**지금 운영 중인 꿈키움(2026-10-17~11-29) 신청에는 영향 없다** — 레거시 `ADMIN_PASSWORD` 경로가 그대로 유지되고, `program` 필터도 꿈키움엔 기본값(`dream_up`)으로 동일하게 걸리므로 하위 호환된다. 배포 직후 관리자 페이지 정상 동작도 직접 확인함.
 
 ## 개요
 
