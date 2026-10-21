@@ -9,16 +9,17 @@
 
 진행 상황(이 레포 기준, `main` 미병합):
 - ✅ `supabase/sql/rpc_backup_query.sql` — RPC 7개 실제 정의 백업 완료(2026-10-21, 하단에 전문 보관).
-- ⚠️ `supabase/sql/program_column_migration.sql` 작성 완료 — **아직 실행 안 됨**(Supabase 대시보드에서 담당자가 실행해야 함). 실행하면 `courses`/`enrollments`에 `program` 컬럼, `programs`/`staff_profiles` 테이블이 추가되고 **기존 `settings` 테이블에 `program` 컬럼이 추가**된다(전부 additive — 기존 꿈키움 데이터는 자동으로 `program='dream_up'`).
+- ✅ `supabase/sql/program_column_migration.sql` — **실행 완료 + 검증 완료(2026-10-21)**. `courses`(새 컬럼 전부 포함, 기존 66강좌 전부 `program='dream_up'` 확인)/`enrollments`에 `program` 컬럼, `programs` 3행(`dream_up`/`dual_credit`/`joint_regional`)·빈 `staff_profiles` 테이블 생성, 기존 `settings` 1행에 `program='dream_up'` 백필까지 전부 확인됨.
   **설계 변경**: 처음 계획했던 신규 `cycles` 테이블은 쓰지 않는다 — 실제 RPC가 이미 `settings`(1차/2차 2단계 모델: `open_at/close1_at/open2_at/close2_at`)를 쓰고 있어, 검증된 로직을 유지하는 쪽으로 바꿨다.
-- ✅ `supabase/sql/rpc_multiprogram.sql` 작성 완료 — **아직 실행 안 됨**. RPC 7개 중 6개(`release_reservation` 제외)를 `p_program` 파라미터 포함해 재정의. `program_column_migration.sql`을 먼저 실행해야 함.
-  **버그 수정 포함**: 기존 `confirm_enrollment`/`get_my_enrollment`/`cancel_enrollment`는 중복신청·조회·취소를 **프로그램 구분 없이 전체 테이블**에서 검사했다(학교+학번 OR 전화 매칭) — 그대로 두면 같은 학생이 두 프로그램에 동시 신청하는 것 자체가 막힌다. 재정의 버전은 프로그램 단위로 스코프하고, `programs.term_subject_limit`(지역연계=2)이 있는 프로그램은 "개수 상한" 체크로, 없는 프로그램(꿈키움/고교대학연계)은 기존과 동일한 "1건만" 체크로 분기한다. `cancel_enrollment`의 취소 UPDATE도 "식별자 일치 전부"가 아니라 "찾아낸 신청 1건(course_code 일치)"만 취소하도록 좁혔다(다건-활성 신청 시 전부 취소되는 잠재 버그 예방). `p_program` 생략 시(꿈키움 기존 호출) 전부 예전과 동일하게 동작.
+- ✅ `supabase/sql/rpc_multiprogram.sql` + `rpc_multiprogram_fix_overload.sql` — **실행 완료 + 검증 완료(2026-10-21)**. RPC 7개 중 6개(`release_reservation` 제외)를 `p_program` 파라미터 포함해 재정의.
+  ⚠️ **함정 발견**: `CREATE OR REPLACE FUNCTION`은 인자 개수가 바뀌면 "교체"가 아니라 "오버로드 추가"로 처리된다 — 그래서 처음 실행 후 구 시그니처(인자 적음)와 신 시그니처가 동시에 남아 `get_open_status() is not unique` 등 모호성 에러가 났다. `rpc_multiprogram_fix_overload.sql`로 구 시그니처 6개를 `DROP FUNCTION`해서 해결(신 시그니처만 남음, `pg_get_function_arguments`로 확인). **앞으로 함수 시그니처를 바꾸는 재정의는 반드시 구 시그니처 DROP을 같이 해야 한다.**
+  **버그 수정 포함**: 기존 `confirm_enrollment`/`get_my_enrollment`/`cancel_enrollment`는 중복신청·조회·취소를 **프로그램 구분 없이 전체 테이블**에서 검사했다(학교+학번 OR 전화 매칭) — 그대로 두면 같은 학생이 두 프로그램에 동시 신청하는 것 자체가 막힌다. 재정의 버전은 프로그램 단위로 스코프하고, `programs.term_subject_limit`(지역연계=2)이 있는 프로그램은 "개수 상한" 체크로, 없는 프로그램(꿈키움/고교대학연계)은 기존과 동일한 "1건만" 체크로 분기한다. `cancel_enrollment`의 취소 UPDATE도 "식별자 일치 전부"가 아니라 "찾아낸 신청 1건(course_code 일치)"만 취소하도록 좁혔다(다건-활성 신청 시 전부 취소되는 잠재 버그 예방). `p_program` 생략 시(꿈키움 기존 호출) 전부 예전과 동일하게 동작 — `get_open_status()` 회귀 테스트로 확인됨(`phase:closed`, 신청접수 9/15 마감 후 상태 그대로 재현, 꿈키움 운영에 영향 없음).
 - ✅ `supabase/functions/_shared/authz.ts` 신설 — 기존 `ADMIN_PASSWORD` 공유 비밀번호 인증을 Supabase Auth 개인 계정(`staff_profiles.role: province|region|org`) 기반으로 바꾸는 공용 헬퍼. **기존 공유 비밀번호도 당분간 그대로 동작**(과도기 호환, `legacyPasswordProfile()`).
 - ✅ 기존 Edge Function 5개(`admin-courses`·`admin-enrollments`·`admin-set-capacity`·`admin-toggle-close`·`admin-delete-enrollment`)에 scope 필터링 추가 — province는 전체, region/org는 자기 소관(`courses.region`/`courses.org`)만.
 - ✅ 신규 Edge Function 5개 작성: `admin-upsert-course`(강좌 등록/수정, `_embed_data.js` 편집 워크플로를 대체), `admin-delete-course`, `register-staff`(지역청/기관 담당자 셀프 가입 신청), `admin-approve-staff`/`admin-list-staff`(도교육청 승인).
 - ❌ **아직 배포 안 됨** — `npx supabase functions deploy {함수명} --no-verify-jwt`로 9개 함수(5개 수정분 + 5개 신규) 전부 재배포 필요. `_shared/authz.ts`는 별도 배포 대상 아님(import되는 공용 코드).
 - ❌ `app.html`/`admin/index.html` 프런트는 **아직 안 건드림** — 지금은 기존 그대로 단일 프로그램(꿈키움)으로만 동작.
-- ❌ `program_column_migration.sql` → `rpc_multiprogram.sql` 순서로 아직 **Supabase 대시보드에서 실행 안 됨**. 다음 턴 최우선 작업.
+- ❌ 다음 턴 최우선 작업: 9개 Edge Function 배포(`npx supabase functions deploy {함수명} --no-verify-jwt`) + 도교육청(`province`) 담당자용 `staff_profiles` 계정 1개 수동 생성.
 
 **지금 운영 중인 꿈키움(2026-10-17~11-29) 신청에는 영향 없다** — 배포하지 않았으니 당연하지만, 나중에 9개 함수를 재배포해도 기존 `ADMIN_PASSWORD` 경로가 유지되고 `program` 필터도 꿈키움엔 기본값(`dream_up`)으로 동일하게 걸리므로 하위 호환된다.
 
