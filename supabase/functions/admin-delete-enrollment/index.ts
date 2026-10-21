@@ -1,10 +1,5 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+import { authenticateStaff, isWithinScope, CORS_HEADERS } from "../_shared/authz.ts";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -14,9 +9,11 @@ serve(async (req) => {
     return new Response("Method Not Allowed", { status: 405, headers: CORS_HEADERS });
   }
 
-  const auth = req.headers.get("authorization") || "";
-  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-  if (token !== Deno.env.get("ADMIN_PASSWORD")) {
+  const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+  const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+  const staff = await authenticateStaff(req, SUPABASE_URL, SERVICE_ROLE_KEY);
+  if (!staff) {
     return Response.json({ error: "Unauthorized" }, { status: 401, headers: CORS_HEADERS });
   }
 
@@ -29,16 +26,14 @@ serve(async (req) => {
     );
   }
 
-  const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-  const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const sbHeaders = {
     apikey: SERVICE_ROLE_KEY,
     Authorization: `Bearer ${SERVICE_ROLE_KEY}`,
   };
 
-  // 1. 삭제 전에 enrollment 조회하여 course_code 확인
+  // 1. 삭제 전에 enrollment 조회하여 course_code 확인 (+ scope 검증용 region/org도 같이)
   const getRes = await fetch(
-    `${SUPABASE_URL}/rest/v1/enrollments?id=eq.${encodeURIComponent(id)}&select=course_code,status`,
+    `${SUPABASE_URL}/rest/v1/enrollments?id=eq.${encodeURIComponent(id)}&select=course_code,status,courses(region,org)`,
     { headers: sbHeaders }
   );
   if (!getRes.ok) {
@@ -48,7 +43,14 @@ serve(async (req) => {
   if (!rows.length) {
     return Response.json({ error: "enrollment not found" }, { status: 404, headers: CORS_HEADERS });
   }
-  const { course_code, status } = rows[0];
+  const { course_code, status, courses: joinedCourse } = rows[0];
+
+  if (staff.role !== "province") {
+    const col = staff.role === "region" ? "region" : "org";
+    if (!joinedCourse || !isWithinScope(staff, col, joinedCourse[col])) {
+      return Response.json({ error: "Forbidden — 소관 강좌가 아닙니다" }, { status: 403, headers: CORS_HEADERS });
+    }
+  }
 
   // 2. enrollment 삭제
   const delRes = await fetch(

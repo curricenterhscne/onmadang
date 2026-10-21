@@ -3,6 +3,21 @@
 > 폴더 안에 **성격이 다른 두 페이지**가 있다. 헤더 규칙이 서로 다르니 아래 표를 먼저 볼 것.
 > 최종 검증 2026-08-13 (실측)
 
+## ⚠️ 2026-10-21~ 멀티프로그램 확장 진행 중 (`enrollment-multiprogram` 브랜치)
+
+이 문서 본문은 **아직 단일 프로그램(꿈키움) 전제로 작성된 과거 상태**다. 지역연계 공동교육과정·고교-대학 연계까지 `app.html` 하나로 같이 서빙하도록 확장하는 작업이 진행 중이며, 완료 전까지 아래와 실제 코드가 어긋날 수 있다. **설계 전체는 `.claude/plans/cheerful-soaring-sparkle.md`(Track B) 참고.**
+
+진행 상황(이 레포 기준, `main` 미병합):
+- ✅ `supabase/sql/program_column_migration.sql` 작성 완료 — **아직 실행 안 됨**(Supabase 대시보드에서 담당자가 실행해야 함). 실행하면 `courses`/`enrollments`에 `program` 컬럼, `programs`/`cycles`/`staff_profiles` 테이블이 추가된다(전부 additive — 기존 꿈키움 데이터는 자동으로 `program='dream_up'`).
+- ✅ `supabase/functions/_shared/authz.ts` 신설 — 기존 `ADMIN_PASSWORD` 공유 비밀번호 인증을 Supabase Auth 개인 계정(`staff_profiles.role: province|region|org`) 기반으로 바꾸는 공용 헬퍼. **기존 공유 비밀번호도 당분간 그대로 동작**(과도기 호환, `legacyPasswordProfile()`).
+- ✅ 기존 Edge Function 5개(`admin-courses`·`admin-enrollments`·`admin-set-capacity`·`admin-toggle-close`·`admin-delete-enrollment`)에 scope 필터링 추가 — province는 전체, region/org는 자기 소관(`courses.region`/`courses.org`)만.
+- ✅ 신규 Edge Function 5개 작성: `admin-upsert-course`(강좌 등록/수정, `_embed_data.js` 편집 워크플로를 대체), `admin-delete-course`, `register-staff`(지역청/기관 담당자 셀프 가입 신청), `admin-approve-staff`/`admin-list-staff`(도교육청 승인).
+- ❌ **아직 배포 안 됨** — `npx supabase functions deploy {함수명} --no-verify-jwt`로 9개 함수(5개 수정분 + 5개 신규) 전부 재배포 필요. `_shared/authz.ts`는 별도 배포 대상 아님(import되는 공용 코드).
+- ❌ RPC 함수 7개(`get_open_status` 등) 재정의는 **아직 시작 안 함** — `supabase/sql/rpc_backup_query.sql`을 먼저 실행해 현재 정의를 백업해야 안전하게 진행 가능.
+- ❌ `app.html`/`admin/index.html` 프런트는 **아직 안 건드림** — 지금은 기존 그대로 단일 프로그램(꿈키움)으로만 동작.
+
+**지금 운영 중인 꿈키움(2026-10-17~11-29) 신청에는 영향 없다** — 배포하지 않았으니 당연하지만, 나중에 9개 함수를 재배포해도 기존 `ADMIN_PASSWORD` 경로가 유지되고 `program` 필터도 꿈키움엔 기본값(`dream_up`)으로 동일하게 걸리므로 하위 호환된다.
+
 ## 개요
 
 **수강신청 웹앱.** 선착순 좌석 예약 → 3분 타이머 → 정보 입력 → 확정 흐름.
