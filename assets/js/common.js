@@ -53,7 +53,8 @@
   var subMenus = {
     about: [
       { label: '고교학점제란?',          href: L.about + 'what-is.html' },
-      { label: '학생 주도성과 고교학점제', href: L.about + 'student-agency.html' }
+      { label: '학생 주도성과 고교학점제', href: L.about + 'student-agency.html' },
+      { label: '꾸꾸클럽',               href: L.about + 'kkukku-club.html' }
     ],
     design: [
       { label: '진로 나침반',    href: L.design + 'compass/'  },
