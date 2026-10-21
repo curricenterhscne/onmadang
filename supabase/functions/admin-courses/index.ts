@@ -1,10 +1,5 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, content-type",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
-};
+import { authenticateStaff, scopeFilterParam, CORS_HEADERS } from "../_shared/authz.ts";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -14,17 +9,23 @@ serve(async (req) => {
     return new Response("Method Not Allowed", { status: 405, headers: CORS_HEADERS });
   }
 
-  // Auth check
-  const auth = req.headers.get("authorization") || "";
-  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-  if (token !== Deno.env.get("ADMIN_PASSWORD")) {
-    return Response.json({ error: "Unauthorized" }, { status: 401, headers: CORS_HEADERS });
-  }
-
   const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
   const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-  const url = `${SUPABASE_URL}/rest/v1/courses?select=*&order=code`;
+  // Auth check — 개인 계정(JWT) 또는 과도기 공유 비밀번호
+  const staff = await authenticateStaff(req, SUPABASE_URL, SERVICE_ROLE_KEY);
+  if (!staff) {
+    return Response.json({ error: "Unauthorized" }, { status: 401, headers: CORS_HEADERS });
+  }
+
+  // program 쿼리파라미터(선택) + 역할별 scope 필터(region→region 컬럼, org→org 컬럼)
+  const reqUrl = new URL(req.url);
+  const programParam = reqUrl.searchParams.get("program");
+  const scopeColumn = staff.role === "org" ? "org" : "region";
+  const scopeQS = scopeFilterParam(staff, scopeColumn);
+  const programQS = programParam ? `&program=eq.${encodeURIComponent(programParam)}` : "";
+
+  const url = `${SUPABASE_URL}/rest/v1/courses?select=*&order=code${scopeQS}${programQS}`;
   const res = await fetch(url, {
     headers: {
       apikey: SERVICE_ROLE_KEY,

@@ -1,10 +1,5 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, content-type",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
-};
+import { authenticateStaff, CORS_HEADERS } from "../_shared/authz.ts";
 
 function sbHeaders(key: string) {
   return {
@@ -61,22 +56,32 @@ serve(async (req) => {
     return new Response("Method Not Allowed", { status: 405, headers: CORS_HEADERS });
   }
 
-  const auth = req.headers.get("authorization") || "";
-  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-  if (token !== Deno.env.get("ADMIN_PASSWORD")) {
-    return Response.json({ error: "Unauthorized" }, { status: 401, headers: CORS_HEADERS });
-  }
-
   const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
   const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
+  const staff = await authenticateStaff(req, SUPABASE_URL, SERVICE_ROLE_KEY);
+  if (!staff) {
+    return Response.json({ error: "Unauthorized" }, { status: 401, headers: CORS_HEADERS });
+  }
+
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
+  const programParam = url.searchParams.get("program");
   const includeSchool = url.searchParams.get("includeSchool");
 
   // JSON with optional school name map
-  let queryUrl = `${SUPABASE_URL}/rest/v1/enrollments?select=*,courses(name)&status=in.(active,pending)&order=student_no`;
+  // region/org 관리자는 courses와 inner join해서 그 소속 강좌의 신청자만 보게 한다
+  // (enrollments 자체엔 region/org가 없어서, 연결된 courses 쪽 컬럼으로 필터링)
+  let queryUrl = `${SUPABASE_URL}/rest/v1/enrollments?select=*,courses!inner(name,region,org,program)&status=in.(active,pending)&order=student_no`;
   if (code) queryUrl += `&course_code=eq.${encodeURIComponent(code)}`;
+  if (programParam) queryUrl += `&courses.program=eq.${encodeURIComponent(programParam)}`;
+  if (staff.role === "region" && staff.scope_value) {
+    queryUrl += `&courses.region=eq.${encodeURIComponent(staff.scope_value)}`;
+  } else if (staff.role === "org" && staff.scope_value) {
+    queryUrl += `&courses.org=eq.${encodeURIComponent(staff.scope_value)}`;
+  } else if (staff.role === "region" || staff.role === "org") {
+    queryUrl += `&courses.region=eq.__none__`; // scope_value 누락 시 fail closed
+  }
 
   try {
     const rows = await fetchAllRows(queryUrl, SERVICE_ROLE_KEY);
