@@ -30,9 +30,19 @@
   - region/org 역할 로그인 시 강좌 등록 폼의 지역/기관 필드를 본인 `scope_value`로 잠금(다른 지역 강좌를 실수로 못 만듦)
   - "가입 승인" 모달 — `admin-list-staff` 조회 + 대기중 계정에 승인/거부 버튼(`admin-approve-staff`)
   - **엑셀 일괄 등록** — "엑셀 양식 다운로드"(SheetJS로 헤더+예시행 1개짜리 `.xlsx` 생성)·"엑셀 일괄 등록"(업로드 파싱 → 행별로 `admin-upsert-course` 순차 호출 → 성공/실패 건수 요약). `instructors`/`sessions`/`learning_goals`/`schedule_by_day`는 중첩 구조라 일괄 등록 대상에서 제외 — 등록 후 개별 "수정"에서 입력. region/org 계정으로 업로드하면 엑셀의 지역/기관 값과 무관하게 본인 `scope_value`로 강제됨.
-- ❌ 아직 안 한 것: `apply/app.html`(학생용 신청 화면) 쪽 멀티프로그램 대응(`?program=` 파싱, RPC 호출에 `p_program` 전달, GNB 등) — B3 범위.
+- ✅ **꿈키움·고교-대학 연계 기존 데이터 전체 삭제(2026-10-21)** — 사용자 요청으로 실행(사전 백업 완료 확인됨). `admin-reset-program` Edge Function 신설(province 전용, 대상 프로그램의 `display_name`을 정확히 입력해야 실행되는 2단계 확인) + admin UI에 "위험 구역" 패널 추가. 이 기능으로 꿈키움/고교-대학 연계의 `courses`/`enrollments`를 전부 지움 — `programs`/`settings` 메타는 남겨서 다음 회차에 강좌만 다시 등록하면 되게 함. 삭제 후 `courses` 테이블 0건 확인됨.
+- ✅ **`apply/app.html`(학생용 신청 화면) 멀티프로그램 대응 완료(B3, 2026-10-21)**:
+  - `?program=` URL 파라미터(생략 시 `dream_up` — 기존 공유 링크 전부 무수정 동작)
+  - RPC 6개 호출에 `p_program` 전달(`release_reservation`은 시그니처 안 바뀌어서 그대로)
+  - `fetchDbCourseDetails()` 신설 — `courses` 테이블을 anon key로 직접 조회해 강좌 상세(소개·일정·강사진 등)를 가져옴. 꿈키움은 기존처럼 `_embed_data.js`(`COURSE_DETAILS`)도 같이 쓰되 **DB 값이 있으면 우선**. 신규 프로그램은 `_embed_data.js` 없이 admin-upsert-course로 입력한 내용이 그대로 보임
+  - `applyProgramBranding()` — `dream_up` 외 프로그램은 히어로 문구·안내문을 `programs.display_name` 기반 범용 문구로 교체(꿈키움 전용 안내문이 다른 프로그램에 노출되지 않음). 강좌 수 통계도 하드코딩(66/15) 대신 실제 로드된 목록 기준으로 계산하도록 바꿈
+  - 상세보기 모달의 `if (!d) return;`(DETAIL_MAP 없으면 조용히 아무 반응 없던 버그)를 `d = DETAIL_MAP[code] || {}`로 수정 — 상세 데이터가 일부만 있어도 모달이 열림
+  - ⚠️ **`settings` 테이블의 숨은 싱글톤 제약 발견·수정** — 원래 "행 1개(id=1)만 허용"하도록 `CHECK(id=1)` + 상수 기본값으로 만들어진 테이블이었다. B0에서 `program` 컬럼만 추가하고 이 제약을 같이 풀지 않아서, 두 번째 프로그램(`joint_regional`)의 신청기간 행을 넣을 때 막혔다. `app_multiprogram_prep_fix.sql`로 제약 제거 + 정상 auto-increment 시퀀스로 교체(실행 완료, 검증됨). **앞으로 비슷한 "원래 싱글톤이었던 테이블"에 멀티테넌시를 추가할 때는 PK/CHECK 제약까지 같이 확인할 것.**
+  - 지역연계(`joint_regional`)에 데모 강좌 2건(`JR26DEMO1`/`JR26DEMO2`) + 신청기간(지금부터 90일) 시딩 완료 — 실제 지역청 데이터 입력 전 admin UI "전체 초기화"로 지워야 함
+  - `courses` 테이블에 공개 읽기(anon) RLS 정책 추가(`courses_public_read`) — 강좌 상세는 개인정보가 아니라 이미 RPC로 일부 공개되어 있던 것과 노출 수준이 같음
+- ❌ 아직 안 한 것: GNB에 지역연계·고교대학연계로 가는 공개 링크/안내 페이지 연결(`safety/jointcurricula.html` 등), 14개 지역청 실제 계정 발급·강좌 입력, `dual_credit/enroll.js`의 신청 링크 제어를 `settings`/`cycles` 기반으로 전환.
 
-**지금 운영 중인 꿈키움(2026-10-17~11-29) 신청에는 영향 없다** — 레거시 `ADMIN_PASSWORD` 경로가 그대로 유지되고, `program` 필터도 꿈키움엔 기본값(`dream_up`)으로 동일하게 걸리므로 하위 호환된다. 배포 직후 관리자 페이지 정상 동작도 직접 확인함.
+**지금 운영 중이던 꿈키움(2026-10-17~11-29) 데이터는 백업 후 삭제됨** — 다음 회차부터는 새 관리자 도구로 강좌를 다시 등록한다. 레거시 `ADMIN_PASSWORD` 경로는 계속 유지되고 있어 운영 전환 자체는 지장 없음(배포 직후·삭제 전 각각 정상 동작 확인함).
 
 ## 개요
 
