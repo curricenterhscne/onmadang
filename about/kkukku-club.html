@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#D7F3FF">
+<meta name="description" content="꾸꾸클럽 — 온마당 캐릭터 토꾸미·팬꾸미·꾸미를 소개합니다.">
+<title>꾸꾸클럽 · 온마당</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../assets/css/common.css">
+<style>
+  .doc{padding:44px 0 80px}
+  .doc .wrap{max-width:900px}
+
+  /* 소개 리드 */
+  .kk-lead{font-size:15.5px;color:var(--ink-soft);line-height:1.85;margin-bottom:36px;text-align:center;max-width:560px;margin-left:auto;margin-right:auto}
+
+  /* 캐릭터 카드 */
+  .kk-cards{display:flex;flex-direction:column;gap:24px}
+  .kk-card{
+    border-radius:var(--radius);padding:36px;display:grid;
+    grid-template-columns:150px 1fr;gap:32px;align-items:center;
+  }
+  .kk-card .kk-img{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .kk-card .kk-img img{width:130px;height:auto}
+  .kk-bubble{
+    position:relative;background:#fff;border-radius:var(--radius-pill);
+    padding:9px 16px;font-size:12.5px;font-weight:700;color:var(--ink);
+    text-align:center;line-height:1.4;box-shadow:var(--shadow-sm);
+  }
+  .kk-bubble::after{
+    content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+    width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;
+    border-top:8px solid #fff;
+  }
+  .kk-card h2{font-size:24px;font-weight:800;letter-spacing:-.5px;margin-bottom:14px;color:var(--ink)}
+  .kk-card p{font-size:14.5px;color:var(--ink);line-height:1.85}
+
+  .kk-card.c-toki{background:#FFD4FF}
+  .kk-card.c-pan{background:var(--bg)}
+  .kk-card.c-kku{background:#A8FFC2}
+
+  @media (max-width:620px){
+    .kk-card{grid-template-columns:1fr;text-align:center;padding:28px 24px}
+    .kk-card .kk-img{align-items:center}
+  }
+</style>
+</head>
+<body>
+
+<div id="om-header" data-active="about"></div>
+
+<!-- 페이지 헤더 -->
+<div class="page-hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="이동 경로">
+      <a href="../index.html">홈</a> › <a href="./index.html">고교학점제 안내</a> › <strong>꾸꾸클럽</strong>
+    </nav>
+    <h1>꾸꾸클럽</h1>
+    <p>꾸물꾸물 느리지만 천천히 꿈을 향해 나아가는 우리들</p>
+  </div>
+</div>
+
+<main class="doc">
+  <div class="wrap">
+    <p class="kk-lead">꾸꾸클럽은 학교 너머, 학습의 공간을 확장하며 꿈을 꾸는 학생들의 모임입니다.</p>
+
+    <div class="kk-cards">
+      <div class="kk-card c-toki">
+        <div class="kk-img">
+          <img src="../assets/img/kkukku/kkukku-toki.png" alt="토꾸미" aria-hidden="true">
+          <div class="kk-bubble">나랑 경쟁하는 건 어제의 나.<br>행운은 준비된 사람의 것!</div>
+        </div>
+        <div>
+          <h2>토꾸미</h2>
+          <p>
+            그야말로 갓생살이. 자기 루틴과 계획을 지킨다.<br>
+            열심히 듣다가 귀가 길어졌다.<br>
+            항상 네잎클로버를 부적처럼 지니고 다닌다.<br>
+            욕심이 많지만 현실적인 타입. 교우관계가 좋다.
+          </p>
+        </div>
+      </div>
+
+      <div class="kk-card c-pan">
+        <div class="kk-img">
+          <img src="../assets/img/kkukku/kkukku-pan.png" alt="팬꾸미" aria-hidden="true">
+          <div class="kk-bubble">해야하니까 그냥 한다.<br>오늘은 이 정도면 충분해.</div>
+        </div>
+        <div>
+          <h2>팬꾸미</h2>
+          <p>
+            잠이 많지만 해야 하니까 그냥 한다.<br>
+            원래 곰인데 다크서클 때문에 팬더처럼 보인다.<br>
+            그래서 그냥 팬더라고 하고 다닌다.<br>
+            하기 싫어보이는데, 늘 출석은 하고 과제도 성실하게 해낸다.<br>
+            무던하고 무덤덤하지만 속이 꽉찬 학생.
+          </p>
+        </div>
+      </div>
+
+      <div class="kk-card c-kku">
+        <div class="kk-img">
+          <img src="../assets/img/kkukku/kkukku-kku.png" alt="꾸미" aria-hidden="true">
+          <div class="kk-bubble">조금만 기다려줘!</div>
+        </div>
+        <div>
+          <h2>꾸미</h2>
+          <p>
+            자기만의 속도로 꾸물꾸물 열심히 하는 꾸미.<br>
+            학교 가는데 30일 걸려서 수업에는 온라인으로 참여한다.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="om-footer"></div>
+<script src="../assets/js/common.js"></script>
+<script data-goatcounter="https://onmadang.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
