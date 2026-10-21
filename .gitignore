@@ -8,3 +8,7 @@ design/_dev/sample-export.json
 
 # test-page.js가 예전에 레포 루트로 흘려보내던 덤프. 다시 생기면 안 된다.
 /sample-export.json
+
+# 디자인 업체 원본 (용량 큼, git 제외 — README만 추적)
+design-source/*
+!design-source/README.md

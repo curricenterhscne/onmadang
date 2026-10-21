@@ -1,0 +1,194 @@
+{
+  "_설명": {
+    "src": "design-source/ 기준 원본 경로 (수정 금지)",
+    "dest": "레포에 들어갈 최적화본 경로. 확장자 없는 것은 사진이므로 <dest>.webp(1440폭)·<dest>@2x.webp(2880폭)·<dest>.jpg(폴백) 생성",
+    "use": "true면 이번 차수에 반입",
+    "status": "reference 비교용 / ok 사용 / ok-mono 단색 아이콘(fill→currentColor) / ok-minor 사용(경미 수정 요청) / use-pending-license 사용하되 운영 반영은 라이선스 확인 후 / reissue 재납품 대기 / css CSS로 대체 / ignore 무시",
+    "갱신": "재납품 시 src만 새 날짜 폴더로 바꾸고 status 갱신. dest는 바꾸지 않는다(HTML/CSS 수정 불필요)."
+  },
+  "_시안실측_2026-10-21": {
+    "안전망_도형": "반원이 아니라 원(지름 약 715px @1440)을 십자로 나눈 4분원이다. 시계방향으로 ①좌상 ②우상 ③우하 ④좌하 — 사이트 GNB 순서와 일치한다.",
+    "안전망_칸구성": "위 두 칸은 아이콘이 글자 위, 아래 두 칸은 아이콘이 글자 아래. 글자는 모두 수평 지름선에 붙는다. 좌측 칸 우측정렬·우측 칸 좌측정렬.",
+    "확인한_색": "#526ADC #61E0DF #946AD7 #78F7A2 #D7F3FF #FFFFC4 #ECF9FF 모두 시안 픽셀과 일치 (점검표와 같음).",
+    "tokens-draft_오류": "--brand-pale:#DFE3F9 는 근거 없음. 「자세히 알고 싶어? →」 버튼은 #526ADC 바탕에 흰 글자다(#DFE3F9는 안티에일리어싱 182px뿐). 3단계에서 뺄 것.",
+    "구조차이": "시안에는 .quick 퀵바로가기와 .hero-btns가 없고, about-sec가 카드 2장이 아니라 본문 1덩이+버튼 1개, 각 섹션에 .sec-label/.sec-desc가 없다. 4단계에서 기능·링크를 지우지 말고 목록으로 보고한다."
+  },
+  "batch": "2026-10-14_test",
+  "files": [
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/screen_main.png",
+      "dest": null,
+      "where": "기준 시안 (비교용, 배포 안 함)",
+      "status": "reference",
+      "use": false
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/hero/main_hero_bg_1.png",
+      "dest": "assets/img/home/hero-bg",
+      "where": "index.html .hero 배경",
+      "status": "use-pending-license",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/hero/main_hero_ch_1.svg",
+      "dest": "assets/img/home/hero-chars.svg",
+      "where": "index.html .hero-char (토꾸미+팬꾸미+꾸미 3종 — 팬꾸미 머리 위에 꾸미)",
+      "status": "reissue",
+      "use": false
+    },
+    {
+      "src": "design-source/2026-10-14_test/01_common_키비주얼/logo/common_logo.svg",
+      "dest": "assets/img/common/logo.svg",
+      "where": "common.js 헤더 .brand",
+      "status": "reissue",
+      "use": false
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/icon/main_content_icon_1.svg",
+      "dest": "assets/img/home/badge-start.svg",
+      "where": "about-sec START 배지",
+      "status": "reissue",
+      "use": false
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/content/main_content_ch_1.svg",
+      "dest": "assets/img/home/char-about-start.svg",
+      "where": "about-sec 토꾸미(START 아래)",
+      "status": "ok",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/content/main_content_ch_2.svg",
+      "dest": "assets/img/home/char-path-panda.svg",
+      "where": "about→design 동선 팬꾸미(우측 상단)",
+      "status": "ok",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/content/main_content_ch_3.svg",
+      "dest": "assets/img/home/char-path-caterpillar.svg",
+      "where": "safety-sec 좌측 꾸미(누운 자세)",
+      "status": "ok",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/content/main_content_ch_4.svg",
+      "dest": "assets/img/home/char-gate1.svg",
+      "where": "design-sec 관문① 꾸미",
+      "status": "ok",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/content/main_content_ch_5.svg",
+      "dest": "assets/img/home/char-gate2.svg",
+      "where": "design-sec 관문② 팬꾸미",
+      "status": "ok",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/content/main_content_ch_6.svg",
+      "dest": "assets/img/home/char-gate3.svg",
+      "where": "design-sec 관문③ 토꾸미(안경)",
+      "status": "ok",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/content/main_content_ch_7.svg",
+      "dest": "assets/img/home/char-board-goal.svg",
+      "where": "board-sec GOAL 캐릭터 묶음",
+      "status": "ok-minor",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/content/main-content-bg.png",
+      "dest": null,
+      "where": "about~design 배경 그라데이션 — CSS linear-gradient로 대체 (시안 라벨은 main_content_bg_1, 실제 파일명은 main-content-bg.png)",
+      "status": "css",
+      "use": false
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/icon/main_content_icon_2.svg",
+      "dest": "assets/img/icon/compass.svg",
+      "where": "관문① 버튼 「진로 나침반」",
+      "status": "ok-mono",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/icon/main_content_icon_3.svg",
+      "dest": "assets/img/icon/search.svg",
+      "where": "관문① 버튼 「학과·과목 탐색」",
+      "status": "ok-mono",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/icon/main_content_icon_4.svg",
+      "dest": "assets/img/icon/send.svg",
+      "where": "관문② 버튼 「과목 선택 실습」",
+      "status": "ok-mono",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/icon/main_content_icon_5.svg",
+      "dest": "assets/img/icon/check.svg",
+      "where": "관문③ 버튼 「내 선택 점검」",
+      "status": "ok-mono",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/icon/main_content_icon_6.svg",
+      "dest": "assets/img/icon/safety-school.svg",
+      "where": "안전망① 학생 선택 중심 학교 교육과정 (#526ADC 칸 = 원 좌상 사분원)",
+      "status": "ok-mono",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/icon/main_content_icon_7.svg",
+      "dest": "assets/img/icon/safety-online.svg",
+      "where": "안전망② 온배움 충남온라인학교 (#61E0DF 칸 = 원 우상 사분원)",
+      "status": "ok-mono",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/icon/main_content_icon_8.svg",
+      "dest": "assets/img/icon/safety-outside.svg",
+      "where": "안전망④ 꿈키움 학교 밖 교육 (#946AD7 칸 = 원 좌하 사분원)",
+      "status": "ok-mono",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/02_main_메인페이지/icon/main_content_icon_9.svg",
+      "dest": "assets/img/icon/safety-joint.svg",
+      "where": "안전망③ 참학력 공동교육과정 (#78F7A2 칸 = 원 우하 사분원)",
+      "status": "ok-mono",
+      "use": true
+    },
+    {
+      "src": "design-source/2026-10-14_test/01_common_키비주얼/icon/icon-menu-board.svg",
+      "dest": null,
+      "where": "발주처 견본 — 업체 디자인 아님",
+      "status": "ignore",
+      "use": false
+    },
+    {
+      "src": "design-source/2026-10-14_test/01_common_키비주얼/icon/icon-menu-design.svg",
+      "dest": null,
+      "where": "발주처 견본 — 업체 디자인 아님",
+      "status": "ignore",
+      "use": false
+    },
+    {
+      "src": "design-source/2026-10-14_test/01_common_키비주얼/icon/icon-menu-guide.svg",
+      "dest": null,
+      "where": "발주처 견본 — 업체 디자인 아님",
+      "status": "ignore",
+      "use": false
+    },
+    {
+      "src": "design-source/2026-10-14_test/01_common_키비주얼/icon/icon-menu-safetynet.svg",
+      "dest": null,
+      "where": "발주처 견본 — 업체 디자인 아님",
+      "status": "ignore",
+      "use": false
+    }
+  ]
+}
