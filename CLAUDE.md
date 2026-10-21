@@ -21,12 +21,11 @@
 **2026-07 전략 수정.** 이전의 "이미지 슬롯을 미리 비워두고 디자인과 병렬 진행"은 폐기한다.
 
 ```
-[1단계] 전체 사이트를 기능적으로 완성한다  ← 지금 여기
+[1단계] 전체 사이트를 기능적으로 완성한다  ✅ 완료
              ↓  완성된 화면을 업체에 넘김
-[2단계] 디자인 업체가 완성된 사이트의 "껍데기"를 교체한다
+[2단계] 디자인 업체가 완성된 사이트의 "껍데기"를 교체한다  ← 지금 여기 (진행 중)
 ```
 
-- 지금은 **현행 꾸꾸클럽 DS v1.0(임시 스킨) 위에서 기능을 끝내는 것**이 목표다. 비주얼 완성도에 시간을 쓰지 않는다.
 - 업체는 빈 슬롯이 아니라 **동작하는 실제 화면**을 보고 디자인한다. 넘길 산출물은 슬롯ID 목록이 아니라 **완성된 사이트 URL + 화면 목록**이다.
 - 따라서 코딩 시 **리스킨 가능성**이 최우선 품질 기준이다:
   - 색·서체·간격·모서리·그림자는 **전부 토큰으로**. raw 값을 인라인에 박지 않는다.
@@ -34,6 +33,15 @@
   - 레이아웃 구조와 시각 스타일을 섞지 않는다. 나중에 스타일만 걷어낼 수 있어야 한다.
 
 > 디자인 결과물이 오면 **DS v2.0**으로 토큰화해 온마당에 먼저 적용하고, 형제 앱은 이후 브리지 레이어로 재스킨한다.
+
+### 2단계 진행 현황 (2026-10-21~)
+
+작업 자료는 **`docs/design-renewal/`**(계획·점검표·design-map.json·토큰 초안·QA 이미지)에 모아 둔다. 단계별 실행 프롬프트는 `prompts/06-design-renewal.md`.
+
+- **1차 반영 완료, `main` 미병합**: 홈(`index.html`) 전체 리스킨 + 헤더/GNB 필 스타일 + 푸터 + 「꾸꾸클럽」 하위 메뉴·`about/kkukku-club.html` 신설. 작업은 `design-renewal-preview` 브랜치에만 있다.
+- **디자이너 검토 대기 중.** 공유 링크: `raw.githack.com`(사이트 전체, 제3자 서비스라 간헐적 429 가능) + Claude Artifact(홈·꾸꾸클럽만, 안정적 백업).
+- 위 「디자인 토큰」 절 값은 **이미 이 반영을 기준으로 갱신**했다(브랜치 merge 전이라도 최신 상태로 문서화).
+- **아직 안 한 것**: `design/majors/`·`design/selector/`의 CDN DS(`--color-*`) 쪽 재스킨, 서브페이지(about/what-is 등) 리스킨, `main` 병합.
 
 ---
 
@@ -66,14 +74,22 @@
 
 `design/index.html`, `design/check/`, `safety/`, `board/`, `dual_credit/`, 신규 페이지 전부.
 
+**⚠️ 2026-10-21 디자인 리뉴얼 1차 반영(DS v2.0)으로 값이 바뀌었다 — 아래가 최신.** 출처는 `docs/design-renewal/`(업체 테스트 납품분 시안 실측). 이름은 그대로 두고 값만 교체했다.
+
 ```
---bg #DAF2FC   --brand #4F6EBE   --brand-d #3a539b   --brand-l #6d8ad6
---accent #7BCE7C   --accent-d #5fb260   --online #7EC8E3   --online-d #2a8db5   --plum #b59ddb
+--bg #D7F3FF   --brand #526ADC   --brand-d #3F54C4   --brand-l #6d8ad6
+--accent #78F7A2   --accent-d #3C7C52   --online #61E0DF   --online-d #2a8db5
+--plum #946AD7   --plum-d #7C52B8
+--sunny #FFFFC4   --char-blue #4B6FB6
 --ink #1f2b44   --ink-soft #51607d   --ink-faint #8597ad
---line #c5dcef   --surface #fff   --soft #eef7fc
+--line #c5dcef   --surface #fff   --soft #ECF9FF
 --radius 18px   --radius-sm 12px   --radius-pill 999px
 --shadow / --shadow-sm / --shadow-lg   --maxw 860px
 ```
+
+- `--plum-d` `--sunny` `--char-blue`는 이번에 **새로 추가**된 토큰 (기존 토큰 삭제·개명 없음).
+- `--brand-d` `--accent-d`는 시안에 실제 쓰임(호버·그라데이션 어두운 쪽)이 없어 **임시값**이다. 업체 색 가이드 수령 시 덮어쓸 것 (`docs/design-renewal/디자이너_요청사항.md` 6번).
+- `--shadow*`의 rgba 기준색은 구 브랜드(`79,110,190`) 그대로 **미반영 상태**다 — 다음 폴리싱 때 정리.
 
 > **`--color-*` 토큰은 본체에 존재하지 않는다.** 이전 문서에 그렇게 적혀 있었으나 실제와 다르다. 본체 페이지에서 `var(--color-brand)`를 쓰면 아무것도 적용되지 않는다.
 
@@ -132,7 +148,7 @@
 
 | # | 대메뉴 | 폴더 | 하위 | 상태 |
 |---|---|---|---|---|
-| 1 | **고교학점제** | `about/` | 고교학점제란? / 학생 주도성과 고교학점제 | ✅ 완료 |
+| 1 | **고교학점제** | `about/` | 고교학점제란? / 학생 주도성과 고교학점제 / 꾸꾸클럽 | ✅ 완료 |
 | 2 | **진로·학업 설계** | `design/` | 아래 참조 | ✅ 3관문 재편 완료 |
 | 3 | **4대 안전망** | `safety/` | 학교 교육과정 / 충남온라인학교 / 공동교육과정 / 학교 밖 교육 | ✅ 완료 |
 | 4 | **알림·소통 마당** | `board/` | 공지사항 / 자료실 | ✅ 기능 완료 (게시글 입력만 남음) |
@@ -203,7 +219,7 @@
 
 | 폴더 | 성격 | 공통 헤더/푸터 | 핵심 파일 | 비고 |
 |---|---|---|---|---|
-| `about/` | 고교학점제 안내 | ✅ 사용 | `index.html` `what-is.html` `student-agency.html` | ✅ 구축 완료 |
+| `about/` | 고교학점제 안내 | ✅ 사용 | `index.html` `what-is.html` `student-agency.html` `kkukku-club.html` | ✅ 구축 완료. `kkukku-club.html`은 2026-10-21 신설(캐릭터 소개, 콘텐츠는 업체 중간보고 PDF 원문) |
 | `apply/` | 수강신청 | 파일별로 다름 ⚠️ | **`app.html`**(앱, ❌독립) · `index.html`(마감 안내, ✅사용) · `_embed_data.js` | **앱은 `app.html`이다** — `apply/CLAUDE.md` 필독 |
 | `apply/admin/` | 수강신청 관리자 대시보드 | ❌ 독립 | `index.html` | Edge Functions API |
 | `board/` | 공지·자료실 | ✅ 사용 | `index.html` `notice.html` `resources.html` `resource-view.html` | GitHub Issues API (라벨 `공지`/`자료`) |

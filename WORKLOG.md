@@ -4,6 +4,43 @@
 
 ---
 
+## 2026-10-21: 디자인 리뉴얼 1차 반영 (`design-renewal-preview` 브랜치) + 꾸꾸클럽 페이지 신설
+
+CLAUDE.md 「기능 우선, 디자인 후행」의 2단계 착수. `prompts/06-design-renewal.md` 1~6단계를 순서대로 진행했다. **`main`에는 아직 병합하지 않았다** — 디자이너 검토 대기 중.
+
+### 1~3단계 — 점검·에셋 반입·토큰 교체
+
+- `docs/design-renewal/design-map.json`을 실제 파일과 대조해 오류 수정: 안전망 ③④ 번호가 실측과 반대로 적혀 있었음(실제는 시계방향 ①②③④가 GNB 순서와 일치), 히어로 캐릭터 수(2종→3종) 등.
+- `assets/img/`에 에셋 반입: 캐릭터 SVG 7종 + 아이콘 SVG 8종(`currentColor` 전환) + 히어로 사진(webp/jpg, 3.4MB→204KB). 반입 중 **쉼표로 묶인 CSS 선택자**(`.cls-2, .cls-3 { fill:#fff }`)를 못 읽어 5개 캐릭터의 흰색 채움이 빠지는 버그를 발견해 수정.
+- `assets/css/common.css` `:root` 토큰 값 교체(이름 유지). `--plum-d`·`--sunny`·`--char-blue` 신규 추가. 명도대비 계산으로 `safety/jointcurricula.html`·`onlineschool.html`의 기존 히어로 그라데이션 대비 미달(사전부터 있던 문제, 이번에 더 심해짐)을 발견해 보고만 하고 범위 밖이라 손대지 않음.
+
+### 4~5단계 — 홈 리스킨 + 헤더
+
+- 섹션 순서를 시안대로 hero → about → design → safety → board로 재배치.
+- 히어로를 사진 배경 + 오버레이로 교체, 진로·학업 설계 관문 색 배정 오류(②③이 online/accent로 되어 있던 것을 accent/plum으로 수정 — 점검표 실측 기준), 4대 안전망을 "반원 4분할"이 아니라 실제 시안 구조인 **"원 4분원"**으로 CSS(`2×2 grid` + `border-radius:50%`)로 새로 구현. ④ 칸은 흰 글자 대비 확보를 위해 `--plum` 대신 `--plum-d` 사용(시안과 약간 다른 색 — 담당자 승인받음).
+- 헤더 GNB를 항상 테두리가 보이는 필 형태로, 우측 CTA를 brand 배경으로 전환. 푸터는 배경만 brand로 바꾸되 글자 투명도를 없애 대비 확보(70% 흰 글자는 새 배경에서 3.16:1로 미달).
+- `index.html`의 about 카드 2장이 raw hex를 하드코딩하고 있던 것을 토큰으로 교체(리스킨 비적용 버그).
+
+### 6단계 — 모바일
+
+- `resize_window` 도구가 이 환경에서 실제 뷰포트를 바꾸지 못해, iframe(width:390px)에 페이지를 로드해 그 안에서 미디어쿼리를 평가시키는 방식으로 우회. `docs/design-renewal/qa/mobile-home.png`에 전체 캡처 저장.
+
+### 꾸꾸클럽 페이지 신설 (`about/kkukku-club.html`)
+
+- GNB 구조는 기존 결정(「꾸꾸클럽」은 `about/`의 하위 메뉴, 대메뉴 아님) 유지 확인 — 업체 중간보고 PDF 1페이지 헤더가 이와 다르게(최상단 독립 메뉴로) 그려져 있었으나, 담당자가 "그 PDF는 예전 것"이라고 확인해 기존 결정을 따름.
+- 처음엔 "콘텐츠 준비 중" 플레이스홀더로 뒀다가, 담당자 요청으로 `G:\26\(4)온마당 고도화\260915_디자인 리뉴얼\중간보고261013_온마당_메인페이지_주요페이지.pdf` 2페이지의 실제 캐릭터 소개 콘텐츠(토꾸미·팬꾸미·꾸미 프로필)로 교체.
+- 캐릭터 그림: 처음엔 기존 반입 자산(`char-gate1~3.svg`)을 재사용했으나, 포즈가 PDF와 다르다는 담당자 지적으로 **PDF에서 직접 캐릭터를 추출**했다. `pymupdf`로 페이지의 벡터 드로잉 좌표를 읽어 바운딩 박스를 구하고, 연결요소(flood-fill) 기반으로 배경을 투명화(단순 색상 키 방식은 둥근 카드 모서리 바깥의 흰 여백이 안 지워지는 문제가 있었음). `assets/img/kkukku/`에 PNG 3개로 저장.
+- `docs/design-renewal/디자이너_요청사항.md`에 "꾸꾸클럽 캐릭터 벡터 원본 요청" 추가(포즈 불일치 설명 포함).
+
+### 디자이너 공유
+
+- 레포가 **퍼블릭**임을 확인하고 `main`을 건드리지 않는 `design-renewal-preview` 브랜치를 만들어 푸시. 공유 링크 두 개:
+  - `raw.githack.com/.../design-renewal-preview/index.html` — 사이트 전체가 실제로 동작(제3자 무료 서비스라 간헐적 429 발생 — 실제로 한 번 겪음, 몇 분 후 정상화됨)
+  - Claude Artifact(홈 + 꾸꾸클럽 2페이지만, CDN 제한으로 Pretendard 대신 시스템 폰트, GitHub API 호출 차단으로 공지사항 미표시) — 안정적인 백업용
+- 커밋 4개로 분리: `docs:` 작업 자료 / `feat:` 에셋 반입 / `feat:` 토큰·리스킨·헤더 / `feat:` 꾸꾸클럽 페이지.
+
+---
+
 ## 2026-09-03: 사용 종료 자산 정리 — `off-campus_courses/` · 출석부 뷰어 · `pilot001.html`
 
 담당자 판단으로 역할이 끝난 자산을 걷어냈다. **삭제 전 인바운드 링크를 전수 검사해 3건 모두 0건**임을 확인했으므로 내부 죽은 링크는 없다. 다만 외부에 배포된 URL은 깨진다.
@@ -281,6 +318,9 @@ design/
 
 ### 남은 것
 
+- [ ] **디자인 리뉴얼 `main` 병합** — `design-renewal-preview` 브랜치, 디자이너 검토 끝나고 승인받은 뒤 진행. 2026-10-21 공유.
+- [ ] **꾸꾸클럽 캐릭터 벡터 원본 수령 대기** — 지금은 PDF에서 직접 오려낸 PNG(`assets/img/kkukku/`) 사용 중. 받으면 SVG로 교체.
+- [ ] **업체 색·타이포 가이드 수령 대기** — 받으면 `--brand-d`·`--accent-d` 임시값과 `--shadow*`의 구 브랜드 rgba를 정리.
 - [ ] **DS CDN 핀 고정** — `@main` → 커밋 해시. `design/majors/index.html`, `design/selector/index.html`, `design/selector/guide.html` 총 10곳. 07-24부터 미처리.
 - [ ] **`compass/` 매핑 근거 검토** — 화면은 동작하나 `design/data/compass-mapping.json`의 흥미유형 → 계열 연결 타당성은 미검증. **자의적으로 만들지 말 것**이라는 원칙에 따라 근거 확인 후 승인 필요.
 - [ ] **GoatCounter 누락 페이지 보완 여부 결정** — `design/check/`, `design/majors/`, `design/selector/`, `dual_credit/courses.html`, `apply/app.html`. 앱 계열에도 통계를 붙일지 판단.
