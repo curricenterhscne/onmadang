@@ -37,6 +37,286 @@ ORDER BY p.proname;
 -- ============================================================
 -- SELECT count(*) FROM settings;
 
--- ===== 백업 결과 (여기에 붙여넣기) =====
+-- ===== 백업 결과 (2026-10-21 실행분, 롤백 기준점) =====
 --
--- (아직 비어 있음 — Supabase 대시보드에서 위 쿼리를 실행한 뒤 결과를 붙여넣어 주세요)
+-- cancel_enrollment:
+-- CREATE OR REPLACE FUNCTION public.cancel_enrollment(p_school text, p_stno text, p_phone text, p_pin text)
+--  RETURNS jsonb
+--  LANGUAGE plpgsql
+--  SECURITY DEFINER
+-- AS $function$
+-- DECLARE
+--   v_phone text := regexp_replace(p_phone, '[^0-9]', '', 'g');
+--   v_pin   text := encode(digest(p_pin, 'sha256'), 'hex');
+--   v_code  text;
+--   v_s     settings%ROWTYPE;
+-- BEGIN
+--   SELECT * INTO v_s FROM settings LIMIT 1;
+--   IF v_s.close2_at IS NOT NULL AND now() > v_s.close2_at THEN
+--     RETURN jsonb_build_object('ok',false,'error','period_closed');
+--   END IF;
+--
+--   SELECT course_code INTO v_code
+--   FROM enrollments
+--   WHERE status     = 'active'
+--     AND school     = p_school
+--     AND student_no = p_stno
+--     AND phone      = v_phone
+--     AND cancel_pin = v_pin
+--   FOR UPDATE;
+--
+--   IF v_code IS NULL THEN
+--     RETURN jsonb_build_object('ok',false,'error','notfound_or_wrong_pin');
+--   END IF;
+--
+--   UPDATE enrollments
+--      SET status = 'cancelled'
+--    WHERE status     = 'active'
+--      AND school     = p_school
+--      AND student_no = p_stno
+--      AND phone      = v_phone;
+--
+--   UPDATE courses
+--      SET enrolled_count = GREATEST(enrolled_count - 1, 0)
+--    WHERE code = v_code;
+--
+--   RETURN jsonb_build_object('ok', true);
+-- END $function$
+--
+-- confirm_enrollment:
+-- CREATE OR REPLACE FUNCTION public.confirm_enrollment(p_rid uuid, p_school text, p_stno text, p_name text, p_phone text, p_pin text)
+--  RETURNS jsonb
+--  LANGUAGE plpgsql
+--  SECURITY DEFINER
+-- AS $function$
+-- DECLARE
+--   v_phone text := regexp_replace(p_phone, '[^0-9]', '', 'g');
+--   v_pin   text := encode(digest(p_pin, 'sha256'), 'hex');
+--   v_row   enrollments%ROWTYPE;
+-- BEGIN
+--   SELECT * INTO v_row
+--   FROM enrollments
+--   WHERE reservation_id = p_rid AND status = 'pending'
+--   FOR UPDATE;
+--
+--   IF NOT FOUND THEN
+--     RETURN jsonb_build_object('ok',false,'error','reservation_notfound');
+--   END IF;
+--
+--   IF now() > v_row.expires_at THEN
+--     UPDATE enrollments SET status = 'expired'   WHERE id = v_row.id;
+--     UPDATE courses SET enrolled_count = GREATEST(enrolled_count - 1, 0) WHERE code = v_row.course_code;
+--     RETURN jsonb_build_object('ok',false,'error','reservation_expired');
+--   END IF;
+--
+--   IF EXISTS (
+--     SELECT 1 FROM enrollments
+--     WHERE status = 'active'
+--       AND id <> v_row.id
+--       AND ((school = p_school AND student_no = p_stno) OR phone = v_phone)
+--   ) THEN
+--     UPDATE enrollments SET status = 'expired'   WHERE id = v_row.id;
+--     UPDATE courses SET enrolled_count = GREATEST(enrolled_count - 1, 0) WHERE code = v_row.course_code;
+--     RETURN jsonb_build_object('ok',false,'error','duplicate');
+--   END IF;
+--
+--   BEGIN
+--     UPDATE enrollments
+--        SET status      = 'active',
+--            school      = p_school,
+--            student_no  = p_stno,
+--            name        = p_name,
+--            phone       = v_phone,
+--            cancel_pin  = v_pin,
+--            expires_at  = NULL
+--      WHERE id = v_row.id;
+--   EXCEPTION WHEN unique_violation THEN
+--     UPDATE enrollments SET status = 'expired'   WHERE id = v_row.id;
+--     UPDATE courses SET enrolled_count = GREATEST(enrolled_count - 1, 0) WHERE code = v_row.course_code;
+--     RETURN jsonb_build_object('ok',false,'error','duplicate');
+--   END;
+--
+--   RETURN jsonb_build_object('ok', true);
+-- END $function$
+--
+-- get_course_status:
+-- CREATE OR REPLACE FUNCTION public.get_course_status()
+--  RETURNS TABLE(code text, name text, org text, region text, capacity integer, enrolled_count integer, remaining integer, is_full boolean, is_registerable boolean, is_closed_manual boolean)
+--  LANGUAGE plpgsql
+--  SECURITY DEFINER
+-- AS $function$
+--   BEGIN
+--     WITH exp AS (
+--       UPDATE enrollments SET status = 'expired'
+--       WHERE status = 'pending' AND expires_at < now()
+--       RETURNING course_code
+--     )
+--     UPDATE courses c
+--        SET enrolled_count = GREATEST(
+--              c.enrolled_count
+--              - (SELECT count(*) FROM exp WHERE exp.course_code = c.code),
+--              0)
+--      WHERE c.code IN (SELECT DISTINCT course_code FROM exp);
+--
+--     RETURN QUERY
+--     SELECT
+--       c.code, c.name, c.org, c.region,
+--       c.capacity, c.enrolled_count,
+--       GREATEST(c.capacity - c.enrolled_count, 0),
+--       (c.enrolled_count >= c.capacity OR c.is_closed_manual),
+--       c.is_registerable,
+--       c.is_closed_manual
+--     FROM courses c
+--     ORDER BY c.code;
+--   END $function$
+--
+-- get_my_enrollment:
+-- CREATE OR REPLACE FUNCTION public.get_my_enrollment(p_school text, p_student_no text, p_phone text)
+--  RETURNS jsonb
+--  LANGUAGE plpgsql
+--  STABLE SECURITY DEFINER
+-- AS $function$
+-- DECLARE
+--   v_phone text := regexp_replace(p_phone, '[^0-9]', '', 'g');
+--   v_row   enrollments%ROWTYPE;
+--   v_cname text;
+-- BEGIN
+--   SELECT e.* INTO v_row
+--   FROM enrollments e
+--   WHERE e.status      = 'active'
+--     AND e.school      = p_school
+--     AND e.student_no  = p_student_no
+--     AND e.phone       = v_phone
+--   LIMIT 1;
+--
+--   IF NOT FOUND THEN
+--     RETURN jsonb_build_object('ok', false, 'error', 'notfound');
+--   END IF;
+--
+--   SELECT name INTO v_cname FROM courses WHERE code = v_row.course_code;
+--
+--   RETURN jsonb_build_object(
+--     'ok',          true,
+--     'course_code', v_row.course_code,
+--     'course_name', v_cname,
+--     'status',      v_row.status,
+--     'created_at',  v_row.created_at
+--   );
+-- END $function$
+--
+-- get_open_status:
+-- CREATE OR REPLACE FUNCTION public.get_open_status()
+--  RETURNS jsonb
+--  LANGUAGE plpgsql
+--  SECURITY DEFINER
+-- AS $function$
+-- DECLARE
+--   v_s     settings%ROWTYPE;
+--   v_open  bool := false;
+--   v_phase text := 'closed';
+-- BEGIN
+--   SELECT * INTO v_s FROM settings LIMIT 1;
+--
+--   IF now() < v_s.open_at THEN
+--     v_phase := 'before_open';
+--   ELSIF v_s.close1_at IS NULL OR now() <= v_s.close1_at THEN
+--     v_phase := 'open1';
+--     v_open  := true;
+--   ELSIF v_s.open2_at IS NOT NULL AND now() < v_s.open2_at THEN
+--     v_phase := 'between';
+--   ELSIF v_s.open2_at IS NOT NULL AND now() >= v_s.open2_at
+--     AND (v_s.close2_at IS NULL OR now() <= v_s.close2_at) THEN
+--     v_phase := 'open2';
+--     v_open  := true;
+--   ELSE
+--     v_phase := 'closed';
+--   END IF;
+--
+--   RETURN jsonb_build_object(
+--     'server_now', now(),
+--     'is_open',    v_open,
+--     'phase',      v_phase,
+--     'open_at',    v_s.open_at,
+--     'close1_at',  v_s.close1_at,
+--     'open2_at',   v_s.open2_at,
+--     'close2_at',  v_s.close2_at
+--   );
+-- END $function$
+--
+-- release_reservation:
+-- CREATE OR REPLACE FUNCTION public.release_reservation(p_rid uuid)
+--  RETURNS jsonb
+--  LANGUAGE plpgsql
+--  SECURITY DEFINER
+-- AS $function$
+-- DECLARE v_row enrollments%ROWTYPE;
+-- BEGIN
+--   SELECT * INTO v_row FROM enrollments
+--   WHERE reservation_id = p_rid AND status = 'pending' FOR UPDATE;
+--   IF NOT FOUND THEN
+--     RETURN jsonb_build_object('ok',false,'error','notfound');
+--   END IF;
+--   UPDATE enrollments SET status = 'expired'                        WHERE id = v_row.id;
+--   UPDATE courses SET enrolled_count = GREATEST(enrolled_count-1,0) WHERE code = v_row.course_code;
+--   RETURN jsonb_build_object('ok', true);
+-- END $function$
+--
+-- reserve_course:
+-- CREATE OR REPLACE FUNCTION public.reserve_course(p_code text)
+--  RETURNS jsonb
+--  LANGUAGE plpgsql
+--  SECURITY DEFINER
+-- AS $function$
+--   DECLARE
+--     v_rid uuid        := gen_random_uuid();
+--     v_exp timestamptz := now() + interval '3 minutes';
+--     v_upd int;
+--     v_s   settings%ROWTYPE;
+--   BEGIN
+--     SELECT * INTO v_s FROM settings LIMIT 1;
+--
+--     IF now() < v_s.open_at THEN
+--       RETURN jsonb_build_object('ok',false,'error','not_open');
+--     END IF;
+--     IF v_s.close1_at IS NOT NULL AND v_s.open2_at IS NOT NULL
+--        AND now() > v_s.close1_at AND now() < v_s.open2_at THEN
+--       RETURN jsonb_build_object('ok',false,'error','between_periods');
+--     END IF;
+--     IF v_s.close2_at IS NOT NULL AND now() > v_s.close2_at THEN
+--       RETURN jsonb_build_object('ok',false,'error','period_closed');
+--     END IF;
+--
+--     WITH exp AS (
+--       UPDATE enrollments SET status = 'expired'
+--       WHERE course_code = p_code AND status = 'pending' AND expires_at < now()
+--       RETURNING 1
+--     )
+--     UPDATE courses
+--        SET enrolled_count = GREATEST(enrolled_count - (SELECT count(*) FROM exp), 0)
+--      WHERE code = p_code;
+--
+--     IF NOT EXISTS (SELECT 1 FROM courses WHERE code = p_code AND is_registerable) THEN
+--       RETURN jsonb_build_object('ok',false,'error','not_registerable');
+--     END IF;
+--
+--     UPDATE courses
+--        SET enrolled_count = enrolled_count + 1
+--      WHERE code = p_code
+--        AND is_registerable   = true
+--        AND is_closed_manual  = false
+--        AND enrolled_count    < capacity
+--     RETURNING 1 INTO v_upd;
+--
+--     IF v_upd IS NULL THEN
+--       RETURN jsonb_build_object('ok',false,'error','full');
+--     END IF;
+--
+--     INSERT INTO enrollments(course_code, status, reservation_id, expires_at)
+--     VALUES (p_code, 'pending', v_rid, v_exp);
+--
+--     RETURN jsonb_build_object(
+--       'ok',             true,
+--       'reservation_id', v_rid,
+--       'expires_at',     v_exp
+--     );
+--   END $function$

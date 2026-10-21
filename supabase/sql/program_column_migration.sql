@@ -72,19 +72,33 @@ VALUES
 ON CONFLICT (code) DO NOTHING;
 
 -- ────────────────────────────────────────────────────────────
--- 4. cycles — 신청 기간 (enroll.js의 하드코딩 periods 배열을 대체할 데이터)
+-- 4. settings — 신청 기간 (프로그램별 1행, 1차/2차 2단계 모델)
+--    ⚠️ 설계 변경: 처음 계획한 신규 cycles 테이블 대신, 실제 RPC가 이미 쓰고 있는
+--    settings 테이블(open_at/close1_at/open2_at/close2_at)을 그대로 확장한다.
+--    이 2단계 기간 로직은 이미 검증되어 운영 중이므로 새 테이블로 바꿀 이유가 없다.
+--    program 컬럼을 추가하고, 프로그램마다 한 행씩 갖도록 UNIQUE 제약을 건다.
 -- ────────────────────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS cycles (
-  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  program     text NOT NULL REFERENCES programs(code),
-  term        text NOT NULL,
-  open_at     timestamptz NOT NULL,
-  close_at    timestamptz NOT NULL,
-  notice_text text,
-  is_active   boolean NOT NULL DEFAULT true,
-  created_at  timestamptz NOT NULL DEFAULT now()
-);
-CREATE INDEX IF NOT EXISTS cycles_program_idx ON cycles(program);
+ALTER TABLE settings ADD COLUMN IF NOT EXISTS program text;
+
+-- 기존 단일 행(꿈키움 운영 중)을 'dream_up'으로 백필
+UPDATE settings SET program = 'dream_up' WHERE program IS NULL;
+
+ALTER TABLE settings ALTER COLUMN program SET NOT NULL;
+ALTER TABLE settings ALTER COLUMN program SET DEFAULT 'dream_up';
+
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint WHERE conname = 'settings_program_key'
+  ) THEN
+    ALTER TABLE settings ADD CONSTRAINT settings_program_key UNIQUE (program);
+  END IF;
+END $$;
+
+-- dual_credit/joint_regional의 실제 신청 기간은 아직 미확정이므로 행을 미리 넣지 않는다.
+-- RPC(get_open_status/reserve_course)는 해당 program 행이 없으면 "not_configured"로 안전하게
+-- 처리하도록 재정의한다(= Phase B1, rpc_multiprogram.sql) — 행이 없다고 "항상 열림"으로
+-- 오동작하지 않는다.
 
 -- ────────────────────────────────────────────────────────────
 -- 5. staff_profiles — 분산 관리자 (Supabase Auth 계정과 1:1)
@@ -101,16 +115,13 @@ CREATE TABLE IF NOT EXISTS staff_profiles (
 );
 
 -- ────────────────────────────────────────────────────────────
--- 6. RLS — programs/cycles는 공개 조회(학생이 신청기간을 봐야 함),
+-- 6. RLS — programs는 공개 조회(학생이 신청기간을 봐야 함),
 --    staff_profiles는 본인 행만 + service_role
+--    (settings는 기존에도 RLS 정책이 있을 것 — 이 마이그레이션에서는 건드리지 않는다)
 -- ────────────────────────────────────────────────────────────
 ALTER TABLE programs ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS programs_public_read ON programs;
 CREATE POLICY programs_public_read ON programs FOR SELECT USING (true);
-
-ALTER TABLE cycles ENABLE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS cycles_public_read ON cycles;
-CREATE POLICY cycles_public_read ON cycles FOR SELECT USING (true);
 
 ALTER TABLE staff_profiles ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS staff_profiles_own_read ON staff_profiles;
@@ -128,5 +139,7 @@ COMMIT;
 --   → 기존 66강좌가 전부 'dream_up'으로 나와야 정상
 -- SELECT * FROM programs;
 --   → dream_up / dual_credit / joint_regional 3행
+-- SELECT * FROM settings;
+--   → 기존 1행이 program='dream_up'으로 채워져 있는지 확인
 -- SELECT column_name FROM information_schema.columns WHERE table_name='courses' ORDER BY ordinal_position;
 --   → 새로 추가한 컬럼들이 보이는지 확인
