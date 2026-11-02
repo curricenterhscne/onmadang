@@ -232,6 +232,8 @@
 | `resources/teacher/online_class/` | 약 793줄 + PDF 19개 | 온라인 공동교육과정 교수·학습 도움 자료집 | ❌ |
 | `dual_credit/courses.html` | 약 520줄 | 학기별 개설 강좌 카탈로그. **2026-08-20에 링크를 걷어냈다** (`dual_credit/CLAUDE.md` 참조) | ✅ |
 | `2015/index.html` | 22줄 | `onmadang.or.kr` 리다이렉트 (구 URL 호환) | ❌ |
+| `apply/admin-test/index.html` | 약 1,590줄 | **지역청 테스트용 임시 사본** — `enrollment-multiprogram` 브랜치 `apply/admin/index.html` 복사본(noindex). 2026-11 지역청 시범 운영 안내문으로 배포. **브랜치 병합 후 삭제** | ❌ |
+| `apply/app-test.html` | 약 1,700줄 | **지역청 테스트용 임시 사본** — 같은 브랜치 `apply/app.html` 복사본(noindex), `?program=joint_regional`로 사용. **브랜치 병합 후 삭제** | ❌ |
 
 > 학생 동선에 있는 **「학교 밖 교육」은 `safety/off-campus_courses.html`**이다. 파일 하나이며, 같은 이름의 폴더는 이제 없다.
 
