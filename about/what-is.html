@@ -76,6 +76,7 @@
   .tbl td{color:var(--ink-soft)}
   .tbl.center th,.tbl.center td{text-align:center}
   .tbl .imp{color:var(--accent-d);font-weight:800}
+  .mini-note{margin-top:10px;font-size:12.5px;line-height:1.6;color:var(--ink-faint)}
 
   /* 2단 박스 (이수기준 + 성취도) */
   .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -175,7 +176,7 @@
           <h4><span class="vs-tag">↑</span> 고교학점제 이후</h4>
           <ul>
             <li>이수해야 학점·졸업</li>
-            <li>성취가 곧 이수</li>
+            <li>출석과 학업성취 기준을 충족해야 이수</li>
             <li>학생이 과목을 설계·선택</li>
             <li>고1부터 진로를 고민하고 설계</li>
           </ul>
@@ -226,9 +227,10 @@
       </div>
       <table class="tbl">
         <tbody>
-          <tr><th>공통 과목</th><td>1학년 중심. 공통국어·수학·영어, 통합사회·통합과학, 한국사 등</td><td>상대평가(석차 5등급) + 성취평가 병기</td></tr>
-          <tr><th>선택 과목</th><td>2~3학년 중심. 일반선택·진로선택·융합선택으로 편성</td><td>성취평가(A~E) 적용</td></tr>
-          <tr><th>학사 운영</th><td>단위 → 학점 기준으로 전환. 학기 단위 과목 운영</td><td>출석 일수 기준 → 학점 이수 기준</td></tr>
+          <tr><th>공통 과목</th><td>1학년 중심 (공통국어·수학·영어, 통합사회·통합과학, 한국사 등)</td><td>성취도(A~E)와 석차등급(5등급) 병기</td></tr>
+          <tr><th>선택 과목</th><td>2~3학년 중심 (일반선택·진로선택·융합선택으로 편성)</td><td>성취도(A~E)와 석차등급(5등급) 병기 (사회·과학 융합선택 9과목은 석차등급 미산출)</td></tr>
+          <tr><th>학사 운영</th><td>단위 → 학점 기준으로 전환, 학기 단위 과목 운영</td><td>출석 일수 기준 → 학점 이수 기준</td></tr>
+          <tr><th>예외 과목</th><td>체육·예술 교과(군), 과학탐구실험1·2 / 교양 교과(군)</td><td>성취도 3단계(A·B·C)만 기재 / 이수 여부(P)만 기재 (모두 석차등급 미산출)</td></tr>
         </tbody>
       </table>
     </div>
@@ -247,18 +249,19 @@
           </ul>
         </div>
         <div class="mini">
-          <h4>성취도 평정 (보통교과)</h4>
+          <h4>성취도 산출 기준 (보통교과)</h4>
           <table class="tbl center" style="margin-top:0">
-            <thead><tr><th>성취도</th><th>성취율</th></tr></thead>
+            <thead><tr><th>성취도</th><th>1학년 공통과목</th><th>선택과목</th></tr></thead>
             <tbody>
-              <tr><td>A</td><td>90% 이상</td></tr>
-              <tr><td>B</td><td>80% 이상</td></tr>
-              <tr><td>C</td><td>70% 이상</td></tr>
-              <tr><td>D</td><td>60% 이상</td></tr>
-              <tr><td>E</td><td>40% 이상</td></tr>
-              <tr><td class="imp">I (미이수)</td><td class="imp">40% 미만</td></tr>
+              <tr><td>A</td><td>90% 이상</td><td>90% 이상</td></tr>
+              <tr><td>B</td><td>80% 이상</td><td>80% 이상</td></tr>
+              <tr><td>C</td><td>70% 이상</td><td>70% 이상</td></tr>
+              <tr><td>D</td><td>60% 이상</td><td>60% 이상</td></tr>
+              <tr><td>E</td><td>40% 이상</td><td>60% 미만</td></tr>
+              <tr><td class="imp">I (미이수)</td><td class="imp">40% 미만</td><td>해당 없음</td></tr>
             </tbody>
           </table>
+          <p class="mini-note">성취율은 과목별 학업성취율입니다. 체육·예술 교과(군) 등 예외 과목은 위 표와 다르게 기재합니다. 전문교과는 「고등학교 학업성적관리 시행지침」을 따릅니다.</p>
         </div>
       </div>
 
