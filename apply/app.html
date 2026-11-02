@@ -81,6 +81,22 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
 .tab-btn.active{color:var(--navy);border-bottom-color:var(--navy)}
 .tab-btn:hover:not(.active){color:var(--g700)}
 
+/* ── Region gate (지원청 단위 프로그램) ── */
+.region-gate{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:22px 18px;margin-bottom:14px;text-align:center}
+.region-gate h3{font-size:16px;color:var(--navy);margin-bottom:4px}
+.region-gate p{font-size:12.5px;color:var(--g400);margin-bottom:14px;line-height:1.6}
+.region-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:8px}
+.region-btn{border:1.5px solid var(--g200);background:var(--white);color:var(--g700);padding:10px 6px;
+  border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .16s}
+.region-btn small{display:block;font-size:11px;font-weight:600;color:var(--g400);margin-top:2px}
+.region-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
+.region-btn:disabled{opacity:.45;cursor:default}
+.region-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;font-size:13px;color:var(--g700)}
+.region-bar strong{color:var(--navy)}
+.region-change{border:1.5px solid var(--g200);background:var(--white);color:var(--blue);padding:3px 11px;
+  border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.region-change:hover{border-color:var(--blue)}
+
 /* ── Filter section ── */
 .filter-section{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:14px 16px;margin-bottom:14px}
 .filter-search-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
@@ -580,7 +596,13 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
 
   <!-- ── 강좌 목록 탭 ── -->
   <div id="tab-courses">
+    <div class="region-gate" id="region-gate" style="display:none">
+      <h3>지역을 선택하세요</h3>
+      <p>선택한 교육지원청에서 개설한 강좌만 표시됩니다.<br>다른 지역 강좌는 [지역 바꾸기]로 볼 수 있습니다.</p>
+      <div class="region-grid" id="region-grid"></div>
+    </div>
     <div class="filter-section">
+      <div class="region-bar" id="region-bar" style="display:none"></div>
       <div class="filter-search-row">
         <input class="search-box" type="search" placeholder="강좌명, 기관명 검색" oninput="setNameFilter(this.value)" autocomplete="off" role="searchbox"/>
         <span id="poll-ts"></span>
@@ -815,6 +837,15 @@ let filterField  = '';
 let filterOrg    = '';
 let nameFilter   = '';
 
+// 지역 관문 — 지원청 단위로 운영하는 프로그램(programs.scope_type = 'region', 현재 지역연계)은
+// 학생이 먼저 지역을 고르고 그 지역 강좌만 본다. 선택은 주소의 ?region=에 남아서,
+// 지역청이 「…&region=천안」 같은 링크를 직접 배포할 수도 있다.
+// 값은 courses.region과 같은 「○○교육지원청」 전체 이름이다(약칭으로 들어와도 맞춰 준다).
+const REGIONS = ['천안','공주','보령','아산','서산','논산계룡','당진','금산','부여','서천','청양','홍성','예산','태안']
+  .map(n => n + '교육지원청');
+let regionGate   = false;
+let filterRegion = '';
+
 // Reserve modal state
 let currentRid  = null;
 let currentCode = null;
@@ -834,6 +865,7 @@ const FIELDS = [
 async function init() {
   sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   if (PROGRAM !== 'dream_up') await applyProgramBranding();
+  if (regionGate) filterRegion = normalizeRegion(new URLSearchParams(location.search).get('region'));
   buildFilterBar();
   initSchoolSearch('r-school-inp',  'r-school-code',  'r-school-dd');
   initSchoolSearch('my-school-inp', 'my-school-code', 'my-school-dd');
@@ -851,14 +883,20 @@ async function applyProgramBranding() {
   let displayName = PROGRAM;
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/programs?code=eq.${encodeURIComponent(PROGRAM)}&select=display_name`,
+      `${SUPABASE_URL}/rest/v1/programs?code=eq.${encodeURIComponent(PROGRAM)}&select=display_name,scope_type`,
       { headers: { apikey: SUPABASE_ANON_KEY } }
     );
     if (res.ok) {
       const rows = await res.json();
-      if (rows[0]) displayName = rows[0].display_name;
+      if (rows[0]) {
+        displayName = rows[0].display_name;
+        regionGate = rows[0].scope_type === 'region';
+      }
     }
   } catch (e) { console.warn('applyProgramBranding:', e); }
+
+  const orgLabel = document.getElementById('org-chips').previousElementSibling;
+  if (orgLabel) orgLabel.textContent = '운영 기관';
 
   document.title = `${displayName} 수강신청`;
   const heroEl = document.querySelector('.hero h1');
@@ -903,13 +941,16 @@ function buildFilterBar() {
 
 function buildOrgChips() {
   // 대학 목록은 courses 로드 후에 빌드 (카운트 표시)
+  // 지역을 고른 상태면 그 지역 강좌의 기관만 센다. 폴링 때마다 다시 그리므로 선택 상태를 유지한다.
   const orgChips = document.getElementById('org-chips');
+  const base = regionCourses();
   const orgs = {};
-  courses.forEach(c => { if (c.org) orgs[c.org] = (orgs[c.org]||0)+1; });
+  base.forEach(c => { if (c.org) orgs[c.org] = (orgs[c.org]||0)+1; });
+  if (filterOrg && !orgs[filterOrg]) filterOrg = '';
   const sorted = Object.entries(orgs).sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0]));
-  orgChips.innerHTML = `<button class="filter-chip sm active" data-org="" onclick="setOrgFilter('')">전체 <strong>${courses.length}</strong></button>` +
+  orgChips.innerHTML = `<button class="filter-chip sm${filterOrg ? '' : ' active'}" data-org="" onclick="setOrgFilter('')">전체 <strong>${base.length}</strong></button>` +
     sorted.map(([org, cnt]) =>
-      `<button class="filter-chip sm" data-org="${org}" onclick="setOrgFilter('${org.replace(/'/g,"\\'")}')">${org} <strong>${cnt}</strong></button>`
+      `<button class="filter-chip sm${org === filterOrg ? ' active' : ''}" data-org="${org}" onclick="setOrgFilter('${org.replace(/'/g,"\\'")}')">${org} <strong>${cnt}</strong></button>`
     ).join('');
 }
 
@@ -932,6 +973,60 @@ function setOrgFilter(org) {
 function setNameFilter(val) {
   nameFilter = val.trim();
   renderCourses();
+}
+
+function normalizeRegion(v) {
+  const s = String(v || '').replace(/\s/g, '');
+  if (!s) return '';
+  return s.endsWith('교육지원청') ? s : s + '교육지원청';
+}
+
+const shortRegion = r => r.replace(/교육지원청$/, '');
+
+function regionCourses() {
+  return (regionGate && filterRegion) ? courses.filter(c => c.region === filterRegion) : courses;
+}
+
+function setRegion(r) {
+  filterRegion = r;
+  filterOrg = '';
+  const u = new URL(location.href);
+  if (r) u.searchParams.set('region', shortRegion(r)); else u.searchParams.delete('region');
+  history.replaceState(null, '', u);
+  buildOrgChips();
+  renderCourses();
+  document.getElementById('tab-courses').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// 지역을 고르기 전에는 관문만 보이고, 고른 뒤에는 필터 위에 「지역 바꾸기」 줄이 붙는다.
+// 반환값: 강좌 목록을 그려도 되면 true
+function renderRegionGate() {
+  const gate = document.getElementById('region-gate');
+  const bar = document.getElementById('region-bar');
+  const filters = document.querySelector('#tab-courses .filter-section');
+  const counts = {};
+  courses.forEach(c => { if (c.region) counts[c.region] = (counts[c.region] || 0) + 1; });
+  // 목록에 없는 지역 이름이 주소로 들어오면(오타 등) 관문으로 돌려보낸다
+  if (filterRegion && !REGIONS.includes(filterRegion) && !counts[filterRegion]) filterRegion = '';
+
+  if (!filterRegion) {
+    const regions = REGIONS.concat(Object.keys(counts).filter(r => !REGIONS.includes(r)));
+    document.getElementById('region-grid').innerHTML = regions.map(r => {
+      const n = counts[r] || 0;
+      return `<button class="region-btn" ${n ? '' : 'disabled'} onclick="setRegion('${r.replace(/'/g, "\\'")}')">${shortRegion(r)}<small>${n ? `강좌 ${n}개` : '개설 강좌 없음'}</small></button>`;
+    }).join('');
+    gate.style.display = '';
+    filters.style.display = 'none';
+    bar.style.display = 'none';
+    document.getElementById('course-grid').innerHTML = '';
+    return false;
+  }
+  gate.style.display = 'none';
+  filters.style.display = '';
+  bar.style.display = '';
+  bar.innerHTML = `📍 <strong>${shortRegion(filterRegion)}</strong> 개설 강좌 ${counts[filterRegion] || 0}개
+    <button class="region-change" onclick="setRegion('')">지역 바꾸기</button>`;
+  return true;
 }
 
 // ── School autocomplete ──
@@ -1091,7 +1186,8 @@ async function loadCourses() {
 }
 
 function renderCourses() {
-  let list = courses;
+  if (regionGate && !renderRegionGate()) return;
+  let list = regionCourses();
   if (filterField)  list = list.filter(c => { const d = DETAIL_MAP[c.code]; return d && d.field.includes(filterField); });
   if (filterOrg)    list = list.filter(c => c.org === filterOrg);
   if (nameFilter)   list = list.filter(c => c.name.includes(nameFilter) || (c.org||'').includes(nameFilter));
