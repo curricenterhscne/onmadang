@@ -30,7 +30,6 @@
   var active = headerEl.getAttribute('data-active') || '';
 
   var CLV15 = '<svg class="clover" width="15" height="15"><use href="#clv"/></svg>';
-  var CLV38 = '<svg class="clover" width="38" height="38"><use href="#clv"/></svg>';
 
   /* ── 클로버 SVG 심볼 (defs) ── */
   var svgDefs = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>'
@@ -121,7 +120,7 @@
   var header = '<header>'
     + '<div class="nav">'
     + '<a href="' + L.home + '" class="brand">'
-    +   CLV38
+    +   '<img class="brand-logo" src="' + base + 'assets/img/common/logo.svg" width="38" height="38" alt="">'
     +   '<span class="brand-txt"><b>온마당</b><span>충남 고교학점제 종합지원</span></span>'
     + '</a>'
     + '<nav class="nav-links" aria-label="주 메뉴">' + gnbItems() + '</nav>'

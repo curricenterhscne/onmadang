@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_레이어_1" data-name="레이어 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126.38 123.68">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        font-family: PretendardVariable-ExtraBold, 'Pretendard Variable';
+        font-size: 31.17px;
+        font-variation-settings: 'wght' 800;
+        font-weight: 700;
+      }
+
+      .cls-2 {
+        fill: #946ad7;
+      }
+
+      .cls-3 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-4 {
+        letter-spacing: -.11em;
+      }
+    </style>
+  </defs>
+  <rect class="cls-2" x="-15.01" y="37.95" width="156.4" height="45.45" rx="22.72" ry="22.72" transform="translate(58.6 -26.81) rotate(43.16)"/>
+  <text class="cls-1" transform="translate(7.87 23.51) rotate(43.82)"><tspan class="cls-3" x="0" y="0">S</tspan><tspan class="cls-4" x="19.1" y="0">T</tspan><tspan class="cls-3" x="35.93" y="0">ART!-&gt;</tspan></text>
+</svg>

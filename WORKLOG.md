@@ -4,6 +4,22 @@
 
 ---
 
+## 2026-11-02: 디자인 리뉴얼 — 업체 피드백 반영본 중간 반영 (`design-renewal-preview`)
+
+업체가 11-02에 시트(`온마당_사이트맵_작업현황공유.xlsx` 2번째 시트)로 반영 현황을 보내고 수정 파일을 드라이브에 올렸다. 바뀐 파일만 `design-source/2026-11-02/`에 받아 두었다 (드라이브 커넥터로는 폴더 안 파일이 안 보여 Chrome으로 폴더째 zip 다운로드).
+
+### 홈에 넣은 것
+- **로고** `assets/img/common/logo.svg` — `common.js` 헤더의 인라인 클로버(`CLV38`)를 업체 로고로 교체. `common.js`를 안 쓰는 `apply/app.html`·`design/selector/guide.html`의 헤더는 아직 클로버다.
+- **히어로 캐릭터** `assets/img/home/hero-chars.svg` — 클로버 자리 교체. 업체 SVG에 말풍선이 없어서 「당장 진로·학업 설계 시작해볼까?」「잠깐! 고교학점제가 뭐야?」를 HTML 링크(`.hero-bubble`)로 얹었다. 히어로만 폭을 1180px(헤더와 같음)로 넓혔다 — 시안 히어로가 본문 폭 860px보다 넓다.
+- **START 배지** `assets/img/home/badge-start.svg` — 토꾸미 왼쪽 위. 글자가 SVG `<text>`라 `<img>`에서는 시스템 서체로 그려진다.
+- **GOAL 캐릭터** `char-board-goal.svg` — 10-22 수정본으로 교체.
+- **글자 크기** — 컬러·서체 가이드(ver261027) 값 적용: 히어로 제목 최대 55, 섹션 제목 40, 섹션 설명 25(Medium), 카드 제목 25, 카드 본문·버튼 15. 큰 글자에서 낱말이 끊겨 `word-break:keep-all`을 붙였다.
+
+### 넣지 않은 것 (사유)
+- **색 토큰** — 가이드 값이 기존 토큰과 거의 같다. 다른 것 2가지(라이트 블루 #61DFFF ↔ 시안·SVG #61E0DF, 글자색 #333/#000 ↔ `--ink`)는 업체 확인 뒤에.
+- **서브페이지 시안** — 이번 차수는 홈만. 서브페이지 리스킨은 업체 나머지 납품(유형 아이콘·누락 페이지) 뒤에 일괄.
+- **서브 SVG 8개** — 아직 업체 PC의 사진 경로를 링크한다 (`design-map.json` `_재납품_2026-11-02`).
+
 ## 2026-10-21: 디자인 리뉴얼 1차 반영 (`design-renewal-preview` 브랜치) + 꾸꾸클럽 페이지 신설
 
 CLAUDE.md 「기능 우선, 디자인 후행」의 2단계 착수. `prompts/06-design-renewal.md` 1~6단계를 순서대로 진행했다. **`main`에는 아직 병합하지 않았다** — 디자이너 검토 대기 중.
@@ -320,7 +336,7 @@ design/
 
 - [ ] **디자인 리뉴얼 `main` 병합** — `design-renewal-preview` 브랜치, 디자이너 검토 끝나고 승인받은 뒤 진행. 2026-10-21 공유.
 - [ ] **꾸꾸클럽 캐릭터 벡터 원본 수령 대기** — 지금은 PDF에서 직접 오려낸 PNG(`assets/img/kkukku/`) 사용 중. 받으면 SVG로 교체.
-- [ ] **업체 색·타이포 가이드 수령 대기** — 받으면 `--brand-d`·`--accent-d` 임시값과 `--shadow*`의 구 브랜드 rgba를 정리.
+- [ ] **업체 색 가이드 차이 확인** — 11-02 수령(`온마당_디자인가이드_컬러_서체_ver261027.xlsx`). 글자 크기는 홈에 반영. 라이트 블루(#61DFFF ↔ #61E0DF)·글자색(#333/#000 ↔ `--ink`) 업체 확인 대기. 가이드에 `-d`(어두운) 계열·그림자 값이 없어 `--brand-d`·`--accent-d`·`--shadow*`는 여전히 임시값.
 - [ ] **DS CDN 핀 고정** — `@main` → 커밋 해시. `design/majors/index.html`, `design/selector/index.html`, `design/selector/guide.html` 총 10곳. 07-24부터 미처리.
 - [ ] **`compass/` 매핑 근거 검토** — 화면은 동작하나 `design/data/compass-mapping.json`의 흥미유형 → 계열 연결 타당성은 미검증. **자의적으로 만들지 말 것**이라는 원칙에 따라 근거 확인 후 승인 필요.
 - [ ] **GoatCounter 누락 페이지 보완 여부 결정** — `design/check/`, `design/majors/`, `design/selector/`, `dual_credit/courses.html`, `apply/app.html`. 앱 계열에도 통계를 붙일지 판단.

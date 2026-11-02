@@ -30,25 +30,25 @@
       "use": true
     },
     {
-      "src": "design-source/2026-10-14_test/02_main_메인페이지/hero/main_hero_ch_1.svg",
+      "src": "design-source/2026-11-01/04_요소_수정본_1015-1022/main_hero_ch_1.svg",
       "dest": "assets/img/home/hero-chars.svg",
-      "where": "index.html .hero-char (토꾸미+팬꾸미+꾸미 3종 — 팬꾸미 머리 위에 꾸미)",
-      "status": "reissue",
-      "use": false
+      "where": "index.html .hero-char (말풍선 2개는 HTML 링크로 얹음 — 업체 SVG에는 말풍선 없음)",
+      "status": "ok",
+      "use": true
     },
     {
-      "src": "design-source/2026-10-14_test/01_common_키비주얼/logo/common_logo.svg",
+      "src": "design-source/2026-11-01/04_요소_수정본_1015-1022/common_logo.svg",
       "dest": "assets/img/common/logo.svg",
       "where": "common.js 헤더 .brand",
-      "status": "reissue",
-      "use": false
+      "status": "ok",
+      "use": true
     },
     {
-      "src": "design-source/2026-10-14_test/02_main_메인페이지/icon/main_content_icon_1.svg",
+      "src": "design-source/2026-11-02/04_요소/02_main_메인페이지/icon/main_content_icon_1.svg",
       "dest": "assets/img/home/badge-start.svg",
-      "where": "about-sec START 배지",
-      "status": "reissue",
-      "use": false
+      "where": "about-sec START 배지 (토꾸미 왼쪽 위). 글자가 <text>라 <img>로 쓰면 Pretendard 대신 시스템 서체로 그려진다",
+      "status": "ok",
+      "use": true
     },
     {
       "src": "design-source/2026-10-14_test/02_main_메인페이지/content/main_content_ch_1.svg",
@@ -93,10 +93,10 @@
       "use": true
     },
     {
-      "src": "design-source/2026-10-14_test/02_main_메인페이지/content/main_content_ch_7.svg",
+      "src": "design-source/2026-11-01/04_요소_수정본_1015-1022/main_content_ch_7.svg",
       "dest": "assets/img/home/char-board-goal.svg",
       "where": "board-sec GOAL 캐릭터 묶음",
-      "status": "ok-minor",
+      "status": "ok",
       "use": true
     },
     {
@@ -190,5 +190,10 @@
       "status": "ignore",
       "use": false
     }
-  ]
+  ],
+  "_재납품_2026-11-02": {
+    "반영": "로고·히어로 캐릭터·GOAL 캐릭터(10-15·10-22 수정본)와 START 배지(11-02)를 홈에 넣었다.",
+    "컬러_서체_가이드": "온마당_디자인가이드_컬러_서체_ver261027.xlsx — 글자 크기(히어로 55·섹션 제목 40·섹션 설명 25·카드 제목 25·카드 본문 15·버튼 15)를 홈에 적용. 색은 기존 토큰과 거의 같아 바꾸지 않았다. 차이: 라이트 블루 가이드 #61DFFF ↔ 시안·SVG #61E0DF(--online), 메뉴 글자 #333·본문 #000 ↔ --ink #1f2b44 → 업체 확인 대기.",
+    "아직_외부사진_링크": "ver261101의 sub01_00_ch_01·02, sub01_02_ch_01·02, sub01_03_ch_01, sub03_01·03·04_bg_01 SVG가 여전히 업체 PC의 C:/Users/admin/Downloads/*.jpg를 링크한다. 대신 원본 사진(jpg, 색 미적용)과 색 입힌 png가 따로 왔다."
+  }
 }
