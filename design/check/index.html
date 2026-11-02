@@ -6,7 +6,7 @@
 <title>내 선택 점검 · 진로·학업 설계 | 충남 고교학점제 종합지원 포털 온마당</title>
 <meta name="description" content="과목 선택 실습에서 내보낸 파일로 졸업 학점, 교과(군)별 필수이수, 국수영 상한, 과목 위계, 석차등급 산출 여부를 스스로 점검합니다.">
 <meta property="og:title" content="내 선택 점검 | 온마당">
-<meta property="og:description" content="내가 고른 과목, 이대로 괜찮을까요? 스스로 점검해 보세요.">
+<meta property="og:description" content="내가 고른 과목, 이대로 괜찮을까요? 스스로 점검해 보십시오.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="../../assets/css/common.css">
 <link rel="stylesheet" href="../css/jinro.css">
@@ -101,7 +101,7 @@
 
     <p class="jn-footnote jn-hidden">
       이 표는 제출 서류가 아니라 스스로 점검하기 위한 자료입니다.
-      최종 확인은 담임 선생님 또는 교육과정 담당 선생님과 함께 하세요.
+      최종 확인은 담임 선생님 또는 교육과정 담당 선생님과 함께 하십시오.
       · 충남 고교학점제 종합지원 포털 온마당 (onmadang.or.kr)
     </p>
   </div>
@@ -176,7 +176,7 @@
     fr.onload = function () {
       var plan;
       try { plan = JSON.parse(fr.result); }
-      catch (e) { return showErr('JSON 파일이 아닙니다. 과목 선택 실습에서 내보낸 파일인지 확인해 주세요.'); }
+      catch (e) { return showErr('JSON 파일이 아닙니다. 과목 선택 실습에서 내보낸 파일인지 확인해 주십시오.'); }
       var bad = JinroPlan.validate(plan);
       if (bad) return showErr(bad);
       loadCatalog(plan);
@@ -222,7 +222,7 @@
       total('총 이수학점', rep.totals.total + ' / 192');
 
     $('mismatch').textContent = rep.mismatch
-      ? '참고: 실습 화면의 합계(' + rep.mismatch.summary + ')와 다시 계산한 값(' + rep.mismatch.mine + ')이 다릅니다. 실습에서 파일을 다시 내보내 보세요.'
+      ? '참고: 실습 화면의 합계(' + rep.mismatch.summary + ')와 다시 계산한 값(' + rep.mismatch.mine + ')이 다릅니다. 실습에서 파일을 다시 내보내 보십시오.'
       : '';
 
     $('checks').innerHTML = rep.checks.map(checkHtml).join('');
@@ -361,7 +361,7 @@
       t.push('· [' + BADGE[c.level] + '] ' + c.title + (c.value ? ' — ' + c.value : ''));
       if (c.fix) t.push('   → ' + c.fix);
     });
-    t.push('', '※ 제출 서류가 아닌 자기 점검용입니다. 최종 확인은 선생님과 함께 하세요.');
+    t.push('', '※ 제출 서류가 아닌 자기 점검용입니다. 최종 확인은 선생님과 함께 하십시오.');
     var txt = t.join('\n');
     var done = function () {
       var b = $('copy'); var o = b.textContent;

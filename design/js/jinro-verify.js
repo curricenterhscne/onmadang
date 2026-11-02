@@ -35,7 +35,7 @@
       return check({
         id: 'total-192', level: UNKNOWN, title: '졸업 총 이수학점',
         detail: '이수학점 정보를 읽지 못했습니다.',
-        fix: '과목 선택 실습에서 파일을 다시 내보내 주세요.', link: '../selector/'
+        fix: '과목 선택 실습에서 파일을 다시 내보내 주십시오.', link: '../selector/'
       });
     }
     if (got >= need) {
@@ -65,7 +65,7 @@
       return check({
         id: 'group-required', level: UNKNOWN, title: '교과(군)별 필수이수학점',
         detail: '편성표를 불러오지 못해 교과(군)별 이수학점을 확인할 수 없습니다.',
-        fix: '과목 선택 실습에서 파일을 다시 내보내 주세요.',
+        fix: '과목 선택 실습에서 파일을 다시 내보내 주십시오.',
         ref: '교육부 고시 제2022-33호 학점 배당 기준', link: '../selector/'
       });
     }
@@ -106,7 +106,7 @@
         id: 'group-required', level: UNKNOWN, title: '교과(군)별 필수이수학점',
         value: (req.length - skipped.length) + '개 충족 · ' + skipped.length + '개 확인 불가',
         detail: '확인한 교과(군)은 모두 충족했습니다.' + skipNote + note,
-        fix: '남은 교과(군)은 담임 또는 교육과정 담당 선생님과 확인해 주세요.',
+        fix: '남은 교과(군)은 담임 또는 교육과정 담당 선생님과 확인해 주십시오.',
         ref: '교육부 고시 제2022-33호 학점 배당 기준'
       });
     } else {
@@ -184,7 +184,7 @@
       return check({
         id: 'hierarchy', level: UNKNOWN, title: '과목 위계(듣는 순서)',
         detail: '편성표를 불러오지 못해 자동 확인이 어렵습니다.',
-        fix: '수학·과학은 순서가 있는 과목이 있습니다. 담임 또는 교육과정 담당 선생님과 확인해 주세요.',
+        fix: '수학·과학은 순서가 있는 과목이 있습니다. 담임 또는 교육과정 담당 선생님과 확인해 주십시오.',
         ref: '2022 개정 교육과정 수학·과학 위계'
       });
     }
@@ -252,7 +252,7 @@
     var c = check({
       id: 'rank-exempt', level: OK, title: '석차등급이 나오는 과목 / 안 나오는 과목',
       value: '석차 산출 ' + withRank.length + '과목 · 미산출 ' + (noRank.length + passOnly.length) + '과목',
-      detail: '석차등급이 나오지 않는 과목은 성취도(A~E 또는 A~C)만, 교양 교과(군)은 이수여부(P)만 기록됩니다. 유불리를 따지기보다 배우고 싶은 과목인지로 판단하세요.',
+      detail: '석차등급이 나오지 않는 과목은 성취도(A~E 또는 A~C)만, 교양 교과(군)은 이수여부(P)만 기록됩니다. 유불리를 따지기보다 배우고 싶은 과목인지로 판단하십시오.',
       ref: '편성표 rank 필드 + 고등학교 학업성적관리 시행지침'
     });
     c.lists = { withRank: withRank, noRank: noRank, passOnly: passOnly };
