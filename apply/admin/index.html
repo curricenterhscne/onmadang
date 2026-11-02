@@ -332,8 +332,19 @@
         <div class="form-grid">
           <div class="form-field">
             <label>강좌 코드 *</label>
-            <input id="f-code" placeholder="예: JR26C001">
-            <div class="field-hint">등록 후에는 바꿀 수 없습니다.</div>
+            <input id="f-code" placeholder="저장하면 자동 부여">
+            <div class="field-hint">프로그램·학년도·운영 기간·지원청·순번 순으로 자동 부여됩니다(예: JR27SCA01 = 지역연계·2027학년도 여름방학·천안·1번). 등록 후에는 바꿀 수 없습니다.</div>
+          </div>
+          <div class="form-field">
+            <label>운영 기간</label>
+            <select id="f-term">
+              <option value="">시작일로 자동 판단</option>
+              <option value="1">1학기</option>
+              <option value="S">여름방학</option>
+              <option value="2">2학기</option>
+              <option value="W">겨울방학</option>
+            </select>
+            <div class="field-hint">강좌 코드에만 쓰입니다. 자동 판단: 3~6월 1학기, 7~8월 여름방학, 9~12월 2학기, 1~2월 겨울방학.</div>
           </div>
           <div class="form-field">
             <label>프로그램 *</label>
@@ -416,7 +427,7 @@
         <h3>요일별 일정 (선택, 고급)</h3>
         <div class="form-field">
           <textarea id="f-schedule_by_day" placeholder='[{"date":"2026-11-01","weekday":"토","start":"09:00","end":"12:00","sessionCount":2}]'></textarea>
-          <div class="field-hint">JSON 형식입니다. 모르면 비워두세요 — 필수 항목이 아닙니다.</div>
+          <div class="field-hint">비워 두면 차시별 계획의 날짜·시간으로 자동 작성됩니다. 직접 지정할 때만 JSON 형식으로 입력하세요.</div>
         </div>
       </div>
 
@@ -462,6 +473,9 @@
   let editingCourseCode = null;
 
   const ROLE_LABEL = { province: '도교육청', region: '지역청 담당', org: '기관 담당' };
+  // 지역청 담당자에게 보여 줄 프로그램 — 서버(admin-upsert-course)의 REGION_PROGRAMS와 같아야 한다
+  const REGION_PROGRAMS = ['joint_regional'];
+  const isRegionStaff = () => !!(ME && ME.role === 'region');
 
   function authHeaders() {
     return {
@@ -619,6 +633,10 @@
       headers: { apikey: SUPABASE_ANON_KEY },
     }).catch(() => null);
     programsData = (res && res.ok) ? await res.json() : [];
+    if (isRegionStaff()) {
+      programsData = programsData.filter(p => REGION_PROGRAMS.includes(p.code));
+      currentProgram = programsData[0] ? programsData[0].code : '';
+    }
     renderProgramTabs();
     renderProgramSelect();
   }
@@ -626,11 +644,13 @@
   function renderProgramTabs() {
     const wrap = document.getElementById('program-tabs');
     wrap.innerHTML = '';
-    const allBtn = document.createElement('button');
-    allBtn.className = 'tab-btn' + (currentProgram === '' ? ' active' : '');
-    allBtn.textContent = '전체';
-    allBtn.addEventListener('click', () => { currentProgram = ''; renderProgramTabs(); loadCourses(); });
-    wrap.appendChild(allBtn);
+    if (!isRegionStaff()) {
+      const allBtn = document.createElement('button');
+      allBtn.className = 'tab-btn' + (currentProgram === '' ? ' active' : '');
+      allBtn.textContent = '전체';
+      allBtn.addEventListener('click', () => { currentProgram = ''; renderProgramTabs(); loadCourses(); });
+      wrap.appendChild(allBtn);
+    }
     for (const p of programsData) {
       const btn = document.createElement('button');
       btn.className = 'tab-btn' + (currentProgram === p.code ? ' active' : '');
@@ -920,7 +940,9 @@
     document.getElementById('course-form-error').textContent = '';
 
     document.getElementById('f-code').value = course ? course.code : '';
-    document.getElementById('f-code').disabled = !!course;
+    document.getElementById('f-code').disabled = !!course || !(ME && ME.role === 'province');
+    document.getElementById('f-term').value = '';
+    document.getElementById('f-term').disabled = !!course;
     document.getElementById('f-program').value = course ? course.program : (currentProgram || (programsData[0] && programsData[0].code) || '');
     document.getElementById('f-program').disabled = !!course;
 
@@ -945,8 +967,11 @@
 
     document.getElementById('f-learning_goals').value =
       (course && Array.isArray(course.learning_goals)) ? course.learning_goals.join('\n') : '';
+    // 차시별 계획에서 자동 작성된 일정이면 비워 둔다 — 그래야 차시를 고쳤을 때 다시 계산된다
+    const storedSchedule = (course && Array.isArray(course.schedule_by_day)) ? course.schedule_by_day : [];
+    const derived = deriveSchedule((course && Array.isArray(course.sessions)) ? course.sessions : []);
     document.getElementById('f-schedule_by_day').value =
-      (course && course.schedule_by_day) ? JSON.stringify(course.schedule_by_day) : '';
+      (storedSchedule.length && JSON.stringify(storedSchedule) !== JSON.stringify(derived)) ? JSON.stringify(storedSchedule) : '';
 
     document.getElementById('course-modal').classList.add('active');
   }
@@ -964,9 +989,12 @@
     const code = document.getElementById('f-code').value.trim();
     const program = document.getElementById('f-program').value;
     const name = document.getElementById('f-name').value.trim();
-    if (!code || !program || !name) { errEl.textContent = '강좌 코드, 프로그램, 강좌명은 필수입니다.'; return; }
+    if (!program || !name) { errEl.textContent = '프로그램, 강좌명은 필수입니다.'; return; }
 
-    const payload = { code, program, name };
+    const payload = { program, name };
+    if (code) payload.code = code;
+    const term = document.getElementById('f-term').value;
+    if (!code && term) payload.term = term;
     for (const id of COURSE_FIELD_IDS) {
       if (id === 'name') continue;
       const el = document.getElementById('f-' + id);
@@ -1000,6 +1028,8 @@
     if (scheduleRaw) {
       try { payload.schedule_by_day = JSON.parse(scheduleRaw); }
       catch { errEl.textContent = '요일별 일정 JSON 형식이 올바르지 않습니다.'; return; }
+    } else {
+      payload.schedule_by_day = deriveSchedule(payload.sessions);
     }
 
     const btn = document.getElementById('course-save-btn');
@@ -1024,10 +1054,15 @@
   });
 
   // ── Bulk course upload (Excel) ───────────────────────────────────────────
-  // instructors/sessions/learning_goals/schedule_by_day처럼 중첩 구조인 필드는
-  // 엑셀 한 행으로 표현하기 어려워 일괄 등록 대상에서 뺐다 — 등록 후 "수정"에서
-  // 개별 입력한다. 템플릿 컬럼 순서와 BULK_COLUMNS 순서는 반드시 같아야 한다.
+  // 양식은 「강좌목록」「강사진」「차시계획」「작성안내」 4개 시트다.
+  // 강좌목록 1행 = 강좌 1개이고, 강사진·차시계획은 강좌목록의 「번호」로 강좌에 묶는다
+  // (강좌 코드는 저장할 때 서버가 자동 부여하므로 작성 시점에는 알 수 없다).
+  // 「코드」 칸에 기존 강좌 코드를 적으면 새로 만들지 않고 그 강좌를 수정한다.
+  // 컬럼은 헤더 이름으로 찾으므로 순서는 바뀌어도 되지만 이름은 아래 정의와 같아야 한다.
+  const BULK_KEY = '번호';
+  const BULK_SHEETS = { courses: '강좌목록', instructors: '강사진', sessions: '차시계획', guide: '작성안내' };
   const BULK_COLUMNS = [
+    { header: BULK_KEY },
     { header: '코드',            field: 'code' },
     { header: '프로그램',         field: 'program', kind: 'program' },
     { header: '강좌명',           field: 'name' },
@@ -1044,26 +1079,143 @@
     { header: '창체영역',         field: 'activity_area' },
     { header: '추천대상',         field: 'recommended_for' },
     { header: '강사소개',         field: 'instructor_bio' },
-    { header: '시작일',           field: 'start_date' },
-    { header: '종료일',           field: 'end_date' },
+    { header: '운영기간',         field: 'term', kind: 'term' },
+    { header: '시작일',           field: 'start_date', kind: 'date' },
+    { header: '종료일',           field: 'end_date', kind: 'date' },
     { header: '총차시',           field: 'session_count', kind: 'int' },
     { header: '학년제한(Y/N)',    field: 'grade_restricted', kind: 'bool' },
     { header: '신청가능(Y/N)',    field: 'is_registerable', kind: 'bool', defaultYes: true },
+    { header: '학습목표1',        field: 'learning_goals', kind: 'goal' },
+    { header: '학습목표2',        field: 'learning_goals', kind: 'goal' },
+    { header: '학습목표3',        field: 'learning_goals', kind: 'goal' },
+  ];
+  const BULK_INSTRUCTOR_COLUMNS = [
+    { header: BULK_KEY }, { header: '이름', field: 'name' },
+    { header: '소속', field: 'affiliation' }, { header: '전공', field: 'major' },
+  ];
+  const BULK_SESSION_COLUMNS = [
+    { header: BULK_KEY }, { header: '차시', field: 'no' },
+    { header: '날짜', field: 'date', kind: 'date' }, { header: '시간', field: 'time', kind: 'time' },
+    { header: '내용', field: 'content' }, { header: '강사', field: 'instructor' },
   ];
 
-  document.getElementById('template-download-btn').addEventListener('click', () => {
-    const headers = BULK_COLUMNS.map(c => c.header);
-    const exampleProgram = (programsData[0] && programsData[0].display_name) || '지역연계 공동교육과정';
-    const example = [
-      'JR26C001', exampleProgram, '인공지능 기초', 'OO교육지원청', 'OO교육지원청',
-      20, 8, '공학계열', '1~2학년', '인공지능의 기본 개념을 배웁니다', '대면',
-      'OO고 2층 컴퓨터실', '필기구', '진로활동', '공학 계열 희망자', 'OO대학교 OOO교수',
-      '2026-11-01', '2026-12-20', 8, 'N', 'Y',
+  // 운영 기간 표기 → 강좌 코드 기간 문자. 서버 admin-upsert-course의 TERM_CODES와 같아야 한다
+  const TERM_LABELS = { '1학기': '1', '여름방학': 'S', '2학기': '2', '겨울방학': 'W' };
+  const pad2 = n => String(n).padStart(2, '0');
+  const cellStr = v => String(v ?? '').trim();
+
+  // 엑셀 날짜 칸은 일련번호(숫자)로 읽힌다. 시간대 영향을 받지 않도록 SSF로 직접 푼다.
+  function cellDate(v) {
+    if (typeof v === 'number') {
+      const p = XLSX.SSF.parse_date_code(v);
+      return p ? `${p.y}-${pad2(p.m)}-${pad2(p.d)}` : '';
+    }
+    const s = cellStr(v).replace(/\s/g, '').replace(/[./]/g, '-');  // 2026. 11. 7. → 2026-11-7-
+    const m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    return m ? `${m[1]}-${pad2(m[2])}-${pad2(m[3])}` : cellStr(v);
+  }
+
+  function cellTime(v) {
+    if (typeof v === 'number') {
+      const p = XLSX.SSF.parse_date_code(v);
+      return p ? `${pad2(p.H)}:${pad2(p.M)}` : '';
+    }
+    return cellStr(v);
+  }
+
+  // 차시별 계획 → 날짜별 일정(schedule_by_day). 시간이 "09:00"처럼 시작만 있으면
+  // 그 차시를 50분 수업으로 보고 종료시각을 계산한다(apply/CLAUDE.md 「scheduleByDay의 종료시각」과 같은 규칙).
+  // "09:00~09:50"처럼 범위가 있으면 그대로 쓴다.
+  function deriveSchedule(sessions) {
+    const byDate = new Map();
+    for (const s of sessions || []) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(s.date || '')) continue;
+      if (!byDate.has(s.date)) byDate.set(s.date, []);
+      byDate.get(s.date).push(s);
+    }
+    const toMin = (h, m) => Number(h) * 60 + Number(m);
+    const fmt = n => `${pad2(Math.floor(n / 60))}:${pad2(n % 60)}`;
+    return [...byDate.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1)).map(([date, list]) => {
+      const times = list.map(s => String(s.time || '').match(/(\d{1,2}):(\d{2})(?:\s*[~-]\s*(\d{1,2}):(\d{2}))?/)).filter(Boolean);
+      let start = '', end = '';
+      if (times.length) {
+        start = fmt(Math.min(...times.map(t => toMin(t[1], t[2]))));
+        end = fmt(Math.max(...times.map(t => (t[3] ? toMin(t[3], t[4]) : toMin(t[1], t[2]) + 50))));
+      }
+      const [y, mo, d] = date.split('-').map(Number);
+      return { date, weekday: '일월화수목금토'[new Date(y, mo - 1, d).getDay()], start, end, sessionCount: list.length };
+    });
+  }
+
+  function sheetFromRows(columns, rows) {
+    const headers = columns.map(c => c.header);
+    const ws = XLSX.utils.aoa_to_sheet([headers, ...rows.map(r => headers.map(h => r[h] ?? ''))]);
+    // 한글은 폭이 두 칸이라 글자 수 × 2. 너무 넓어지지 않게 40에서 자른다
+    ws['!cols'] = headers.map(h => ({
+      wch: Math.min(40, Math.max(8, ...[h, ...rows.map(r => r[h] ?? '')].map(v => String(v).length * 2 + 2))),
+    }));
+    return ws;
+  }
+
+  function buildTemplateWorkbook() {
+    const prog = programsData.find(p => p.code === currentProgram) || programsData.find(p => p.code === 'joint_regional');
+    const programName = prog ? prog.display_name : '지역연계 공동교육과정';
+    const region = (isRegionStaff() && ME.scope_value) || 'OO교육지원청';
+    const common = {
+      '코드': '', '프로그램': programName, '운영기관': region, '지역': region,
+      '정원': 20, '최소개설인원': 8, '수강대상': '1~2학년', '수업방식': '대면',
+      '창체영역': '', '학년제한(Y/N)': 'N', '신청가능(Y/N)': 'Y',
+    };
+    const courses = [
+      { ...common, [BULK_KEY]: 1, '강좌명': '인공지능 기초', '계열': '공학계열',
+        '소개': '인공지능의 기본 개념을 배웁니다', '장소': 'OO고 2층 컴퓨터실', '준비물': '필기구',
+        '추천대상': '공학 계열 희망자', '강사소개': 'OO대학교 OOO 교수',
+        '시작일': '2027-03-13', '종료일': '2027-03-20', '총차시': 4,
+        '학습목표1': '인공지능의 개념을 설명할 수 있다', '학습목표2': '간단한 분류 모델을 만들어 본다' },
+      { ...common, [BULK_KEY]: 2, '강좌명': '지역 문화유산 탐구', '계열': '인문계열',
+        '소개': '지역의 문화유산을 답사하고 기록합니다', '장소': 'OO고 1층 시청각실', '준비물': '필기구',
+        '추천대상': '역사·문화 관심 학생', '강사소개': 'OO박물관 OOO 학예사',
+        '운영기간': '여름방학', '시작일': '2027-07-24', '종료일': '2027-07-24', '총차시': 2,
+        '학습목표1': '지역 문화유산의 가치를 설명할 수 있다' },
     ];
-    const ws = XLSX.utils.aoa_to_sheet([headers, example]);
+    const instructors = [
+      { [BULK_KEY]: 1, '이름': '홍길동', '소속': 'OO대학교', '전공': '컴퓨터공학' },
+      { [BULK_KEY]: 2, '이름': '김OO', '소속': 'OO박물관', '전공': '한국사' },
+    ];
+    const sessions = [
+      { [BULK_KEY]: 1, '차시': 1, '날짜': '2027-03-13', '시간': '09:00', '내용': '인공지능이란', '강사': '홍길동' },
+      { [BULK_KEY]: 1, '차시': 2, '날짜': '2027-03-13', '시간': '10:00', '내용': '데이터 다루기', '강사': '홍길동' },
+      { [BULK_KEY]: 1, '차시': 3, '날짜': '2027-03-20', '시간': '09:00', '내용': '분류 모델 만들기', '강사': '홍길동' },
+      { [BULK_KEY]: 1, '차시': 4, '날짜': '2027-03-20', '시간': '10:00', '내용': '결과 발표', '강사': '홍길동' },
+      { [BULK_KEY]: 2, '차시': 1, '날짜': '2027-07-24', '시간': '13:00~13:50', '내용': '문화유산 개관', '강사': '김OO' },
+      { [BULK_KEY]: 2, '차시': 2, '날짜': '2027-07-24', '시간': '14:00~14:50', '내용': '현장 답사 기록', '강사': '김OO' },
+    ];
+    const guide = [
+      ['강좌 일괄 등록 양식 작성 안내'],
+      [''],
+      ['1. 「강좌목록」 시트에 한 줄에 강좌 하나씩 적습니다. 「번호」는 1, 2, 3…처럼 강좌마다 다르게 적습니다.'],
+      ['2. 「강사진」「차시계획」 시트의 「번호」에는 해당 강좌의 「강좌목록」 번호를 적습니다. 강사·차시가 여러 개면 같은 번호로 여러 줄 적습니다.'],
+      ['3. 「코드」는 비워 두십시오. 저장할 때 프로그램·학년도·운영기간·지원청·순번으로 자동 부여됩니다(예: JR271CA01 = 지역연계·2027학년도 1학기·천안·1번).'],
+      ['   이미 등록한 강좌를 고치려면 「코드」에 그 강좌 코드를 적습니다. 이때 강사진·차시계획 시트에 그 번호의 줄이 있으면 기존 내용을 바꿉니다.'],
+      ['4. 「운영기간」에는 1학기·여름방학·2학기·겨울방학 중 하나를 적습니다. 비워 두면 「시작일」로 정합니다(3~6월 1학기, 7~8월 여름방학, 9~12월 2학기, 1~2월 겨울방학).'],
+      ['   코드의 기간 표시는 1학기 1, 여름방학 S, 2학기 2, 겨울방학 W입니다. 1~2월 겨울방학은 전년도 학년도로 칩니다(2028년 1월 → 27W). 날짜는 2027-03-13 형식으로 적습니다.'],
+      ['5. 「시간」은 09:00처럼 시작 시각만 적거나 09:00~09:50처럼 범위로 적습니다. 시작 시각만 적으면 50분 수업으로 계산합니다.'],
+      ['6. 날짜별 수업 일정은 「차시계획」의 날짜·시간으로 자동 작성됩니다. 「총차시」를 비워 두면 차시계획 줄 수로 채웁니다.'],
+      ['7. 지역청 담당자 계정으로 올리면 「프로그램」「지역」 칸은 적은 값과 관계없이 소속 지원청의 지역연계 공동교육과정으로 저장됩니다.'],
+      ['8. 예시 행(번호 1, 2)은 지우고 작성하십시오.'],
+    ];
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, '강좌목록');
-    XLSX.writeFile(wb, 'course_template.xlsx');
+    XLSX.utils.book_append_sheet(wb, sheetFromRows(BULK_COLUMNS, courses), BULK_SHEETS.courses);
+    XLSX.utils.book_append_sheet(wb, sheetFromRows(BULK_INSTRUCTOR_COLUMNS, instructors), BULK_SHEETS.instructors);
+    XLSX.utils.book_append_sheet(wb, sheetFromRows(BULK_SESSION_COLUMNS, sessions), BULK_SHEETS.sessions);
+    const guideWs = XLSX.utils.aoa_to_sheet(guide);
+    guideWs['!cols'] = [{ wch: 110 }];
+    XLSX.utils.book_append_sheet(wb, guideWs, BULK_SHEETS.guide);
+    return wb;
+  }
+
+  document.getElementById('template-download-btn').addEventListener('click', () => {
+    XLSX.writeFile(buildTemplateWorkbook(), 'course_template.xlsx');
   });
 
   document.getElementById('bulk-upload-btn').addEventListener('click', () => {
@@ -1074,52 +1226,132 @@
   document.getElementById('bulk-upload-input').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    let parsed;
     try {
       const buf = await file.arrayBuffer();
-      const wb = XLSX.read(buf, { type: 'array' });
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
-      if (!rows.length) { alert('엑셀에 데이터 행이 없습니다.'); return; }
-      await runBulkUpload(rows);
+      parsed = parseBulkWorkbook(XLSX.read(buf, { type: 'array' }));
     } catch (err) {
       alert('엑셀을 읽는 중 오류: ' + err.message);
+      return;
     }
+    if (!parsed.items.length && !parsed.errors.length) { alert('「강좌목록」 시트에 데이터 행이 없습니다.'); return; }
+    await runBulkUpload(parsed);
   });
 
-  async function runBulkUpload(rows) {
-    if (!confirm(`${rows.length}건을 등록/수정하시겠습니까?`)) return;
-    const successes = [];
-    const failures = [];
+  function readColumns(columns, row) {
+    const out = {};
+    for (const col of columns) {
+      if (!col.field) continue;
+      const v = row[col.header];
+      out[col.field] = col.kind === 'date' ? cellDate(v) : col.kind === 'time' ? cellTime(v) : cellStr(v);
+    }
+    return out;
+  }
 
-    for (let i = 0; i < rows.length; i++) {
-      const row = rows[i];
-      const rowLabel = `${i + 2}행 (${row['코드'] || '코드없음'})`;
+  function groupByKey(rows) {
+    const m = new Map();
+    for (const r of rows) {
+      const k = cellStr(r[BULK_KEY]);
+      if (!k) continue;
+      if (!m.has(k)) m.set(k, []);
+      m.get(k).push(r);
+    }
+    return m;
+  }
+
+  // 워크북 → 강좌별 payload. 서버 호출 없이 검증만 하므로 콘솔에서 단독 테스트할 수 있다.
+  function parseBulkWorkbook(wb) {
+    const sheet = name => wb.Sheets[name] ? XLSX.utils.sheet_to_json(wb.Sheets[name], { defval: '' }) : [];
+    const courseRows = wb.Sheets[BULK_SHEETS.courses] ? sheet(BULK_SHEETS.courses)
+      : XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' });
+    const insByKey = groupByKey(sheet(BULK_SHEETS.instructors));
+    const sesByKey = groupByKey(sheet(BULK_SHEETS.sessions));
+
+    const items = [];
+    const errors = [];
+    const seenKeys = new Set();
+    courseRows.forEach((row, i) => {
+      if (!cellStr(row['강좌명']) && !cellStr(row['코드'])) return;  // 빈 행
+      const key = cellStr(row[BULK_KEY]);
+      const label = `${BULK_SHEETS.courses} ${i + 2}행 (${cellStr(row['강좌명']) || cellStr(row['코드'])})`;
       try {
+        if (key && seenKeys.has(key)) throw new Error(`번호 ${key}가 중복되었습니다`);
+        if (key) seenKeys.add(key);
+
         const payload = {};
         for (const col of BULK_COLUMNS) {
+          if (!col.field) continue;
+          if (col.kind === 'program' && isRegionStaff()) continue;
           let v = row[col.header];
           if (v === '' || v === undefined || v === null) {
             if (col.kind === 'bool' && col.defaultYes) v = 'Y';
             else continue;
           }
-          if (col.kind === 'int') v = parseInt(v, 10);
-          else if (col.kind === 'bool') v = String(v).trim().toUpperCase() === 'Y';
-          else if (col.kind === 'program') {
-            const match = programsData.find(p => p.display_name === String(v).trim() || p.code === String(v).trim());
+          if (col.kind === 'int') {
+            v = parseInt(v, 10);
+            if (isNaN(v)) throw new Error(`「${col.header}」은 숫자여야 합니다`);
+          } else if (col.kind === 'bool') v = cellStr(v).toUpperCase() === 'Y';
+          else if (col.kind === 'date') v = cellDate(v);
+          else if (col.kind === 'goal') {
+            (payload.learning_goals = payload.learning_goals || []).push(cellStr(v));
+            continue;
+          } else if (col.kind === 'term') {
+            const t = cellStr(v).replace(/\s/g, '');
+            v = TERM_LABELS[t] || (Object.values(TERM_LABELS).includes(t.toUpperCase()) ? t.toUpperCase() : null);
+            if (!v) throw new Error(`「운영기간」은 1학기·여름방학·2학기·겨울방학 중 하나여야 합니다: ${t}`);
+          } else if (col.kind === 'program') {
+            const match = programsData.find(p => p.display_name === cellStr(v) || p.code === cellStr(v));
             if (!match) throw new Error(`알 수 없는 프로그램: ${v}`);
             v = match.code;
           } else {
-            v = String(v).trim();
+            v = cellStr(v);
           }
+          if (v === '') continue;
           payload[col.field] = v;
         }
-        if (!payload.code || !payload.program || !payload.name) {
-          throw new Error('코드·프로그램·강좌명은 필수입니다');
-        }
+        if (isRegionStaff()) payload.program = REGION_PROGRAMS[0];
+        if (!payload.program && currentProgram) payload.program = currentProgram;
+        if (!payload.program || !payload.name) throw new Error('프로그램·강좌명은 필수입니다');
+        if (payload.code) delete payload.term;  // 기존 강좌 수정 — 코드는 바뀌지 않는다
         // region/org 담당자는 본인 소관 값으로 강제 — 엑셀에 다른 값을 적어도 덮어쓴다
         if (ME && ME.role === 'region') payload.region = ME.scope_value;
         if (ME && ME.role === 'org') payload.org = ME.scope_value;
 
+        if (key && insByKey.has(key)) {
+          payload.instructors = insByKey.get(key).map(r => readColumns(BULK_INSTRUCTOR_COLUMNS, r)).filter(x => x.name);
+        }
+        if (key && sesByKey.has(key)) {
+          payload.sessions = sesByKey.get(key).map(r => readColumns(BULK_SESSION_COLUMNS, r)).filter(s => s.content || s.date);
+          payload.schedule_by_day = deriveSchedule(payload.sessions);
+          if (!payload.session_count) payload.session_count = payload.sessions.length;
+        }
+        items.push({ label, payload });
+      } catch (err) {
+        errors.push(`${label}: ${err.message}`);
+      }
+    });
+
+    // 강좌목록에 없는 번호를 가리키는 강사·차시 행 — 조용히 버려지지 않게 알린다
+    for (const [name, byKey] of [[BULK_SHEETS.instructors, insByKey], [BULK_SHEETS.sessions, sesByKey]]) {
+      for (const k of byKey.keys()) {
+        if (!seenKeys.has(k)) errors.push(`${name}: 번호 ${k}에 해당하는 강좌가 「${BULK_SHEETS.courses}」에 없습니다`);
+      }
+    }
+    return { items, errors };
+  }
+
+  async function runBulkUpload({ items, errors }) {
+    const nIns = items.reduce((s, it) => s + (it.payload.instructors || []).length, 0);
+    const nSes = items.reduce((s, it) => s + (it.payload.sessions || []).length, 0);
+    let msg = `강좌 ${items.length}건(강사 ${nIns}명, 차시 ${nSes}건)을 등록/수정하시겠습니까?`;
+    if (errors.length) msg += `\n\n다음 ${errors.length}건은 오류로 제외됩니다:\n` + errors.join('\n');
+    if (!items.length) { alert('등록할 수 있는 강좌가 없습니다.\n\n' + errors.join('\n')); return; }
+    if (!confirm(msg)) return;
+
+    const successes = [];
+    const failures = [...errors];
+    for (const { label, payload } of items) {
+      try {
         const res = await authFetch(`${SUPABASE_FN}/admin-upsert-course`, {
           method: 'POST',
           body: JSON.stringify(payload),
@@ -1127,13 +1359,14 @@
         if (res.status === 401) { logout(); return; }
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data.error || `서버 오류 ${res.status}`);
-        successes.push(rowLabel);
+        successes.push(`${payload.name} → ${data.course ? data.course.code : payload.code}`);
       } catch (err) {
-        failures.push(`${rowLabel}: ${err.message}`);
+        failures.push(`${label}: ${err.message}`);
       }
     }
 
     let summary = `성공 ${successes.length}건 / 실패 ${failures.length}건`;
+    if (successes.length) summary += '\n\n부여된 강좌 코드:\n' + successes.join('\n');
     if (failures.length) summary += '\n\n실패 내역:\n' + failures.join('\n');
     alert(summary);
     loadCourses();
@@ -1325,7 +1558,7 @@
   document.getElementById('logout-btn').addEventListener('click', logout);
 
   function logout() {
-    TOKEN = ''; REFRESH_TOKEN = ''; ME = null;
+    TOKEN = ''; REFRESH_TOKEN = ''; ME = null; currentProgram = '';
     sessionStorage.removeItem('admin_token');
     sessionStorage.removeItem('admin_refresh');
     document.getElementById('dashboard').style.display = 'none';
