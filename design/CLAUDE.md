@@ -36,7 +36,7 @@ design/
 ├─ compass/            ① 진로 나침반 — 검사 결과 → 계열 후보   ✅ 약 237줄
 ├─ majors/             ① 학과·과목 탐색 (자산, 수정 금지)      ✅
 ├─ selector/           ② 과목 선택 실습 (자산, 수정 금지)      ✅
-├─ check/              ③ 내 선택 점검 — 판정 7종 + A4 점검표   ✅ 구현·검증 완료
+├─ check/              ③ 내 선택 점검 — 이수계획표(A4 가로) + 판정 7종  ✅
 ├─ outside/            학교에 없는 과목 듣는 법 (GNB 미노출)    ✅ 약 101줄
 ├─ js/                 jinro-plan.js · jinro-verify.js      ✅
 ├─ css/                jinro.css (공용 + A4 인쇄)           ✅

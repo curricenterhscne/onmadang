@@ -33,7 +33,7 @@
   <section class="jn-sec" id="intake">
     <div class="jn-drop" id="drop">
       <h2>파일을 여기에 놓으세요</h2>
-      <p id="drop-help">「과목 선택 실습」에서 <b>내보내기 → JSON</b>으로 저장한 파일입니다.</p>
+      <p id="drop-help">「과목 선택 실습」에서 <b>내보내기 → JSON</b>으로 저장한 파일입니다. 실습 화면의 <b>「결과표 만들기」</b> 버튼을 누르면 파일 없이 바로 열립니다.</p>
       <button type="button" class="jn-btn" id="pick">파일 고르기</button>
       <input type="file" id="file" accept=".json,application/json" hidden>
       <p class="jn-fine" style="margin-top:14px">
@@ -50,10 +50,10 @@
   </section>
 
   <!-- 결과 -->
-  <div id="result" class="jn-hidden">
+  <div id="result" class="jn-hidden jn-land">
 
     <div class="jn-print-head">
-      <p class="t">나의 과목 선택 점검표</p>
+      <p class="t" id="print-title">이수계획표</p>
       <div class="sub" id="print-sub"></div>
     </div>
 
@@ -67,7 +67,20 @@
 
     <section class="jn-sec jn-noprint">
       <div class="jn-card">
-        <div class="jn-field">
+        <div class="jn-inputs">
+          <div class="jn-field">
+            <label for="who"><b>이름</b> (선택)</label>
+            <input type="text" id="who" maxlength="20" autocomplete="off">
+          </div>
+          <div class="jn-field">
+            <label for="hope"><b>희망 진로</b> (계열·학과, 선택)</label>
+            <input type="text" id="hope" maxlength="40" autocomplete="off" placeholder="예: 공학 계열 · 기계공학과">
+          </div>
+        </div>
+        <p class="jn-fine" style="margin-top:6px">
+          이름과 희망 진로는 이수계획표에 표시하기 위한 것이며, 저장하거나 서버로 보내지 않습니다.
+        </p>
+        <div class="jn-field" style="margin-top:14px">
           <label for="field-sel"><b>희망 계열·분야</b>를 고르면 권장과목까지 함께 확인합니다</label>
           <select id="field-sel">
             <option value="">— 고르지 않음 —</option>
@@ -79,24 +92,25 @@
       </div>
     </section>
 
-    <section class="jn-sec">
-      <h2 id="result-h" tabindex="-1">점검 결과</h2>
-      <ul class="jn-checks" id="checks"></ul>
+    <section class="jn-sec jn-plan-sec">
+      <h2 id="result-h" tabindex="-1">이수계획표</h2>
+      <div id="plan"></div>
     </section>
 
     <section class="jn-sec jn-page-break">
-      <h2>학년·학기별 선택 과목</h2>
-      <div id="byterm"></div>
+      <h2>점검 결과</h2>
+      <ul class="jn-checks" id="checks"></ul>
     </section>
 
     <div class="jn-actions jn-noprint">
-      <button type="button" class="jn-btn" id="print">점검표 인쇄 · PDF로 저장</button>
+      <button type="button" class="jn-btn" id="print">이수계획표 인쇄 · PDF로 저장</button>
       <button type="button" class="jn-btn jn-btn--ghost" id="copy">결과 요약 복사</button>
       <button type="button" class="jn-btn jn-btn--ghost" id="again">다른 파일 넣기</button>
     </div>
 
     <p class="jn-note jn-noprint">
       휴대전화에서는 화면을 캡처해 보관하거나 선생님께 보내면 됩니다.
+      실습할 때마다 PDF로 저장하거나 실습 화면에서 JSON 파일을 저장해 두면, 날짜별로 바뀐 계획을 비교할 수 있습니다.
     </p>
 
     <p class="jn-footnote jn-hidden">
@@ -143,8 +157,8 @@
     fillFields();
   }).catch(function (e) { showErr(e.message); });
 
-  // 학교 목록은 학과가 있는 학교의 편성표 코드를 찾는 데만 쓴다 (실패해도 진행)
-  getJSON('../selector/data/schools.json')
+  // 학교 목록은 학과가 있는 학교의 편성표 코드와 학교명을 찾는 데만 쓴다 (실패해도 진행)
+  var schoolsReady = getJSON('../selector/data/schools.json')
     .then(function (d) { schools = d; })
     .catch(function () { schools = null; });
 
@@ -159,6 +173,37 @@
     var q = new URLSearchParams(location.search).get('field');
     if (q) sel.value = q;
   }
+
+  /* ── 주소로 받기 ────────────────────────────────────────── */
+  /* 과목 선택 실습의 「결과표 만들기」가 공유 링크와 같은 형식으로 넘긴다.
+   * ?y=연도&s=학교코드&d=학과&p=g0s1i2,…&major=학과명
+   * (p 형식은 selector serializeStateToUrl() 과 동일) */
+  function planFromUrl() {
+    var p = new URLSearchParams(location.search);
+    if (!p.get('s')) return null;
+    var picks = (p.get('p') || '').split(',').map(function (s) {
+      var m = /^g(\d+)s(\d+)i(\d+)$/.exec(s.trim());
+      return m ? 'g' + m[1] + '-s' + m[2] + '-sem' + m[3] : null;
+    }).filter(Boolean);
+    var code = p.get('s'), name = code;
+    (schools || []).some(function (sc) {
+      if (sc['학교코드'] === code) { name = sc['학교명'] || code; return true; }
+      return false;
+    });
+    return {
+      schema: JinroPlan.SCHEMA, year: p.get('y') || '2026',
+      schoolCode: code, schoolName: name, department: p.get('d') || null,
+      selections: picks, preset: null, summary: null
+    };
+  }
+
+  Promise.all([ready, schoolsReady]).then(function () {
+    var plan = planFromUrl();
+    if (!plan) return;
+    var major = new URLSearchParams(location.search).get('major');
+    if (major) $('hope').value = major;
+    loadCatalog(plan);
+  });
 
   /* ── 오류 표시 ──────────────────────────────────────────── */
   function showErr(msg) {
@@ -205,16 +250,10 @@
     var rep = JinroVerify.verify({ resolved: R, rules: rules, intent: intent });
     if (!rep.ok) return showErr(rep.error);
 
-    var m = rep.meta;
-    var when = new Date().toLocaleDateString('ko-KR');
-    var deptTxt = m.department ? ' · ' + m.department : '';
-
-    $('meta').innerHTML =
-      '<b>' + esc(m.schoolName) + '</b>' +
-      '<span>' + esc(m.year) + '학년도' + esc(deptTxt) + '</span>' +
-      '<span>점검일 ' + when + '</span>';
-    $('print-sub').textContent =
-      m.schoolName + ' · ' + m.year + '학년도' + deptTxt + ' · 점검일 ' + when;
+    state.when = state.when || new Date().toLocaleString('ko-KR', {
+      year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false
+    });
+    renderHead(rep.meta);
 
     $('totals').innerHTML =
       total('교과 이수학점', rep.totals.subjectCredits) +
@@ -226,7 +265,7 @@
       : '';
 
     $('checks').innerHTML = rep.checks.map(checkHtml).join('');
-    $('byterm').innerHTML = byTermHtml(R.items);
+    $('plan').innerHTML = planHtml(R, rep);
     $('result').classList.remove('jn-hidden');
     $('intake').classList.add('jn-noprint');
     document.querySelector('.jn-footnote').classList.remove('jn-hidden');
@@ -237,37 +276,166 @@
     return '<div class="jn-total"><dt>' + label + '</dt><dd>' + v + '</dd></div>';
   }
 
-  // 학년·학기별 선택 과목 (3학년 × 2학기)
-  function byTermHtml(items) {
-    if (!items || !items.length) {
-      return '<p class="jn-muted">편성표를 불러오지 못해 과목 목록을 표시할 수 없습니다.</p>';
-    }
-    var GRADE = [
-      { g: 1, sems: [0, 1] },
-      { g: 2, sems: [2, 3] },
-      { g: 3, sems: [4, 5] }
-    ];
-    var LABEL = ['1학기', '2학기'];
-    var bySem = [[], [], [], [], [], []];
-    items.forEach(function (it) { if (bySem[it.sem]) bySem[it.sem].push(it); });
+  // 머리 정보 — 이름·희망 진로는 입력할 때마다 다시 그린다 (저장하지 않음)
+  function renderHead(m) {
+    var deptTxt = m.department ? ' · ' + m.department : '';
+    var who = $('who').value.trim();
+    var hope = $('hope').value.trim();
+    var field = $('field-sel').value;
+    $('meta').innerHTML =
+      '<b>' + esc(m.schoolName) + '</b>' +
+      '<span>' + esc(m.year) + '학년도 편성표' + esc(deptTxt) + '</span>' +
+      (who ? '<span>이름 ' + esc(who) + '</span>' : '') +
+      (hope ? '<span>희망 진로 ' + esc(hope) + '</span>' : '') +
+      (field ? '<span>희망 계열·분야 ' + esc(field) + '</span>' : '') +
+      '<span>작성 ' + esc(state.when) + '</span>';
+    $('print-title').textContent = (who ? who + '의 ' : '') + '이수계획표';
+    $('print-sub').textContent = [
+      m.schoolName + ' · ' + m.year + '학년도 편성표' + deptTxt,
+      hope ? '희망 진로 ' + hope : '',
+      field ? '희망 계열·분야 ' + field : '',
+      '작성 ' + state.when
+    ].filter(Boolean).join(' · ');
+  }
 
-    return '<div class="jn-terms">' + GRADE.map(function (row) {
-      var cells = row.sems.map(function (s, idx) {
-        var list = bySem[s].slice().sort(function (a, b) { return b.credits - a.credits; });
-        var cr = list.reduce(function (a, b) { return a + b.credits; }, 0);
-        var lis = list.length
-          ? list.map(function (it) {
-              return '<li><span class="jn-term__nm">' + esc(it.name) + '</span>'
-                + '<span class="jn-term__cr">' + it.credits + '</span></li>';
-            }).join('')
-          : '<li class="jn-term__empty">선택 과목 없음</li>';
-        return '<div class="jn-term">'
-          + '<div class="jn-term__hd"><span>' + row.g + '학년 ' + LABEL[idx] + '</span>'
-          + '<span class="jn-term__sum">' + list.length + '과목 · ' + fmt(cr) + '학점</span></div>'
-          + '<ul class="jn-term__list">' + lis + '</ul></div>';
-      }).join('');
-      return cells;
-    }).join('') + '</div>';
+  /* ── 이수계획표 — 교과(군) 행 × 6학기 열 ────────────────── */
+  var PLAN_ROWS = [
+    { key: '국어' }, { key: '수학' }, { key: '영어' }, { key: '한국사' },
+    { key: '사회(역사/도덕 포함)', label: '사회' }, { key: '과학' },
+    { key: '체육' }, { key: '예술' },
+    { key: '기술·가정/정보/제2외국어/한문/교양', split: true }
+  ];
+  var SPLIT_ORDER = ['기술·가정', '정보', '제2외국어', '한문', '교양'];
+  var TYPES = ['공통', '일반', '진로', '융합'];
+
+  function rowKeyOf(it) {
+    var a = rules.alias;
+    return (a.bySubjectName && a.bySubjectName[it.name]) || (a.byGroup && a.byGroup[it.group]) || null;
+  }
+
+  function planHtml(R, rep) {
+    if (!R.items || !R.items.length) {
+      return '<p class="jn-muted">편성표를 불러오지 못해 이수계획표를 만들 수 없습니다.</p>';
+    }
+    var need = {};
+    JinroVerify.requiredFor(rules, R.meta).forEach(function (r) { need[r.group] = r.credits; });
+
+    // 행: 필수 교과(군) 순서대로. 기·정·외·한·교는 실제 교과(군)별 하위 행 + 이수/필수/판정 병합.
+    // 필수이수 매핑이 없는 교과(군)(전문교과·계열 과목 등)은 맨 아래, 판정 제외.
+    var lines = [];
+    PLAN_ROWS.forEach(function (row) {
+      var its = R.items.filter(function (it) { return rowKeyOf(it) === row.key; });
+      if (!row.split) {
+        lines.push({ key: row.key, label: row.label || row.key, items: its, first: true, span: 1 });
+        return;
+      }
+      var subs = {};
+      its.forEach(function (it) { (subs[it.group] = subs[it.group] || []).push(it); });
+      var names = Object.keys(subs).sort(function (a, b) {
+        var ai = SPLIT_ORDER.indexOf(a), bi = SPLIT_ORDER.indexOf(b);
+        return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi);
+      });
+      if (!names.length) names = ['기술·가정/정보/제2외국어/한문/교양'];
+      names.forEach(function (g, i) {
+        lines.push({ key: row.key, label: g, items: subs[g] || [], first: i === 0, span: names.length });
+      });
+    });
+    var extra = {};
+    R.items.forEach(function (it) { if (!rowKeyOf(it)) (extra[it.group] = extra[it.group] || []).push(it); });
+    Object.keys(extra).forEach(function (g) {
+      lines.push({ key: null, label: g, items: extra[g], first: true, span: 1 });
+    });
+
+    var semSum = [0, 0, 0, 0, 0, 0];
+    R.items.forEach(function (it) { semSum[it.sem] += it.credits; });
+
+    var h = '<div class="jn-plan-wrap"><table class="jn-plan">'
+      + '<caption class="jn-sr">교과(군)별·학기별 이수 과목과 학점. ◆ 표시는 학생이 고른 선택 과목이고, 표시가 없으면 학교가 정한 지정 과목입니다.</caption>'
+      + '<thead><tr><th scope="col" rowspan="2">교과(군)</th>'
+      + '<th scope="colgroup" colspan="2">1학년</th><th scope="colgroup" colspan="2">2학년</th><th scope="colgroup" colspan="2">3학년</th>'
+      + '<th scope="col" rowspan="2" class="num">이수</th><th scope="col" rowspan="2" class="num">필수</th><th scope="col" rowspan="2">판정</th></tr>'
+      + '<tr>' + [0, 1, 2].map(function () { return '<th scope="col">1학기</th><th scope="col">2학기</th>'; }).join('') + '</tr></thead><tbody>';
+
+    lines.forEach(function (ln) {
+      h += '<tr' + (ln.first ? ' class="jn-plan__start"' : '') + '><th scope="row">' + esc(ln.label) + '</th>';
+      for (var s = 0; s < 6; s++) {
+        var cell = ln.items.filter(function (it) { return it.sem === s; })
+          .sort(function (a, b) { return a.fixed === b.fixed ? 0 : (a.fixed ? -1 : 1); });
+        h += '<td>' + cell.map(subjHtml).join('') + '</td>';
+      }
+      if (ln.first) {
+        var rs = ln.span > 1 ? ' rowspan="' + ln.span + '"' : '';
+        var got = ln.key ? (R.byGroup[ln.key] || 0)
+                         : ln.items.reduce(function (a, b) { return a + b.credits; }, 0);
+        var n = ln.key ? need[ln.key] : null;
+        var cap = ln.span > 1 ? '<span class="jn-plan__note">합산</span>' : '';
+        if (n == null) {
+          h += '<td class="num"' + rs + '>' + fmt(got) + '</td><td class="num"' + rs + '>—</td>'
+            + '<td' + rs + '><span class="jn-fine">판정 제외</span></td>';
+        } else {
+          var lv = got >= n ? 'ok' : 'error';
+          h += '<td class="num"' + rs + '>' + fmt(got) + cap + '</td><td class="num"' + rs + '>' + n + '</td>'
+            + '<td' + rs + '><span class="jn-tag jn-badge" data-level="' + lv + '">' + BADGE[lv] + '</span></td>';
+        }
+      }
+      h += '</tr>';
+    });
+
+    var subjNeed = rules.requiredCredits.graduation.subjects;
+    var ccNeed = rules.requiredCredits.graduation.creativeActivities;
+    var subjLv = rep.totals.subjectCredits >= subjNeed ? 'ok' : 'error';
+    var ccLv = rep.totals.changche >= ccNeed ? 'ok' : 'error';
+    var totLv = rep.totals.total >= rules.requiredCredits.graduation.total ? 'ok' : 'error';
+    h += '</tbody><tfoot>'
+      + '<tr><th scope="row">교과 합계</th>'
+      + semSum.map(function (v) { return '<td class="num">' + fmt(v) + '</td>'; }).join('')
+      + '<td class="num">' + rep.totals.subjectCredits + '</td><td class="num">' + subjNeed + '</td>'
+      + '<td><span class="jn-tag jn-badge" data-level="' + subjLv + '">' + BADGE[subjLv] + '</span></td></tr>'
+      + '<tr><th scope="row">창의적 체험활동</th><td colspan="6"></td>'
+      + '<td class="num">' + rep.totals.changche + '</td><td class="num">' + ccNeed + '</td>'
+      + '<td><span class="jn-tag jn-badge" data-level="' + ccLv + '">' + BADGE[ccLv] + '</span></td></tr>'
+      + '<tr><th scope="row">총 이수학점</th><td colspan="6"></td>'
+      + '<td class="num">' + rep.totals.total + '</td><td class="num">' + rules.requiredCredits.graduation.total + '</td>'
+      + '<td><span class="jn-tag jn-badge" data-level="' + totLv + '">' + BADGE[totLv] + '</span></td></tr>'
+      + '</tfoot></table></div>';
+
+    h += '<p class="jn-plan__legend"><span class="jn-plan__mk" aria-hidden="true">◆</span> 선택 과목 · 표시 없음 = 지정 과목 · 과목명 옆 숫자는 학점'
+      + (JinroVerify.isSpecialSchool(rules, R.meta) ? ' · 필수학점은 외국어고·예술고 기준(예술 5, 기술·가정/정보/제2외국어/한문/교양 12)' : '')
+      + '</p>';
+    return h + typeHtml(R.items, rep);
+  }
+
+  function subjHtml(it) {
+    return '<span class="jn-plan__s' + (it.fixed ? '' : ' is-pick') + '">'
+      + (it.fixed ? '' : '<span class="jn-plan__mk" aria-hidden="true">◆</span><span class="jn-sr">선택 </span>')
+      + esc(it.name) + ' <small>' + fmt(it.credits) + '</small></span>';
+  }
+
+  // 과목 유형별·지정/선택별 과목 수와 학점
+  function typeHtml(items, rep) {
+    var t = {}, fx = { n: 0, c: 0 }, pk = { n: 0, c: 0 };
+    TYPES.concat(['기타']).forEach(function (k) { t[k] = { n: 0, c: 0 }; });
+    items.forEach(function (it) {
+      var k = TYPES.indexOf(it.type) >= 0 ? it.type : '기타';
+      t[k].n++; t[k].c += it.credits;
+      var b = it.fixed ? fx : pk; b.n++; b.c += it.credits;
+    });
+    var cols = TYPES.concat(t['기타'].n ? ['기타'] : []);
+    var kme = rep.checks.filter(function (c) { return c.id === 'kme-cap'; })[0];
+    return '<div class="jn-plan-sum"><table class="jn-table">'
+      + '<thead><tr><th scope="col">구분</th>'
+      + cols.map(function (k) { return '<th scope="col" class="num">' + k + (k === '기타' ? '' : ' 과목') + '</th>'; }).join('')
+      + '<th scope="col" class="num">지정 과목</th><th scope="col" class="num">선택 과목</th></tr></thead><tbody>'
+      + '<tr><th scope="row">과목 수</th>' + cols.map(function (k) { return '<td class="num">' + t[k].n + '</td>'; }).join('')
+      + '<td class="num">' + fx.n + '</td><td class="num">' + pk.n + '</td></tr>'
+      + '<tr><th scope="row">학점</th>' + cols.map(function (k) { return '<td class="num">' + fmt(t[k].c) + '</td>'; }).join('')
+      + '<td class="num">' + fmt(fx.c) + '</td><td class="num">' + fmt(pk.c) + '</td></tr>'
+      + '</tbody></table>'
+      + (kme && kme.value
+          ? '<p class="jn-fine" style="margin-top:6px">국어·수학·영어 이수학점: ' + esc(kme.value)
+            + (kme.level === 'error' ? ' (상한 초과)' : kme.level === 'ok' ? ' (충족)' : '') + '</p>'
+          : '')
+      + '</div>';
   }
 
   function fmt(n) { return n % 1 === 0 ? n : parseFloat(n.toFixed(1)); }
@@ -275,7 +443,7 @@
   function checkHtml(c) {
     var h = '<li class="jn-check" data-level="' + c.level + '">'
       + '<div class="jn-check__head">'
-      + '<span class="jn-badge" data-level="' + c.level + '">' + BADGE[c.level] + '</span>'
+      + '<span class="jn-badge" data-level="' + c.level + '">' + (c.badge || BADGE[c.level]) + '</span>'
       + '<span class="jn-check__title">' + esc(c.title) + '</span>'
       + (c.value ? '<span class="jn-check__value">' + esc(c.value) + '</span>' : '')
       + '</div>';
@@ -339,6 +507,9 @@
   });
 
   $('field-sel').addEventListener('change', function () { if (state) render(); });
+  ['who', 'hope'].forEach(function (id) {
+    $(id).addEventListener('input', function () { if (state && window.__report) renderHead(window.__report.meta); });
+  });
   $('print').addEventListener('click', function () { window.print(); });
   $('again').addEventListener('click', function () {
     state = null;
@@ -353,12 +524,14 @@
   $('copy').addEventListener('click', function () {
     var rep = window.__report;
     if (!rep) return;
-    var t = ['[나의 과목 선택 점검]',
-      rep.meta.schoolName + ' · ' + rep.meta.year + '학년도',
+    var who = $('who').value.trim(), hope = $('hope').value.trim();
+    var t = ['[' + (who ? who + '의 ' : '나의 ') + '과목 선택 점검]',
+      rep.meta.schoolName + ' · ' + rep.meta.year + '학년도 편성표' + (hope ? ' · 희망 진로 ' + hope : '')
+        + ' · 작성 ' + ((state && state.when) || ''),
       '총 ' + rep.totals.total + '학점 (교과 ' + rep.totals.subjectCredits + ' + 창체 ' + rep.totals.changche + ')',
       ''];
     rep.checks.forEach(function (c) {
-      t.push('· [' + BADGE[c.level] + '] ' + c.title + (c.value ? ' — ' + c.value : ''));
+      t.push('· [' + (c.badge || BADGE[c.level]) + '] ' + c.title + (c.value ? ' — ' + c.value : ''));
       if (c.fix) t.push('   → ' + c.fix);
     });
     t.push('', '※ 제출 서류가 아닌 자기 점검용입니다. 최종 확인은 선생님과 함께 하십시오.');
