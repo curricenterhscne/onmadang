@@ -28,6 +28,7 @@
   var headerEl = document.getElementById('om-header');
   if (!headerEl) return;
   var active = headerEl.getAttribute('data-active') || '';
+  if (active) document.documentElement.setAttribute('data-section', active); /* 서브 머리 영역의 사진·아이콘 선택용 */
 
   var CLV15 = '<svg class="clover" width="15" height="15"><use href="#clv"/></svg>';
 
