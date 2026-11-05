@@ -229,7 +229,7 @@
 | 경로 | 규모 | 성격 | 공통 헤더 |
 |---|---|---|---|
 | `dream_up/index.html` | 약 517줄 | 2026-2학기 꿈키움 학교 밖 교육 **강좌 안내** | ❌ |
-| `dream_up/check/index.html` | 약 65줄 | 이수 결과 **조회 종료 안내**. 2026-11-05에 조회 페이지를 내리고 공지로 교체 (학생 1,081명 자료가 평문으로 공개되어 있었다) | ✅ |
+| `dream_up/check/index.html` | 약 65줄 | 이수 결과 **조회 종료 안내**. 2026-11-05에 조회 페이지를 내리고 공지로 교체 (가린 이름과 강좌·이수 결과 1,081건이 페이지 소스에 평문으로 있었다) | ✅ |
 | `dream_up/attendance/index.html` | 약 64줄 | 출석부 **열람 종료 안내**. 2026-09-03에 뷰어를 내리고 공지로 교체 | ✅ |
 | `dual_credit/support/` | 약 401줄 + PDF | 수업 운영 안내 협의회 | ❌ |
 | `dual_credit/inform/dual_credit_2026_2_start.html` | 약 698줄 | 2026-2학기 고교-대학 연계 과목 **수업 시작 안내** (수강 확정 학생 대상). `readme.md` 동거 | ❌ |
@@ -309,6 +309,7 @@
 - 수강신청 앱을 고치라는 요청에 `apply/index.html`을 열기 ❌ → 앱은 `apply/app.html`이다
 - 본체 페이지에 `var(--color-*)` 사용 ❌ → 존재하지 않는 토큰이다
 - 학생 정보를 서버·localStorage에 저장 ❌
+- 학생 명단·이수 결과·스캔본을 저장소에 커밋 ❌ → `docs/privacy/README.md`. 저장소는 공개이고 삭제해도 이력에 남는다. 학생 자료를 다루는 페이지는 `docs/privacy/register.json`에 종료일과 함께 등록한다
 - 완주를 전제하는 선형 구조 ❌ (실패 전례 있음)
 - 비주얼 완성도에 시간 쏟기 ❌ → 껍데기는 디자인 업체가 교체한다
 - `oninput`으로 실시간 필터링하는 검색창에 `autocomplete="off"` 누락 ❌ → 브라우저가 과거 입력값을 자동완성 제안하고, 방문자가 선택하면 필터가 의도치 않게 걸린다. `dream_up/index.html`·`dual_credit/courses.html`에서 실제로 발생(2026-09-03). 새 검색창은 `type="search"` + `autocomplete="off"` + `role="searchbox"`로 만들 것 (`apply/app.html`의 `.search-box`가 검증된 패턴)

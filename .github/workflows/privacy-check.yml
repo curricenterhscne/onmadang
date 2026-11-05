@@ -1,0 +1,19 @@
+name: privacy-check
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * 1'
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 추적 파일 검사
+        run: python tools/privacy_scan.py --all
+      - name: 등록부 종료일 검사
+        run: python tools/privacy_scan.py --expiry
