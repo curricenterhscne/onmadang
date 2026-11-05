@@ -78,10 +78,10 @@
 
 ```
 --bg #D7F3FF   --brand #526ADC   --brand-d #3F54C4   --brand-l #6d8ad6
---accent #78F7A2   --accent-d #3C7C52   --online #61E0DF   --online-d #2a8db5
+--accent #78F8A3   --accent-d #3C7C52   --online #61DFFF   --online-d #2a8db5
 --plum #946AD7   --plum-d #7C52B8
 --sunny #FFFFC4   --char-blue #4B6FB6
---ink #1f2b44   --ink-soft #51607d   --ink-faint #8597ad
+--ink #000000   --ink-menu #333333   --ink-soft #51607d   --ink-faint #8597ad
 --line #c5dcef   --surface #fff   --soft #ECF9FF
 --radius 18px   --radius-sm 12px   --radius-pill 999px
 --shadow / --shadow-sm / --shadow-lg   --maxw 860px
@@ -230,6 +230,7 @@
 | `design/outside/` | 미개설 과목 대안 | ✅ 사용 | `index.html` | ✅ 구현 완료 (GNB 미노출, 허브 본문 링크) |
 | `design/majors/` | 대학 학과 안내 (자산①) | ✅ 사용 + CDN DS | `index.html`, `app.js` | 기존 로직 유지 |
 | `design/selector/` | 과목 선택 실습 (자산②) | ✅ 사용 + CDN DS | `index.html`, `guide.html` | 기존 로직 유지 |
+| `policy/` | 개인정보처리방침·이메일무단수집거부 | ✅ 사용 | `privacy.html` `email.html` `policy.css` | 푸터에서 연결. 수집 항목이 바뀌면 `privacy.html`도 수정 |
 | `safety/` | 4대 안전망 페이지들 | ✅ 사용 | HTML 6개 (`index` + 4대 안전망 4개 + `enrollment-closed`) | 정적 콘텐츠. 기획 메모 `.md` 1개 동거 |
 
 ### ⚠️ 링크되지 않는 부속 페이지 (직접 URL 배포용)
@@ -241,7 +242,7 @@
 | 경로 | 규모 | 성격 | 공통 헤더 |
 |---|---|---|---|
 | `dream_up/index.html` | 약 517줄 | 2026-2학기 꿈키움 학교 밖 교육 **강좌 안내** | ❌ |
-| `dream_up/check/index.html` | 약 226줄 | 여름방학 창의적체험활동 **이수 결과 확인** (학번+이름 조회) | ❌ |
+| `dream_up/check/index.html` | 약 65줄 | 이수 결과 **조회 종료 안내**. 2026-11-05에 조회 페이지를 내리고 공지로 교체 (학생 1,081명 자료가 평문으로 공개되어 있었다) | ✅ |
 | `dream_up/attendance/index.html` | 약 64줄 | 출석부 **열람 종료 안내**. 2026-09-03에 뷰어를 내리고 공지로 교체 | ✅ |
 | `dual_credit/support/` | 약 401줄 + PDF | 수업 운영 안내 협의회 | ❌ |
 | `dual_credit/inform/dual_credit_2026_2_start.html` | 약 698줄 | 2026-2학기 고교-대학 연계 과목 **수업 시작 안내** (수강 확정 학생 대상). `readme.md` 동거 | ❌ |
@@ -270,8 +271,8 @@
         async src="//gc.zgo.at/count.js"></script>
 ```
 
-- 적용됨(21개): `index.html`, `about/`(3), `apply/index.html`, `board/`(4), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `dual_credit/curriculum.html`, `safety/`(6), `dream_up/attendance/`
-- **미적용**: `apply/app.html`, `apply/admin/`, `design/check/`, `design/majors/`, `design/selector/`(+`guide.html`), `dual_credit/courses.html`, 위 「링크되지 않는 부속 페이지」 전부 (`dream_up/attendance/` 제외 — 만료 후 유입 확인용으로 넣었다)
+- 적용됨(24개): `index.html`, `policy/`(2), `about/`(3), `apply/index.html`, `board/`(4), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `dual_credit/curriculum.html`, `safety/`(6), `dream_up/attendance/`, `dream_up/check/`
+- **미적용**: `apply/app.html`, `apply/admin/`, `design/check/`, `design/majors/`, `design/selector/`(+`guide.html`), `dual_credit/courses.html`, 위 「링크되지 않는 부속 페이지」 전부 (`dream_up/attendance/`·`dream_up/check/` 제외 — 만료 후 유입 확인용으로 넣었다)
 - 새 페이지를 만들면 **직접 넣어야 한다.** 관리자 페이지(`apply/admin/`)에는 넣지 않는다.
 
 ### 공유 모듈 (`design/`)

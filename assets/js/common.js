@@ -148,9 +148,42 @@
   /* ── 푸터 ── */
   var footerEl = document.getElementById('om-footer');
   if (footerEl) {
-    footerEl.outerHTML = '<footer>'
-      + '<p>\u00A9 2026 충청남도교육청 \u00B7 <a href="' + L.home + '">온마당 홈으로</a></p>'
-      + '</footer>';
+    /* 시안 레이아웃. 이용약관은 회원가입이 없어 두지 않는다 */
+    var relatedSites = [
+      { label: '충청남도교육청',       href: 'https://www.cne.go.kr' },
+      { label: '충남온라인학교',       href: 'http://www.cnonlineschool.cnehs.kr' },
+      { label: '고교학점제 지원센터',  href: 'https://www.hscredit.kr' },
+      { label: '커리어넷',             href: 'https://www.career.go.kr' },
+      { label: '국가교육과정정보센터', href: 'https://ncic.re.kr' },
+      { label: '대입정보포털 어디가',  href: 'https://www.adiga.kr' }
+    ];
+    var relatedHtml = '';
+    for (var r = 0; r < relatedSites.length; r++) {
+      relatedHtml += '<li><a href="' + relatedSites[r].href + '" target="_blank" rel="noopener">' + relatedSites[r].label + '<span class="ft-sr"> (새 창)</span></a></li>';
+    }
+    var ftCol = function (title, items) {
+      var h = '<div class="ft-col"><b>' + title + '</b>';
+      for (var i = 0; i < items.length; i++) {
+        h += '<a href="' + items[i].href + '">' + items[i].label + '</a>';
+      }
+      return h + '</div>';
+    };
+    footerEl.outerHTML = '<footer><div class="ft-inner"><div class="ft-top">'
+      + '<div class="ft-org"><a class="ft-name" href="' + L.home + '">온마당</a>'
+      + '<p>충남 고교학점제 종합지원 포털</p>'
+      + '<address><b>충청남도교육청</b>담당부서: 중등교육과 고등학교 교육과정지원센터<br>문의전화: 041-640-7211, 041-640-7221, 041-640-7224<br>주소: (32255) 충청남도 홍성군 홍북읍 선화로 22</address></div>'
+      + '<nav class="ft-sitemap" aria-label="사이트맵">'
+      + ftCol('고교학점제', subMenus.about)
+      + ftCol('진로\u00B7학업 설계', subMenus.design.concat([{ label: '학교에 없는 과목 듣는 법', href: L.design + 'outside/' }]))
+      + ftCol('4대 안전망', subMenus.safety)
+      + ftCol('알림\u00B7소통 마당', subMenus.board)
+      + '</nav></div>'
+      + '<div class="ft-bottom"><div class="ft-legal">'
+      + '<a href="' + base + 'policy/privacy.html"><b>개인정보처리방침</b></a>'
+      + '<a href="' + base + 'policy/email.html">이메일무단수집거부</a>'
+      + '<span>Copyright \u00A9 Chungcheongnam-do Office of Education. All rights reserved.</span></div>'
+      + '<details class="ft-related"><summary>관련 사이트</summary><ul>' + relatedHtml + '</ul></details></div>'
+      + '</div></footer>';
   }
 
   /* ── 모바일 메뉴 JS ── */

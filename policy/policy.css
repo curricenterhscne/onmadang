@@ -1,0 +1,8 @@
+/* 개인정보처리방침·이메일무단수집거부 공용 — 본문 레이아웃만 둔다. 색·모서리는 common.css 토큰을 쓴다 */
+.policy{padding:36px 0 64px}
+.policy-card{background:var(--surface);border-radius:var(--radius);padding:32px 36px;box-shadow:var(--shadow-sm)}
+.policy-card h2{font-size:18px;font-weight:800;margin:28px 0 8px}
+.policy-card h2:first-of-type{margin-top:20px}
+.policy-card p,.policy-card li{font-size:15px;line-height:1.8;word-break:keep-all}
+.policy-card ul{padding-left:20px}
+@media(max-width:680px){.policy-card{padding:24px 20px}}
