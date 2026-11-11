@@ -12,3 +12,5 @@ design/_dev/sample-export.json
 # 디자인 업체 원본 (용량 큼, git 제외 — README만 추적)
 design-source/*
 !design-source/README.md
+__pycache__/
+*.pyc

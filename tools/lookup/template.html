@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>{{TITLE}} · 온마당</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="{{BASE}}assets/css/common.css">
+<style>
+  .lk{padding:36px 0 64px}
+  .lk-card{background:var(--surface);border-radius:var(--radius);padding:28px 32px;box-shadow:var(--shadow-sm)}
+  .lk-field{display:block;margin-bottom:14px;font-size:14px;font-weight:700}
+  .lk-field select,.lk-field input{display:block;width:100%;margin-top:6px;padding:11px 12px;font:inherit;font-weight:400;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);color:var(--ink)}
+  .lk-go{width:100%;padding:13px;font:inherit;font-weight:700;color:#fff;background:var(--brand);border:0;border-radius:var(--radius-pill);cursor:pointer}
+  .lk-go:hover{background:var(--brand-d)}
+  .lk-go:disabled{opacity:.6;cursor:default}
+  .lk-msg{margin-top:14px;font-size:14px;line-height:1.7}
+  .lk-res{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+  .lk-res div{display:flex;gap:16px;padding:6px 0;font-size:15px}
+  .lk-res dt{flex:0 0 96px;font-weight:700}
+  .lk-note{margin-top:12px;font-size:13.5px;color:var(--ink-soft);line-height:1.7}
+</style>
+</head>
+<body>
+<div id="om-header"></div>
+<section class="page-hero"><div class="wrap"><h1 id="h1"></h1><p id="lede"></p></div></section>
+<main class="lk">
+  <div class="wrap">
+    <div class="lk-card" id="card">
+      <form id="form">
+        <label class="lk-field">학교<select id="sch" required><option value="">선택하십시오</option></select></label>
+        <label class="lk-field">학년<select id="gr" required><option value="">선택하십시오</option><option>1</option><option>2</option><option>3</option></select></label>
+        <label class="lk-field">학번<input id="sid" inputmode="numeric" autocomplete="off" required></label>
+        <label class="lk-field">이름<input id="name" autocomplete="off" required></label>
+        <button class="lk-go" id="go">조회</button>
+      </form>
+      <p class="lk-msg" id="msg" role="alert" hidden></p>
+      <dl class="lk-res" id="res" aria-live="polite" hidden></dl>
+      <p class="lk-note" id="note"></p>
+    </div>
+  </div>
+</main>
+<div id="om-footer"></div>
+<script src="{{BASE}}assets/js/common.js"></script>
+<script type="application/json" id="db">{{DATA}}</script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var DB = JSON.parse($('db').textContent);
+  var bytes = function (b) { return Uint8Array.from(atob(b), function (c) { return c.charCodeAt(0); }); };
+  var norm = function (s) { return s.normalize('NFC').replace(/\s+/g, ''); };
+  $('h1').textContent = DB.title; $('lede').textContent = DB.lede; $('note').textContent = DB.note;
+
+  var today = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+  if (today > DB.end) {
+    $('card').textContent = '조회 기간이 종료되었습니다. 확인이 필요한 경우 소속 학교의 담당 교사에게 문의하시기 바랍니다.';
+    return;
+  }
+  DB.schools.forEach(function (n) { var o = document.createElement('option'); o.textContent = n; $('sch').appendChild(o); });
+
+  function show(t) { $('msg').textContent = t; $('msg').hidden = false; $('res').hidden = true; }
+
+  async function lookup(raw) {
+    var mat = await crypto.subtle.importKey('raw', new TextEncoder().encode(raw), 'PBKDF2', false, ['deriveBits']);
+    var bits = new Uint8Array(await crypto.subtle.deriveBits(
+      { name: 'PBKDF2', salt: bytes(DB.salt), iterations: DB.iter, hash: 'SHA-256' }, mat, 384));
+    var id = Array.from(bits.subarray(0, 16)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+    var hit = DB.r[id];
+    if (!hit) return null;
+    var key = await crypto.subtle.importKey('raw', bits.subarray(16), 'AES-GCM', false, ['decrypt']);
+    var pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bytes(hit[0]) }, key, bytes(hit[1]));
+    return JSON.parse(new TextDecoder().decode(pt));
+  }
+
+  $('form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var btn = $('go'); btn.disabled = true; btn.textContent = '확인 중입니다';
+    $('msg').hidden = true;
+    try {
+      var vals = await lookup([$('sch').value, $('gr').value, $('sid').value, $('name').value].map(norm).join('|'));
+      if (!vals) { show('일치하는 자료가 없습니다. 입력한 내용을 확인하십시오.'); return; }
+      var res = $('res'); res.textContent = '';
+      DB.cols.forEach(function (c, i) {
+        var d = document.createElement('div'), t = document.createElement('dt'), v = document.createElement('dd');
+        t.textContent = c; v.textContent = vals[i] == null ? '' : vals[i];
+        d.appendChild(t); d.appendChild(v); res.appendChild(d);
+      });
+      res.hidden = false;
+    } catch (err) {
+      show('조회하지 못했습니다. 최신 브라우저에서 다시 시도하십시오.');
+    } finally {
+      btn.disabled = false; btn.textContent = '조회';
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -328,6 +328,8 @@
     .right-tools { margin-left: 0; flex-shrink: 0; }
     .guide-btn span { display: none; }
     .guide-btn { padding: 0; width: 34px; height: 34px; justify-content: center; }
+    /* 도구 버튼이 화면 밖으로 밀려나지 않도록 한 줄을 따로 쓴다 (2026-11) */
+    .app-tools { width: 100%; justify-content: flex-end; }
     .legend { display: none; }
     aside.counter-panel {
       position: fixed !important;
@@ -584,6 +586,10 @@
     <div class="school-meta" id="school-meta"></div>
     <select id="dept-sel" class="kk-select" style="display:none;"></select>
     <div class="app-tools">
+      <button type="button" class="guide-btn kk-btn kk-btn--primary" id="result-btn" title="결과표 만들기 (이수계획표·점검)" aria-label="결과표 만들기">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        <span>결과표 만들기</span>
+      </button>
       <a href="guide.html" class="guide-btn kk-btn kk-btn--secondary" id="guide-link" title="사용 설명서">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         <span>사용 설명서</span>
@@ -673,6 +679,14 @@
 <div class="toast" id="toast"></div>
 
 <script>
+// 추천 적용 시 지킬 선수 과목 — design/data/subject-hierarchy.json 의 수학·과학 edges 와 같은 내용(공통과목 선수는 지정이라 생략)
+const PRESET_PREREQ = {
+  '미적분Ⅱ': ['대수', '미적분Ⅰ'], '경제 수학': ['대수'], '실용 통계': ['확률과 통계'],
+  '역학과 에너지': ['물리학'], '전자기와 양자': ['물리학'],
+  '물질과 에너지': ['화학'], '화학 반응의 세계': ['화학'],
+  '세포와 물질대사': ['생명과학'], '생물의 유전': ['생명과학'],
+  '지구시스템과학': ['지구과학'], '행성우주과학': ['지구과학'],
+};
 const PRESETS = {
   science: {
     name: '이공·자연',
@@ -922,19 +936,41 @@ async function loadCurriculum(code, preselectPicks) {
     // majors에서 want/core 이름으로 넘어온 경우 커리큘럼에서 과목 이름 매칭
     if (state.pendingSubjects.length) {
       const nameSet = new Set(state.pendingSubjects);
+      // 2026-11 보완
+      //  ① 같은 과목이 여러 선택군·학기에 개설돼 있어도 한 번만 고른다 (가장 이른 학기, 택N 정원 안에서)
+      //  ② 요청한 과목명이 편성표에 그대로 있으면 정확히 일치하는 과목만 고른다 ('화학' → '화학 반응의 세계' 방지)
+      //  ③ 선수 과목(PRESET_PREREQ)도 함께 요청됐으면 그보다 뒤 학기에 배치한다
+      const offered = new Set();
+      state.curriculum.groups.forEach(g => g.subjects.forEach(s => offered.add(s.name.replace('*', '').trim())));
+      const exact = [...nameSet].filter(n => offered.has(n));
+      const fuzzy = [...nameSet].filter(n => !offered.has(n));
+      const chosenSem = {};   // 과목명 → 배치한 학기
+      const used = {};        // `${gi}-${semIdx}` → 그 학기에 이미 고른 수
+      const slots = [];
       state.curriculum.groups.forEach((group, gi) => {
         const isFixed = group.division === '지정' || group.isSoonjeung;
+        if (isFixed || !group.semesters) return;
+        const m = (group.selectCount || '').match(/택\s*(\d+)/);
+        const cap = m ? parseInt(m[1]) : Infinity;
         group.subjects.forEach((subj, si) => {
           const clean = subj.name.replace('*', '').trim();
-          const hit = nameSet.has(clean) || [...nameSet].some(n => clean === n || clean.includes(n) || n.includes(clean));
+          const hit = exact.includes(clean) || fuzzy.some(n => clean.includes(n) || n.includes(clean));
           if (!hit) return;
-          if (isFixed) {
-            (subj.semCredits || []).forEach((c, semIdx) => { if (c) state.userSelections.add(`g${gi}-s${si}-sem${semIdx}`); });
-          } else if (group.semesters) {
-            group.semesters.forEach((active, semIdx) => { if (active) state.userSelections.add(`g${gi}-s${si}-sem${semIdx}`); });
-          }
+          group.semesters.forEach((active, semIdx) => { if (active) slots.push({ gi, si, semIdx, cap, clean }); });
         });
       });
+      slots.sort((a, b) => a.semIdx - b.semIdx || a.gi - b.gi);
+      const wanted = new Set(slots.map(s => s.clean));
+      const prereqOk = s => (PRESET_PREREQ[s.clean] || [])
+        .every(p => !wanted.has(p) || (chosenSem[p] !== undefined && chosenSem[p] < s.semIdx));
+      const place = s => {
+        state.userSelections.add(`g${s.gi}-s${s.si}-sem${s.semIdx}`);
+        chosenSem[s.clean] = s.semIdx;
+        used[`${s.gi}-${s.semIdx}`] = (used[`${s.gi}-${s.semIdx}`] || 0) + 1;
+      };
+      const free = s => chosenSem[s.clean] === undefined && (used[`${s.gi}-${s.semIdx}`] || 0) < s.cap;
+      slots.forEach(s => { if (free(s) && prereqOk(s)) place(s); });
+      slots.forEach(s => { if (free(s)) place(s); });   // 순서를 지킬 자리가 없으면 남는 자리에 (점검에서 위계 경고가 뜬다)
       const n = state.userSelections.size;
       if (n > 0) setTimeout(() => showToast(`${state.pendingMajorId ? state.pendingMajorId + ' 관련 ' : ''}추천 과목 ${n}개가 자동 선택됐어요. 직접 조정해 보세요`), 400);
     }
@@ -956,14 +992,23 @@ function applyPreset(presetKey) {
 
   state.userSelections.clear();
   state.activePreset = presetKey;
+  // 2026-11 보완
+  //  ① 학기마다 선택군이 따로 있고 같은 과목이 여러 선택군에 개설되므로 과목명 기준으로 한 번만 고른다
+  //  ② 선수 과목(PRESET_PREREQ)을 앞 학기에 고른 뒤에만 후속 과목을 고른다 — 학교에 선수 과목이 없으면 제한하지 않는다
+  //  ③ 학기 순서대로 채워야 ②가 성립하므로 (선택군, 학기) 칸을 학기 순으로 돈다
+  const nameOf = subj => (subj.name || '').replace('*', '').trim();
+  const pickedSem = {};   // 과목명 → 고른 학기
+  const offered = new Set();
+  state.curriculum.groups.forEach(g => g.subjects.forEach(s => offered.add(nameOf(s))));
+  const prereqOk = (name, semIdx) => (PRESET_PREREQ[name] || [])
+    .every(p => !offered.has(p) || (pickedSem[p] !== undefined && pickedSem[p] < semIdx));
 
+  const slots = [];
   state.curriculum.groups.forEach((group, gi) => {
     if (group.division === '지정') return;
     const m = (group.selectCount || '').match(/택\s*(\d+)/);
     const required = m ? parseInt(m[1]) : 0;
     if (!required) return;
-    const activeSems = (group.semesters || []).map((s, i) => s ? i : -1).filter(i => i >= 0);
-
     const scored = group.subjects.map((subj, si) => {
       let score = -1;
       const idx = preset.priority.indexOf(subj.name);
@@ -977,23 +1022,26 @@ function applyPreset(presetKey) {
       }
       return { si, subj, score };
     });
+    (group.semesters || []).forEach((on, semIdx) => { if (on) slots.push({ gi, group, semIdx, required, scored }); });
+  });
+  slots.sort((a, b) => a.semIdx - b.semIdx || a.gi - b.gi);
 
-    // 그룹 내 중복 이수 방지: 학기를 순서대로 돌며 아직 선택 안 된 과목 우선
-    const pickedSis = new Set();
-    activeSems.forEach(semIdx => {
-      const unpicked = scored.filter(x => !pickedSis.has(x.si));
-      const candidates = [
-        ...unpicked.filter(x => x.score >= 0).sort((a, b) => b.score - a.score),
-        ...unpicked.filter(x => x.score < 0),
-      ];
-      const picked = candidates.slice(0, required);
-      if (picked.length < required) {
-        console.warn(`[preset] g${gi} "${group.division}" ${SEMESTER_LABELS[semIdx]}: 후보 부족 (${picked.length}/${required})`);
-      }
-      picked.forEach(x => {
-        state.userSelections.add(`g${gi}-s${x.si}-sem${semIdx}`);
-        pickedSis.add(x.si);
-      });
+  slots.forEach(({ gi, group, semIdx, required, scored }) => {
+    const unpicked = scored.filter(x => pickedSem[nameOf(x.subj)] === undefined);
+    const ready = unpicked.filter(x => prereqOk(nameOf(x.subj), semIdx));
+    const later = unpicked.filter(x => !prereqOk(nameOf(x.subj), semIdx));
+    const candidates = [
+      ...ready.filter(x => x.score >= 0).sort((a, b) => b.score - a.score),
+      ...ready.filter(x => x.score < 0),
+      ...later,   // 선수 과목이 아직이면 마지막 후보 (택N을 못 채울 때만)
+    ];
+    const picked = candidates.slice(0, required);
+    if (picked.length < required) {
+      console.warn(`[preset] g${gi} "${group.division}" ${SEMESTER_LABELS[semIdx]}: 후보 부족 (${picked.length}/${required})`);
+    }
+    picked.forEach(x => {
+      state.userSelections.add(`g${gi}-s${x.si}-sem${semIdx}`);
+      pickedSem[nameOf(x.subj)] = semIdx;
     });
   });
   render();
@@ -1346,6 +1394,14 @@ document.getElementById('clear-btn').addEventListener('click', () => {
 
 document.querySelectorAll('.reco-btn').forEach(btn => {
   btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
+});
+
+// 결과표 만들기 — 공유 링크와 같은 형식으로 「내 선택 점검」(이수계획표)을 연다 (2026-11 추가)
+document.getElementById('result-btn').addEventListener('click', () => {
+  if (!state.curriculum) return showToast('먼저 학교를 선택하세요');
+  const q = new URLSearchParams(serializeStateToUrl().slice(1));
+  if (state.pendingMajorId) q.set('major', state.pendingMajorId);
+  window.location.href = '../check/?' + q.toString();
 });
 
 document.getElementById('share-btn').addEventListener('click', async () => {
@@ -1787,16 +1843,39 @@ async function exportToXLSX() {
     // Sheet 2: 요약
     const sum = _buildSummary();
     const fmtC = n => n % 1 === 0 ? String(n) : String(parseFloat(n.toFixed(1)));
+    const ok = (got, need) => (need === '' ? '' : (got >= need ? '충족' : '부족'));
     const rows2 = [
-      ['항목', '이수학점', '필수학점'],
-      ['총 이수학점', fmtC(sum.totalCredits), 192],
-      ['창의적 체험활동', fmtC(sum.changcheCredits), ''],
+      ['항목', '이수학점', '필수학점', '충족여부'],
+      ['총 이수학점', fmtC(sum.totalCredits), 192, ok(sum.totalCredits, 192)],
+      ['창의적 체험활동', fmtC(sum.changcheCredits), 18, ok(sum.changcheCredits, 18)],
       [],
-      ['교과군', '이수학점', '필수학점'],
+      ['교과군', '이수학점', '필수학점', '충족여부'],
     ];
-    Object.entries(sum.groupBreakdown).forEach(([k, v]) => {
-      rows2.push([k, fmtC(v), getRequiredCredits()[k] ?? '']);
+    // groupBreakdown 은 편성표 group 값이라 한국사가 사회에 섞여 있다 → 화면 합계와 같은 규칙으로 재집계
+    const gt = {};
+    state.curriculum.groups.forEach((group, gi) => {
+      if (group.isSoonjeung) return;
+      const isFixed = group.division === '지정';
+      group.subjects.forEach((subj, si) => {
+        const g = (subj.name || '').startsWith('한국사') ? '한국사' : (subj.group || '기타');
+        for (let i = 0; i < 6; i++) {
+          let c = 0;
+          if (isFixed) c = parseFloat((subj.semCredits || [])[i]) || 0;
+          else if (state.userSelections.has(`g${gi}-s${si}-sem${i}`)) c = parseFloat(subj.opCredit || group.groupCredit || 0) || 0;
+          if (c) gt[g] = (gt[g] || 0) + c;
+        }
+      });
     });
+    const REQ = getRequiredCredits();
+    const ORD = ['국어', '수학', '영어', '한국사', '사회', '과학', '체육', '예술'];
+    const members = new Set(GROUPED_CATEGORY.members);
+    ORD.forEach(k => rows2.push([k, fmtC(gt[k] || 0), REQ[k], ok(gt[k] || 0, REQ[k])]));
+    const grouped = Object.keys(gt).filter(k => members.has(k));
+    const groupedSum = grouped.reduce((a, k) => a + gt[k], 0);
+    rows2.push([`${GROUPED_CATEGORY.label} (합산)`, fmtC(groupedSum), getGroupedRequired(), ok(groupedSum, getGroupedRequired())]);
+    grouped.forEach(k => rows2.push([`  - ${k}`, fmtC(gt[k]), '', '']));
+    Object.keys(gt).filter(k => !ORD.includes(k) && !members.has(k))
+      .forEach(k => rows2.push([k, fmtC(gt[k]), '', '판정 제외']));
     window.XLSX.utils.book_append_sheet(wb, window.XLSX.utils.aoa_to_sheet(rows2), '요약');
 
     // Sheet 3: 선택 그룹 현황

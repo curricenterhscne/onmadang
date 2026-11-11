@@ -44,6 +44,11 @@ majors/
 
 최상위 키는 `departments`다. `majors`가 아니다.
 
+## 들어오는 파라미터 — `?q=`
+
+`?q=검색어`로 열면 초기 로드 후 검색창에 값을 넣고 키워드 검색을 실행한다(2026-11-02 추가, `app.js` INIT 블록 끝 몇 줄).
+`design/compass/`의 분야 카드가 쓴다. 분야별 검색어는 `design/data/compass-mapping.json`의 `majorsQuery`.
+
 ## ② selector 와의 브리지
 
 학과 모달의 "이 학과 권장 과목으로 과목 선택 실습" 버튼 →
