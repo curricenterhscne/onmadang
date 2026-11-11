@@ -3,6 +3,73 @@
 > 폴더 안에 **성격이 다른 두 페이지**가 있다. 헤더 규칙이 서로 다르니 아래 표를 먼저 볼 것.
 > 최종 검증 2026-08-13 (실측)
 
+## ⚠️ 2026-10-21~ 멀티프로그램 확장 진행 중 (`enrollment-multiprogram` 브랜치)
+
+이 문서 본문은 **아직 단일 프로그램(꿈키움) 전제로 작성된 과거 상태**다. 지역연계 공동교육과정·고교-대학 연계까지 `app.html` 하나로 같이 서빙하도록 확장하는 작업이 진행 중이며, 완료 전까지 아래와 실제 코드가 어긋날 수 있다. **설계 전체는 `.claude/plans/cheerful-soaring-sparkle.md`(Track B) 참고.**
+
+진행 상황 — **2026-11-11 `main`에 병합**(지역연계 2026-11-21 신청 시작 대비). 테스트 사본 `apply/admin-test/`·`apply/app-test.html`은 정식 주소로 넘기는 이동 페이지가 됐다:
+- ✅ `supabase/sql/rpc_backup_query.sql` — RPC 7개 실제 정의 백업 완료(2026-10-21, 하단에 전문 보관).
+- ✅ `supabase/sql/program_column_migration.sql` — **실행 완료 + 검증 완료(2026-10-21)**. `courses`(새 컬럼 전부 포함, 기존 66강좌 전부 `program='dream_up'` 확인)/`enrollments`에 `program` 컬럼, `programs` 3행(`dream_up`/`dual_credit`/`joint_regional`)·빈 `staff_profiles` 테이블 생성, 기존 `settings` 1행에 `program='dream_up'` 백필까지 전부 확인됨.
+  **설계 변경**: 처음 계획했던 신규 `cycles` 테이블은 쓰지 않는다 — 실제 RPC가 이미 `settings`(1차/2차 2단계 모델: `open_at/close1_at/open2_at/close2_at`)를 쓰고 있어, 검증된 로직을 유지하는 쪽으로 바꿨다.
+- ✅ `supabase/sql/rpc_multiprogram.sql` + `rpc_multiprogram_fix_overload.sql` — **실행 완료 + 검증 완료(2026-10-21)**. RPC 7개 중 6개(`release_reservation` 제외)를 `p_program` 파라미터 포함해 재정의.
+  ⚠️ **함정 발견**: `CREATE OR REPLACE FUNCTION`은 인자 개수가 바뀌면 "교체"가 아니라 "오버로드 추가"로 처리된다 — 그래서 처음 실행 후 구 시그니처(인자 적음)와 신 시그니처가 동시에 남아 `get_open_status() is not unique` 등 모호성 에러가 났다. `rpc_multiprogram_fix_overload.sql`로 구 시그니처 6개를 `DROP FUNCTION`해서 해결(신 시그니처만 남음, `pg_get_function_arguments`로 확인). **앞으로 함수 시그니처를 바꾸는 재정의는 반드시 구 시그니처 DROP을 같이 해야 한다.**
+  **버그 수정 포함**: 기존 `confirm_enrollment`/`get_my_enrollment`/`cancel_enrollment`는 중복신청·조회·취소를 **프로그램 구분 없이 전체 테이블**에서 검사했다(학교+학번 OR 전화 매칭) — 그대로 두면 같은 학생이 두 프로그램에 동시 신청하는 것 자체가 막힌다. 재정의 버전은 프로그램 단위로 스코프하고, `programs.term_subject_limit`(지역연계=2)이 있는 프로그램은 "개수 상한" 체크로, 없는 프로그램(꿈키움/고교대학연계)은 기존과 동일한 "1건만" 체크로 분기한다. `cancel_enrollment`의 취소 UPDATE도 "식별자 일치 전부"가 아니라 "찾아낸 신청 1건(course_code 일치)"만 취소하도록 좁혔다(다건-활성 신청 시 전부 취소되는 잠재 버그 예방). `p_program` 생략 시(꿈키움 기존 호출) 전부 예전과 동일하게 동작 — `get_open_status()` 회귀 테스트로 확인됨(`phase:closed`, 신청접수 9/15 마감 후 상태 그대로 재현, 꿈키움 운영에 영향 없음).
+- ✅ `supabase/functions/_shared/authz.ts` 신설 — 기존 `ADMIN_PASSWORD` 공유 비밀번호 인증을 Supabase Auth 개인 계정(`staff_profiles.role: province|region|org`) 기반으로 바꾸는 공용 헬퍼. **기존 공유 비밀번호도 당분간 그대로 동작**(과도기 호환, `legacyPasswordProfile()`).
+- ✅ 기존 Edge Function 5개(`admin-courses`·`admin-enrollments`·`admin-set-capacity`·`admin-toggle-close`·`admin-delete-enrollment`)에 scope 필터링 추가 — province는 전체, region/org는 자기 소관(`courses.region`/`courses.org`)만.
+- ✅ 신규 Edge Function 6개 작성 + 배포 완료(2026-10-21): `admin-upsert-course`(강좌 등록/수정, `_embed_data.js` 편집 워크플로를 대체), `admin-delete-course`, `register-staff`(지역청/기관 담당자 셀프 가입 신청), `admin-approve-staff`/`admin-list-staff`(도교육청 승인), `admin-whoami`(로그인 계정 본인 정보 조회 — admin UI가 역할·소관 표시 및 승인화면 노출 여부 판단에 씀).
+- ✅ **11개 Edge Function 전부 배포 완료(2026-10-21)** — 기존 5개(scope 필터 추가분) + 신규 6개. `npx supabase login --token`은 비대화형 환경이라 개인 액세스 토큰으로 로그인(대시보드 > Account > Access Tokens에서 발급).
+- ✅ 레거시 공유 비밀번호 경로 회귀 확인됨(배포 직후 기존 관리자 비밀번호로 로그인해 강좌/신청자 목록 정상 확인).
+- ✅ 도교육청(`province`) `staff_profiles` 계정 1개 생성 완료(Supabase 대시보드 Auth에서 수동 생성 + SQL INSERT).
+- ✅ `apply/admin/index.html` 전면 개편(B2) 완료, 로컬 HTTP 서버로 렌더링·콘솔 에러 없음 확인:
+  - 로그인: 이메일+비밀번호(Supabase Auth) 기본, "공유 비밀번호로 로그인" 토글로 레거시 방식 유지, "지역청/기관 담당자 가입 신청" 링크(브라우저 prompt 연속 입력 → `register-staff` 호출 — V1은 간단한 prompt 기반, 정교한 폼은 아님)
+  - JWT 만료 시 `refresh_token`으로 1회 자동 재시도하는 `authFetch()` 래퍼 추가(레거시 비밀번호는 refresh_token이 없어 그냥 재로그인)
+  - 로그인 후 `admin-whoami` 호출 결과를 헤더 배지로 표시(이름·역할·소관), `role==='province'`일 때만 "가입 승인" 버튼 노출
+  - 프로그램 탭(전체/꿈키움/고교-대학 연계/지역연계, `programs` 테이블을 anon key로 직접 조회해 구성) — 탭 클릭 시 `admin-courses?program=`으로 재조회
+  - "+ 강좌 등록"/"수정" 모달 — `admin-upsert-course` 호출. `instructors`/`sessions`는 반복 입력 행(추가/삭제 버튼), `learning_goals`는 줄바꿈 textarea, `schedule_by_day`는 고급 옵션으로 raw JSON textarea(비워도 됨) — **V1 간소화**, 추후 전용 서브 UI로 교체 가능
+  - "삭제" 버튼 — `admin-delete-course` 호출(신청자 있으면 409로 거부, 서버 메시지 그대로 표시)
+  - region/org 역할 로그인 시 강좌 등록 폼의 지역/기관 필드를 본인 `scope_value`로 잠금(다른 지역 강좌를 실수로 못 만듦)
+  - "가입 승인" 모달 — `admin-list-staff` 조회 + 대기중 계정에 승인/거부 버튼(`admin-approve-staff`)
+  - **엑셀 일괄 등록** — "엑셀 양식 다운로드"(SheetJS `buildTemplateWorkbook()`)·"엑셀 일괄 등록"(`parseBulkWorkbook()`로 검증 → 행별로 `admin-upsert-course` 순차 호출 → 부여된 코드·실패 내역 요약).
+    **2026-11-02 지역청 1차 피드백으로 개편** — 양식이 시트 4개(`강좌목록`·`강사진`·`차시계획`·`작성안내`)가 됐다. 강사진·차시계획 행은 강좌목록의 「번호」로 강좌에 묶는다(코드는 저장 시 부여되므로 작성 시점에 모름). 학습목표는 `학습목표1~3` 열. 차시계획의 날짜·시간으로 `schedule_by_day`를 자동 계산한다(`deriveSchedule()`, 시작 시각만 있으면 +50분 — 아래 「scheduleByDay의 종료시각」과 같은 규칙). 「코드」에 기존 코드를 적으면 수정이고, 그 번호의 강사진·차시 행이 없으면 기존 값을 건드리지 않는다. 날짜 칸은 엑셀 일련번호로 읽히므로 `XLSX.SSF.parse_date_code`로 푼다(시간대 영향 없음).
+    정적 사본 `apply/admin/course_template.xlsx`(로그인 없이 배포용)는 **`buildTemplateWorkbook()`과 내용을 맞춰 둔다** — 양식을 바꾸면 이 파일도 다시 만들 것.
+  - **강좌 코드 자동 부여(2026-11-02)** — `admin-upsert-course`에 `code`를 비워 보내면 서버가 `{프로그램 2자}{학년도 2자}{운영 기간 1자}{지원청 2자}{순번 2자}`로 부여한다(예: `JR27SCA01` = 지역연계·2027학년도 여름방학·천안·1번). **운영 기간은 1년 4구간** — `1` 1학기 · `S` 여름방학 · `2` 2학기 · `W` 겨울방학(`TERM_CODES`). 바디의 `term`을 우선하고(admin 화면의 「운영 기간」 선택, 엑셀 「운영기간」 칸), 없으면 `start_date` 월로 정한다(3~6월 1, 7~8월 S, 9~12월 2, 1~2월 W). 학년도는 3월에 바뀌므로 1·2월은 전년도(2028-01 → `27W`), 단 1·2월 시작을 `1`로 명시하면 그해. `term`은 코드 생성에만 쓰고 DB에 저장하지 않는다. 접두어 표 `PROGRAM_PREFIX`·`REGION_CODE`(14개 지원청, 미등록 지역은 `ZZ`)는 함수 안에 있다. 순번 충돌 시 덮어쓰지 않도록 merge 없이 INSERT하고 409면 다시 계산한다. 등록 모달의 코드 칸은 도교육청 계정만 직접 입력할 수 있다.
+  - **지역청 계정은 지역연계만 보인다(2026-11-02)** — `REGION_PROGRAMS = ['joint_regional']`(admin 페이지와 `admin-upsert-course` 양쪽에 같은 값). 로그인 시 프로그램 탭이 지역연계 하나로 고정되고 「전체」 탭이 없다. 서버도 region 계정의 다른 프로그램 등록을 403으로 막는다.
+  - **수정 요청의 소관 확인 보강(2026-11-02)** — 예전에는 바디의 `region`만 검사해서, 지역청 계정이 다른 지원청 강좌 코드를 넣으면 그 강좌를 덮어쓸 수 있었다. 이제 기존 강좌의 `region`/`org`·`program`도 확인한다(`admin-delete-course`와 같은 방식).
+- ✅ **꿈키움·고교-대학 연계 기존 데이터 전체 삭제(2026-10-21)** — 사용자 요청으로 실행(사전 백업 완료 확인됨). `admin-reset-program` Edge Function 신설(province 전용, 대상 프로그램의 `display_name`을 정확히 입력해야 실행되는 2단계 확인) + admin UI에 "위험 구역" 패널 추가. 이 기능으로 꿈키움/고교-대학 연계의 `courses`/`enrollments`를 전부 지움 — `programs`/`settings` 메타는 남겨서 다음 회차에 강좌만 다시 등록하면 되게 함. 삭제 후 `courses` 테이블 0건 확인됨.
+- ✅ **`apply/app.html`(학생용 신청 화면) 멀티프로그램 대응 완료(B3, 2026-10-21)**:
+  - `?program=` URL 파라미터(생략 시 `dream_up` — 기존 공유 링크 전부 무수정 동작)
+  - RPC 6개 호출에 `p_program` 전달(`release_reservation`은 시그니처 안 바뀌어서 그대로)
+  - `fetchDbCourseDetails()` 신설 — `courses` 테이블을 anon key로 직접 조회해 강좌 상세(소개·일정·강사진 등)를 가져옴. 꿈키움은 기존처럼 `_embed_data.js`(`COURSE_DETAILS`)도 같이 쓰되 **DB 값이 있으면 우선**. 신규 프로그램은 `_embed_data.js` 없이 admin-upsert-course로 입력한 내용이 그대로 보임
+  - `applyProgramBranding()` — `dream_up` 외 프로그램은 히어로 문구·안내문을 `programs.display_name` 기반 범용 문구로 교체(꿈키움 전용 안내문이 다른 프로그램에 노출되지 않음). 강좌 수 통계도 하드코딩(66/15) 대신 실제 로드된 목록 기준으로 계산하도록 바꿈
+  - 상세보기 모달의 `if (!d) return;`(DETAIL_MAP 없으면 조용히 아무 반응 없던 버그)를 `d = DETAIL_MAP[code] || {}`로 수정 — 상세 데이터가 일부만 있어도 모달이 열림
+  - ⚠️ **`settings` 테이블의 숨은 싱글톤 제약 발견·수정** — 원래 "행 1개(id=1)만 허용"하도록 `CHECK(id=1)` + 상수 기본값으로 만들어진 테이블이었다. B0에서 `program` 컬럼만 추가하고 이 제약을 같이 풀지 않아서, 두 번째 프로그램(`joint_regional`)의 신청기간 행을 넣을 때 막혔다. `app_multiprogram_prep_fix.sql`로 제약 제거 + 정상 auto-increment 시퀀스로 교체(실행 완료, 검증됨). **앞으로 비슷한 "원래 싱글톤이었던 테이블"에 멀티테넌시를 추가할 때는 PK/CHECK 제약까지 같이 확인할 것.**
+  - 지역연계(`joint_regional`)에 데모 강좌 2건(`JR26DEMO1`/`JR26DEMO2`) + 신청기간(지금부터 90일) 시딩 완료 — 실제 지역청 데이터 입력 전 admin UI "전체 초기화"로 지워야 함
+  - **지역 관문(2026-11-02)** — `programs.scope_type='region'`인 프로그램(현재 지역연계)은 강좌 목록 전에 14개 교육지원청 선택 화면을 띄우고, 고른 지역(`courses.region` 일치) 강좌만 보여 준다. 선택은 주소의 `?region=`에 약칭으로 남아(`&region=천안`) 지역청이 자기 지역 링크를 직접 배포할 수 있다. 약칭·전체 이름 모두 받으며(`normalizeRegion()`), 목록에 없는 값이면 관문으로 돌아간다. 지원청 순서는 `REGIONS` 상수. 기관 칩도 선택 지역 기준으로 세고, 이 프로그램들에서는 필터 이름을 「운영 기관」으로 바꾼다. **신청 자체를 지역으로 제한하지는 않는다**(지역 바꾸기로 다른 지역 강좌도 신청 가능).
+  - `courses` 테이블에 공개 읽기(anon) RLS 정책 추가(`courses_public_read`) — 강좌 상세는 개인정보가 아니라 이미 RPC로 일부 공개되어 있던 것과 노출 수준이 같음
+- 🔧 **지역청별 신청 기간(2026-11-11, 작성 완료 · 실행/배포 대기)** — 지원청마다 신청 기간이 달라져 `settings`에 `region` 칸을 더했다.
+  - **기간을 고르는 규칙**:
+    1. 그 프로그램 + 그 지역 행이 있으면 그 기간을 쓴다.
+    2. 없으면 프로그램 기본 행(`region IS NULL`)을 쓴다.
+    3. 둘 다 없으면 `not_configured`(신청 불가)다.
+  - **고유 제약**: `UNIQUE(program)`을 지우고 `(program, coalesce(region,''))` 고유 인덱스로 바꿨다. 그래서 PostgREST `on_conflict`를 못 쓰고 찾아서 PATCH, 없으면 POST로 저장한다.
+  - **SQL**(`supabase/sql/region_periods.sql`, 대시보드 SQL Editor에서 실행):
+    - 내부 함수 `_period_for(program, region)`와 학생 화면용 `get_open_status_region(p_program, p_region)`을 **새로 추가**했다.
+    - `get_open_status(p_program)`·`reserve_course`·`cancel_enrollment`는 **시그니처를 그대로 두고 교체**했다. 오버로드 함정을 피하려는 것이다.
+    - 예약·취소는 학생이 보낸 값이 아니라 **강좌의 `courses.region`**으로 기간을 찾는다.
+    - 기존 허점도 고쳤다: 1차만 있는 기간(`open2_at` NULL)은 1차 마감 뒤에도 예약·취소가 막히지 않았다.
+  - **Edge Function `admin-periods`**:
+    - GET `?program=`로 조회한다(지역청은 기본 행 + 자기 지역 행만).
+    - POST로 저장한다(시작·1차 마감 필수, 2차는 시작·마감을 함께, 순서 검증). `action:"delete"`는 지역 행을 지운다.
+    - 권한: province는 전부, region은 `REGION_PROGRAMS`의 자기 지역 행만 쓴다. 기본 기간은 읽기만 한다.
+  - **관리 화면**: 헤더 「신청 기간」 버튼 → 프로그램별 표(기본 기간 + 14개 지원청 행, 지역청 계정은 자기 행만)를 띄운다. 입력은 KST `datetime-local`이고 `+09:00`을 붙여 보낸다.
+  - **학생 화면**:
+    - 지역 관문 프로그램은 `get_open_status_region`을 쓰고, 지역을 바꾸면 다시 불러온다.
+    - 상태줄 아래에 「○○ 신청 기간 11. 20.(목) 09:00 ~ …」을 표시한다.
+    - 기간 미설정 지역은 안내 문구를 띄운다.
+- ❌ 아직 안 한 것: GNB에 지역연계·고교대학연계로 가는 공개 링크/안내 페이지 연결(`safety/jointcurricula.html` 등), 14개 지역청 실제 계정 발급·강좌 입력, `dual_credit/enroll.js`의 신청 링크 제어를 `settings`/`cycles` 기반으로 전환.
+
+**지금 운영 중이던 꿈키움(2026-10-17~11-29) 데이터는 백업 후 삭제됨** — 다음 회차부터는 새 관리자 도구로 강좌를 다시 등록한다. 레거시 `ADMIN_PASSWORD` 경로는 계속 유지되고 있어 운영 전환 자체는 지장 없음(배포 직후·삭제 전 각각 정상 동작 확인함).
+
 ## 개요
 
 **수강신청 웹앱.** 선착순 좌석 예약 → 3분 타이머 → 정보 입력 → 확정 흐름.

@@ -69,6 +69,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
   font-size:12px;font-weight:700;padding:3px 14px;border-radius:20px;margin-right:8px}
 #open-badge.visible{display:inline-block}
 #countdown{font-size:13px;color:var(--g700)}
+#period-range{display:block;font-size:12px;color:var(--g700);margin-top:2px}
+#period-range:empty{display:none}
 
 /* ── Main ── */
 .wrap{max-width:900px;margin:0 auto;padding:20px 14px 64px}
@@ -80,6 +82,22 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
   transition:all .2s;font-family:inherit}
 .tab-btn.active{color:var(--navy);border-bottom-color:var(--navy)}
 .tab-btn:hover:not(.active){color:var(--g700)}
+
+/* ── Region gate (지원청 단위 프로그램) ── */
+.region-gate{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:22px 18px;margin-bottom:14px;text-align:center}
+.region-gate h3{font-size:16px;color:var(--navy);margin-bottom:4px}
+.region-gate p{font-size:12.5px;color:var(--g400);margin-bottom:14px;line-height:1.6}
+.region-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:8px}
+.region-btn{border:1.5px solid var(--g200);background:var(--white);color:var(--g700);padding:10px 6px;
+  border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .16s}
+.region-btn small{display:block;font-size:11px;font-weight:600;color:var(--g400);margin-top:2px}
+.region-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
+.region-btn:disabled{opacity:.45;cursor:default}
+.region-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;font-size:13px;color:var(--g700)}
+.region-bar strong{color:var(--navy)}
+.region-change{border:1.5px solid var(--g200);background:var(--white);color:var(--blue);padding:3px 11px;
+  border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.region-change:hover{border-color:var(--blue)}
 
 /* ── Filter section ── */
 .filter-section{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:14px 16px;margin-bottom:14px}
@@ -567,6 +585,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
 <div class="status-wrap">
   <span id="open-badge">🟢 신청 가능</span>
   <span id="countdown"></span>
+  <span id="period-range"></span>
 </div>
 
 <!-- ══ Main ══ -->
@@ -580,7 +599,13 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
 
   <!-- ── 강좌 목록 탭 ── -->
   <div id="tab-courses">
+    <div class="region-gate" id="region-gate" style="display:none">
+      <h3>지역을 선택하세요</h3>
+      <p>선택한 교육지원청에서 개설한 강좌만 표시됩니다.<br>다른 지역 강좌는 [지역 바꾸기]로 볼 수 있습니다.</p>
+      <div class="region-grid" id="region-grid"></div>
+    </div>
     <div class="filter-section">
+      <div class="region-bar" id="region-bar" style="display:none"></div>
       <div class="filter-search-row">
         <input class="search-box" type="search" placeholder="강좌명, 기관명 검색" oninput="setNameFilter(this.value)" autocomplete="off" role="searchbox"/>
         <span id="poll-ts"></span>
@@ -731,11 +756,61 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
 const SUPABASE_URL      = 'https://yhrgvnttjlitukrxdfdo.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlocmd2bnR0amxpdHVrcnhkZmRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMDYzNDAsImV4cCI6MjA5Nzc4MjM0MH0.FKtEr-59H1hl1Aucb-x1MFQkAC--ylV0BEX5gg1lpg8';
 
+// ?program= 생략 시 'dream_up' — 기존에 공유된 모든 링크가 그대로 꿈키움으로 동작한다.
+const PROGRAM = new URLSearchParams(location.search).get('program') || 'dream_up';
+
 // ── Lookup maps (built from _embed_data.js) ──
 const SCHOOL_MAP = {};
 SCHOOLS.forEach(s => SCHOOL_MAP[s.code] = s);
 const DETAIL_MAP = {};
 COURSE_DETAILS.forEach(d => DETAIL_MAP[d.code] = d);
+
+// 꿈키움(dream_up)은 _embed_data.js(COURSE_DETAILS)에 강좌 상세가 정적으로 들어있지만,
+// 새 프로그램(지역연계 등)은 admin-upsert-course로 courses 테이블 컬럼에 직접 저장된다.
+// courses 테이블을 공개 조회해 같은 모양(DETAIL_MAP)으로 병합한다 — DB 값이 있으면
+// 정적 데이터보다 우선한다(관리자가 고친 내용이 바로 반영되도록).
+async function fetchDbCourseDetails() {
+  try {
+    const cols = [
+      'code','org','field','target','intro','method','place','supply',
+      'activity_area','recommended_for','instructor_bio','start_date','end_date',
+      'session_count','instructors','sessions','schedule_by_day','learning_goals','grade_restricted',
+    ].join(',');
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/courses?program=eq.${encodeURIComponent(PROGRAM)}&select=${cols}`,
+      { headers: { apikey: SUPABASE_ANON_KEY } }
+    );
+    if (!res.ok) return;
+    const rows = await res.json();
+    for (const r of rows) {
+      DETAIL_MAP[r.code] = {
+        university:      r.org,
+        field:            r.field || '',
+        target:           r.target || '',
+        intro:            r.intro || '',
+        method:           r.method || '',
+        place:            r.place || '',
+        supply:           r.supply || '',
+        activityArea:     r.activity_area || '',
+        recommendedFor:   r.recommended_for || '',
+        instructorBio:    r.instructor_bio || '',
+        startDate:        r.start_date || '',
+        endDate:          r.end_date || '',
+        sessionCount:     r.session_count || null,
+        instructors:      r.instructors || [],
+        sessions:         r.sessions || [],
+        scheduleByDay:    r.schedule_by_day || [],
+        learningGoals:    r.learning_goals || [],
+        gradeRestricted:  !!r.grade_restricted,
+        period:           (r.start_date && r.end_date)
+          ? `${r.start_date} ~ ${r.end_date}`
+          : '',
+      };
+    }
+  } catch (e) {
+    console.warn('fetchDbCourseDetails:', e);
+  }
+}
 // ── University brand colors ──
 const UNI_COLORS = {
   "건양대학교":"#0B5AA6",
@@ -765,6 +840,15 @@ let filterField  = '';
 let filterOrg    = '';
 let nameFilter   = '';
 
+// 지역 관문 — 지원청 단위로 운영하는 프로그램(programs.scope_type = 'region', 현재 지역연계)은
+// 학생이 먼저 지역을 고르고 그 지역 강좌만 본다. 선택은 주소의 ?region=에 남아서,
+// 지역청이 「…&region=천안」 같은 링크를 직접 배포할 수도 있다.
+// 값은 courses.region과 같은 「○○교육지원청」 전체 이름이다(약칭으로 들어와도 맞춰 준다).
+const REGIONS = ['천안','공주','보령','아산','서산','논산계룡','당진','금산','부여','서천','청양','홍성','예산','태안']
+  .map(n => n + '교육지원청');
+let regionGate   = false;
+let filterRegion = '';
+
 // Reserve modal state
 let currentRid  = null;
 let currentCode = null;
@@ -783,14 +867,71 @@ const FIELDS = [
 // ── Init ──
 async function init() {
   sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  if (PROGRAM !== 'dream_up') await applyProgramBranding();
+  if (regionGate) filterRegion = normalizeRegion(new URLSearchParams(location.search).get('region'));
   buildFilterBar();
   initSchoolSearch('r-school-inp',  'r-school-code',  'r-school-dd');
   initSchoolSearch('my-school-inp', 'my-school-code', 'my-school-dd');
   initStnoSelects('r-cls',  'r-num');
   initStnoSelects('my-cls', 'my-num');
+  await fetchDbCourseDetails();
   await loadOpenStatus();
   await loadCourses();
   startPolling();
+}
+
+// dream_up 전용으로 박혀 있던 히어로 문구·안내문을 다른 프로그램에서는 일반화된
+// 내용으로 교체한다. dream_up은 기존 화면을 한 글자도 바꾸지 않는다(링크 호환).
+async function applyProgramBranding() {
+  let displayName = PROGRAM;
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/programs?code=eq.${encodeURIComponent(PROGRAM)}&select=display_name,scope_type`,
+      { headers: { apikey: SUPABASE_ANON_KEY } }
+    );
+    if (res.ok) {
+      const rows = await res.json();
+      if (rows[0]) {
+        displayName = rows[0].display_name;
+        regionGate = rows[0].scope_type === 'region';
+      }
+    }
+  } catch (e) { console.warn('applyProgramBranding:', e); }
+
+  const orgLabel = document.getElementById('org-chips').previousElementSibling;
+  if (orgLabel) orgLabel.textContent = '운영 기관';
+
+  document.title = `${displayName} 수강신청`;
+  const heroEl = document.querySelector('.hero h1');
+  if (heroEl) heroEl.textContent = `${displayName} 수강 신청`;
+  const heroP = document.querySelector('.hero p');
+  if (heroP) heroP.innerHTML = '강좌별 상세 내용을 확인하고 [신청하기]를 눌러 수강신청하세요.';
+  const openTag = document.querySelector('.hero-open-tag');
+  if (openTag) openTag.style.display = 'none';
+  const guideLink = document.querySelector('.hero a[href*="dream_up"]');
+  if (guideLink) guideLink.style.display = 'none';
+  const noticeSection = document.querySelector('.notice-section');
+  if (noticeSection) {
+    noticeSection.innerHTML = `
+      <div class="wrap" style="max-width:860px;margin:0 auto">
+        <div class="notice-box">
+          <div class="notice-title"><span>📋 ${displayName} 수강신청 안내</span></div>
+          <p style="font-size:13px;color:#444;line-height:1.85">
+            운영 기관의 안내에 따라 강좌를 확인하고 신청해 주세요. 세부 일정·정원·준비물은 각 강좌 카드의 [상세보기]에서 확인할 수 있습니다.
+          </p>
+        </div>
+      </div>`;
+  }
+}
+
+// 강좌 수(및 기관 수)는 실제 로드된 강좌 기준으로 계산한다 — 하드코딩된 숫자가
+// 삭제·추가 후에도 안 바뀌는 문제를 막는다.
+function updateHeroStats() {
+  const statsEl = document.querySelectorAll('.hero-stat .val');
+  if (statsEl.length < 2) return;
+  const orgCount = new Set(courses.map(c => c.org).filter(Boolean)).size;
+  statsEl[0].textContent = courses.length;
+  statsEl[1].textContent = orgCount;
 }
 
 // ── Filter build (called after courses load) ──
@@ -803,13 +944,16 @@ function buildFilterBar() {
 
 function buildOrgChips() {
   // 대학 목록은 courses 로드 후에 빌드 (카운트 표시)
+  // 지역을 고른 상태면 그 지역 강좌의 기관만 센다. 폴링 때마다 다시 그리므로 선택 상태를 유지한다.
   const orgChips = document.getElementById('org-chips');
+  const base = regionCourses();
   const orgs = {};
-  courses.forEach(c => { if (c.org) orgs[c.org] = (orgs[c.org]||0)+1; });
+  base.forEach(c => { if (c.org) orgs[c.org] = (orgs[c.org]||0)+1; });
+  if (filterOrg && !orgs[filterOrg]) filterOrg = '';
   const sorted = Object.entries(orgs).sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0]));
-  orgChips.innerHTML = `<button class="filter-chip sm active" data-org="" onclick="setOrgFilter('')">전체 <strong>${courses.length}</strong></button>` +
+  orgChips.innerHTML = `<button class="filter-chip sm${filterOrg ? '' : ' active'}" data-org="" onclick="setOrgFilter('')">전체 <strong>${base.length}</strong></button>` +
     sorted.map(([org, cnt]) =>
-      `<button class="filter-chip sm" data-org="${org}" onclick="setOrgFilter('${org.replace(/'/g,"\\'")}')">${org} <strong>${cnt}</strong></button>`
+      `<button class="filter-chip sm${org === filterOrg ? ' active' : ''}" data-org="${org}" onclick="setOrgFilter('${org.replace(/'/g,"\\'")}')">${org} <strong>${cnt}</strong></button>`
     ).join('');
 }
 
@@ -832,6 +976,61 @@ function setOrgFilter(org) {
 function setNameFilter(val) {
   nameFilter = val.trim();
   renderCourses();
+}
+
+function normalizeRegion(v) {
+  const s = String(v || '').replace(/\s/g, '');
+  if (!s) return '';
+  return s.endsWith('교육지원청') ? s : s + '교육지원청';
+}
+
+const shortRegion = r => r.replace(/교육지원청$/, '');
+
+function regionCourses() {
+  return (regionGate && filterRegion) ? courses.filter(c => c.region === filterRegion) : courses;
+}
+
+function setRegion(r) {
+  filterRegion = r;
+  filterOrg = '';
+  const u = new URL(location.href);
+  if (r) u.searchParams.set('region', shortRegion(r)); else u.searchParams.delete('region');
+  history.replaceState(null, '', u);
+  buildOrgChips();
+  renderCourses();
+  if (regionGate) loadOpenStatus().then(renderCourses);   // 지역마다 신청 기간이 다르다
+  document.getElementById('tab-courses').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// 지역을 고르기 전에는 관문만 보이고, 고른 뒤에는 필터 위에 「지역 바꾸기」 줄이 붙는다.
+// 반환값: 강좌 목록을 그려도 되면 true
+function renderRegionGate() {
+  const gate = document.getElementById('region-gate');
+  const bar = document.getElementById('region-bar');
+  const filters = document.querySelector('#tab-courses .filter-section');
+  const counts = {};
+  courses.forEach(c => { if (c.region) counts[c.region] = (counts[c.region] || 0) + 1; });
+  // 목록에 없는 지역 이름이 주소로 들어오면(오타 등) 관문으로 돌려보낸다
+  if (filterRegion && !REGIONS.includes(filterRegion) && !counts[filterRegion]) filterRegion = '';
+
+  if (!filterRegion) {
+    const regions = REGIONS.concat(Object.keys(counts).filter(r => !REGIONS.includes(r)));
+    document.getElementById('region-grid').innerHTML = regions.map(r => {
+      const n = counts[r] || 0;
+      return `<button class="region-btn" ${n ? '' : 'disabled'} onclick="setRegion('${r.replace(/'/g, "\\'")}')">${shortRegion(r)}<small>${n ? `강좌 ${n}개` : '개설 강좌 없음'}</small></button>`;
+    }).join('');
+    gate.style.display = '';
+    filters.style.display = 'none';
+    bar.style.display = 'none';
+    document.getElementById('course-grid').innerHTML = '';
+    return false;
+  }
+  gate.style.display = 'none';
+  filters.style.display = '';
+  bar.style.display = '';
+  bar.innerHTML = `📍 <strong>${shortRegion(filterRegion)}</strong> 개설 강좌 ${counts[filterRegion] || 0}개
+    <button class="region-change" onclick="setRegion('')">지역 바꾸기</button>`;
+  return true;
 }
 
 // ── School autocomplete ──
@@ -918,7 +1117,10 @@ function buildStno(gradeId, clsId, numId) {
 // ── Open status ──
 async function loadOpenStatus() {
   try {
-    const { data, error } = await sbClient.rpc('get_open_status');
+    // 지역 관문이 있는 프로그램(지역연계)은 고른 지역의 신청 기간을 쓴다. 지역 기간이 없으면 기본 기간
+    const { data, error } = regionGate
+      ? await sbClient.rpc('get_open_status_region', { p_program: PROGRAM, p_region: filterRegion || null })
+      : await sbClient.rpc('get_open_status', { p_program: PROGRAM });
     if (error) throw error;
     serverTimeDiff = new Date(data.server_now).getTime() - Date.now();
     isOpen = data.is_open;
@@ -930,7 +1132,27 @@ async function loadOpenStatus() {
   }
 }
 
+// KST 짧은 날짜 표기: 11. 20.(목) 09:00
+function fmtKst(iso) {
+  if (!iso) return '';
+  const k = new Date(new Date(iso).getTime() + 9 * 3600e3);
+  const wd = '일월화수목금토'[k.getUTCDay()];
+  return `${k.getUTCMonth() + 1}. ${k.getUTCDate()}.(${wd}) ${String(k.getUTCHours()).padStart(2,'0')}:${String(k.getUTCMinutes()).padStart(2,'0')}`;
+}
+
+function renderPeriodRange(d) {
+  const el = document.getElementById('period-range');
+  if (!el) return;
+  if (!regionGate || !filterRegion) { el.textContent = ''; return; }
+  const who = shortRegion(filterRegion);
+  if (d.phase === 'not_configured' || !d.open_at) { el.textContent = `${who} 신청 기간이 아직 정해지지 않았습니다.`; return; }
+  let t = `${who} 신청 기간 ${fmtKst(d.open_at)} ~ ${fmtKst(d.close1_at)}`;
+  if (d.open2_at) t += ` · 2차 ${fmtKst(d.open2_at)} ~ ${fmtKst(d.close2_at)}`;
+  el.textContent = t;
+}
+
 function renderStatusBar(d) {
+  renderPeriodRange(d);
   const badge = document.getElementById('open-badge');
   const cd    = document.getElementById('countdown');
   const now   = Date.now() + serverTimeDiff;
@@ -955,6 +1177,8 @@ function renderStatusBar(d) {
     } else if (phase === 'before_open' && d.open_at) {
       const left = Math.round((new Date(d.open_at).getTime() - now) / 1000);
       cd.textContent = left > 0 ? `신청 시작까지 ⏳ ${fmtTime(left)}` : '신청이 곧 시작됩니다.';
+    } else if (phase === 'not_configured') {
+      cd.textContent = regionGate && !filterRegion ? '교육지원청을 고르면 신청 기간이 표시됩니다.' : '신청 기간이 아직 정해지지 않았습니다.';
     } else {
       cd.textContent = '신청이 마감되었습니다.';
     }
@@ -974,7 +1198,7 @@ function fmtTime(sec) {
 // ── Load courses ──
 async function loadCourses() {
   try {
-    const { data, error } = await sbClient.rpc('get_course_status');
+    const { data, error } = await sbClient.rpc('get_course_status', { p_program: PROGRAM });
     if (error) throw error;
     courses = data || [];
     const ts = new Date();
@@ -982,6 +1206,7 @@ async function loadCourses() {
       `${String(ts.getHours()).padStart(2,'0')}:${String(ts.getMinutes()).padStart(2,'0')} 갱신`;
     buildOrgChips();
     renderCourses();
+    updateHeroStats();
   } catch(e) {
     console.error('loadCourses:', e);
     document.getElementById('course-grid').innerHTML =
@@ -990,7 +1215,8 @@ async function loadCourses() {
 }
 
 function renderCourses() {
-  let list = courses;
+  if (regionGate && !renderRegionGate()) return;
+  let list = regionCourses();
   if (filterField)  list = list.filter(c => { const d = DETAIL_MAP[c.code]; return d && d.field.includes(filterField); });
   if (filterOrg)    list = list.filter(c => c.org === filterOrg);
   if (nameFilter)   list = list.filter(c => c.name.includes(nameFilter) || (c.org||'').includes(nameFilter));
@@ -1074,7 +1300,7 @@ async function openReserveModal(code, btn) {
   if (btn) { btn.disabled = true; btn.textContent = '잠시만…'; }
 
   try {
-    const { data, error } = await sbClient.rpc('reserve_course', { p_code: code });
+    const { data, error } = await sbClient.rpc('reserve_course', { p_code: code, p_program: PROGRAM });
     if (error) throw error;
 
     if (!data.ok) {
@@ -1113,6 +1339,7 @@ function reserveErrMsg(err) {
   return {
     full:            '방금 마감되었습니다. 다른 강좌를 선택해 주세요.',
     not_open:        '신청 기간이 아닙니다.',
+    not_configured:  '이 지역의 신청 기간이 아직 정해지지 않았습니다.',
     between_periods: '신청 기간 사이의 휴식 시간입니다.',
     period_closed:   '신청이 마감되었습니다.',
     not_registerable:'신청할 수 없는 강좌입니다.'
@@ -1226,7 +1453,8 @@ async function submitConfirm() {
       p_stno:   stno,
       p_name:   name,
       p_phone:  phone,
-      p_pin:    pin
+      p_pin:    pin,
+      p_program: PROGRAM
     });
     if (error) throw error;
 
@@ -1234,7 +1462,8 @@ async function submitConfirm() {
       const msgs = {
         reservation_notfound: '예약 정보를 찾을 수 없습니다. 다시 시도해 주세요.',
         reservation_expired:  '시간이 초과되었습니다. 다시 신청해 주세요.',
-        duplicate:            '이미 신청하셨습니다. (학번 또는 연락처 중복)'
+        duplicate:            '이미 신청하셨습니다. (학번 또는 연락처 중복)',
+        term_limit_exceeded:  '이 프로그램에서 신청 가능한 과목 수를 초과했습니다.'
       };
       showToast(msgs[data.error] || '신청 실패: ' + data.error, 'error');
       btn.disabled = false; btn.textContent = '신청 완료';
@@ -1267,8 +1496,7 @@ async function submitConfirm() {
 // ── Detail modal ──
 function openDetailModal(code) {
   const c = courses.find(x => x.code === code);
-  const d = DETAIL_MAP[code];
-  if (!d) return;
+  const d = DETAIL_MAP[code] || {};
   detailCode = code;
 
   const uni    = d.university || c?.org || '';
@@ -1451,7 +1679,8 @@ async function checkMyEnrollment() {
     const { data, error } = await sbClient.rpc('get_my_enrollment', {
       p_school:     schoolCode,
       p_student_no: stno,
-      p_phone:      phone
+      p_phone:      phone,
+      p_program:    PROGRAM
     });
     if (error) throw error;
 
@@ -1514,7 +1743,8 @@ async function cancelEnrollment() {
       p_school: schoolCode,
       p_stno:   stno,
       p_phone:  phone,
-      p_pin:    pin
+      p_pin:    pin,
+      p_program: PROGRAM
     });
     if (error) throw error;
 
