@@ -8,107 +8,41 @@
 <title>학교 교육과정 · 4대 안전망 · 온마당</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="../assets/css/common.css">
-<style>
-  /* 콘텐츠 */
-  .content-wrap{padding:40px 0 80px}
-  .content-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;padding:36px 40px}
-  .content-card h2{font-size:20px;font-weight:800;color:var(--brand);margin-bottom:14px;letter-spacing:-.4px}
-  .content-card p{font-size:15px;color:var(--ink-soft);line-height:1.8;margin-bottom:18px}
-
-  /* 링크 박스 */
-  .link-box{
-    display:flex;align-items:center;gap:14px;
-    background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);
-    padding:20px 24px;margin-bottom:14px;transition:.18s;
-  }
-  .link-box:hover{border-color:var(--brand);box-shadow:var(--shadow-sm)}
-  .link-box .lb-icon{font-size:28px;flex-shrink:0}
-  .link-box .lb-body{flex:1}
-  .link-box .lb-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:2px}
-  .link-box .lb-desc{font-size:12.5px;color:var(--ink-faint)}
-  .link-box .lb-arrow{font-size:14px;color:var(--brand);font-weight:700;flex-shrink:0}
-
-  /* 다른 안전망 네비 */
-  .other-nets{margin-top:40px}
-  .other-nets h2{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:16px}
-  .net-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .net-card{
-    background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);
-    padding:20px 18px;text-align:center;transition:.2s;
-  }
-  .net-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
-  .net-card .nc-ic{font-size:28px;margin-bottom:8px}
-  .net-card h3{font-size:14px;font-weight:700;margin-bottom:4px}
-  .net-card p{font-size:11.5px;color:var(--ink-faint)}
-
-  @media(max-width:680px){
-    .content-card{padding:24px 20px}
-    .net-cards{grid-template-columns:1fr}
-  }
-</style>
 </head>
 <body>
 
 <div id="om-header" data-active="safety"></div>
 
-<div class="page-hero">
+<div class="page-hero" data-net="school">
   <div class="wrap">
     <nav class="breadcrumb" aria-label="이동 경로">
       <a href="../index.html">홈</a> › <a href="./index.html">4대 안전망</a> › <strong>학교 교육과정</strong>
     </nav>
-    <h1>🏫 학생 선택 중심 학교교육과정</h1>
+    <h1>학생 선택 중심 학교교육과정</h1>
     <p>소속 학교가 개설한 과목 중에서 진로와 적성에 맞는 과목을 우선 이수합니다.</p>
   </div>
 </div>
 
-<main class="content-wrap">
+<main class="sub-body" data-net="school">
   <div class="wrap">
-    <div class="content-card">
-      <h2>학교 교육과정이란</h2>
-      <p>학교 교육과정은 소속 학교가 학생의 진로와 적성을 고려하여 편성한 과목 목록입니다. 아래에서 학교별 편성표를 확인할 수 있습니다.</p>
+    <section class="sub-sec" aria-labelledby="s-what">
+      <h2 class="sub-title" id="s-what"><em>학교 교육과정</em>이란?</h2>
+      <p class="sub-lead">학교 교육과정은 소속 학교가 학생의 진로와 적성을 고려하여 편성한 과목 목록입니다.<br>아래에서 학교별 편성표를 확인할 수 있습니다.</p>
+    </section>
 
-      <h2>교육과정 편성표 확인하기</h2>
-
-      <a class="link-box" href="https://script.google.com/macros/s/AKfycbxvVpYJEhq3VmaF6WzT9uhrdpKh5CNmnWyDuESLus7Q5-p2y-HVHq53ki2Xn4UnrImT/exec" target="_blank" rel="noopener">
-        <span class="lb-icon">📋</span>
-        <div class="lb-body">
-          <div class="lb-title">2026학년도 고등학교 입학생 교육과정 편성표</div>
-          <div class="lb-desc">충남 각 고등학교의 2026학년도 교육과정 편성 현황을 확인할 수 있습니다.</div>
-        </div>
-        <span class="lb-arrow">↗</span>
-      </a>
-
-      <a class="link-box" href="https://script.google.com/macros/s/AKfycbzCaXLJfvsS6cGOirlpWIwZYnkdp8Tkd33CmrsjxaXz2-BvT31Y-ZiuIRp4HSa0G-fX/exec" target="_blank" rel="noopener">
-        <span class="lb-icon">📋</span>
-        <div class="lb-body">
-          <div class="lb-title">2025학년도 고등학교 입학생 교육과정 편성표</div>
-          <div class="lb-desc">충남 각 고등학교의 2025학년도 교육과정 편성 현황을 확인할 수 있습니다.</div>
-        </div>
-        <span class="lb-arrow">↗</span>
-      </a>
-    </div>
-
-    <!-- 다른 안전망 보기 -->
-    <div class="other-nets">
-      <h2>다른 안전망 보기</h2>
-      <div class="net-cards">
-        <a class="net-card" href="./onlineschool.html">
-          <div class="nc-ic">💻</div>
-          <h3>충남온라인학교</h3>
-          <p>정규 시간 중 온라인 수강</p>
+    <section class="sub-sec" aria-labelledby="s-table">
+      <h2 class="sub-title" id="s-table"><em>교육과정 편성표</em> 확인하기</h2>
+      <div class="sub-cards">
+        <a class="sub-card" href="https://script.google.com/macros/s/AKfycbxvVpYJEhq3VmaF6WzT9uhrdpKh5CNmnWyDuESLus7Q5-p2y-HVHq53ki2Xn4UnrImT/exec" target="_blank" rel="noopener">
+          <strong>2026학년도<br>고등학교 입학생<br>교육과정 편성표<span class="ext" aria-hidden="true">↗</span><span class="sr-only">(새 창)</span></strong>
+          <span>충남 각 고등학교의 2026학년도 교육과정 편성 현황을 확인할 수 있습니다.</span>
         </a>
-        <a class="net-card" href="./jointcurricula.html">
-          <div class="nc-ic">🤝</div>
-          <h3>공동교육과정</h3>
-          <p>학교 간 연합 과목 개설</p>
-        </a>
-        <a class="net-card" href="./off-campus_courses.html">
-          <div class="nc-ic">🌱</div>
-          <h3>학교 밖 교육</h3>
-          <p>대학·기관 연계 프로그램</p>
+        <a class="sub-card" href="https://script.google.com/macros/s/AKfycbzCaXLJfvsS6cGOirlpWIwZYnkdp8Tkd33CmrsjxaXz2-BvT31Y-ZiuIRp4HSa0G-fX/exec" target="_blank" rel="noopener">
+          <strong>2025학년도<br>고등학교 입학생<br>교육과정 편성표<span class="ext" aria-hidden="true">↗</span><span class="sr-only">(새 창)</span></strong>
+          <span>충남 각 고등학교의 2025학년도 교육과정 편성 현황을 확인할 수 있습니다.</span>
         </a>
       </div>
-    </div>
+    </section>
   </div>
 </main>
 

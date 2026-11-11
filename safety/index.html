@@ -9,46 +9,15 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="../assets/css/common.css">
 <style>
-  /* 안전망 카드 그리드 */
-  .safety-wrap{padding:48px 0 80px}
-  .safety-intro{
-    background:var(--surface);border-radius:var(--radius);padding:32px;
-    box-shadow:var(--shadow-sm);margin-bottom:32px;text-align:center;
-  }
-  .safety-intro p{font-size:15.5px;color:var(--ink-soft);line-height:1.8;max-width:600px;margin:0 auto}
-  .scards{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-  .scard{
-    background:#fff;border-radius:var(--radius);padding:30px 24px;
-    box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:.2s;
-    display:flex;flex-direction:column;
-  }
-  .scard::before{content:"";position:absolute;top:0;left:0;right:0;height:5px}
-  .scard:nth-child(1)::before{background:var(--brand)}
-  .scard:nth-child(2)::before{background:var(--online)}
-  .scard:nth-child(3)::before{background:var(--accent)}
-  .scard:nth-child(4)::before{background:var(--plum)}
-  .scard:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
-  .s-ic{font-size:34px;margin-bottom:14px}
-  .s-step{font-size:11px;font-weight:800;color:var(--ink-faint);letter-spacing:1px;margin-bottom:4px}
-  .scard h3{font-size:18px;font-weight:800;margin-bottom:8px}
-  .scard p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:16px;flex:1}
-  .s-link{
-    display:inline-flex;align-items:center;gap:5px;
-    font-size:13.5px;font-weight:700;color:var(--brand);
-    padding:8px 16px;background:var(--soft);border-radius:var(--radius-pill);transition:.15s;
-  }
-  .s-link:hover{background:var(--brand);color:#fff}
-
-  @media(max-width:680px){
-    .scards{grid-template-columns:1fr}
-  }
+  /* 시안 sub03_00: 칸 4장이 본문 폭보다 넓다 */
+  .sub-body > .wrap.is-wide{max-width:1136px}
+  .net-tiles{margin-top:clamp(48px,5vw,70px)}
 </style>
 </head>
 <body>
 
 <div id="om-header" data-active="safety"></div>
 
-<!-- 페이지 헤더 -->
 <div class="page-hero">
   <div class="wrap">
     <nav class="breadcrumb" aria-label="이동 경로">
@@ -59,43 +28,28 @@
   </div>
 </div>
 
-<!-- 본문 -->
-<main class="safety-wrap">
-  <div class="wrap">
-    <div class="safety-intro">
-      <p>고교학점제에서는 학생이 원하는 과목을 수강할 수 있도록 학교 안팎에 걸쳐 4단계 안전망을 운영합니다. 학교 교육과정을 기본으로, 온라인학교·공동교육과정·학교 밖 교육이 차례로 과목 선택권을 보장합니다.</p>
-    </div>
+<main class="sub-body">
+  <div class="wrap is-wide">
+    <p class="sub-lead">고교학점제에서는 학생이 원하는 과목을 수강할 수 있도록 학교 안팎에 걸쳐 4단계 안전망을 운영합니다. 학교 교육과정을 기본으로, 온라인학교·공동교육과정·학교 밖 교육이 차례로 과목 선택권을 보장합니다.</p>
 
-    <div class="scards">
-      <a class="scard" href="./schoolcurriculum.html">
-        <div class="s-ic">🏫</div>
-        <div class="s-step">SAFETY NET 1</div>
-        <h3>학교 교육과정</h3>
-        <p>소속 학교가 개설한 과목을 우선 이수하며 기본 학업을 설계합니다.</p>
-        <span class="s-link">자세히 보기 →</span>
+    <nav class="net-tiles" aria-label="4대 안전망">
+      <a class="net-tile" href="./schoolcurriculum.html">
+        <span class="ic" aria-hidden="true"></span>
+        <strong>학생 선택 중심<br>학교 교육과정</strong>
       </a>
-      <a class="scard" href="./onlineschool.html">
-        <div class="s-ic">💻</div>
-        <div class="s-step">SAFETY NET 2</div>
-        <h3>충남온라인학교</h3>
-        <p>학교에 없는 과목을 정규 일과 시간 중에 온라인으로 수강할 수 있도록 충남온라인학교가 지원합니다.</p>
-        <span class="s-link">자세히 보기 →</span>
+      <a class="net-tile" href="./onlineschool.html">
+        <span class="ic" aria-hidden="true"></span>
+        <strong>온배움<br>충남온라인학교</strong>
       </a>
-      <a class="scard" href="./jointcurricula.html">
-        <div class="s-ic">🤝</div>
-        <div class="s-step">SAFETY NET 3</div>
-        <h3>공동교육과정</h3>
-        <p>학교끼리, 지역에서, 온라인으로 — 우리 학교에 없는 과목을 학교 간 연합으로 수강할 수 있습니다.</p>
-        <span class="s-link">자세히 보기 →</span>
+      <a class="net-tile" href="./jointcurricula.html">
+        <span class="ic" aria-hidden="true"></span>
+        <strong>참학력<br>공동교육과정</strong>
       </a>
-      <a class="scard" href="./off-campus_courses.html">
-        <div class="s-ic">🌱</div>
-        <div class="s-step">SAFETY NET 4</div>
-        <h3>학교 밖 교육</h3>
-        <p>대학, 연구기관, 지역 전문가와 연계된 전문적인 심화 프로그램을 통해 진로를 넓힙니다.</p>
-        <span class="s-link">자세히 보기 →</span>
+      <a class="net-tile" href="./off-campus_courses.html">
+        <span class="ic" aria-hidden="true"></span>
+        <strong>꿈키움<br>학교 밖 교육</strong>
       </a>
-    </div>
+    </nav>
   </div>
 </main>
 

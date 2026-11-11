@@ -9,52 +9,16 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="../assets/css/common.css">
 <style>
-
-  .content-wrap{padding:40px 0 80px}
-  .content-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;padding:36px 40px}
-  .content-card h2{font-size:20px;font-weight:800;color:#7b5ea7;margin-bottom:14px;letter-spacing:-.4px}
-  .content-card h3{font-size:17px;font-weight:700;color:var(--ink);margin:24px 0 10px}
-  .content-card p{font-size:15px;color:var(--ink-soft);line-height:1.8;margin-bottom:18px}
-
-  .table-wrap{overflow-x:auto;margin-bottom:24px;-webkit-overflow-scrolling:touch}
-  .table-wrap table{width:100%;border-collapse:collapse;min-width:500px;font-size:14px}
-  .table-wrap th,.table-wrap td{border:1px solid var(--line);padding:12px 14px;text-align:left;vertical-align:top}
-  .table-wrap th{background:var(--soft);font-weight:700;color:var(--ink);white-space:nowrap}
-  .table-wrap td{color:var(--ink-soft);line-height:1.65}
-
-  /* 고교-대학 연계 바로가기 카드 */
-  .dc-links{display:grid;gap:12px;margin:22px 0 20px}
-  .dc-card{display:flex;align-items:center;gap:16px;
-    background:var(--soft);border:1.5px solid var(--line);border-radius:var(--radius-sm);
-    padding:18px 20px;transition:.18s}
-  .dc-card:hover{border-color:#7b5ea7;box-shadow:var(--shadow-sm);transform:translateY(-2px)}
-  .dc-card.dc-main{background:#f3edfb;border-color:#d6c6ee}
-  .dc-ic{font-size:24px;flex-shrink:0}
-  .dc-txt{flex:1;min-width:0}
-  .dc-txt strong{display:block;font-size:15px;font-weight:800;color:var(--ink);margin-bottom:3px}
-  .dc-txt em{display:block;font-style:normal;font-size:12.5px;color:var(--ink-soft);line-height:1.6;word-break:keep-all}
-  .dc-arr{flex-shrink:0;font-size:16px;font-weight:800;color:#7b5ea7}
-
-  .other-nets{margin-top:40px}
-  .other-nets h2{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:16px}
-  .net-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .net-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:20px 18px;text-align:center;transition:.2s}
-  .net-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
-  .net-card .nc-ic{font-size:28px;margin-bottom:8px}
-  .net-card h3{font-size:14px;font-weight:700;margin-bottom:4px}
-  .net-card p{font-size:11.5px;color:var(--ink-faint)}
-
-  @media(max-width:680px){
-    .content-card{padding:24px 20px}
-    .net-cards{grid-template-columns:1fr}
-  }
+  /* 유형 색 — 고교-대학 연계·창의적 체험활동 (시안 sub03_04) */
+  .oc-cmp{--c1:var(--sunny);--c2:var(--bg);--lead-w:14%;min-width:560px}
+  .oc-cmp tbody td{font-size:14.5px;line-height:1.75}
 </style>
 </head>
 <body>
 
 <div id="om-header" data-active="safety"></div>
 
-<div class="page-hero">
+<div class="page-hero" data-net="outside">
   <div class="wrap">
     <nav class="breadcrumb" aria-label="이동 경로">
       <a href="../index.html">홈</a> › <a href="./index.html">4대 안전망</a> › <strong>학교 밖 교육</strong>
@@ -64,18 +28,18 @@
   </div>
 </div>
 
-<main class="content-wrap">
+<main class="sub-body" data-net="outside">
   <div class="wrap">
-    <div class="content-card">
-      <h2>학교 밖 교육이란</h2>
-      <p>소속 학교에서 개설하기 어려운 과목과 활동을, 교육감이 승인한 지역 대학·공공기관을 통해 이수하는 제도입니다. 주말과 방학 기간을 이용해 운영하며, 유형에 따라 학점 인정 방식이 다릅니다.</p>
+    <section class="sub-sec" aria-labelledby="s-what">
+      <h2 class="sub-title" id="s-what"><em>학교 밖 교육</em>이란?</h2>
+      <p class="sub-lead">소속 학교에서 개설하기 어려운 과목과 활동을,<br>교육감이 승인한 지역 대학·공공기관을 통해 이수하는 제도입니다.<br>주말과 방학 기간을 이용해 운영하며, 유형에 따라 학점 인정 방식이 다릅니다.</p>
 
-      <h3>유형별 비교</h3>
-      <div class="table-wrap">
-        <table>
+      <h3 class="sub-subtitle">유형별 비교</h3>
+      <div class="cmp-wrap" role="region" aria-label="학교 밖 교육 유형별 비교표" tabindex="0">
+        <table class="cmp-table oc-cmp">
           <thead>
             <tr>
-              <th scope="col">구분</th>
+              <td><span class="sr-only">구분</span></td>
               <th scope="col">고교-대학 연계 학점 인정 과목</th>
               <th scope="col">창의적 체험활동</th>
             </tr>
@@ -97,52 +61,27 @@
               <td>주말 및 방학</td>
             </tr>
           </tbody>
+          <tfoot aria-hidden="true"><tr><td></td><td></td><td></td></tr></tfoot>
         </table>
       </div>
 
-      <h3>고교-대학 연계 학점 인정 과목</h3>
-      <p>5개 대학이 14개 과목을 개설하였습니다. 이 과목들은 계속 유지되며, 매 학년도 1학기와 2학기에 개설될 수 있습니다. 수강 신청은 학기마다 지정된 기간에만 접수합니다.</p>
+      <h3 class="sub-subtitle">고교-대학 연계 학점 인정 과목</h3>
+      <p class="sub-text">5개 대학이 14개 과목을 개설하였습니다. 이 과목들은 계속 유지되며,<br>매 학년도 1학기와 2학기에 개설될 수 있습니다. 수강 신청은 학기마다 지정된 기간에만 접수합니다.</p>
+    </section>
 
-      <div class="dc-links">
-        <a class="dc-card dc-main" href="../dual_credit/curriculum.html">
-          <span class="dc-ic" aria-hidden="true">📘</span>
-          <span class="dc-txt">
-            <strong>과목 교육과정</strong>
-            <em>14개 과목의 개관 및 목표, 내용 체계, 교수·학습 내용, 평가 방법</em>
-          </span>
-          <span class="dc-arr" aria-hidden="true">→</span>
+    <section class="sub-sec" aria-labelledby="s-go">
+      <h2 class="sub-title" id="s-go">바로가기</h2>
+      <div class="sub-cards">
+        <a class="sub-card" href="../dual_credit/curriculum.html">
+          <strong>과목 교육과정</strong>
+          <span>14개 과목의 개관 및 목표, 내용 체계, 교수·학습 내용, 평가 방법</span>
         </a>
-        <a class="dc-card" href="../dual_credit/index.html">
-          <span class="dc-ic" aria-hidden="true">🎓</span>
-          <span class="dc-txt">
-            <strong>제도 안내</strong>
-            <em>학점 인정 방식, 개설 과목 목록, 수강 신청 절차와 유의 사항</em>
-          </span>
-          <span class="dc-arr" aria-hidden="true">→</span>
+        <a class="sub-card" href="../dual_credit/index.html">
+          <strong>제도 안내</strong>
+          <span>학점 인정 방식, 개설 과목 목록, 수강 신청 절차와 유의 사항</span>
         </a>
       </div>
-    </div>
-
-    <div class="other-nets">
-      <h2>다른 안전망 보기</h2>
-      <div class="net-cards">
-        <a class="net-card" href="./schoolcurriculum.html">
-          <div class="nc-ic">🏫</div>
-          <h3>학교 교육과정</h3>
-          <p>학교 개설 과목 우선 이수</p>
-        </a>
-        <a class="net-card" href="./onlineschool.html">
-          <div class="nc-ic">💻</div>
-          <h3>충남온라인학교</h3>
-          <p>정규 시간 중 온라인 수강</p>
-        </a>
-        <a class="net-card" href="./jointcurricula.html">
-          <div class="nc-ic">🤝</div>
-          <h3>공동교육과정</h3>
-          <p>학교 간 연합 과목 개설</p>
-        </a>
-      </div>
-    </div>
+    </section>
   </div>
 </main>
 

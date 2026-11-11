@@ -15,6 +15,9 @@
   --char-blue:#4B6FB6; /* 신규 — 캐릭터 장식 전용 (볼·코 등), 정보 전달에 쓰지 않음 */
   --ink:#000000; --ink-menu:#333333; /* 업체 가이드: 본문 #000000·메뉴 #333333 */ --ink-soft:#51607d; --ink-faint:#8597ad;
   --line:#c5dcef; --surface:#fff; --soft:#ECF9FF;
+  /* 신규 — 서브 본문 옅은 바탕색 (시안 sub03 실측). 검정 글자 전용 */
+  --online-l:#E8F8FF; --accent-l:#A8FFC2; --plum-l:#EDE3FF; --pink-l:#FFD5FF;
+  --sub-w:1000px; /* 서브 본문 폭 (시안 본문 약 950px + 좌우 여백) */
   --hero-shade:rgba(20,28,84,.5); /* 서브 머리 사진 위 어두운 막 */
   --radius:18px; --radius-sm:12px; --radius-pill:999px;
   --shadow:0 6px 24px rgba(79,110,190,.13);
@@ -182,10 +185,101 @@ header{
 .page-hero .breadcrumb a:hover{text-decoration:underline}
 .page-hero h1{font-size:clamp(26px,3.8vw,55px);font-weight:800;line-height:1.25;letter-spacing:-1px;margin-bottom:14px;word-break:keep-all}
 .page-hero p{font-size:clamp(15px,1.4vw,20px);line-height:1.6;word-break:keep-all}
+/* 하위 페이지 머리 영역 — 색을 넣지 않은 원본 사진(업체 sub03_00_bg_01.jpg) 위에 대표색을 곱하기로 얹는다
+   (시안 sub03_01~04 배경 SVG의 multiply 재현). .page-hero에 data-net을 붙인 페이지만 해당.
+   흰 글자 대비는 글자 자리 최저값 기준 (school 5.72 · online 4.80 · joint 4.88 · outside 4.65 : 1) */
+.page-hero[data-net]{
+  --hero-img:url("../img/sub/hero-safety-base.jpg");
+  background:linear-gradient(var(--hero-shade),var(--hero-shade)),linear-gradient(var(--hero-tint),var(--hero-tint)),var(--hero-img) center/cover no-repeat,var(--brand);
+  background-blend-mode:normal,multiply,normal,normal;
+}
+.page-hero[data-net="school"]{--hero-tint:var(--brand);--hero-shade:rgba(20,28,84,.15);--hero-icon:url("../img/sub/icon-net-school.svg")}
+.page-hero[data-net="online"]{--hero-tint:var(--online);--hero-shade:rgba(11,63,92,.62);--hero-icon:url("../img/sub/icon-net-online.svg")}
+.page-hero[data-net="joint"]{--hero-tint:var(--plum);--hero-shade:rgba(42,22,80,.15);--hero-icon:url("../img/sub/icon-net-joint.svg")}
+.page-hero[data-net="outside"]{--hero-tint:var(--accent);--hero-shade:rgba(11,61,42,.62);--hero-icon:url("../img/sub/icon-net-outside.svg")}
+.page-hero[data-net] .wrap::before{width:160px;height:150px}
 @media(max-width:900px){
   .page-hero{min-height:0}
   .page-hero .wrap{padding-left:24px}
   .page-hero .wrap::before{display:none}
+}
+
+/* ── 서브 본문 공통 컴포넌트 (시안 sub03 기준, 다른 서브에서도 같은 클래스를 쓴다) ──
+   --sub-key(강조 글자색)·--sub-tint(옅은 바탕)는 main.sub-body의 data-net 값으로 바꾼다 */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.sub-body{--sub-key:var(--brand);--sub-tint:var(--bg);background:var(--surface);padding:clamp(48px,6vw,72px) 0 clamp(72px,8vw,120px)}
+.sub-body > .wrap{max-width:var(--sub-w)}
+.sub-body[data-net="online"]{--sub-key:var(--online-d);--sub-tint:var(--online-l)}
+.sub-body[data-net="joint"]{--sub-key:var(--plum-d);--sub-tint:var(--plum-l)}
+.sub-body[data-net="outside"]{--sub-key:var(--accent-d);--sub-tint:var(--accent-l)}
+.sub-sec + .sub-sec{margin-top:clamp(56px,7vw,100px)}
+.sub-title{font-size:clamp(26px,2.8vw,40px);font-weight:800;line-height:1.3;letter-spacing:-1px;text-align:center;margin-bottom:clamp(20px,2.6vw,34px);word-break:keep-all}
+.sub-title em{font-style:normal;color:var(--sub-key)}
+.sub-subtitle{font-size:clamp(18px,1.5vw,21px);font-weight:700;text-align:center;margin:clamp(40px,5vw,64px) 0 24px;word-break:keep-all}
+.sub-lead{background:var(--sub-tint);border-radius:40px;padding:clamp(28px,3.6vw,52px) clamp(20px,4vw,56px);text-align:center;font-size:clamp(16px,1.6vw,22px);line-height:1.9;word-break:keep-all}
+.sub-text{font-size:clamp(15px,1.2vw,17px);line-height:1.8;text-align:center;word-break:keep-all}
+
+/* 바로가기 카드 — 세로로 긴 카드, 제목·설명은 아래쪽 */
+.sub-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,300px));justify-content:center;gap:16px}
+.sub-card{display:flex;flex-direction:column;justify-content:flex-end;min-height:clamp(240px,29vw,410px);padding:28px 24px clamp(28px,3vw,40px);
+  background:var(--sub-tint);border-radius:var(--radius);text-align:center;transition:transform .2s,box-shadow .2s}
+a.sub-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+a.sub-card:focus-visible,a.sub-wide:focus-visible,a.net-tile:focus-visible{outline:3px solid var(--brand-d);outline-offset:3px}
+.sub-card strong{display:block;font-size:clamp(19px,1.8vw,25px);font-weight:700;line-height:1.35;margin-bottom:clamp(20px,4vw,72px);word-break:keep-all}
+.sub-card span{font-size:15px;line-height:1.65;word-break:keep-all}
+.sub-card .ext{display:inline-block;margin-left:4px;font-size:.8em}
+/* 넓은 바로가기 (한 줄 링크) */
+.sub-wide{display:block;background:var(--sub-tint);border-radius:var(--radius);padding:clamp(22px,2.6vw,34px) clamp(24px,8vw,124px);transition:transform .2s,box-shadow .2s}
+a.sub-wide:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.sub-wide strong{display:block;font-size:clamp(18px,1.6vw,22px);font-weight:700;margin-bottom:2px}
+.sub-wide span{font-size:15px}
+
+/* 유형 카드 (링크 아님) — 색은 --c로 지정 */
+.type-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.type-card{display:flex;flex-direction:column;justify-content:flex-end;min-height:clamp(240px,24vw,345px);padding:28px 20px 30px;background:var(--c,var(--sub-tint));border-radius:var(--radius);text-align:center}
+.type-card .tc-title{font-size:clamp(19px,1.6vw,22px);font-weight:700;margin-bottom:22px}
+.type-card p{font-size:14px;line-height:1.75;word-break:keep-all}
+
+/* 비교표 — 열 머리와 아래 끝에 색 띠. 열 색은 표에 --c1~--c3로 지정 */
+.cmp-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.cmp-wrap:focus-visible{outline:3px solid var(--brand-d);outline-offset:2px}
+.cmp-table{width:100%;min-width:640px;border-collapse:separate;border-spacing:0;font-size:14.5px;line-height:1.6;table-layout:fixed}
+.cmp-table th,.cmp-table td{padding:14px 12px;text-align:center;vertical-align:middle;word-break:keep-all}
+.cmp-table tbody th,.cmp-table tbody td{border-bottom:1px solid var(--line)}
+.cmp-table tbody tr:first-child > *{border-top:1px solid var(--line)}
+.cmp-table tbody th{font-weight:700}
+.cmp-table thead tr > :first-child{width:var(--lead-w,12%)} /* fixed 표는 첫 행이 열 폭을 정한다 */
+.cmp-table thead th{font-size:clamp(15px,1.3vw,18px);font-weight:700;padding:14px 12px;border-radius:var(--radius) var(--radius) 0 0}
+.cmp-table tfoot td{height:44px;padding:0;border-radius:0 0 var(--radius) var(--radius)}
+.cmp-table :is(thead th,tfoot td):nth-child(2){background:var(--c1)}
+.cmp-table :is(thead th,tfoot td):nth-child(3){background:var(--c2)}
+.cmp-table :is(thead th,tfoot td):nth-child(4){background:var(--c3)}
+
+/* 4대 안전망 첫 화면 칸 — 세로 카드 4장. 글자는 검정(가장 낮은 brand 칸 4.45:1, 25px 굵은 글씨 기준 통과) */
+.net-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.net-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(24px,4vw,56px);min-height:clamp(260px,26vw,375px);padding:32px 16px;
+  border-radius:40px;color:var(--ink);text-align:center;transition:transform .2s,box-shadow .2s}
+.net-tile:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.net-tile .ic{width:clamp(72px,7.5vw,108px);aspect-ratio:1;background:currentColor;-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
+.net-tile strong{font-size:clamp(19px,1.8vw,25px);font-weight:700;line-height:1.5;word-break:keep-all}
+.net-tile:nth-child(1){background:var(--brand);--ic:url("../img/sub/icon-net-school.svg")}
+.net-tile:nth-child(2){background:var(--online);--ic:url("../img/sub/icon-net-online.svg")}
+.net-tile:nth-child(3){background:var(--plum);--ic:url("../img/sub/icon-net-joint.svg")}
+.net-tile:nth-child(4){background:var(--accent);--ic:url("../img/sub/icon-net-outside.svg")}
+/* 시안의 흰 아이콘은 brand·plum 칸에서만 쓴다. 라이트 블루·초록 칸은 대비 1.3~1.6이라 검정 (홈과 같은 기준) */
+.net-tile:nth-child(odd) .ic{background:#fff}
+
+@media(max-width:900px){
+  .net-tiles{grid-template-columns:repeat(2,1fr)}
+  .type-cards{grid-template-columns:1fr}
+  .type-card{min-height:0}
+}
+@media(max-width:680px){
+  .sub-lead{border-radius:var(--radius)}
+  .sub-cards{grid-template-columns:1fr}
+  .sub-card{min-height:0}
+  .sub-card strong{margin-bottom:12px}
+  .net-tile{min-height:200px;border-radius:var(--radius)}
 }
 
 /* ── 푸터 ── */

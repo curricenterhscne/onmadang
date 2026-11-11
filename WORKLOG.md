@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-11-11: 디자인 리뉴얼 — sub03(4대 안전망) 본문 반영
+
+기준 시안은 `screen_sub03_00_pc.png`(11-02 수정본), `screen_sub03_01~04_pc.png`(`design-source/2026-11-01/`). 업체 시트 11-10 갱신분(모바일 3화면 등)은 이번 작업 범위 밖이다.
+
+### 바꾼 것
+- **서브 본문 공통 컴포넌트**를 `common.css`에 새로 만들었다. sub01·02·04에서도 같은 클래스를 쓴다: `.sub-body`(흰 바탕, 폭 `--sub-w` 1000px), `.sub-title`(가운데 큰 제목, `em`이 강조색), `.sub-subtitle`, `.sub-lead`(옅은 바탕의 둥근 안내 상자), `.sub-text`, `.sub-cards`/`.sub-card`(세로로 긴 바로가기 카드), `.sub-wide`(넓은 바로가기), `.type-cards`/`.type-card`, `.cmp-wrap`/`.cmp-table`(열 머리·아래 끝 색 띠 비교표), `.net-tiles`/`.net-tile`, `.sr-only`.
+- 강조색·옅은 바탕은 `main.sub-body[data-net]` 값으로 바뀐다(school·online·joint·outside).
+- **신규 토큰** `--online-l` #E8F8FF, `--accent-l` #A8FFC2, `--plum-l` #EDE3FF, `--pink-l` #FFD5FF, `--sub-w`. 모두 시안에서 실측했다.
+- **하위 4페이지 머리 영역**: `.page-hero[data-net]`. 색을 넣지 않은 원본 사진(업체 `sub03_00_bg_01.jpg`, 11-02)을 1440×700으로 잘라 `hero-safety-base.jpg`(약 190KB)로 넣고, 대표색을 `background-blend-mode:multiply`로 얹었다. 업체 배경 SVG 3개의 multiply 방식과 같다. 아이콘은 `sub03_00_icon_02~05.svg` → `icon-net-*.svg`.
+- **첫 화면**: 안내 상자와 색 칸 4장(제목만).
+- 다섯 페이지의 인라인 `<style>`과 raw 색(#7b5ea7 등)을 지우고 공통 클래스로 옮겼다. 페이지에 남은 스타일은 표 열 색 지정뿐이다.
+- 외부 링크 카드에 ↗와 「(새 창)」(화면 낭독용)을 붙였다.
+
+### 시안과 일부러 다르게 둔 것
+- 머리 영역 흰 글자 대비: online·outside는 시안보다 어둡다. 사진의 하늘이 밝아 시안대로 하면 글자 자리 최저 3.5~3.8:1이다. 지금은 school 5.72, online 4.80, joint 4.88, outside 4.65 : 1.
+- 첫 화면 색 칸 아이콘: 라이트 블루·초록 칸은 검정(홈과 같은 기준). 시안은 흰색이다.
+- 강조 글자색: online은 `--online-d`(시안 #61B0FF는 흰 바탕 대비 부족), outside는 `--accent-d`, joint는 `--plum-d`.
+
+### 시안에 없어 뺀 것 (담당자 확인 필요)
+- 각 하위 페이지 아래의 「다른 안전망 보기」 카드 3장. GNB 드롭다운과 경로 표시로 이동할 수 있다.
+- 첫 화면 칸의 설명 문장과 「자세히 보기」, `SAFETY NET 1~4` 표기.
+- 공동교육과정의 두 번째 문단(「참학력 공동교육과정이란? 학생 과목 선택권 보장 및…」). 첫 문단과 내용이 겹친다.
+- 제목의 이모지(🏫💻🤝). 머리 영역 아이콘이 대신한다.
+
+### 확인
+- 1440px 스크린샷을 시안과 대조했다. 375px에서 다섯 페이지 모두 가로 스크롤이 없다(비교표는 상자 안에서 스크롤, 키보드 포커스 가능).
+- 모바일 배치는 업체 모바일 시안(11-09 `mobile_sub01_01` 콘텐츠형) 반영 전 임시다.
+
 ## 2026-11-05: 디자인 리뉴얼 — 서브 머리 영역 공통 틀
 
 `common.css`의 `.page-hero`를 시안 구조로 바꿨다. 사진·아이콘은 `common.js`가 넣는 `html[data-section]`(= `data-active`) 값으로 고르므로 페이지를 고치지 않는다. 자원은 `assets/img/sub/`.

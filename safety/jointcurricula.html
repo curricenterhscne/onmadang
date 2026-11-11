@@ -9,175 +9,117 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="../assets/css/common.css">
 <style>
-
-  .content-wrap{padding:40px 0 80px}
-  .content-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;padding:36px 40px}
-  .content-card h2{font-size:20px;font-weight:800;color:var(--accent-d);margin-bottom:14px;letter-spacing:-.4px}
-  .content-card h3{font-size:17px;font-weight:700;color:var(--ink);margin:24px 0 10px}
-  .content-card p{font-size:15px;color:var(--ink-soft);line-height:1.8;margin-bottom:18px}
-
-  /* 테이블 반응형 래퍼 */
-  .table-wrap{overflow-x:auto;margin-bottom:24px;-webkit-overflow-scrolling:touch}
-  .table-wrap table{width:100%;border-collapse:collapse;min-width:600px;font-size:14px}
-  .table-wrap th,.table-wrap td{border:1px solid var(--line);padding:12px 14px;text-align:left;vertical-align:top}
-  .table-wrap th{background:var(--soft);font-weight:700;color:var(--ink);white-space:nowrap}
-  .table-wrap td{color:var(--ink-soft);line-height:1.65}
-
-  .link-box{display:flex;align-items:center;gap:14px;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:20px 24px;margin-bottom:14px;transition:.18s}
-  .link-box:hover{border-color:var(--accent);box-shadow:var(--shadow-sm)}
-  .link-box .lb-icon{font-size:28px;flex-shrink:0}
-  .link-box .lb-body{flex:1}
-  .link-box .lb-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:2px}
-  .link-box .lb-desc{font-size:12.5px;color:var(--ink-faint)}
-  .link-box .lb-arrow{font-size:14px;color:var(--accent-d);font-weight:700;flex-shrink:0}
-
-  .other-nets{margin-top:40px}
-  .other-nets h2{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:16px}
-  .net-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .net-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:20px 18px;text-align:center;transition:.2s}
-  .net-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
-  .net-card .nc-ic{font-size:28px;margin-bottom:8px}
-  .net-card h3{font-size:14px;font-weight:700;margin-bottom:4px}
-  .net-card p{font-size:11.5px;color:var(--ink-faint)}
-
-  @media(max-width:680px){
-    .content-card{padding:24px 20px}
-    .net-cards{grid-template-columns:1fr}
-  }
+  /* 유형 색 — 학교 연합·지역 연계·온라인 (시안 sub03_03) */
+  .jc-types .type-card:nth-child(1){--c:var(--sunny)}
+  .jc-types .type-card:nth-child(2){--c:var(--accent-l)}
+  .jc-types .type-card:nth-child(3){--c:var(--pink-l)}
+  .jc-cmp{--c1:var(--sunny);--c2:var(--accent-l);--c3:var(--pink-l)}
+  .jc-cmp tbody td{font-size:13.5px}
 </style>
 </head>
 <body>
 
 <div id="om-header" data-active="safety"></div>
 
-<div class="page-hero">
+<div class="page-hero" data-net="joint">
   <div class="wrap">
     <nav class="breadcrumb" aria-label="이동 경로">
       <a href="../index.html">홈</a> › <a href="./index.html">4대 안전망</a> › <strong>공동교육과정</strong>
     </nav>
-    <h1>🤝 참학력 공동교육과정</h1>
+    <h1>참학력 공동교육과정</h1>
     <p>학교끼리, 지역에서, 온라인으로 — 우리 학교에 없는 과목을 수강할 수 있습니다.</p>
   </div>
 </div>
 
-<main class="content-wrap">
+<main class="sub-body" data-net="joint">
   <div class="wrap">
-    <div class="content-card">
-      <h2>공동교육과정이란?</h2>
-      <p>희망 학생이 적거나 교사 수급이 어려워 한 학교에서 개설하기 어려운 소인수·심화 과목 등을, 학교와 학교가 공동으로 운영하는 교육과정입니다. 운영 방식은 학교연합, 지역연계, 온라인 세 가지입니다.</p>
+    <section class="sub-sec" aria-labelledby="s-what">
+      <h2 class="sub-title" id="s-what"><em>참학력 공동교육과정</em>이란?</h2>
+      <p class="sub-lead">희망 학생이 적거나 교사 수급이 어려워 한 학교에서 개설하기 어려운 소인수·심화 과목 등을,<br>학교와 학교가 공동으로 운영하는 교육과정입니다.<br>운영 방식은 학교연합, 지역연계, 온라인 세 가지입니다.</p>
 
-      <p><strong>참학력 공동교육과정이란?</strong> 학생 과목 선택권 보장 및 맞춤형 진로·학업 설계 지원을 위해, 희망 학생이 적거나 교사 수급 곤란 등으로 단위 학교에서 개설이 어려운 소인수·심화 과목 등을 학교 간, 지역 또는 대학과 연계·협력을 통해 운영하는 개방적이고 유연한 학생 선택 중심 교육과정입니다.</p>
-
-      <h3>공동교육과정 유형 비교</h3>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>학교 연합</th>
-              <th>지역 연계</th>
-              <th>온라인</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>학교가 중심이 되어서, 인근 학교와 연합으로 과목을 개설하고 운영하는 공동교육과정. 거점학교가 운영 계획을 자체적으로 수립해서 자율적·탄력적으로 운영</td>
-              <td>교육지원청이 주관하여 지역 내 고등학교와 연합으로 과목을 개설하고 운영하는 공동교육과정. 교육지원청이 지역별 협의회를 통해 개설 과목과 거점학교를 지정하여 운영</td>
-              <td>시·공간 제약 없는 온라인 교실 환경을 구축하여 운영하는 공동교육과정. 오프라인 형태의 공동교육과정 운영이 어려운 교과들의 수요를 파악하여 실시간 쌍방향 온라인 수업 형태로 운영</td>
-            </tr>
-          </tbody>
-        </table>
+      <h3 class="sub-subtitle">공동교육과정 유형 비교</h3>
+      <div class="type-cards jc-types">
+        <div class="type-card">
+          <h4 class="tc-title">학교 연합</h4>
+          <p>학교가 중심이 되어서, 인근 학교와 연합으로 과목을 개설하고 운영하는 공동교육과정. 거점학교가 운영 계획을 자체적으로 수립해서 자율적·탄력적으로 운영</p>
+        </div>
+        <div class="type-card">
+          <h4 class="tc-title">지역 연계</h4>
+          <p>교육지원청이 주관하여 지역 내 고등학교와 연합으로 과목을 개설하고 운영하는 공동교육과정. 교육지원청이 지역별 협의회를 통해 개설 과목과 거점학교를 지정하여 운영</p>
+        </div>
+        <div class="type-card">
+          <h4 class="tc-title">온라인</h4>
+          <p>시·공간 제약 없는 온라인 교실 환경을 구축하여 운영하는 공동교육과정. 오프라인 형태의 공동교육과정 운영이 어려운 교과들의 수요를 파악하여 실시간 쌍방향 온라인 수업 형태로 운영</p>
+        </div>
       </div>
 
-      <h3>유형별 상세 비교</h3>
-      <div class="table-wrap">
-        <table>
+      <h3 class="sub-subtitle">유형별 상세 비교</h3>
+      <div class="cmp-wrap" role="region" aria-label="유형별 상세 비교표" tabindex="0">
+        <table class="cmp-table jc-cmp">
           <thead>
             <tr>
-              <th></th>
-              <th>학교연합</th>
-              <th>지역연계</th>
-              <th>온라인</th>
+              <td></td>
+              <th scope="col">학교 연합</th>
+              <th scope="col">지역 연계</th>
+              <th scope="col">온라인</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th>대상</th>
+              <th scope="row">대상</th>
               <td>개설(거점)학교와 참여(회원)학교 재학생</td>
               <td>충청남도 지역별 고등학교 재학생 (지역 교육지원청별 운영)</td>
               <td>충청남도 관내 고등학교 재학생 (1학년 2학기~3학년 2학기)</td>
             </tr>
             <tr>
-              <th>운영시기</th>
+              <th scope="row">운영시기</th>
               <td>학기별 운영 (학교 자율 운영)</td>
               <td>(1학기) 3월 ~ 6월<br>(2학기) 8월 ~ 11월</td>
               <td>(1학기) 3월 ~ 6월<br>(2학기) 8월 ~ 11월</td>
             </tr>
             <tr>
-              <th>운영시간</th>
+              <th scope="row">운영시간</th>
               <td>일과 중, 방과 후 및 야간, 주말 등</td>
               <td>방과 후 및 야간, 주말</td>
               <td>방과 후 및 야간, 주말</td>
             </tr>
             <tr>
-              <th>운영장소</th>
+              <th scope="row">운영장소</th>
               <td>거점 학교 지정 장소</td>
               <td>거점 학교 지정 장소</td>
               <td>온라인 (실시간 쌍방향 온라인 플랫폼 활용)</td>
             </tr>
             <tr>
-              <th>개설과목</th>
+              <th scope="row">개설과목</th>
               <td>거점학교 개설 과목 (학교 자율 운영)</td>
               <td>지역 학교(교사) 개설 과목</td>
               <td>참학력 온라인 공동교육과정 학년별 지원(개설 예정) 과목</td>
             </tr>
             <tr>
-              <th>수강가능과목</th>
+              <th scope="row">수강가능과목</th>
               <td>소속 학교 미개설 과목 (학교 교육과정에 편성되지 않은 과목)</td>
               <td>소속 학교 미개설 과목 (학교 교육과정에 편성되지 않은 과목)</td>
               <td>소속 학교 미개설 과목 (학교 교육과정에 편성되지 않은 과목)</td>
             </tr>
             <tr>
-              <th>수강 신청</th>
+              <th scope="row">수강 신청</th>
               <td>운영교(거점학교, 회원학교) 중심 수강 신청 접수 및 대상 학생 선정</td>
               <td>지역 교육지원청 별 수강 신청 접수 및 대상 학생 선정<br>(1학기) 3월 / (2학기) 6월</td>
               <td>충청남도 관내 고등학교 통합 수강신청 접수 및 대상 학생 선정<br>(1학기) 전년 12월 / (2학기) 6월</td>
             </tr>
           </tbody>
+          <tfoot aria-hidden="true"><tr><td></td><td></td><td></td><td></td></tr></tfoot>
         </table>
       </div>
+    </section>
 
-      <h2>수강신청 바로가기</h2>
-
-      <a class="link-box" href="./enrollment-closed.html">
-        <span class="lb-icon">📝</span>
-        <div class="lb-body">
-          <div class="lb-title">참학력 공동교육과정 수강신청</div>
-          <div class="lb-desc">수강신청 기간: 매년 6월 / 11월</div>
-        </div>
-        <span class="lb-arrow">→</span>
+    <section class="sub-sec" aria-labelledby="s-apply">
+      <h2 class="sub-title" id="s-apply"><em>수강신청</em> 바로가기</h2>
+      <a class="sub-wide" href="./enrollment-closed.html">
+        <strong>참학력 공동교육과정 수강신청</strong>
+        <span>수강신청 기간: 매년 6월 / 11월</span>
       </a>
-    </div>
-
-    <div class="other-nets">
-      <h2>다른 안전망 보기</h2>
-      <div class="net-cards">
-        <a class="net-card" href="./schoolcurriculum.html">
-          <div class="nc-ic">🏫</div>
-          <h3>학교 교육과정</h3>
-          <p>학교 개설 과목 우선 이수</p>
-        </a>
-        <a class="net-card" href="./onlineschool.html">
-          <div class="nc-ic">💻</div>
-          <h3>충남온라인학교</h3>
-          <p>정규 시간 중 온라인 수강</p>
-        </a>
-        <a class="net-card" href="./off-campus_courses.html">
-          <div class="nc-ic">🌱</div>
-          <h3>학교 밖 교육</h3>
-          <p>대학·기관 연계 프로그램</p>
-        </a>
-      </div>
-    </div>
+    </section>
   </div>
 </main>
 

@@ -8,97 +8,41 @@
 <title>충남온라인학교 · 4대 안전망 · 온마당</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="../assets/css/common.css">
-<style>
-
-  .content-wrap{padding:40px 0 80px}
-  .content-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;padding:36px 40px}
-  .content-card h2{font-size:20px;font-weight:800;color:var(--online-d);margin-bottom:14px;letter-spacing:-.4px}
-  .content-card p{font-size:15px;color:var(--ink-soft);line-height:1.8;margin-bottom:18px}
-
-  .link-box{display:flex;align-items:center;gap:14px;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:20px 24px;margin-bottom:14px;transition:.18s}
-  .link-box:hover{border-color:var(--online);box-shadow:var(--shadow-sm)}
-  .link-box .lb-icon{font-size:28px;flex-shrink:0}
-  .link-box .lb-body{flex:1}
-  .link-box .lb-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:2px}
-  .link-box .lb-desc{font-size:12.5px;color:var(--ink-faint)}
-  .link-box .lb-arrow{font-size:14px;color:var(--online-d);font-weight:700;flex-shrink:0}
-
-  .other-nets{margin-top:40px}
-  .other-nets h2{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:16px}
-  .net-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .net-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:20px 18px;text-align:center;transition:.2s}
-  .net-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
-  .net-card .nc-ic{font-size:28px;margin-bottom:8px}
-  .net-card h3{font-size:14px;font-weight:700;margin-bottom:4px}
-  .net-card p{font-size:11.5px;color:var(--ink-faint)}
-
-  @media(max-width:680px){
-    .content-card{padding:24px 20px}
-    .net-cards{grid-template-columns:1fr}
-  }
-</style>
 </head>
 <body>
 
 <div id="om-header" data-active="safety"></div>
 
-<div class="page-hero">
+<div class="page-hero" data-net="online">
   <div class="wrap">
     <nav class="breadcrumb" aria-label="이동 경로">
       <a href="../index.html">홈</a> › <a href="./index.html">4대 안전망</a> › <strong>충남온라인학교</strong>
     </nav>
-    <h1>💻 온배움 충남온라인학교</h1>
+    <h1>온배움 충남온라인학교</h1>
     <p>수강생이 적어서, 선생님이 안 계셔서 열기 힘든 과목을 학교 안에서 정규 일과 시간 중에 수강할 수 있도록 충남온라인학교가 지원합니다.</p>
   </div>
 </div>
 
-<main class="content-wrap">
+<main class="sub-body" data-net="online">
   <div class="wrap">
-    <div class="content-card">
-      <h2>충남온라인학교란?</h2>
-      <p>충남온라인학교는 고교학점제의 학생 과목 선택권을 지원하기 위해 운영합니다. 각 학교가 여러 사정으로 개설하기 어려운 과목을, 학교의 정규 일과 시간 중에 온라인으로 수강할 수 있도록 지원합니다.</p>
+    <section class="sub-sec" aria-labelledby="s-what">
+      <h2 class="sub-title" id="s-what"><em>충남온라인학교</em>란?</h2>
+      <p class="sub-lead">충남온라인학교는 고교학점제의 학생 과목 선택권을 지원하기 위해 운영합니다.<br>각 학교가 여러 사정으로 개설하기 어려운 과목을,<br>학교의 정규 일과 시간 중에 온라인으로 수강할 수 있도록 지원합니다.</p>
+    </section>
 
-      <h2>바로가기</h2>
-
-      <a class="link-box" href="http://www.cnonlineschool.cnehs.kr/main.do" target="_blank" rel="noopener">
-        <span class="lb-icon">🌐</span>
-        <div class="lb-body">
-          <div class="lb-title">충남온라인학교 홈페이지</div>
-          <div class="lb-desc">강좌 안내, 수강 신청, 학습 관리 등 충남온라인학교의 모든 서비스를 이용할 수 있습니다.</div>
-        </div>
-        <span class="lb-arrow">↗</span>
-      </a>
-
-      <a class="link-box" href="https://youtu.be/EuCpRvsS6Uk?si=CLd7BGdgP31i8d3k" target="_blank" rel="noopener">
-        <span class="lb-icon">🎬</span>
-        <div class="lb-body">
-          <div class="lb-title">충남온라인학교 안내 영상</div>
-          <div class="lb-desc">충남온라인학교의 운영 방식과 수강 방법을 영상으로 안내합니다.</div>
-        </div>
-        <span class="lb-arrow">↗</span>
-      </a>
-    </div>
-
-    <div class="other-nets">
-      <h2>다른 안전망 보기</h2>
-      <div class="net-cards">
-        <a class="net-card" href="./schoolcurriculum.html">
-          <div class="nc-ic">🏫</div>
-          <h3>학교 교육과정</h3>
-          <p>학교 개설 과목 우선 이수</p>
+    <section class="sub-sec" aria-labelledby="s-go">
+      <h2 class="sub-title" id="s-go">바로가기</h2>
+      <div class="sub-cards">
+        <a class="sub-card" href="http://www.cnonlineschool.cnehs.kr/main.do" target="_blank" rel="noopener">
+          <strong>충남온라인학교<br>홈페이지<span class="ext" aria-hidden="true">↗</span><span class="sr-only">(새 창)</span></strong>
+          <span>강좌 안내, 수강 신청, 학습 관리 등 충남온라인학교의 모든 서비스를 이용할 수 있습니다.</span>
         </a>
-        <a class="net-card" href="./jointcurricula.html">
-          <div class="nc-ic">🤝</div>
-          <h3>공동교육과정</h3>
-          <p>학교 간 연합 과목 개설</p>
-        </a>
-        <a class="net-card" href="./off-campus_courses.html">
-          <div class="nc-ic">🌱</div>
-          <h3>학교 밖 교육</h3>
-          <p>대학·기관 연계 프로그램</p>
+        <a class="sub-card" href="https://youtu.be/EuCpRvsS6Uk?si=CLd7BGdgP31i8d3k" target="_blank" rel="noopener">
+          <strong>충남온라인학교<br>안내 영상<span class="ext" aria-hidden="true">↗</span><span class="sr-only">(새 창)</span></strong>
+          <span>충남온라인학교의 운영 방식과 수강 방법을 영상으로 안내합니다.</span>
         </a>
       </div>
-    </div>
+    </section>
   </div>
 </main>
 
