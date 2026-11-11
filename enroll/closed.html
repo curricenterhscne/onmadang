@@ -15,15 +15,16 @@
 
 <!-- 수강신청 입구(enroll/index.html) 네 단추가 공통으로 쓰는 「기간 아님」 안내.
      ?p=online|regional|dual|dreamup 으로 프로그램 이름만 바꿔 보여 준다.
-     신청 기간이 열리면 입구의 해당 단추 주소를 실제 신청 화면으로 바꾼다
-     (예: 지역연계 → ../apply/app.html?program=joint_regional). -->
+     입구 칸은 신청 기간(DB settings)을 읽어 기간 중이면 신청 화면으로 바로 보낸다.
+     이 페이지에도 같은 상태를 읽어 「다음 신청 시작」을 보여 준다(assets/js/enroll-status.js). -->
 <main class="sub-body">
   <div class="wrap">
     <div class="state-page">
       <img src="../assets/img/sub/char-panda-think.svg" alt="" aria-hidden="true">
       <p class="sec-badge" id="prog-name">수강신청</p>
       <h1>수강신청 기간이 아닙니다</h1>
-      <p>신청 기간이 열리면 이 단추로 신청 화면에 들어갈 수 있습니다.<br>신청 일정은 공지사항으로 안내합니다.</p>
+      <p>신청 기간이 열리면 수강신청 첫 화면에서 신청 화면으로 들어갈 수 있습니다.<br>신청 일정은 공지사항으로 안내합니다.</p>
+      <p class="sub-lead" id="next-open" hidden></p>
       <div class="state-actions">
         <a class="btn-pill" href="../board/">공지사항 보기 <span aria-hidden="true">→</span></a>
         <a class="btn-pill is-line" href="./"><span aria-hidden="true">←</span> 수강신청 첫 화면</a>
@@ -34,6 +35,7 @@
 
 <div id="om-footer"></div>
 <script src="../assets/js/common.js"></script>
+<script src="../assets/js/enroll-status.js"></script>
 <script>
 (function () {
   var NAMES = {
@@ -42,7 +44,13 @@
     dual:     '고교-대학 연계 학점 인정 학교 밖 교육 과목',
     dreamup:  '꿈키움 학교 밖 교육 창의적체험활동'
   };
+  var PROG = { regional: 'joint_regional', dual: 'dual_credit', dreamup: 'dream_up' };
   var p = new URLSearchParams(location.search).get('p');
+  if (PROG[p]) OM_ENROLL_STATUS.get(PROG[p]).then(function (s) {
+    var el = document.getElementById('next-open');
+    if (s.isOpen) { el.innerHTML = '지금 신청 중입니다. <a class="txt-link" href="' + s.appUrl + '">신청 화면으로 가기</a>'; el.hidden = false; }
+    else if (s.openAt) { el.textContent = '다음 신청 시작: ' + OM_ENROLL_STATUS.fmt(s.openAt); el.hidden = false; }
+  });
   if (NAMES[p]) {
     document.getElementById('prog-name').textContent = NAMES[p];
     document.title = NAMES[p] + ' 수강신청 기간이 아닙니다 · 온마당';

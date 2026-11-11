@@ -17,7 +17,8 @@
   .net-tile.p-regional{--ic:url("../assets/img/sub/icon-net-joint.svg")}
   .net-tile.p-dual{--ic:url("../assets/img/sub/icon-net-school.svg")}
   .net-tile.p-dreamup{--ic:url("../assets/img/sub/icon-net-outside.svg")}
-  .net-tile .nt-go{font-size:14px;font-weight:700}
+  .net-tile .nt-go{font-size:14px;font-weight:700;padding:3px 12px;border-radius:var(--radius-pill);background:var(--surface);color:var(--ink)}
+  .net-tile.is-open .nt-go::after{content:" →"}
 </style>
 </head>
 <body>
@@ -36,7 +37,7 @@
 
 <main class="sub-body">
   <div class="wrap">
-    <p class="sub-lead">신청할 프로그램을 고르십시오.<br>프로그램마다 신청 기간이 다르며, 기간이 아닐 때는 안내 페이지가 열립니다.</p>
+    <p class="sub-lead">신청할 프로그램을 고르십시오.<br>프로그램마다 신청 기간이 다릅니다. 신청 기간에는 신청 화면이, 그 밖에는 안내 페이지가 열립니다.</p>
   </div>
   <div class="wrap is-wide">
     <nav class="net-tiles" aria-label="수강신청 프로그램">
@@ -44,25 +45,25 @@
         <span class="ic" aria-hidden="true"></span>
         <strong class="nt-logo"><span class="nt-pre">참학력 공동교육과정</span><span class="nt-name">온라인 공동교육과정</span></strong>
         <span class="nt-desc">실시간 쌍방향 온라인 수업으로 운영하는 공동교육과정</span>
-        <span class="nt-go">수강신청 <span aria-hidden="true">→</span></span>
+        <span class="nt-go">수강신청 기간이 아닙니다</span>
       </a>
-      <a class="net-tile p-regional" href="./closed.html?p=regional">
+      <a class="net-tile p-regional" href="./closed.html?p=regional" data-program="joint_regional">
         <span class="ic" aria-hidden="true"></span>
         <strong class="nt-logo"><span class="nt-pre">참학력 공동교육과정</span><span class="nt-name">지역연계 공동교육과정</span></strong>
         <span class="nt-desc">교육지원청이 주관하여 지역 고등학교와 함께 운영하는 공동교육과정</span>
-        <span class="nt-go">수강신청 <span aria-hidden="true">→</span></span>
+        <span class="nt-go">수강신청 기간이 아닙니다</span>
       </a>
-      <a class="net-tile p-dual" href="./closed.html?p=dual">
+      <a class="net-tile p-dual" href="./closed.html?p=dual" data-program="dual_credit">
         <span class="ic" aria-hidden="true"></span>
         <strong class="nt-logo"><span class="nt-pre">학교 밖 교육</span><span class="nt-name">고교-대학 연계 학점 인정 학교 밖 교육 과목</span></strong>
         <span class="nt-desc">협약 대학이 개설한 과목을 이수하고 고등학교 학점을 인정받는 과목</span>
-        <span class="nt-go">수강신청 <span aria-hidden="true">→</span></span>
+        <span class="nt-go">수강신청 기간이 아닙니다</span>
       </a>
-      <a class="net-tile p-dreamup" href="./closed.html?p=dreamup">
+      <a class="net-tile p-dreamup" href="./closed.html?p=dreamup" data-program="dream_up">
         <span class="ic" aria-hidden="true"></span>
         <strong class="nt-logo"><span class="nt-pre">학교 밖 교육</span><span class="nt-name">꿈키움 학교 밖 교육 창의적체험활동</span></strong>
         <span class="nt-desc">지역 기관이 운영하는 창의적체험활동(진로활동)</span>
-        <span class="nt-go">수강신청 <span aria-hidden="true">→</span></span>
+        <span class="nt-go">수강신청 기간이 아닙니다</span>
       </a>
     </nav>
   </div>
@@ -70,6 +71,17 @@
 
 <div id="om-footer"></div>
 <script src="../assets/js/common.js"></script>
+<script src="../assets/js/enroll-status.js"></script>
+<script>
+// 신청 기간(관리 화면에서 입력)을 읽어 칸의 주소와 상태 문구를 바꾼다.
+// 온라인 공동교육과정은 이 앱으로 신청하지 않아 항상 안내 페이지로 간다.
+document.querySelectorAll('.net-tile[data-program]').forEach(function (a) {
+  OM_ENROLL_STATUS.get(a.dataset.program).then(function (s) {
+    a.querySelector('.nt-go').textContent = s.label;
+    if (s.isOpen) { a.href = s.appUrl; a.classList.add('is-open'); }
+  });
+});
+</script>
 <script data-goatcounter="https://onmadang.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
