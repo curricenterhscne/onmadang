@@ -151,6 +151,8 @@
   #placeholder .kk-empty__title { grid-area: t; font-size: clamp(30px, 3.9vw, 56px); font-weight: 800; line-height: 1.25; letter-spacing: -0.03em; color: var(--color-text); margin: 0; }
   #placeholder .kk-empty__body { grid-area: b; font-size: clamp(15px, 1.25vw, 18px); line-height: 1.75; color: var(--color-text); margin: clamp(20px, 3vw, 44px) 0 0; max-width: none; }
   #placeholder .kk-btn { grid-area: a; justify-self: start; margin-top: 24px; font-size: clamp(15px, 1.3vw, 19px); padding: 10px 22px; border-radius: 999px; }
+  #placeholder .empty-steps { padding-left: 1.4em; }
+  #placeholder .empty-steps li + li { margin-top: 6px; }
   @media (max-width: 680px) {
     #placeholder { grid-template-columns: 1fr; grid-template-areas: "c" "t" "b" "a"; }
     #placeholder .kk-empty__char { width: 200px; justify-self: center; margin-bottom: 16px; }
@@ -627,7 +629,7 @@
     <div class="kk-empty" id="placeholder">
       <img class="kk-empty__char" src="../../assets/img/sub/char-trio.svg" alt="" aria-hidden="true">
       <p class="kk-empty__title">학교를<br>선택해 주세요</p>
-      <p class="kk-empty__body">학교를 검색하면 3개년 교육과정 편제표가 표시됩니다.<br>과목 셀을 클릭해 선택을 시뮬레이션할 수 있습니다.</p>
+      <ol class="kk-empty__body empty-steps"><li>위 검색창에서 학교를 찾습니다. 3개년 교육과정 편제표가 표시됩니다.</li><li>과목 칸을 눌러 선택합니다. 학점이 자동으로 합산됩니다.</li></ol>
       <a href="guide.html" class="kk-btn kk-btn--primary">사용 설명서 보기 →</a>
     </div>
   </section>

@@ -91,6 +91,8 @@
   .bridge{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.2vw,18px)}
   .bridge .sub-wide{padding:clamp(20px,2.4vw,30px) clamp(20px,2.6vw,36px)}
   .bridge .sub-wide > span{display:block;margin-top:4px}
+  .bridge .sub-wide .go{align-self:flex-start;display:inline-block;margin-top:16px;padding:6px 16px;border-radius:var(--radius-pill);background:var(--brand);color:#fff;font-size:14px;font-weight:700}
+  .bridge .sub-wide{display:flex;flex-direction:column}
 
   /* 마무리 인용 — 보라 띠 아래로 책상 그림이 걸친다. 띠는 흰 글자 대비를 위해 --plum-d */
   .band.is-quote{background:linear-gradient(var(--plum-d) 0 calc(100% - clamp(60px,8vw,120px)),var(--surface) 0);color:#fff;text-align:center;padding-bottom:0}
@@ -144,8 +146,8 @@
     <div class="wrap">
       <div class="sec-head">
         <span class="sec-badge">WHY · 미래 사회의 요구</span>
-        <h2 id="s-why">왜 지금 <em>학생 주도성</em>인가</h2>
-        <p>OECD는 Future of Education and Skills 2030 프로젝트를 통해 미래 교육의 방향을<br>‘OECD 학습 나침반 2030(Learning Compass 2030)’으로 제시했습니다. 목적지에 데려다주는 지도(GPS)가 아니라, 나침반을 든 이유가 핵심입니다.</p>
+        <h2 id="s-why">왜 지금 <em>학생 주도성</em>인가?</h2>
+        <p>OECD는 Future of Education and Skills 2030 프로젝트를 통해 미래 교육의 방향을<br>‘OECD 학습 나침반 2030(Learning Compass 2030)’으로 제시했습니다.<br>목적지에 데려다주는 지도(GPS)가 아니라, 나침반을 든 이유가 핵심입니다.</p>
       </div>
       <div class="compass-row">
         <img src="../assets/img/sub/icon-agency-compass.svg" alt="" aria-hidden="true">
@@ -178,21 +180,21 @@
     <div class="wrap">
       <div class="sec-head">
         <span class="sec-badge">WHAT · 세 가지 얼굴</span>
-        <h2 id="s-what">주도성은 <em>이런 모습</em>입니다</h2>
+        <h2 id="s-what">주도성은 <em>이런 모습</em>입니다.</h2>
       </div>
       <div class="dims">
-        <div class="dim"><h3>행동의 주체</h3><p>남이 시켜서가 아니라, 스스로 움직입니다.<span class="en" lang="en">acting, not being acted upon</span></p></div>
+        <div class="dim"><h3>행동의 주체</h3><p>다른 사람이 시켜서가 아니라, 스스로 움직입니다.<span class="en" lang="en">acting, not being acted upon</span></p></div>
         <div class="dim"><h3>세상을 만들어감</h3><p>주어진 환경을 받아들이기보다, 바꾸어 갑니다.<span class="en" lang="en">shaping, not being shaped</span></p></div>
-        <div class="dim"><h3>책임 있는 선택</h3><p>남이 정해준 결정이 아니라, 스스로 판단합니다.<span class="en" lang="en">responsible decision-making</span></p></div>
+        <div class="dim"><h3>책임 있는 선택</h3><p>다른 사람이 정해 준 결정이 아니라, 스스로 판단합니다.<span class="en" lang="en">responsible decision-making</span></p></div>
       </div>
-      <p class="co-note">주도성은 <strong>혼자</strong> 크는 것이 아닙니다. OECD는 또래·교사·부모·지역사회와 서로를 지지하는 관계 속에서<br>함께 자라는 <strong>협력적 주도성(Co-agency)</strong>을 강조합니다. 학생을 둘러싼 관계와 환경이 주도성의 토양입니다.</p>
+      <p class="co-note">주도성은 <strong>혼자서</strong> 함양되지 않습니다. OECD는 또래·교사·부모·지역사회와 서로를 지지하는 관계 속에서<br>함께 자라는 <strong>협력적 주도성(Co-agency)</strong>을 강조합니다. 학생을 둘러싼 관계와 환경이 주도성의 토양입니다.</p>
     </div>
   </section>
 
   <section class="band is-brand" aria-labelledby="s-claim">
     <div class="wrap">
       <h2 class="claim-big" id="s-claim">주도성은<br>주입이 아니라<br><strong>실천</strong>으로 자랍니다</h2>
-      <p class="claim-p">나침반 사용법을 아무리 설명해도, 직접 길을 잡아보지 않으면 방향 감각은 생기지 않습니다. 주도성도 마찬가지입니다. “주도적으로 살아라”라고 가르친다고 길러지지 않습니다. 스스로 목표를 정하고, 선택하고, 그 결과를 책임지는 경험을 반복할 때 비로소 몸에 뱁니다.</p>
+      <p class="claim-p">나침반 사용법을 아무리 설명해도, 직접 길을 잡아보지 않으면 방향 감각은 생기지 않습니다. 주도성도 마찬가지입니다. “주도적으로 살아라”라고 가르친다고 길러지지 않습니다. 스스로 목표를 정하고, 선택하고, 그 결과를 책임지는 경험을 반복할 때 비로소 길러집니다.</p>
     </div>
   </section>
 
@@ -201,7 +203,7 @@
       <div class="sec-head">
         <span class="sec-badge">HOW · 실천의 순환</span>
         <h2 id="s-how">스스로 돌리는 학습의 사이클</h2>
-        <p>OECD 학습 나침반은 주도성이 자라는 과정을 예상 → 행동 → 성찰이 반복되는 순환(AAR Cycle)으로 봅니다.<br>이 사이클은 누가 대신 돌려줄 수 없습니다. 학생이 직접 해봐야 돌아갑니다.</p>
+        <p>OECD 학습 나침반은 주도성이 자라는 과정을 예상(Anticipation) → 행동(Action) → 성찰(Reflection)이 반복되는 순환,<br>곧 AAR 사이클로 봅니다. 이 사이클은 누가 대신 돌려줄 수 없습니다. 학생이 직접 실천해야 돌아갑니다.</p>
       </div>
       <div class="aar">
         <div class="aar-node"><span class="en" lang="en">ANTICIPATION</span><h3>예상</h3><p>내 선택이 가져올 결과를 내다보기</p></div>
@@ -219,7 +221,7 @@
       <div class="sec-head">
         <span class="sec-badge">SO · 그래서 고교학점제</span>
         <h2 id="s-so">실천의 장을 <em>제도</em>로</h2>
-        <p>주도성을 기르려면 학생이 직접 선택하고 책임지는 실천의 장이 필요합니다. 고교학점제는 그 장을 학교의 일상 제도로 설계합니다.<br>학생에게 두 가지를 함께 건넵니다 — 권한과 책임.</p>
+        <p>주도성을 기르려면 학생이 직접 선택하고 책임지는 실천의 장이 필요합니다.<br>고교학점제는 학생이 과목을 선택하고 이수하는 과정 자체를 학교 교육과정 운영 방식으로 만든 제도입니다.<br>그래서 학생에게 권한과 책임을 함께 줍니다.</p>
       </div>
       <div class="axes">
         <div class="axis auth"><span class="a-label">권한 · <span lang="en">AUTHORITY</span></span><h3>과목 선택권</h3><p>학생이 자신의 진로와 흥미에 따라 무엇을 배울지 스스로 고릅니다.<br>학교가 짜준 시간표를 받는 것이 아니라, 나의 교육과정을 내가 설계합니다.</p></div>
@@ -242,8 +244,8 @@
         <p>온마당은 학생이 직접 선택하고 설계하며 주도성을 연습하도록 돕습니다.</p>
       </div>
       <div class="bridge">
-        <a class="sub-wide" href="../design/"><strong>진로·학업 설계 <span aria-hidden="true">→</span></strong><span>자기 이해에서 과목 선택 실습까지, 나만의 교육과정을 직접 설계해 봅니다.</span></a>
-        <a class="sub-wide" href="../safety/index.html"><strong>고교학점제 4대 안전망 <span aria-hidden="true">→</span></strong><span>원하는 과목이 학교에 없어도, 선택의 폭을 넓혀주는 4대 안전망이 있습니다.</span></a>
+        <a class="sub-wide" href="../design/"><strong>진로·학업 설계</strong><span>자기 이해에서 과목 선택 실습까지, 나만의 교육과정을 직접 설계해 봅니다.</span><span class="go">설계 시작하기 <span aria-hidden="true">→</span></span></a>
+        <a class="sub-wide" href="../safety/index.html"><strong>고교학점제 4대 안전망</strong><span>원하는 과목이 학교에 없어도, 선택의 폭을 넓혀 주는 4대 안전망이 있습니다.</span><span class="go">안전망 살펴보기 <span aria-hidden="true">→</span></span></a>
       </div>
     </div>
   </section>
