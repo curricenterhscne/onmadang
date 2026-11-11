@@ -63,11 +63,18 @@
 
   @media(max-width:720px){
     .vs,.two,.msl-grid{grid-template-columns:1fr}
-    .bg-grid,.stat3{grid-template-columns:1fr 1fr}
+    .bg-grid{grid-template-columns:1fr 1fr}
+    .stat3{grid-template-columns:repeat(3,1fr);gap:8px}
+    .stat{min-height:0;padding:14px 8px;text-align:center}
+    .stat b{font-size:24px} .stat span{font-size:12px}
+    .tl li{grid-template-columns:20px 1fr;gap:4px 10px;align-items:start}
+    .tl .yr{grid-column:2;grid-row:1;text-align:left}
+    .tl .dot{grid-column:1;grid-row:1 / span 2}
+    .tl li > span:last-child{grid-column:2;grid-row:2}
     .struct tr{display:grid;grid-template-columns:1fr}
     .struct th{padding-bottom:0;font-weight:700}
   }
-  @media(max-width:480px){.bg-grid,.stat3{grid-template-columns:1fr}}
+  @media(max-width:360px){.bg-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>

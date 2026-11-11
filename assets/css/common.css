@@ -225,7 +225,10 @@ header{
 @media(max-width:900px){
   .page-hero{min-height:0}
   .page-hero .wrap,.page-hero.is-light .wrap,.page-hero.is-light.char-left .wrap{padding-left:24px;padding-right:24px}
-  .page-hero .wrap::before{display:none}
+  /* 모바일 시안(11-06·09): 아이콘·캐릭터를 제목 위에 작게 */
+  .page-hero .wrap::before{position:static;display:block;width:96px;height:90px;margin:0 0 14px;transform:none}
+  .page-hero.is-light .wrap::before,.page-hero.is-light.char-left .wrap::before{width:200px;height:auto;aspect-ratio:542/392}
+  [data-section="board"] .page-hero .wrap::before{width:150px;height:auto;aspect-ratio:342/282}
 }
 
 /* ── 서브 본문 공통 컴포넌트 (시안 sub03 기준, 다른 서브에서도 같은 클래스를 쓴다) ──
@@ -342,6 +345,17 @@ a.sub-wide:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .band + .page-nav{margin-top:0}
 @media(max-width:680px){.page-nav{grid-template-columns:1fr}.page-nav .pn-next{grid-column:auto}}
 
+/* 말풍선 제목 — 모바일 시안(sub01_01): 캐릭터·이름표·제목을 가운데로 쌓고 말풍선 테두리는 뺀다 */
+@media(max-width:680px){
+  .talk-head{display:flex;flex-direction:column;align-items:center;text-align:center}
+  .talk-head > img{width:72px;margin-bottom:10px}
+  .talk-head .sec-badge,.talk-head h2,.talk-head > p{align-self:center}
+  .talk-head .sec-badge{margin:0 0 6px}
+  .talk-head h2{margin-left:0;padding:0;border:0;background:none}
+  .talk-head h2::before,.talk-head h2::after{display:none}
+  .talk-head > p{margin:10px 0 0}
+  .sec-head{align-items:center;text-align:center}
+}
 @media(max-width:900px){
   .net-tiles{grid-template-columns:repeat(2,1fr)}
   .type-cards{grid-template-columns:1fr}
@@ -370,6 +384,7 @@ footer a:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .nw{white-space:nowrap}
 .txt-link{color:var(--brand-d);font-weight:700;text-decoration:underline}
 .ft-sitemap{display:flex;gap:36px}
+@media(max-width:680px){.ft-sitemap{display:none}} /* 모바일 시안: 푸터 사이트맵 제외 */
 .ft-col b{display:block;font-size:14px;font-weight:700;margin-bottom:4px}
 .ft-col a{display:block;font-size:13.5px;line-height:1.9}
 .ft-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,255,.5);font-size:12.5px}

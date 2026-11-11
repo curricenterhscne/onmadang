@@ -16,14 +16,25 @@
   .hero{position:relative;overflow:hidden;padding:64px 0 0;color:#fff}
   .hero::before{
     content:"";position:absolute;inset:0;z-index:-1;
-    background-image:
-      linear-gradient(100deg,rgba(47,63,168,.88),rgba(62,82,196,.72) 55%,rgba(62,82,196,.6)),
-      url("./assets/img/home/hero-bg.jpg");
-    background-image:
-      linear-gradient(100deg,rgba(47,63,168,.88),rgba(62,82,196,.72) 55%,rgba(62,82,196,.6)),
-      image-set(url("./assets/img/home/hero-bg.webp") 1x,url("./assets/img/home/hero-bg@2x.webp") 2x);
-    background-size:cover;background-position:center;
+    /* 흰 글자 대비용 파란 덧칠 (사진은 .hero-slides) */
+    background-image:linear-gradient(100deg,rgba(47,63,168,.88),rgba(62,82,196,.72) 55%,rgba(62,82,196,.6));
   }
+  /* 교육청 사진(간행물 표지, 초상권 동의 완료) — 6초마다 바뀌고 가운데를 중심으로 천천히 확대·축소
+     원본은 세로 사진이라 가로 2:1 띠로 잘라 썼다(assets/img/home/slides/, 1600×800 WebP) */
+  .hero-slides{position:absolute;inset:0;z-index:-2;overflow:hidden;background:var(--brand-d)}
+  .hero-slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0;transition:opacity 1.2s ease}
+  .hero-slides img.is-on{opacity:1}
+  .hero-slides img.is-on.kb-in{animation:kbIn 7.5s ease-out forwards}
+  .hero-slides img.is-on.kb-out{animation:kbOut 7.5s ease-out forwards}
+  @keyframes kbIn{from{transform:scale(1)}to{transform:scale(1.1)}}
+  @keyframes kbOut{from{transform:scale(1.1)}to{transform:scale(1)}}
+  .hero-photo{position:absolute;left:max(16px,calc(50% - 524px));bottom:14px;z-index:2;display:flex;align-items:center;gap:10px;font-size:12.5px;color:#fff}
+  .hero-photo button{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:1.5px solid rgba(255,255,255,.85);border-radius:50%;background:rgba(0,0,0,.25);color:#fff;font:inherit;font-size:12px;cursor:pointer}
+  .hero-photo button:hover{background:rgba(0,0,0,.45)}
+  .hero-photo button:focus-visible{outline:3px solid var(--sunny);outline-offset:2px}
+  .hero-photo-cap{text-shadow:0 1px 3px rgba(0,0,0,.6)}
+  @media(max-width:680px){.hero-photo{left:auto;right:12px;top:12px;bottom:auto}.hero-photo-cap{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
+  @media (prefers-reduced-motion:reduce){.hero-slides img{transition:none}.hero-slides img.is-on{animation:none}}
   .hero .wrap{max-width:var(--home-w)}
   .hero-grid{display:grid;grid-template-columns:1fr 500px;gap:32px;align-items:end;min-height:636px}
   .hero-copy{align-self:stretch;display:flex;flex-direction:column;align-items:flex-start}
@@ -211,9 +222,11 @@
     .hero-bubble.b1{left:2%}
     .hero-bubble.b2{right:2%}
     .hero-mini{right:-2%;bottom:50%;width:92px;height:52px;font-size:12px}
-    .snet-shape{aspect-ratio:auto;grid-template-rows:none;grid-auto-rows:minmax(170px,auto);border-radius:var(--radius)}
-    .snet-q{padding:14px 16px;gap:10px}
-    .snet-ic{width:44px;height:44px}
+    /* 모바일 시안(11-06): 도형을 타원으로 줄이고 칸 안 글자·아이콘을 작게 */
+    .snet-shape{width:min(330px,100%);aspect-ratio:330/250;border-radius:50%}
+    .snet-q{padding:10px 14px;gap:6px}
+    .snet-ic{width:34px;height:34px}
+    .snet-tt{font-size:12.5px;line-height:1.35}
   }
 </style>
 </head>
@@ -223,6 +236,23 @@
 
 <!-- ═══ 히어로 ═══ -->
 <section class="hero">
+  <div class="hero-slides" aria-hidden="true">
+    <img src="./assets/img/home/slides/01-yehwa-cheer.webp" alt="" class="is-on kb-in" data-cap="예화여고 치어리딩 동아리" fetchpriority="high">
+    <img data-src="./assets/img/home/slides/02-gongju-meister.webp" alt="" data-cap="공주마이스터고">
+    <img data-src="./assets/img/home/slides/03-chungnam-arts-dance.webp" alt="" data-cap="충남예고 무용과">
+    <img data-src="./assets/img/home/slides/04-yehwa-baking.webp" alt="" data-cap="예화여고 제과제빵">
+    <img data-src="./assets/img/home/slides/05-cheonan-tech.webp" alt="" data-cap="천안공고">
+    <img data-src="./assets/img/home/slides/06-chungnam-arts-art.webp" alt="" data-cap="충남예고 미술과">
+    <img data-src="./assets/img/home/slides/07-yisunsin.webp" alt="" data-cap="이순신고">
+    <img data-src="./assets/img/home/slides/08-stpaul-girls.webp" alt="" data-cap="쌘뽈여고">
+    <img data-src="./assets/img/home/slides/09-gongju-life.webp" alt="" data-cap="공주생명과학고">
+    <img data-src="./assets/img/home/slides/10-kpop.webp" alt="" data-cap="K-POP고">
+    <img data-src="./assets/img/home/slides/11-hongju-weightlifting.webp" alt="" data-cap="홍주중 역도부">
+  </div>
+  <div class="hero-photo">
+    <button type="button" id="hero-pause" aria-pressed="false" aria-label="배경 사진 넘기기 멈춤">❚❚</button>
+    <span class="hero-photo-cap" id="hero-cap">사진 · 예화여고 치어리딩 동아리</span>
+  </div>
   <div class="wrap">
     <div class="hero-grid">
       <div class="hero-copy">
@@ -418,6 +448,31 @@
       document.getElementById('main-notices').innerHTML='<li class="board-loading">불러오지 못했습니다.</li>';
     });
 
+})();
+</script>
+<script>
+/* 첫 화면 배경 사진 넘기기 — 6초마다. 다음 사진은 바로 앞에서 불러온다.
+   「동작 줄이기」 설정이면 넘기지 않는다. 멈춤 단추로 언제든 멈출 수 있다(자동으로 움직이는 화면의 정지 수단). */
+(function () {
+  var box = document.querySelector('.hero-slides'); if (!box) return;
+  var imgs = Array.prototype.slice.call(box.querySelectorAll('img'));
+  var cap = document.getElementById('hero-cap'), btn = document.getElementById('hero-pause');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var i = 0, timer = null;
+  function load(img) { if (img && img.dataset.src) { img.src = img.dataset.src; img.removeAttribute('data-src'); } }
+  function show(n) {
+    var cur = imgs[i]; i = (n + imgs.length) % imgs.length; var nx = imgs[i];
+    load(nx); load(imgs[(i + 1) % imgs.length]);
+    nx.classList.remove('kb-in', 'kb-out'); void nx.offsetWidth;
+    nx.classList.add('is-on', i % 2 ? 'kb-out' : 'kb-in');
+    if (cur !== nx) cur.classList.remove('is-on');
+    cap.textContent = '사진 · ' + nx.dataset.cap;
+  }
+  function play() { timer = setInterval(function () { show(i + 1); }, 6000); btn.textContent = '❚❚'; btn.setAttribute('aria-pressed', 'false'); btn.setAttribute('aria-label', '배경 사진 넘기기 멈춤'); }
+  function stop() { clearInterval(timer); timer = null; btn.textContent = '▶'; btn.setAttribute('aria-pressed', 'true'); btn.setAttribute('aria-label', '배경 사진 넘기기 다시 시작'); }
+  btn.addEventListener('click', function () { timer ? stop() : play(); });
+  load(imgs[1]);
+  if (reduce) { stop(); } else { play(); }
 })();
 </script>
 <script data-goatcounter="https://onmadang.goatcounter.com/count"
