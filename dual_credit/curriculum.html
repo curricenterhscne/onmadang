@@ -102,7 +102,7 @@
   .doc-wrap .tblx .tbl{margin-bottom:0;min-width:520px}
 
   @media(max-width:960px){
-    .ebook{grid-template-columns:1fr;gap:16px;padding:20px 16px 56px}
+    .ebook{grid-template-columns:minmax(0,1fr);gap:16px;padding:20px 16px 56px}
     .ebook-side{position:static}
     .side-scroll{max-height:230px}
     .side-links{flex-direction:row;flex-wrap:wrap}
@@ -128,7 +128,7 @@
 
 <div id="om-header" data-active="safety"></div>
 
-<div class="page-hero">
+<div class="page-hero" data-net="outside">
   <div class="wrap">
     <nav class="breadcrumb" aria-label="이동 경로">
       <a href="../index.html">홈</a> › <a href="../safety/index.html">4대 안전망</a> ›

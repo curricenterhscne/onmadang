@@ -1,8 +1,8 @@
-/* 개인정보처리방침·이메일무단수집거부 공용 — 본문 레이아웃만 둔다. 색·모서리는 common.css 토큰을 쓴다 */
-.policy{padding:36px 0 64px}
-.policy-card{background:var(--surface);border-radius:var(--radius);padding:32px 36px;box-shadow:var(--shadow-sm)}
-.policy-card h2{font-size:18px;font-weight:800;margin:28px 0 8px}
-.policy-card h2:first-of-type{margin-top:20px}
-.policy-card p,.policy-card li{font-size:15px;line-height:1.8;word-break:keep-all}
+/* 개인정보처리방침·이메일무단수집거부 공용 — 본문 레이아웃만 둔다. 색·모서리는 common.css 토큰을 쓴다
+   시안 없음 — 서브 본문과 같이 흰 바탕, 첫 문단은 옅은 안내 상자 (2026-11-11) */
+.policy{background:var(--surface);padding:clamp(40px,5vw,64px) 0 clamp(64px,7vw,100px)}
+.policy-card > p:first-child{background:var(--bg);border-radius:var(--radius);padding:clamp(18px,2vw,26px) clamp(18px,2.4vw,32px)}
+.policy-card h2{font-size:clamp(18px,1.6vw,22px);font-weight:800;margin:32px 0 8px}
+.policy-card h2::before{content:"";display:block;width:28px;height:4px;border-radius:2px;background:var(--brand);margin-bottom:10px}
+.policy-card p,.policy-card li{font-size:clamp(15px,1.2vw,17px);line-height:1.8;word-break:keep-all}
 .policy-card ul{padding-left:20px}
-@media(max-width:680px){.policy-card{padding:24px 20px}}

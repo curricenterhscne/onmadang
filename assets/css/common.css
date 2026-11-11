@@ -305,6 +305,18 @@ a.sub-wide:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .talk-head h2::after{right:calc(100% - 3px);border-width:7px 15px 7px 0;border-right-color:var(--surface)}
 .talk-head > p{grid-column:2;margin:14px 0 0 18px;font-size:clamp(15px,1.4vw,20px);line-height:1.7;word-break:keep-all}
 
+/* 안내 상태 화면 — 수강신청 기간 아님 등 (시안 없음, 서브 공통 부품으로 구성). 캐릭터는 장식 */
+.state-page{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:640px;margin:0 auto;padding:clamp(16px,3vw,40px) 0}
+.state-page > img{width:clamp(100px,10vw,140px);height:auto;margin-bottom:clamp(16px,2vw,28px)}
+.state-page h1{font-size:clamp(24px,2.6vw,36px);font-weight:800;letter-spacing:-.6px;line-height:1.35;margin-bottom:14px;word-break:keep-all}
+.state-page p{font-size:clamp(15px,1.3vw,18px);line-height:1.8;word-break:keep-all}
+.state-page .sub-lead{width:100%;padding:20px 24px;border-radius:var(--radius);margin-top:clamp(20px,2.4vw,32px);font-size:clamp(15px,1.3vw,18px);font-weight:700}
+.state-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:clamp(24px,3vw,40px)}
+.btn-pill{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:var(--radius-pill);font-size:15px;font-weight:700;background:var(--brand);color:#fff;border:2px solid var(--brand);transition:transform .15s}
+.btn-pill.is-line{background:var(--surface);color:var(--brand-d)}
+.btn-pill:hover{transform:translateY(-2px)}
+.btn-pill:focus-visible{outline:3px solid var(--brand-d);outline-offset:3px}
+
 @media(max-width:900px){
   .net-tiles{grid-template-columns:repeat(2,1fr)}
   .type-cards{grid-template-columns:1fr}

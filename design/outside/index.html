@@ -7,90 +7,63 @@
 <meta name="description" content="우리 학교에 원하는 과목이 없을 때 — 충남온라인학교, 공동교육과정, 학교 밖 교육으로 수강할 수 있습니다.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="../../assets/css/common.css">
-<link rel="stylesheet" href="../css/jinro.css">
 <style>
-  .out-cards{display:grid;gap:16px;margin-top:20px}
-  .out-card{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:24px 28px;display:flex;gap:18px;align-items:flex-start;transition:.18s;
-  }
-  .out-card:hover{border-color:var(--brand-l);box-shadow:var(--shadow-sm)}
-  .out-ic{font-size:30px;flex-shrink:0;line-height:1}
-  .out-body{flex:1}
-  .out-body h3{font-size:17px;font-weight:800;margin-bottom:6px}
-  .out-body p{font-size:14px;color:var(--ink-soft);line-height:1.7;margin-bottom:10px}
-  .out-link{
-    display:inline-flex;align-items:center;gap:5px;
-    font-size:13.5px;font-weight:700;color:var(--brand);
-    padding:7px 16px;background:var(--soft);border-radius:var(--radius-pill);transition:.15s;
-  }
-  .out-link:hover{background:var(--brand);color:#fff}
-
-  .out-tip{
-    margin-top:28px;background:var(--soft);border:1px solid var(--line);
-    border-radius:var(--radius);padding:22px 26px;
-  }
-  .out-tip h3{font-size:15px;font-weight:800;margin-bottom:8px}
-  .out-tip p{font-size:14px;color:var(--ink-soft);line-height:1.7;margin:0}
-  .out-tip ol{font-size:14px;color:var(--ink-soft);line-height:1.8;margin:8px 0 0;padding-left:20px}
-
-  @media(max-width:680px){
-    .out-card{padding:20px;flex-direction:column;gap:10px}
-  }
+  /* 시안 없음 — 서브 공통 부품(.sub-title·.sub-cards)과 4대 안전망 색·아이콘으로 구성 */
+  .out-cards{margin-top:clamp(32px,4vw,56px);grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .out-cards .sub-card{justify-content:flex-start;text-align:left;min-height:clamp(280px,26vw,360px)}
+  .out-cards .sub-card:nth-child(1){background:var(--online-l)}
+  .out-cards .sub-card:nth-child(2){background:var(--plum-l)}
+  .out-cards .sub-card:nth-child(3){background:var(--accent-l)}
+  .out-ic{width:64px;height:60px;margin-bottom:auto;background:currentColor;-webkit-mask:var(--ic) left center/contain no-repeat;mask:var(--ic) left center/contain no-repeat}
+  .out-cards .sub-card:nth-child(1) .out-ic{--ic:url("../../assets/img/sub/icon-net-online.svg")}
+  .out-cards .sub-card:nth-child(2) .out-ic{--ic:url("../../assets/img/sub/icon-net-joint.svg")}
+  .out-cards .sub-card:nth-child(3) .out-ic{--ic:url("../../assets/img/sub/icon-net-outside.svg")}
+  .out-cards .sub-card strong{margin:28px 0 10px;font-size:clamp(18px,1.5vw,21px)}
+  .out-cards .sub-card .more{display:inline-block;margin-top:16px;font-weight:700;font-size:14.5px}
 </style>
 </head>
 <body>
 
 <div id="om-header" data-active="design"></div>
 
-<section class="page-hero">
+<div class="page-hero">
   <div class="wrap">
-    <nav class="breadcrumb" aria-label="현재 위치">
-      <a href="../../index.html">홈</a> <span aria-hidden="true">›</span>
-      <a href="../">진로·학업 설계</a> <span aria-hidden="true">›</span>
-      <span>학교에 없는 과목</span>
+    <nav class="breadcrumb" aria-label="이동 경로">
+      <a href="../../index.html">홈</a> › <a href="../">진로·학업 설계</a> › <strong>학교에 없는 과목</strong>
     </nav>
     <h1>원하는 과목이 우리 학교에 없다면?</h1>
     <p>학교 밖에서 이수한 과목도 학점으로 인정받을 수 있습니다.</p>
   </div>
-</section>
+</div>
 
-<main class="wrap jn-main">
+<main class="sub-body">
+  <div class="wrap">
+    <section aria-labelledby="s-ways">
+      <h2 class="sub-title" id="s-ways">학교 밖에서 과목을 듣는 <em>3가지 방법</em></h2>
+      <p class="sub-text">고교학점제는 학생이 원하는 과목을 수강할 수 있도록 학교 안팎에 안전망을 운영합니다.<br>우리 학교에 없는 과목이라도 아래 방법으로 이수할 수 있습니다.</p>
 
-  <section class="jn-sec">
-    <h2>학교 밖에서 과목을 듣는 3가지 방법</h2>
-    <p class="jn-muted">고교학점제는 학생이 원하는 과목을 수강할 수 있도록 학교 안팎에 안전망을 운영합니다. 우리 학교에 없는 과목이라도 아래 방법으로 이수할 수 있습니다.</p>
-
-    <div class="out-cards">
-      <div class="out-card">
-        <div class="out-ic" aria-hidden="true">💻</div>
-        <div class="out-body">
-          <h3>온배움 충남온라인학교</h3>
-          <p>수강생이 적어서, 선생님이 안 계셔서 열기 힘든 과목을 학교 안에서 정규 일과 시간 중에 수강할 수 있도록 충남온라인학교가 지원합니다.</p>
-          <a class="out-link" href="../../safety/onlineschool.html">자세히 보기 →</a>
-        </div>
+      <div class="sub-cards out-cards">
+        <a class="sub-card" href="../../safety/onlineschool.html">
+          <span class="out-ic" aria-hidden="true"></span>
+          <strong>온배움 충남온라인학교</strong>
+          <span>수강생이 적어서, 선생님이 안 계셔서 열기 힘든 과목을 학교 안에서 정규 일과 시간 중에 수강할 수 있도록 충남온라인학교가 지원합니다.</span>
+          <span class="more">자세히 보기 <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="sub-card" href="../../safety/jointcurricula.html">
+          <span class="out-ic" aria-hidden="true"></span>
+          <strong>참학력 공동교육과정</strong>
+          <span>한 학교에서 개설이 어려운 소인수·심화 과목 등을 학교와 학교가 힘을 합쳐 ‘공동’으로 교육과정을 운영합니다.</span>
+          <span class="more">자세히 보기 <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="sub-card" href="../../safety/off-campus_courses.html">
+          <span class="out-ic" aria-hidden="true"></span>
+          <strong>꿈키움 학교 밖 교육<br>(고교-대학 연계 학점인정 과정)</strong>
+          <span>지역 대학이 개설한 심화 과목을 이수하고 고등학교 학점을 인정받습니다. 해당 대학에 진학하는 경우 그 대학의 학칙에 따라 대학 학점을 추가로 인정합니다. 주말과 방과 후에 대학 캠퍼스에서 운영합니다.</span>
+          <span class="more">자세히 보기 <span aria-hidden="true">→</span></span>
+        </a>
       </div>
-
-      <div class="out-card">
-        <div class="out-ic" aria-hidden="true">🤝</div>
-        <div class="out-body">
-          <h3>참학력 공동교육과정</h3>
-          <p>한 학교에서 개설이 어려운 소인수·심화 과목 등을 학교와 학교가 힘을 합쳐 '공동'으로 교육과정을 운영합니다.</p>
-          <a class="out-link" href="../../safety/jointcurricula.html">자세히 보기 →</a>
-        </div>
-      </div>
-
-      <div class="out-card">
-        <div class="out-ic" aria-hidden="true">🎓</div>
-        <div class="out-body">
-          <h3>꿈키움 학교 밖 교육 (고교-대학 연계 학점인정 과정)</h3>
-          <p>지역 대학이 개설한 심화 과목을 이수하고 고등학교 학점을 인정받습니다. 해당 대학에 진학하는 경우 대학 학점도 인정됩니다. 주말과 방과 후에 대학 캠퍼스에서 운영합니다.</p>
-          <a class="out-link" href="../../safety/off-campus_courses.html">자세히 보기 →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
+    </section>
+  </div>
 </main>
 
 <div id="om-footer"></div>

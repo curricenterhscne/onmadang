@@ -8,47 +8,22 @@
 <title>수강신청 안내 · 공동교육과정 · 온마당</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="../assets/css/common.css">
-<style>
-  body{display:flex;flex-direction:column;min-height:100vh}
-
-  /* 본문 */
-  main{flex:1;display:flex;align-items:center;justify-content:center;padding:60px 24px}
-  .closed-card{
-    background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);
-    padding:56px 48px;text-align:center;max-width:520px;width:100%;
-  }
-  .closed-icon{font-size:56px;margin-bottom:20px}
-  .closed-card h1{font-size:22px;font-weight:800;color:var(--ink);margin-bottom:14px;letter-spacing:-.4px}
-  .closed-card p{font-size:15px;color:var(--ink-soft);line-height:1.8;margin-bottom:8px}
-  .closed-period{
-    display:inline-block;margin-top:16px;
-    background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);
-    padding:14px 24px;font-size:14px;color:var(--brand);font-weight:700;
-  }
-  .closed-back{
-    display:inline-flex;align-items:center;gap:6px;margin-top:28px;
-    font-size:14px;font-weight:700;color:var(--brand);
-    padding:10px 20px;border:1.5px solid var(--brand);border-radius:var(--radius-pill);transition:.18s;
-  }
-  .closed-back:hover{background:var(--brand);color:#fff}
-
-  @media(max-width:680px){
-    .closed-card{padding:40px 24px}
-  }
-</style>
 </head>
 <body>
 
 <div id="om-header" data-active="safety"></div>
 
-<main>
-  <div class="closed-card">
-    <div class="closed-icon">📋</div>
-    <h1>수강신청 기간이 아닙니다</h1>
-    <p>공동교육과정 수강신청은 매년 6월과 11월에 진행됩니다.</p>
-    <div class="closed-period">수강신청 기간: 매년 6월 / 11월</div>
-    <br>
-    <a class="closed-back" href="./jointcurricula.html">← 공동교육과정 안내로 돌아가기</a>
+<main class="sub-body" data-net="joint">
+  <div class="wrap">
+    <div class="state-page">
+      <img src="../assets/img/sub/char-panda-think.svg" alt="" aria-hidden="true">
+      <h1>수강신청 기간이 아닙니다</h1>
+      <p>공동교육과정 수강신청은 매년 6월과 11월에 진행됩니다.</p>
+      <p class="sub-lead">수강신청 기간: 매년 6월 / 11월</p>
+      <div class="state-actions">
+        <a class="btn-pill is-line" href="./jointcurricula.html"><span aria-hidden="true">←</span> 공동교육과정 안내로 돌아가기</a>
+      </div>
+    </div>
   </div>
 </main>
 

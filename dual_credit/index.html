@@ -10,20 +10,22 @@
 <link rel="stylesheet" href="../assets/css/common.css">
 <style>
 
-  .content-wrap{padding:40px 0 80px}
-  .content-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:36px 40px;margin-bottom:20px}
-  .content-card h2{font-size:20px;font-weight:800;color:#7b5ea7;margin-bottom:14px;letter-spacing:-.4px}
-  .content-card h3{font-size:17px;font-weight:700;color:var(--ink);margin:26px 0 10px}
+  /* 시안 없음 — 학교 밖 교육(sub03_04) 하위 페이지로 보고 같은 머리 영역·강조색(data-net=outside)을 쓴다 */
+  .content-card + .content-card{margin-top:clamp(56px,7vw,100px)}
+  .content-card h2{font-size:clamp(24px,2.4vw,34px);font-weight:800;letter-spacing:-.6px;margin-bottom:16px}
+  .content-card h2::before{content:"";display:block;width:36px;height:5px;border-radius:3px;background:var(--sub-key);margin-bottom:14px}
+  .content-card h3{font-size:clamp(17px,1.5vw,20px);font-weight:700;color:var(--ink);margin:32px 0 12px}
   .content-card h3:first-of-type{margin-top:20px}
-  .content-card p{font-size:15px;color:var(--ink-soft);line-height:1.8;margin-bottom:18px}
+  .content-card p{font-size:clamp(15px,1.2vw,17px);line-height:1.8;margin-bottom:18px;word-break:keep-all}
+  .content-card .fine{font-size:14px}
   .content-card p:last-child{margin-bottom:0}
 
   /* 표 */
   .table-wrap{overflow-x:auto;margin-bottom:24px;-webkit-overflow-scrolling:touch}
   .table-wrap table{width:100%;border-collapse:collapse;min-width:520px;font-size:14px}
   .table-wrap th,.table-wrap td{border:1px solid var(--line);padding:12px 14px;text-align:left;vertical-align:top}
-  .table-wrap th{background:var(--soft);font-weight:700;color:var(--ink);white-space:nowrap}
-  .table-wrap td{color:var(--ink-soft);line-height:1.65}
+  .table-wrap th{background:var(--sub-tint);font-weight:700;color:var(--ink);white-space:nowrap}
+  .table-wrap td{line-height:1.65}
   .table-wrap td a{color:var(--brand-d);font-weight:600;text-decoration:underline;text-underline-offset:2px}
   .table-wrap td a:hover{color:var(--brand)}
   .col-univ{white-space:nowrap;font-weight:600;color:var(--ink)}
@@ -46,15 +48,15 @@
   .notes li::before{content:'';position:absolute;left:2px;top:19px;width:5px;height:5px;border-radius:50%;background:var(--ink-faint)}
 
   .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
-  .fact{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px 18px}
-  .fact dt{font-size:12px;font-weight:700;color:var(--ink-faint);margin-bottom:4px}
-  .fact dd{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.5;word-break:keep-all}
+  .fact{background:var(--sub-tint);border-radius:var(--radius);padding:20px 22px}
+  .fact dt{font-size:13px;font-weight:600;margin-bottom:4px}
+  .fact dd{font-size:clamp(17px,1.5vw,21px);font-weight:800;line-height:1.4;word-break:keep-all}
 
   /* 신청 상태 패널 */
-  .enroll-panel{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);
+  .enroll-panel{background:var(--sub-tint);border-radius:var(--radius);
     padding:22px 24px;margin-bottom:24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
   .enroll-panel .ep-body{flex:1;min-width:220px}
-  .enroll-panel .ep-label{font-size:12px;font-weight:700;color:var(--ink-faint);margin-bottom:4px}
+  .enroll-panel .ep-label{font-size:13px;font-weight:600;margin-bottom:4px}
   .enroll-panel .ep-state{font-size:15px;font-weight:700;color:var(--ink);line-height:1.6;word-break:keep-all}
   .om-btn{display:inline-flex;align-items:center;gap:6px;flex-shrink:0;
     font-size:14px;font-weight:700;padding:12px 24px;border-radius:var(--radius-pill);
@@ -66,14 +68,14 @@
   .om-btn-ghost:hover{background:var(--brand);color:#fff}
 
   /* 바로가기 */
-  .link-box{display:flex;align-items:center;gap:14px;background:var(--soft);border:1px solid var(--line);
-    border-radius:var(--radius-sm);padding:20px 24px;margin-bottom:12px;transition:.18s}
-  .link-box:hover{border-color:#7b5ea7;box-shadow:var(--shadow-sm)}
-  .link-box .lb-icon{font-size:26px;flex-shrink:0}
+  .link-box{display:flex;align-items:center;gap:14px;background:var(--sub-tint);
+    border-radius:var(--radius);padding:clamp(20px,2.4vw,30px) clamp(20px,3vw,40px);margin-bottom:12px;transition:transform .2s,box-shadow .2s}
+  .link-box:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .link-box:focus-visible{outline:3px solid var(--brand-d);outline-offset:3px}
   .link-box .lb-body{flex:1;min-width:0}
-  .link-box .lb-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:2px}
-  .link-box .lb-desc{font-size:12.5px;color:var(--ink-faint);line-height:1.6;word-break:keep-all}
-  .link-box .lb-arrow{font-size:14px;color:#7b5ea7;font-weight:700;flex-shrink:0}
+  .link-box .lb-title{font-size:clamp(17px,1.5vw,20px);font-weight:700;margin-bottom:2px}
+  .link-box .lb-desc{font-size:14px;line-height:1.6;word-break:keep-all}
+  .link-box .lb-arrow{font-size:18px;font-weight:700;flex-shrink:0}
 
   /* 문답 */
   .qa{border:1px solid var(--line);border-radius:var(--radius-sm);margin-bottom:8px;background:var(--surface);overflow:hidden}
@@ -88,6 +90,7 @@
   .qa .qa-a{padding:0 20px 18px 20px;font-size:14px;color:var(--ink-soft);line-height:1.85;word-break:keep-all}
   .qa .qa-a strong{color:var(--ink)}
 
+  .txt-link{color:var(--brand-d);font-weight:700;text-decoration:underline}
   .contact{font-size:14.5px;color:var(--ink-soft);line-height:1.9}
   .contact b{color:var(--ink)}
 
@@ -102,7 +105,7 @@
 
 <div id="om-header" data-active="safety"></div>
 
-<div class="page-hero">
+<div class="page-hero" data-net="outside">
   <div class="wrap">
     <nav class="breadcrumb" aria-label="이동 경로">
       <a href="../index.html">홈</a> › <a href="../safety/index.html">4대 안전망</a> ›
@@ -113,7 +116,7 @@
   </div>
 </div>
 
-<main class="content-wrap">
+<main class="sub-body" data-net="outside">
   <div class="wrap">
 
     <!-- ── 제도 개요 ── -->
@@ -182,7 +185,6 @@
       </div>
 
       <a class="link-box" href="./curriculum.html">
-        <span class="lb-icon" aria-hidden="true">📘</span>
         <div class="lb-body">
           <div class="lb-title">과목 교육과정</div>
           <div class="lb-desc">14개 과목의 개관 및 목표, 내용 체계, 교수·학습 내용, 평가 방법</div>
@@ -204,7 +206,7 @@
         <a class="om-btn" data-enroll="cta">수강 신청</a>
       </div>
 
-      <p data-enroll="closed-only" hidden style="font-size:14px">다음 수강 신청 일정은 <a href="../board/notice.html" style="color:var(--brand-d);font-weight:700;text-decoration:underline">공지사항</a>에 게시합니다. 신청 기간이 아니어도 과목 교육과정은 확인할 수 있습니다.</p>
+      <p class="fine" data-enroll="closed-only" hidden>다음 수강 신청 일정은 <a class="txt-link" href="../board/notice.html">공지사항</a>에 게시합니다. 신청 기간이 아니어도 과목 교육과정은 확인할 수 있습니다.</p>
 
       <h3>신청 조건</h3>
       <div class="table-wrap">
