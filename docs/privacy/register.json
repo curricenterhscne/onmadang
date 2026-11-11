@@ -1,0 +1,32 @@
+{
+  "_comment": "학생 자료를 다루는 페이지·데이터 등록부. status가 active이고 end가 지나면 매주 검사가 실패한다. 이름 등 개인정보는 적지 않는다.",
+  "items": [
+    {
+      "path": "apply/ (Supabase 신청 데이터)",
+      "kind": "수강신청 정보",
+      "owner": "고등학교 교육과정지원센터",
+      "start": null,
+      "end": null,
+      "status": "active",
+      "after_end": "수강신청 기간이 끝나면 사이트에서 신청 정보를 삭제한다. 기간을 열 때 end를 적는다."
+    },
+    {
+      "path": "dream_up/check/",
+      "kind": "이수 결과 조회",
+      "owner": "고등학교 교육과정지원센터",
+      "start": "2026-08-20",
+      "end": "2026-11-05",
+      "status": "closed",
+      "after_end": "열람 종료 안내로 교체함"
+    },
+    {
+      "path": "dream_up/attendance/",
+      "kind": "출석부 열람",
+      "owner": "고등학교 교육과정지원센터",
+      "start": "2026-08-20",
+      "end": "2026-09-03",
+      "status": "closed",
+      "after_end": "스캔본 삭제, 열람 종료 안내로 교체함"
+    }
+  ]
+}

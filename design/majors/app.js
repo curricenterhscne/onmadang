@@ -657,6 +657,12 @@ $('subjectClear').addEventListener('click', () => {
     await loadAllCategories();
     applyMode();
     render();
+    // 진로 나침반 등에서 ?q=검색어 로 들어오면 키워드 검색을 바로 실행
+    const q0 = new URLSearchParams(location.search).get('q');
+    if (q0) {
+      $('searchInput').value = q0;
+      $('searchInput').dispatchEvent(new Event('input'));
+    }
   } catch (e) {
     console.error('Init error', e);
     $('cardsGrid').innerHTML = `

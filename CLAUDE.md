@@ -52,6 +52,10 @@
    - 상태·판정은 **색만으로 구분하지 않는다.** 텍스트를 항상 병기한다.
 5-1. **문체 — 건조하고 정중하게 사실만.** 홍보·설득 톤을 쓰지 않는다. 느낌표·구호·감탄 표현을 쓰지 않고, 혜택을 단정하는 대신 조건을 함께 적는다.
    (예: ❌ "고교 학점과 대학 학점을 동시에!" → ✅ "이수한 학생에게 고등학교 학점을 인정하며, 해당 대학에 진학하는 경우 그 대학의 학칙에 따라 대학 학점을 추가로 인정합니다.")
+5-2. **문장 끝맺음 통일** (2026-11 외부 피드백으로 정함)
+   - 본문 문장은 **「~합니다.」** 로 끝낸다. 안내·권유도 「~해 보세요.」가 아니라 **「~해 보십시오.」**
+   - 표·목록·카드 안의 짧은 항목은 **명사형으로 끝내고 마침표를 찍지 않는다.** 한 칸에 두 문장이 필요하면 둘 다 「~합니다.」로 쓴다.
+   - 예외: 학생의 말로 쓴 제목·질문(「뭘 골라야 할지 모르겠어요」, FAQ 질문), 버튼·입력 안내 같은 UI 문구, 원본을 이식한 문서(`dual_credit/curriculum.html`의 참고문헌 등)
 6. **회원가입·서버 저장 0** — 학생 개인정보를 서버로 보내지 않는다. `apply/`의 Supabase는 수강신청 전용이며 다른 기능에서 접근 금지.
 7. **2022 개정 교육과정 단일 기준** — 2015 개정 데이터·분기를 새로 만들지 않는다.
 8. **★ 추정하지 말고 실측할 것** — 토큰 이름, 데이터 구조, 내보내기 스키마는 **문서가 아니라 실제 파일을 열어 확인한다.** 이 문서의 기술도 시간이 지나면 어긋날 수 있다. (2026-07 시점에 실제로 토큰 이름과 데이터 신뢰도가 문서와 달랐던 전례가 있다.)
@@ -225,13 +229,15 @@
 | 경로 | 규모 | 성격 | 공통 헤더 |
 |---|---|---|---|
 | `dream_up/index.html` | 약 517줄 | 2026-2학기 꿈키움 학교 밖 교육 **강좌 안내** | ❌ |
-| `dream_up/check/index.html` | 약 226줄 | 여름방학 창의적체험활동 **이수 결과 확인** (학번+이름 조회) | ❌ |
+| `dream_up/check/index.html` | 약 65줄 | 이수 결과 **조회 종료 안내**. 2026-11-05에 조회 페이지를 내리고 공지로 교체 (가린 이름과 강좌·이수 결과 1,081건이 페이지 소스에 평문으로 있었다) | ✅ |
 | `dream_up/attendance/index.html` | 약 64줄 | 출석부 **열람 종료 안내**. 2026-09-03에 뷰어를 내리고 공지로 교체 | ✅ |
 | `dual_credit/support/` | 약 401줄 + PDF | 수업 운영 안내 협의회 | ❌ |
 | `dual_credit/inform/dual_credit_2026_2_start.html` | 약 698줄 | 2026-2학기 고교-대학 연계 과목 **수업 시작 안내** (수강 확정 학생 대상). `readme.md` 동거 | ❌ |
 | `resources/teacher/online_class/` | 약 793줄 + PDF 19개 | 온라인 공동교육과정 교수·학습 도움 자료집 | ❌ |
 | `dual_credit/courses.html` | 약 520줄 | 학기별 개설 강좌 카탈로그. **2026-08-20에 링크를 걷어냈다** (`dual_credit/CLAUDE.md` 참조) | ✅ |
 | `2015/index.html` | 22줄 | `onmadang.or.kr` 리다이렉트 (구 URL 호환) | ❌ |
+| `apply/admin-test/index.html` | 약 1,590줄 | **지역청 테스트용 임시 사본** — `enrollment-multiprogram` 브랜치 `apply/admin/index.html` 복사본(noindex). 2026-11 지역청 시범 운영 안내문으로 배포. **브랜치 병합 후 삭제** | ❌ |
+| `apply/app-test.html` | 약 1,700줄 | **지역청 테스트용 임시 사본** — 같은 브랜치 `apply/app.html` 복사본(noindex), `?program=joint_regional`로 사용. **브랜치 병합 후 삭제** | ❌ |
 
 > 학생 동선에 있는 **「학교 밖 교육」은 `safety/off-campus_courses.html`**이다. 파일 하나이며, 같은 이름의 폴더는 이제 없다.
 
@@ -254,8 +260,8 @@
         async src="//gc.zgo.at/count.js"></script>
 ```
 
-- 적용됨(21개): `index.html`, `about/`(3), `apply/index.html`, `board/`(4), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `dual_credit/curriculum.html`, `safety/`(6), `dream_up/attendance/`
-- **미적용**: `apply/app.html`, `apply/admin/`, `design/check/`, `design/majors/`, `design/selector/`(+`guide.html`), `dual_credit/courses.html`, 위 「링크되지 않는 부속 페이지」 전부 (`dream_up/attendance/` 제외 — 만료 후 유입 확인용으로 넣었다)
+- 적용됨(22개): `index.html`, `about/`(3), `apply/index.html`, `board/`(4), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `dual_credit/curriculum.html`, `safety/`(6), `dream_up/attendance/`, `dream_up/check/`
+- **미적용**: `apply/app.html`, `apply/admin/`, `design/check/`, `design/majors/`, `design/selector/`(+`guide.html`), `dual_credit/courses.html`, 위 「링크되지 않는 부속 페이지」 전부 (`dream_up/attendance/`·`dream_up/check/` 제외 — 만료 후 유입 확인용으로 넣었다)
 - 새 페이지를 만들면 **직접 넣어야 한다.** 관리자 페이지(`apply/admin/`)에는 넣지 않는다.
 
 ### 공유 모듈 (`design/`)
@@ -303,6 +309,7 @@
 - 수강신청 앱을 고치라는 요청에 `apply/index.html`을 열기 ❌ → 앱은 `apply/app.html`이다
 - 본체 페이지에 `var(--color-*)` 사용 ❌ → 존재하지 않는 토큰이다
 - 학생 정보를 서버·localStorage에 저장 ❌
+- 학생 명단·이수 결과·스캔본을 저장소에 커밋 ❌ → `docs/privacy/README.md`. 저장소는 공개이고 삭제해도 이력에 남는다. 학생 자료를 다루는 페이지는 `docs/privacy/register.json`에 종료일과 함께 등록한다
 - 완주를 전제하는 선형 구조 ❌ (실패 전례 있음)
 - 비주얼 완성도에 시간 쏟기 ❌ → 껍데기는 디자인 업체가 교체한다
 - `oninput`으로 실시간 필터링하는 검색창에 `autocomplete="off"` 누락 ❌ → 브라우저가 과거 입력값을 자동완성 제안하고, 방문자가 선택하면 필터가 의도치 않게 걸린다. `dream_up/index.html`·`dual_credit/courses.html`에서 실제로 발생(2026-09-03). 새 검색창은 `type="search"` + `autocomplete="off"` + `role="searchbox"`로 만들 것 (`apply/app.html`의 `.search-box`가 검증된 패턴)

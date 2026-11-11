@@ -1,0 +1,8 @@
+# 검사 예외. 한 줄에 경로 패턴 하나, # 뒤에 이유를 적는다.
+apply/admin/course_template.xlsx  # 강좌 입력용 빈 양식. 학생 자료 없음
+apply/_embed_data.js  # 공개 강좌의 담당 강사 이름과 학교명
+dream_up/index.html  # 공개 강좌의 담당 강사 이름
+dual_credit/courses.html  # 공개 강좌의 담당 강사 이름
+resources/teacher/online_class/index.html  # 자료집 집필 교사 이름
+curri/design_guide/index.html  # 교과명 표
+design/selector/data/courseDB.json  # 교과명 자료

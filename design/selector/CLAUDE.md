@@ -89,6 +89,21 @@ groups.forEach((group, gi) => {
 키가 편성표 `subject.group` 값이라 **한국사가 사회에 섞여 있다.** 그대로 쓰면 사회(8학점)·한국사(6학점) 판정이 **동시에** 틀린다.
 → `selections` + 편성표로 직접 재집계하고 `design/data/group-alias.json`으로 매핑한다. `summary`는 교차검증용으로만.
 
+## ③ check 로 넘기기 — 「결과표 만들기」 (2026-11 추가)
+
+툴바의 `#result-btn` → `../check/?` + `serializeStateToUrl()` (+ `major=<pendingMajorId>`).
+`design/check/`가 같은 `p` 형식(`g{gi}s{si}i{sem}`)을 읽어 이수계획표를 만든다. **파라미터 이름 `y` `s` `d` `p`를 바꾸면 check가 깨진다.**
+
+## 엑셀 「요약」 시트 (2026-11 수정)
+
+`exportToXLSX()`의 요약 시트는 `groupBreakdown`을 쓰지 않고 화면 합계(`updateCounter`)와 같은 규칙으로 재집계한다 — 한국사 분리, 기·정·외·한·교 합산 필수(`getGroupedRequired()`), 충족여부 열.
+
+## 자동 선택 규칙 (2026-11 수정)
+
+`applyPreset()`(계열별 추천)과 `loadCurriculum()`의 want/core 자동 선택은 둘 다
+**과목명 기준 1회**, **택N 정원 안**, **선수 과목(`PRESET_PREREQ`) 뒤 학기** 규칙을 따른다.
+`PRESET_PREREQ`는 `design/data/subject-hierarchy.json`의 수학·과학 edges와 같은 내용이다 — 한쪽을 고치면 다른 쪽도 고칠 것.
+
 ## ① majors 와의 브리지
 
 `?want=<과목들>&core=<과목들>&majorId=<학과ID>` → 학교 선택 시 해당 과목 자동 선택 + 토스트.

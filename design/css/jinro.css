@@ -122,6 +122,39 @@
   background:#fff;color:var(--ink);max-width:100%;
 }
 
+.jn-inputs{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:640px){.jn-inputs{grid-template-columns:1fr 1.4fr}}
+.jn-inputs .jn-field{flex-wrap:nowrap}
+.jn-inputs label{white-space:nowrap}
+.jn-field input{
+  flex:1 1 auto;min-width:0;font-family:inherit;font-size:14px;padding:9px 12px;
+  border:1.5px solid var(--line);border-radius:var(--radius-sm);background:#fff;color:var(--ink);
+}
+.jn-field input:focus-visible{outline:3px solid var(--online-d);outline-offset:2px}
+
+/* 화면 읽기 프로그램 전용 텍스트 */
+.jn-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ── 이수계획표 (교과(군) 행 × 6학기 열) ──────────────────── */
+.jn-plan-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface)}
+.jn-plan{width:100%;min-width:860px;border-collapse:collapse;font-size:12.5px}
+.jn-plan th,.jn-plan td{border:1px solid var(--line);padding:5px 6px;vertical-align:top;text-align:left}
+.jn-plan thead th{background:var(--soft);color:var(--ink-soft);font-weight:700;text-align:center;vertical-align:middle}
+.jn-plan tbody th,.jn-plan tfoot th{background:var(--soft);font-weight:700;white-space:nowrap;vertical-align:middle}
+.jn-plan td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;vertical-align:middle}
+.jn-plan tfoot td{background:var(--soft);font-weight:700;vertical-align:middle}
+.jn-plan tr>td:last-child{vertical-align:middle;white-space:nowrap}
+.jn-plan tr.jn-plan__start>*{border-top:2px solid var(--line)}
+.jn-plan__s{display:block;line-height:1.45;color:var(--ink)}
+.jn-plan__s small{color:var(--ink-soft);font-size:11px;font-variant-numeric:tabular-nums}
+.jn-plan__s.is-pick{font-weight:700;color:var(--brand-d)}
+.jn-plan__mk{color:var(--brand);margin-right:2px;font-size:10px}
+.jn-plan__note{display:block;font-size:10.5px;color:var(--ink-faint);font-weight:600}
+.jn-plan__legend{font-size:12.5px;color:var(--ink-soft);margin-top:8px}
+.jn-plan-sum{margin-top:10px}
+.jn-plan-sum .jn-table{width:auto;min-width:min(100%,560px)}
+.jn-plan-sum .jn-table th[scope="row"]{background:var(--soft);white-space:nowrap}
+
 .jn-note{
   font-size:12.5px;color:var(--ink-soft);line-height:1.7;
   background:var(--soft);border-radius:var(--radius-sm);padding:12px 14px;margin-top:14px;
@@ -130,31 +163,10 @@
 .jn-hidden{display:none!important}
 .jn-print-head{display:none}
 
-/* ── 인쇄: A4 1장 ────────────────────────────────────────── */
-
-/* ── 학년·학기별 과목 (화면) ─────────────────────────────── */
-.jn-terms{display:grid;grid-template-columns:1fr;gap:12px;margin-top:6px}
-@media(min-width:640px){.jn-terms{grid-template-columns:1fr 1fr}}
-.jn-term{border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);overflow:hidden}
-.jn-term__hd{
-  display:flex;justify-content:space-between;align-items:baseline;gap:8px;
-  background:var(--soft);padding:8px 12px;border-bottom:1px solid var(--line);
-}
-.jn-term__hd>span:first-child{font-size:14px;font-weight:800;letter-spacing:-.3px}
-.jn-term__sum{font-size:12px;color:var(--ink-soft);font-weight:600;white-space:nowrap}
-.jn-term__list{list-style:none;padding:6px 0}
-.jn-term__list li{
-  display:flex;justify-content:space-between;gap:10px;
-  padding:5px 12px;font-size:13.5px;border-bottom:1px solid var(--soft);
-}
-.jn-term__list li:last-child{border-bottom:0}
-.jn-term__nm{color:var(--ink)}
-.jn-term__cr{color:var(--ink-soft);font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
-.jn-term__empty{color:var(--ink-faint);font-style:normal}
-
 /* ── 인쇄: 여러 페이지 전제 ──────────────────────────────── */
 @media print{
   @page{size:A4 portrait;margin:16mm 15mm}
+  @page jn-land{size:A4 landscape;margin:9mm 10mm}
   html,body{background:#fff!important;color:#000!important;font-size:9.6pt;line-height:1.5}
   header,footer,.renewal-banner,.page-hero,.mobile-menu,
   .jn-drop,.jn-actions,.jn-alert,.jn-noprint,.jn-check__link{display:none!important}
@@ -198,16 +210,28 @@
   .jn-col .jn-fine{display:inline;font-size:8pt;color:#555}
   .jn-col .jn-fine::before{content:" — "}
 
-  /* 학년·학기별 과목 — 표는 새 페이지에서 시작, 각 학기 카드는 통째로 유지 */
+  /* 점검 결과는 새 페이지에서 시작 */
   .jn-page-break{break-before:page}
-  .jn-terms{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
-  .jn-term{border:1px solid #999;break-inside:avoid}
-  .jn-term__hd{background:#eee;padding:1.8mm 2.5mm;border-bottom:1px solid #999}
-  .jn-term__hd>span:first-child{font-size:9.5pt}
-  .jn-term__sum{font-size:8pt}
-  .jn-term__list{padding:1mm 0}
-  .jn-term__list li{padding:1mm 2.5mm;font-size:8.8pt;border-bottom:1px solid #eee}
-  .jn-term__cr{color:#333}
+
+  /* 이수계획표 — A4 가로 1장 (내 선택 점검 페이지만 가로) */
+  .jn-land{page:jn-land}
+  .jn-plan-wrap{overflow:visible;border:none}
+  .jn-plan{font-size:7.6pt;min-width:0}
+  .jn-plan th,.jn-plan td{padding:.9mm 1.1mm;border:1px solid #999}
+  .jn-plan thead th,.jn-plan tfoot th,.jn-plan tbody th{background:#eee!important;color:#000}
+  .jn-plan tfoot td{background:#f6f6f6!important}
+  .jn-plan__s{line-height:1.35}
+  .jn-plan__s.is-pick{background:none;font-weight:700}
+  .jn-plan__mk{color:#000}
+  .jn-plan__legend{font-size:7.6pt;color:#333;margin-top:1.5mm}
+  .jn-land .jn-meta,.jn-land .jn-totals{display:none}
+  .jn-land .jn-card{margin-bottom:0}
+  .jn-plan-sum{margin-top:2mm}
+  .jn-plan-sum .jn-table{font-size:7.6pt;margin-top:0;width:auto}
+  .jn-plan-sum .jn-table th,.jn-plan-sum .jn-table td{padding:.8mm 3mm}
+  .jn-plan-sum .jn-fine{font-size:7.6pt;color:#333}
+  .jn-plan-sec{margin-bottom:0}
+  .jn-plan-sec h2{display:none}
 
   /* 각주 — 흐름상 마지막에 (매 페이지 고정은 지원 편차로 지양) */
   .jn-footnote{display:block!important;margin-top:6mm;padding-top:3mm;border-top:1px solid #999;font-size:8.5pt;color:#333;break-inside:avoid}

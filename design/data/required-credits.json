@@ -49,6 +49,14 @@
       "credits": 16
     }
   ],
+  "specialSchools": {
+    "match": ["외국어고", "예술고"],
+    "override": {
+      "예술": 5,
+      "기술·가정/정보/제2외국어/한문/교양": 12
+    },
+    "note": "학교명에 match 문자열이 들어가면 해당 교과(군)의 필수이수학점을 override 값으로 쓴다. design/selector/index.html getRequiredCredits()·getGroupedRequired() 와 같은 기준(2026-11-02 대조)"
+  },
   "koreanMathEnglishCap": {
     "rule": "국어·수학·영어 교과의 이수 학점 총합은 81학점을 초과하지 않도록 하며, 교과 이수 학점이 174학점을 초과하는 경우에는 초과 이수 학점의 50%를 넘지 않도록 함",
     "cap": 81,

@@ -23,8 +23,25 @@
     return {
       id: o.id, level: o.level, title: o.title,
       value: o.value || '', detail: o.detail || '',
-      fix: o.fix || '', ref: o.ref || '', link: o.link || ''
+      fix: o.fix || '', ref: o.ref || '', link: o.link || '',
+      badge: o.badge || ''      // 배지 문구를 level 기본값과 다르게 쓸 때 (예: 상한 '초과')
     };
+  }
+
+  /* 학교 유형별 필수이수학점 — 외국어고·예술고는 일부 교과(군) 기준이 다르다.
+   * required-credits.json 의 specialSchools 를 학교명으로 판별해 덮어쓴다. */
+  function isSpecialSchool(rules, meta) {
+    var sp = rules.requiredCredits.specialSchools;
+    var name = (meta && meta.schoolName) || '';
+    return !!(sp && (sp.match || []).some(function (k) { return name.indexOf(k) >= 0; }));
+  }
+  function requiredFor(rules, meta) {
+    var base = rules.requiredCredits.requiredByGroup;
+    if (!isSpecialSchool(rules, meta)) return base;
+    var ov = rules.requiredCredits.specialSchools.override || {};
+    return base.map(function (r) {
+      return ov[r.group] != null ? { group: r.group, credits: ov[r.group] } : r;
+    });
   }
 
   /* ── 1. 졸업 총 이수학점 ────────────────────────────────────────────── */
@@ -35,7 +52,7 @@
       return check({
         id: 'total-192', level: UNKNOWN, title: '졸업 총 이수학점',
         detail: '이수학점 정보를 읽지 못했습니다.',
-        fix: '과목 선택 실습에서 파일을 다시 내보내 주세요.', link: '../selector/'
+        fix: '과목 선택 실습에서 파일을 다시 내보내 주십시오.', link: '../selector/'
       });
     }
     if (got >= need) {
@@ -58,14 +75,15 @@
 
   /* ── 2. 교과(군)별 필수이수학점 ─────────────────────────────────────── */
   function checkGroups(R, rules) {
-    var req = rules.requiredCredits.requiredByGroup;
+    var req = requiredFor(rules, R.meta);
+    var basis = isSpecialSchool(rules, R.meta) ? ' (외국어고·예술고 기준)' : '';
 
     // 편성표도 없고 groupBreakdown 도 없으면 '미달'이 아니라 '확인 불가'다.
     if (!R.hasBreakdown) {
       return check({
         id: 'group-required', level: UNKNOWN, title: '교과(군)별 필수이수학점',
         detail: '편성표를 불러오지 못해 교과(군)별 이수학점을 확인할 수 없습니다.',
-        fix: '과목 선택 실습에서 파일을 다시 내보내 주세요.',
+        fix: '과목 선택 실습에서 파일을 다시 내보내 주십시오.',
         ref: '교육부 고시 제2022-33호 학점 배당 기준', link: '../selector/'
       });
     }
@@ -98,22 +116,22 @@
       c = check({
         id: 'group-required', level: OK, title: '교과(군)별 필수이수학점',
         value: req.length + '개 교과(군) 모두 충족',
-        detail: '9개 교과(군)의 필수이수학점을 모두 채웠습니다.' + note,
+        detail: req.length + '개 교과(군)의 필수이수학점을 모두 채웠습니다.' + basis + note,
         ref: '교육부 고시 제2022-33호 학점 배당 기준'
       });
     } else if (!short.length) {
       c = check({
         id: 'group-required', level: UNKNOWN, title: '교과(군)별 필수이수학점',
         value: (req.length - skipped.length) + '개 충족 · ' + skipped.length + '개 확인 불가',
-        detail: '확인한 교과(군)은 모두 충족했습니다.' + skipNote + note,
-        fix: '남은 교과(군)은 담임 또는 교육과정 담당 선생님과 확인해 주세요.',
+        detail: '확인한 교과(군)은 모두 충족했습니다.' + basis + skipNote + note,
+        fix: '남은 교과(군)은 담임 또는 교육과정 담당 선생님과 확인해 주십시오.',
         ref: '교육부 고시 제2022-33호 학점 배당 기준'
       });
     } else {
       c = check({
         id: 'group-required', level: ERROR, title: '교과(군)별 필수이수학점',
         value: short.length + '개 교과(군) 부족',
-        detail: short.join(' · ') + '이 모자랍니다.' + skipNote + note,
+        detail: short.join(' · ') + '이 모자랍니다.' + basis + skipNote + note,
         fix: '모자란 교과(군)에서 과목을 더 선택하면 충족됩니다. 총 학점이 192여도 교과(군)별 기준을 못 채우면 졸업할 수 없습니다.',
         ref: '교육부 고시 제2022-33호 학점 배당 기준', link: '../selector/'
       });
@@ -158,7 +176,7 @@
       });
     }
     return check({
-      id: 'kme-cap', level: ERROR, title: '국어·수학·영어 이수학점',
+      id: 'kme-cap', level: ERROR, badge: '초과', title: '국어·수학·영어 이수학점',
       value: got + '학점 / 상한 ' + cap + '학점',
       detail: capNote + ' 현재 ' + fmt(got - cap) + '학점 초과했습니다.',
       fix: '국어·수학·영어에서 ' + fmt(got - cap) + '학점을 줄이고 다른 교과(군)에서 채우면 됩니다.',
@@ -184,7 +202,7 @@
       return check({
         id: 'hierarchy', level: UNKNOWN, title: '과목 위계(듣는 순서)',
         detail: '편성표를 불러오지 못해 자동 확인이 어렵습니다.',
-        fix: '수학·과학은 순서가 있는 과목이 있습니다. 담임 또는 교육과정 담당 선생님과 확인해 주세요.',
+        fix: '수학·과학은 순서가 있는 과목이 있습니다. 담임 또는 교육과정 담당 선생님과 확인해 주십시오.',
         ref: '2022 개정 교육과정 수학·과학 위계'
       });
     }
@@ -252,7 +270,7 @@
     var c = check({
       id: 'rank-exempt', level: OK, title: '석차등급이 나오는 과목 / 안 나오는 과목',
       value: '석차 산출 ' + withRank.length + '과목 · 미산출 ' + (noRank.length + passOnly.length) + '과목',
-      detail: '석차등급이 나오지 않는 과목은 성취도(A~E 또는 A~C)만, 교양 교과(군)은 이수여부(P)만 기록됩니다. 유불리를 따지기보다 배우고 싶은 과목인지로 판단하세요.',
+      detail: '석차등급이 나오지 않는 과목은 성취도(A~E 또는 A~C)만, 교양 교과(군)은 이수여부(P)만 기록됩니다. 유불리를 따지기보다 배우고 싶은 과목인지로 판단하십시오.',
       ref: '편성표 rank 필드 + 고등학교 학업성적관리 시행지침'
     });
     c.lists = { withRank: withRank, noRank: noRank, passOnly: passOnly };
@@ -367,5 +385,5 @@
     };
   }
 
-  return { verify: verify, splitPrereq: splitPrereq, LEVELS: { OK: OK, WARN: WARN, ERROR: ERROR, UNKNOWN: UNKNOWN } };
+  return { verify: verify, splitPrereq: splitPrereq, requiredFor: requiredFor, isSpecialSchool: isSpecialSchool, LEVELS: { OK: OK, WARN: WARN, ERROR: ERROR, UNKNOWN: UNKNOWN } };
 });
