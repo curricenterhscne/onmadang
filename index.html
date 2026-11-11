@@ -60,8 +60,9 @@
   .hero-bubble.b1{left:6%}
   .hero-bubble.b2{right:6%;animation-delay:-2s}
   /* 꾸미(애벌레) 옆 작은 말풍선 — 아래 공지사항으로 이동 */
-  .hero-mini{position:absolute;right:-6%;bottom:47%;z-index:1;padding:6px 12px;background:var(--sunny);color:var(--ink);font-size:13px;font-weight:700;line-height:1.4;white-space:nowrap;border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);transition:transform .15s}
-  .hero-mini::after{content:"";position:absolute;left:18px;top:100%;margin-top:-1px;border-style:solid;border-width:10px 0 0 10px;border-color:var(--sunny) transparent transparent transparent}
+  .hero-mini{position:absolute;right:-6%;bottom:51%;z-index:1;display:flex;align-items:center;justify-content:center;width:104px;height:58px;background:var(--sunny);color:var(--ink);font-size:13px;font-weight:700;line-height:1.35;text-align:center;border-radius:50%;box-shadow:var(--shadow-sm);transition:transform .15s}
+  /* 말풍선 꼬리 — 왼쪽 아래 꾸미 쪽으로 */
+  .hero-mini::after{content:"";position:absolute;left:-14px;bottom:0;border-style:solid;border-width:8px 22px 8px 0;border-color:transparent var(--sunny) transparent transparent;transform:rotate(-28deg)}
   .hero-mini:hover{transform:translateY(-2px)}
   .hero-mini:focus-visible{outline:3px solid var(--sunny);outline-offset:3px}
   #notice{scroll-margin-top:80px}
@@ -209,7 +210,7 @@
     .hero-bubble::after{bottom:-26px;border-top-width:28px}
     .hero-bubble.b1{left:2%}
     .hero-bubble.b2{right:2%}
-    .hero-mini{right:0;bottom:50%;font-size:12px;padding:5px 10px}
+    .hero-mini{right:-2%;bottom:50%;width:92px;height:52px;font-size:12px}
     .snet-shape{aspect-ratio:auto;grid-template-rows:none;grid-auto-rows:minmax(170px,auto);border-radius:var(--radius)}
     .snet-q{padding:14px 16px;gap:10px}
     .snet-ic{width:44px;height:44px}
@@ -232,7 +233,7 @@
       <div class="hero-char">
         <a class="hero-bubble b1" href="./design/">당장<br>진로·학업 설계<br>시작해볼까?</a>
         <a class="hero-bubble b2" href="./about/index.html">잠깐!<br>고교학점제가<br>뭐야?</a>
-        <a class="hero-mini" href="#notice">공지사항으로 빨리가기 <span aria-hidden="true">↓</span></a>
+        <a class="hero-mini" href="#notice">공지사항으로<br>빨리가기</a>
         <img src="./assets/img/home/hero-chars.svg" alt="" aria-hidden="true" width="493" height="321">
       </div>
     </div>
