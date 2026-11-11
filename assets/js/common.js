@@ -128,7 +128,7 @@
     + '<nav class="nav-links" aria-label="주 메뉴">' + gnbItems() + '</nav>'
     + '<div class="head-tools">'
     +   '<a href="' + L.enroll + '" class="head-link is-enroll"' + (active === 'enroll' ? ' aria-current="page"' : '') + '>' + CLV15 + '<span>수강신청</span></a>'
-    +   '<a href="' + L.selector + '" class="head-link">' + CLV15 + '<span>과목 선택 실습</span></a>'
+    +   '<a href="' + L.selector + '" class="head-link"' + (/design\/selector\//.test(location.pathname) ? ' aria-current="page"' : '') + '>' + CLV15 + '<span>과목 선택 실습</span></a>'
     + '</div>'
     + '<button class="hamburger" aria-label="메뉴 열기">\u2630</button>'
     + '</div></header>';
