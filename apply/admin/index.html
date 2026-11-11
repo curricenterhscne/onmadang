@@ -140,6 +140,17 @@
     display: flex; flex-direction: column; box-shadow: 0 8px 40px rgba(0,0,0,.18);
   }
   .modal.modal-wide { width: 860px; }
+  .modal.modal-xwide { width: 1080px; }
+  /* 신청 기간 (지역청별) */
+  .period-help { font-size: .82rem; color: #555; margin: 0 0 10px; line-height: 1.6; }
+  .period-table td, .period-table th { white-space: nowrap; vertical-align: middle; }
+  .period-table input[type=datetime-local] { font: inherit; font-size: .8rem; padding: 3px 4px; border: 1px solid #ccd3e0; border-radius: 4px; }
+  .period-table tr.is-default td, .period-table tr.is-default th { background: #f4f6fb; }
+  .p-state { font-size: .75rem; padding: 2px 8px; border-radius: 10px; display: inline-block; }
+  .p-state.own { background: #e3f4e8; color: #2a6b3f; }
+  .p-state.inherit { background: #eef1f7; color: #555; }
+  .p-state.none { background: #fdeaea; color: #a33; }
+  .p-msg { font-size: .75rem; margin-left: 6px; }
   .modal-header {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 16px;
@@ -238,6 +249,7 @@
     </div>
     <div class="header-actions">
       <button class="btn btn-outline" id="staff-btn" style="display:none">가입 승인</button>
+      <button class="btn btn-outline" id="period-btn">신청 기간</button>
       <button class="btn btn-outline" id="refresh-btn">새로고침</button>
       <button class="btn btn-primary" id="new-course-btn">+ 강좌 등록</button>
       <button class="btn btn-primary" id="export-all-btn">전체 엑셀</button>
@@ -436,6 +448,28 @@
     <div class="modal-actions" style="margin-top:10px">
       <button class="btn btn-outline" id="course-cancel-btn">취소</button>
       <button class="btn btn-primary" id="course-save-btn">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- Period Modal (지역청별 신청 기간) -->
+<div class="modal-overlay" id="period-modal">
+  <div class="modal modal-xwide">
+    <div class="modal-header">
+      <h2>수강신청 기간</h2>
+      <button class="modal-close" id="period-modal-close-btn">&times;</button>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+      <label for="period-program" style="font-size:.85rem">프로그램</label>
+      <select id="period-program"></select>
+    </div>
+    <p class="period-help">시각은 한국 시간입니다. 지역 기간을 넣지 않은 교육지원청은 <b>기본 기간</b>을 따릅니다.
+      2차 신청은 필요할 때만 시작과 마감을 함께 넣습니다. 저장하면 학생 화면과 좌석 예약에 바로 적용됩니다.</p>
+    <div class="modal-table-wrap">
+      <table class="period-table">
+        <thead><tr><th>구분</th><th>1차 시작</th><th>1차 마감</th><th>2차 시작(선택)</th><th>2차 마감(선택)</th><th>적용</th><th></th></tr></thead>
+        <tbody id="period-tbody"></tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -1377,6 +1411,105 @@
   document.getElementById('staff-modal-close-btn').addEventListener('click', () => document.getElementById('staff-modal').classList.remove('active'));
   document.getElementById('staff-modal').addEventListener('click', e => {
     if (e.target === document.getElementById('staff-modal')) document.getElementById('staff-modal').classList.remove('active');
+  });
+
+  // ── 신청 기간 (지역청별) ──────────────────────────────────────────────
+  // admin-periods 함수로 settings의 프로그램 기본 기간·지역 기간을 읽고 쓴다.
+  const REGIONS_FULL = ['천안','공주','보령','아산','서산','논산계룡','당진','금산','부여','서천','청양','홍성','예산','태안'].map(r => r + '교육지원청');
+  const P_FIELDS = ['open_at','close1_at','open2_at','close2_at'];
+  const P_LABEL = { open_at: '1차 시작', close1_at: '1차 마감', open2_at: '2차 시작', close2_at: '2차 마감' };
+  const pEsc = v => String(v == null ? '' : v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  // ISO(UTC) → datetime-local 값(KST)
+  function isoToKst(iso) {
+    if (!iso) return '';
+    return new Date(new Date(iso).getTime() + 9 * 3600e3).toISOString().slice(0, 16);
+  }
+  // datetime-local 값(KST) → ISO
+  const kstToIso = v => v ? `${v}:00+09:00` : null;
+
+  async function openPeriodModal() {
+    const sel = document.getElementById('period-program');
+    sel.innerHTML = programsData.map(p => `<option value="${pEsc(p.code)}">${pEsc(p.display_name)}</option>`).join('');
+    const pick = (currentProgram && programsData.some(p => p.code === currentProgram)) ? currentProgram
+      : ((programsData.find(p => p.code === 'joint_regional') || programsData[0] || {}).code || '');
+    sel.value = pick;
+    sel.disabled = isRegionStaff();
+    document.getElementById('period-modal').classList.add('active');
+    await loadPeriods();
+  }
+
+  async function loadPeriods() {
+    const program = document.getElementById('period-program').value;
+    const tbody = document.getElementById('period-tbody');
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-msg">불러오는 중...</td></tr>';
+    try {
+      const res = await authFetch(`${SUPABASE_FN}/admin-periods?program=${encodeURIComponent(program)}`);
+      if (res.status === 401) { logout(); return; }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `서버 오류 ${res.status}`);
+      renderPeriods(program, data.rows || []);
+    } catch (e) {
+      tbody.innerHTML = `<tr><td colspan="7" class="empty-msg">오류: ${pEsc(e.message)}</td></tr>`;
+    }
+  }
+
+  function renderPeriods(program, rows) {
+    const prog = programsData.find(p => p.code === program) || {};
+    const byRegion = {}; let def = null;
+    rows.forEach(r => { if (r.region) byRegion[r.region] = r; else def = r; });
+    const province = !!(ME && ME.role === 'province');
+    const regionRows = prog.scope_type === 'region'
+      ? (isRegionStaff() ? REGIONS_FULL.filter(r => r === ME.scope_value) : REGIONS_FULL)
+      : [];
+    const line = (region, row, editable) => {
+      const label = region ? region.replace(/교육지원청$/, '') : '기본 기간 (전체)';
+      const state = region
+        ? (row ? '<span class="p-state own">지역 기간</span>'
+               : (def ? '<span class="p-state inherit">기본 기간 따름</span>' : '<span class="p-state none">미설정 · 신청 불가</span>'))
+        : (row ? '<span class="p-state own">설정됨</span>' : '<span class="p-state none">미설정</span>');
+      const inputs = P_FIELDS.map(f =>
+        `<td><input type="datetime-local" data-f="${f}" value="${isoToKst(row && row[f])}" ${editable ? '' : 'disabled'} aria-label="${pEsc(label)} ${P_LABEL[f]}"></td>`).join('');
+      const actions = editable
+        ? `<button class="btn btn-primary btn-sm" data-act="save">저장</button>` +
+          (region && row ? ` <button class="btn btn-outline btn-sm" data-act="del">지역 기간 삭제</button>` : '') +
+          `<span class="p-msg"></span>`
+        : '<span class="p-msg" style="color:#888">읽기 전용</span>';
+      return `<tr class="${region ? '' : 'is-default'}" data-region="${pEsc(region || '')}"><th scope="row">${pEsc(label)}</th>${inputs}<td>${state}</td><td>${actions}</td></tr>`;
+    };
+    let html = line(null, def, province);
+    regionRows.forEach(r => { html += line(r, byRegion[r], province || (isRegionStaff() && r === ME.scope_value)); });
+    document.getElementById('period-tbody').innerHTML = html;
+  }
+
+  document.getElementById('period-tbody').addEventListener('click', async e => {
+    const btn = e.target.closest('button[data-act]'); if (!btn) return;
+    const tr = btn.closest('tr'); const msg = tr.querySelector('.p-msg');
+    const program = document.getElementById('period-program').value;
+    const region = tr.dataset.region || null;
+    let body;
+    if (btn.dataset.act === 'del') {
+      if (!confirm(`${region.replace(/교육지원청$/, '')} 지역 기간을 지우면 기본 기간을 따릅니다. 지울까요?`)) return;
+      body = { action: 'delete', program, region };
+    } else {
+      body = { program, region };
+      tr.querySelectorAll('input[data-f]').forEach(i => { body[i.dataset.f] = kstToIso(i.value); });
+    }
+    btn.disabled = true; msg.textContent = '저장 중...'; msg.style.color = '#888';
+    try {
+      const res = await authFetch(`${SUPABASE_FN}/admin-periods`, { method: 'POST', body: JSON.stringify(body) });
+      if (res.status === 401) { logout(); return; }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `서버 오류 ${res.status}`);
+      await loadPeriods();
+    } catch (err) {
+      msg.textContent = err.message; msg.style.color = '#c33'; btn.disabled = false;
+    }
+  });
+  document.getElementById('period-program').addEventListener('change', loadPeriods);
+  document.getElementById('period-btn').addEventListener('click', openPeriodModal);
+  document.getElementById('period-modal-close-btn').addEventListener('click', () => document.getElementById('period-modal').classList.remove('active'));
+  document.getElementById('period-modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('period-modal')) document.getElementById('period-modal').classList.remove('active');
   });
 
   async function openStaffModal() {

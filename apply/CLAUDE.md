@@ -46,6 +46,26 @@
   - 지역연계(`joint_regional`)에 데모 강좌 2건(`JR26DEMO1`/`JR26DEMO2`) + 신청기간(지금부터 90일) 시딩 완료 — 실제 지역청 데이터 입력 전 admin UI "전체 초기화"로 지워야 함
   - **지역 관문(2026-11-02)** — `programs.scope_type='region'`인 프로그램(현재 지역연계)은 강좌 목록 전에 14개 교육지원청 선택 화면을 띄우고, 고른 지역(`courses.region` 일치) 강좌만 보여 준다. 선택은 주소의 `?region=`에 약칭으로 남아(`&region=천안`) 지역청이 자기 지역 링크를 직접 배포할 수 있다. 약칭·전체 이름 모두 받으며(`normalizeRegion()`), 목록에 없는 값이면 관문으로 돌아간다. 지원청 순서는 `REGIONS` 상수. 기관 칩도 선택 지역 기준으로 세고, 이 프로그램들에서는 필터 이름을 「운영 기관」으로 바꾼다. **신청 자체를 지역으로 제한하지는 않는다**(지역 바꾸기로 다른 지역 강좌도 신청 가능).
   - `courses` 테이블에 공개 읽기(anon) RLS 정책 추가(`courses_public_read`) — 강좌 상세는 개인정보가 아니라 이미 RPC로 일부 공개되어 있던 것과 노출 수준이 같음
+- 🔧 **지역청별 신청 기간(2026-11-11, 작성 완료 · 실행/배포 대기)** — 지원청마다 신청 기간이 달라져 `settings`에 `region` 칸을 더했다.
+  - **기간을 고르는 규칙**:
+    1. 그 프로그램 + 그 지역 행이 있으면 그 기간을 쓴다.
+    2. 없으면 프로그램 기본 행(`region IS NULL`)을 쓴다.
+    3. 둘 다 없으면 `not_configured`(신청 불가)다.
+  - **고유 제약**: `UNIQUE(program)`을 지우고 `(program, coalesce(region,''))` 고유 인덱스로 바꿨다. 그래서 PostgREST `on_conflict`를 못 쓰고 찾아서 PATCH, 없으면 POST로 저장한다.
+  - **SQL**(`supabase/sql/region_periods.sql`, 대시보드 SQL Editor에서 실행):
+    - 내부 함수 `_period_for(program, region)`와 학생 화면용 `get_open_status_region(p_program, p_region)`을 **새로 추가**했다.
+    - `get_open_status(p_program)`·`reserve_course`·`cancel_enrollment`는 **시그니처를 그대로 두고 교체**했다. 오버로드 함정을 피하려는 것이다.
+    - 예약·취소는 학생이 보낸 값이 아니라 **강좌의 `courses.region`**으로 기간을 찾는다.
+    - 기존 허점도 고쳤다: 1차만 있는 기간(`open2_at` NULL)은 1차 마감 뒤에도 예약·취소가 막히지 않았다.
+  - **Edge Function `admin-periods`**:
+    - GET `?program=`로 조회한다(지역청은 기본 행 + 자기 지역 행만).
+    - POST로 저장한다(시작·1차 마감 필수, 2차는 시작·마감을 함께, 순서 검증). `action:"delete"`는 지역 행을 지운다.
+    - 권한: province는 전부, region은 `REGION_PROGRAMS`의 자기 지역 행만 쓴다. 기본 기간은 읽기만 한다.
+  - **관리 화면**: 헤더 「신청 기간」 버튼 → 프로그램별 표(기본 기간 + 14개 지원청 행, 지역청 계정은 자기 행만)를 띄운다. 입력은 KST `datetime-local`이고 `+09:00`을 붙여 보낸다.
+  - **학생 화면**:
+    - 지역 관문 프로그램은 `get_open_status_region`을 쓰고, 지역을 바꾸면 다시 불러온다.
+    - 상태줄 아래에 「○○ 신청 기간 11. 20.(목) 09:00 ~ …」을 표시한다.
+    - 기간 미설정 지역은 안내 문구를 띄운다.
 - ❌ 아직 안 한 것: GNB에 지역연계·고교대학연계로 가는 공개 링크/안내 페이지 연결(`safety/jointcurricula.html` 등), 14개 지역청 실제 계정 발급·강좌 입력, `dual_credit/enroll.js`의 신청 링크 제어를 `settings`/`cycles` 기반으로 전환.
 
 **지금 운영 중이던 꿈키움(2026-10-17~11-29) 데이터는 백업 후 삭제됨** — 다음 회차부터는 새 관리자 도구로 강좌를 다시 등록한다. 레거시 `ADMIN_PASSWORD` 경로는 계속 유지되고 있어 운영 전환 자체는 지장 없음(배포 직후·삭제 전 각각 정상 동작 확인함).

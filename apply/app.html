@@ -69,6 +69,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
   font-size:12px;font-weight:700;padding:3px 14px;border-radius:20px;margin-right:8px}
 #open-badge.visible{display:inline-block}
 #countdown{font-size:13px;color:var(--g700)}
+#period-range{display:block;font-size:12px;color:var(--g700);margin-top:2px}
+#period-range:empty{display:none}
 
 /* ── Main ── */
 .wrap{max-width:900px;margin:0 auto;padding:20px 14px 64px}
@@ -583,6 +585,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
 <div class="status-wrap">
   <span id="open-badge">🟢 신청 가능</span>
   <span id="countdown"></span>
+  <span id="period-range"></span>
 </div>
 
 <!-- ══ Main ══ -->
@@ -995,6 +998,7 @@ function setRegion(r) {
   history.replaceState(null, '', u);
   buildOrgChips();
   renderCourses();
+  if (regionGate) loadOpenStatus().then(renderCourses);   // 지역마다 신청 기간이 다르다
   document.getElementById('tab-courses').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -1113,7 +1117,10 @@ function buildStno(gradeId, clsId, numId) {
 // ── Open status ──
 async function loadOpenStatus() {
   try {
-    const { data, error } = await sbClient.rpc('get_open_status', { p_program: PROGRAM });
+    // 지역 관문이 있는 프로그램(지역연계)은 고른 지역의 신청 기간을 쓴다. 지역 기간이 없으면 기본 기간
+    const { data, error } = regionGate
+      ? await sbClient.rpc('get_open_status_region', { p_program: PROGRAM, p_region: filterRegion || null })
+      : await sbClient.rpc('get_open_status', { p_program: PROGRAM });
     if (error) throw error;
     serverTimeDiff = new Date(data.server_now).getTime() - Date.now();
     isOpen = data.is_open;
@@ -1125,7 +1132,27 @@ async function loadOpenStatus() {
   }
 }
 
+// KST 짧은 날짜 표기: 11. 20.(목) 09:00
+function fmtKst(iso) {
+  if (!iso) return '';
+  const k = new Date(new Date(iso).getTime() + 9 * 3600e3);
+  const wd = '일월화수목금토'[k.getUTCDay()];
+  return `${k.getUTCMonth() + 1}. ${k.getUTCDate()}.(${wd}) ${String(k.getUTCHours()).padStart(2,'0')}:${String(k.getUTCMinutes()).padStart(2,'0')}`;
+}
+
+function renderPeriodRange(d) {
+  const el = document.getElementById('period-range');
+  if (!el) return;
+  if (!regionGate || !filterRegion) { el.textContent = ''; return; }
+  const who = shortRegion(filterRegion);
+  if (d.phase === 'not_configured' || !d.open_at) { el.textContent = `${who} 신청 기간이 아직 정해지지 않았습니다.`; return; }
+  let t = `${who} 신청 기간 ${fmtKst(d.open_at)} ~ ${fmtKst(d.close1_at)}`;
+  if (d.open2_at) t += ` · 2차 ${fmtKst(d.open2_at)} ~ ${fmtKst(d.close2_at)}`;
+  el.textContent = t;
+}
+
 function renderStatusBar(d) {
+  renderPeriodRange(d);
   const badge = document.getElementById('open-badge');
   const cd    = document.getElementById('countdown');
   const now   = Date.now() + serverTimeDiff;
@@ -1150,6 +1177,8 @@ function renderStatusBar(d) {
     } else if (phase === 'before_open' && d.open_at) {
       const left = Math.round((new Date(d.open_at).getTime() - now) / 1000);
       cd.textContent = left > 0 ? `신청 시작까지 ⏳ ${fmtTime(left)}` : '신청이 곧 시작됩니다.';
+    } else if (phase === 'not_configured') {
+      cd.textContent = regionGate && !filterRegion ? '교육지원청을 고르면 신청 기간이 표시됩니다.' : '신청 기간이 아직 정해지지 않았습니다.';
     } else {
       cd.textContent = '신청이 마감되었습니다.';
     }
@@ -1310,6 +1339,7 @@ function reserveErrMsg(err) {
   return {
     full:            '방금 마감되었습니다. 다른 강좌를 선택해 주세요.',
     not_open:        '신청 기간이 아닙니다.',
+    not_configured:  '이 지역의 신청 기간이 아직 정해지지 않았습니다.',
     between_periods: '신청 기간 사이의 휴식 시간입니다.',
     period_closed:   '신청이 마감되었습니다.',
     not_registerable:'신청할 수 없는 강좌입니다.'
