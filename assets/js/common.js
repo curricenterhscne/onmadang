@@ -172,7 +172,7 @@
     footerEl.outerHTML = '<footer><div class="ft-inner"><div class="ft-top">'
       + '<div class="ft-org"><a class="ft-name" href="' + L.home + '">온마당</a>'
       + '<p>충남 고교학점제 종합지원 포털</p>'
-      + '<address><b>충청남도교육청</b>담당부서: 중등교육과 고등학교 교육과정지원센터<br>문의전화: <span class="nw">041-640-7211</span>, <span class="nw">041-640-7221</span>, <span class="nw">041-640-7224</span><br>주소: (32255) 충청남도 홍성군 홍북읍 선화로 22</address></div>'
+      + '<address><b>충청남도교육청</b>중등교육과 고등학교 교육과정지원센터<br><span class="nw">041-640-7224,7221,7211</span><br>(32255) 충청남도 홍성군 홍북읍 선화로 22</address></div>'
       + '<nav class="ft-sitemap" aria-label="사이트맵">'
       + ftCol('고교학점제', subMenus.about)
       + ftCol('진로\u00B7학업 설계', subMenus.design.concat([{ label: '학교에 없는 과목 듣는 법', href: L.design + 'outside/' }]))
