@@ -98,6 +98,11 @@ header{
   border:1.5px solid var(--brand);transition:.18s;
 }
 .head-link:hover{background:var(--brand-d);border-color:var(--brand-d)}
+/* 수강신청 입구 — 과목 선택 실습과 같은 모양, 배경만 보라(흰 글자 5.6:1) */
+.head-link.is-enroll{background:var(--plum-d);border-color:var(--plum-d)}
+.head-link.is-enroll:hover{filter:brightness(.9)}
+.head-link.is-enroll[aria-current="page"]{box-shadow:inset 0 0 0 2px var(--surface)}
+.head-link:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .head-cta{
   display:flex;align-items:center;gap:6px;flex-shrink:0;
   background:var(--accent);color:#1c3d1d;font-weight:700;font-size:13.5px;
@@ -174,6 +179,7 @@ header{
 [data-section="about"] .page-hero{--hero-img:url("../img/sub/hero-about.jpg");--hero-icon:url("../img/sub/icon-about.svg")}
 [data-section="design"] .page-hero{--hero-img:url("../img/sub/hero-design.jpg");--hero-icon:url("../img/sub/icon-design.svg")}
 [data-section="safety"] .page-hero{--hero-img:url("../img/sub/hero-safety.jpg");--hero-icon:url("../img/sub/icon-safety.svg")}
+[data-section="enroll"] .page-hero{--hero-img:url("../img/sub/hero-design.jpg");--hero-icon:url("../img/sub/icon-design.svg")} /* 수강신청 입구 */
 [data-section="board"] .page-hero{--hero-icon:url("../img/sub/char-board.svg");background:var(--plum-d);min-height:clamp(220px,31vw,450px)}
 [data-section="board"] .page-hero .wrap::before{left:24px;top:0;width:clamp(200px,24vw,342px);height:auto;aspect-ratio:342/282}
 /* 메뉴에 속하지 않는 페이지(방침 등)는 낮은 단색 머리 영역을 쓴다 */
@@ -313,6 +319,7 @@ a.sub-wide:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 /* 안내 상태 화면 — 수강신청 기간 아님 등 (시안 없음, 서브 공통 부품으로 구성). 캐릭터는 장식 */
 .state-page{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:640px;margin:0 auto;padding:clamp(16px,3vw,40px) 0}
 .state-page > img{width:clamp(100px,10vw,140px);height:auto;margin-bottom:clamp(16px,2vw,28px)}
+.state-page .sec-badge{margin-bottom:10px}
 .state-page h1{font-size:clamp(24px,2.6vw,36px);font-weight:800;letter-spacing:-.6px;line-height:1.35;margin-bottom:14px;word-break:keep-all}
 .state-page p{font-size:clamp(15px,1.3vw,18px);line-height:1.8;word-break:keep-all}
 .state-page .sub-lead{width:100%;padding:20px 24px;border-radius:var(--radius);margin-top:clamp(20px,2.4vw,32px);font-size:clamp(15px,1.3vw,18px);font-weight:700}

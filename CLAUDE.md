@@ -121,7 +121,7 @@
 - GNB·모바일 메뉴·상단 안내 배너·클로버 SVG defs가 함께 주입된다.
 - **상단 안내 배너는 현재 비어 있다** (2026-08-20에 「리디자인 작업 중」 문구 삭제). `common.js`의 `var banner = ''`에 문구를 채우면 다시 뜬다. `.renewal-banner` 스타일은 `common.css`에 남아 있다.
   다시 쓸 때는 `common.js`를 안 쓰는 **`apply/app.html`·`design/selector/guide.html`의 인라인 배너도 함께** 넣어야 한다 (총 3곳).
-- `data-active` 값: `home` `about` `design` `safety` `board`
+- `data-active` 값: `home` `about` `design` `safety` `board` `enroll`(수강신청 입구 — GNB 메뉴가 아니라 헤더 오른쪽 「수강신청」 단추가 켜진다)
 
 ### ⚠️ `common.css`는 요소 선택자에도 스타일을 건다
 
@@ -236,6 +236,7 @@
 | `design/selector/` | 과목 선택 실습 (자산②) | ✅ 사용 + CDN DS | `index.html`, `guide.html` | 기존 로직 유지 |
 | `policy/` | 개인정보처리방침·이메일무단수집거부 | ✅ 사용 | `privacy.html` `email.html` `policy.css` | 푸터에서 연결. 수집 항목이 바뀌면 `privacy.html`도 수정 |
 | `safety/` | 4대 안전망 페이지들 | ✅ 사용 | HTML 6개 (`index` + 4대 안전망 4개 + `enrollment-closed`) | 정적 콘텐츠. 기획 메모 `.md` 1개 동거 |
+| `enroll/` | **수강신청 입구**(2026-11-11) — 헤더 「수강신청」 단추(과목 선택 실습 왼쪽, 보라)로 들어온다 | ✅ 사용 | `index.html`(프로그램 4개 칸) · `closed.html?p=online\|regional\|dual\|dreamup`(공통 「기간 아님」) | **신청 기간이 열리면 `index.html`의 해당 칸 주소만 실제 신청 화면으로 바꾼다** (예: 지역연계 → `../apply/app.html?program=joint_regional`). 4대 안전망 첫 화면과 같은 `.net-tiles` 틀 |
 
 ### ⚠️ 링크되지 않는 부속 페이지 (직접 URL 배포용)
 
@@ -277,7 +278,7 @@
         async src="//gc.zgo.at/count.js"></script>
 ```
 
-- 적용됨(24개): `index.html`, `policy/`(2), `about/`(3), `apply/index.html`, `board/`(4), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `dual_credit/curriculum.html`, `safety/`(6), `dream_up/attendance/`, `dream_up/check/`
+- 적용됨(26개): `index.html`, `enroll/`(2), `policy/`(2), `about/`(3), `apply/index.html`, `board/`(4), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `dual_credit/curriculum.html`, `safety/`(6), `dream_up/attendance/`, `dream_up/check/`
 - **미적용**: `apply/app.html`, `apply/admin/`, `design/check/`, `design/majors/`, `design/selector/`(+`guide.html`), `dual_credit/courses.html`, 위 「링크되지 않는 부속 페이지」 전부 (`dream_up/attendance/`·`dream_up/check/` 제외 — 만료 후 유입 확인용으로 넣었다)
 - 새 페이지를 만들면 **직접 넣어야 한다.** 관리자 페이지(`apply/admin/`)에는 넣지 않는다.
 

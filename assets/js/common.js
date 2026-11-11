@@ -21,7 +21,8 @@
     board:    base + 'board/',
     majors:   base + 'design/majors/',
     selector: base + 'design/selector/',
-    apply:    base + 'apply/'
+    apply:    base + 'apply/',
+    enroll:   base + 'enroll/'
   };
 
   /* ── active 메뉴 ── */
@@ -126,6 +127,7 @@
     + '</a>'
     + '<nav class="nav-links" aria-label="주 메뉴">' + gnbItems() + '</nav>'
     + '<div class="head-tools">'
+    +   '<a href="' + L.enroll + '" class="head-link is-enroll"' + (active === 'enroll' ? ' aria-current="page"' : '') + '>' + CLV15 + '<span>수강신청</span></a>'
     +   '<a href="' + L.selector + '" class="head-link">' + CLV15 + '<span>과목 선택 실습</span></a>'
     + '</div>'
     + '<button class="hamburger" aria-label="메뉴 열기">\u2630</button>'
@@ -138,6 +140,7 @@
     + '<nav class="mobile-menu-nav" aria-label="모바일 메뉴">' + mobileMenuItems() + '</nav>'
     + '<div class="mobile-menu-divider"></div>'
     + '<div class="mobile-menu-shortcuts">'
+    +   '<a href="' + L.enroll + '">' + CLV15 + ' 수강신청</a>'
     +   '<a href="' + L.selector + '">' + CLV15 + ' 과목 선택 실습</a>'
     + '</div>'
     + '</div></div>';

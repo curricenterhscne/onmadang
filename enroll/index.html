@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#DAF2FC">
+<meta name="description" content="온마당 수강신청 — 온라인·지역연계 공동교육과정, 고교-대학 연계 학점 인정 과목, 꿈키움 창의적체험활동 수강신청 창구">
+<title>수강신청 · 온마당</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../assets/css/common.css">
+<style>
+  /* 4대 안전망 첫 화면(safety/index.html)과 같은 틀 — 칸 4장이 본문 폭보다 넓다 */
+  .sub-body > .wrap.is-wide{max-width:1136px}
+  .net-tiles{margin-top:clamp(48px,5vw,70px)}
+  /* 칸 색은 공통 순서(파랑·하늘·보라·초록)를 쓰고, 아이콘만 프로그램에 맞춘다 */
+  .net-tile.p-online{--ic:url("../assets/img/sub/icon-net-online.svg")}
+  .net-tile.p-regional{--ic:url("../assets/img/sub/icon-net-joint.svg")}
+  .net-tile.p-dual{--ic:url("../assets/img/sub/icon-net-school.svg")}
+  .net-tile.p-dreamup{--ic:url("../assets/img/sub/icon-net-outside.svg")}
+  .net-tile .nt-go{font-size:14px;font-weight:700}
+</style>
+</head>
+<body>
+
+<div id="om-header" data-active="enroll"></div>
+
+<div class="page-hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="이동 경로">
+      <a href="../index.html">홈</a> › <strong>수강신청</strong>
+    </nav>
+    <h1>수강신청</h1>
+    <p>공동교육과정과 학교 밖 교육의 수강신청 창구입니다.</p>
+  </div>
+</div>
+
+<main class="sub-body">
+  <div class="wrap">
+    <p class="sub-lead">신청할 프로그램을 고르십시오.<br>프로그램마다 신청 기간이 다르며, 기간이 아닐 때는 안내 페이지가 열립니다.</p>
+  </div>
+  <div class="wrap is-wide">
+    <nav class="net-tiles" aria-label="수강신청 프로그램">
+      <a class="net-tile p-online" href="./closed.html?p=online">
+        <span class="ic" aria-hidden="true"></span>
+        <strong class="nt-logo"><span class="nt-pre">참학력 공동교육과정</span><span class="nt-name">온라인 공동교육과정</span></strong>
+        <span class="nt-desc">실시간 쌍방향 온라인 수업으로 운영하는 공동교육과정</span>
+        <span class="nt-go">수강신청 <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="net-tile p-regional" href="./closed.html?p=regional">
+        <span class="ic" aria-hidden="true"></span>
+        <strong class="nt-logo"><span class="nt-pre">참학력 공동교육과정</span><span class="nt-name">지역연계 공동교육과정</span></strong>
+        <span class="nt-desc">교육지원청이 주관하여 지역 고등학교와 함께 운영하는 공동교육과정</span>
+        <span class="nt-go">수강신청 <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="net-tile p-dual" href="./closed.html?p=dual">
+        <span class="ic" aria-hidden="true"></span>
+        <strong class="nt-logo"><span class="nt-pre">학교 밖 교육</span><span class="nt-name">고교-대학 연계 학점 인정 학교 밖 교육 과목</span></strong>
+        <span class="nt-desc">협약 대학이 개설한 과목을 이수하고 고등학교 학점을 인정받는 과목</span>
+        <span class="nt-go">수강신청 <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="net-tile p-dreamup" href="./closed.html?p=dreamup">
+        <span class="ic" aria-hidden="true"></span>
+        <strong class="nt-logo"><span class="nt-pre">학교 밖 교육</span><span class="nt-name">꿈키움 학교 밖 교육 창의적체험활동</span></strong>
+        <span class="nt-desc">지역 기관이 운영하는 창의적체험활동(진로활동)</span>
+        <span class="nt-go">수강신청 <span aria-hidden="true">→</span></span>
+      </a>
+    </nav>
+  </div>
+</main>
+
+<div id="om-footer"></div>
+<script src="../assets/js/common.js"></script>
+<script data-goatcounter="https://onmadang.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

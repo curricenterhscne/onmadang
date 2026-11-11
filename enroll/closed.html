@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#DAF2FC">
+<meta name="description" content="수강신청 기간이 아닙니다 — 온마당 수강신청">
+<title>수강신청 기간이 아닙니다 · 온마당</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../assets/css/common.css">
+</head>
+<body>
+
+<div id="om-header" data-active="enroll"></div>
+
+<!-- 수강신청 입구(enroll/index.html) 네 단추가 공통으로 쓰는 「기간 아님」 안내.
+     ?p=online|regional|dual|dreamup 으로 프로그램 이름만 바꿔 보여 준다.
+     신청 기간이 열리면 입구의 해당 단추 주소를 실제 신청 화면으로 바꾼다
+     (예: 지역연계 → ../apply/app.html?program=joint_regional). -->
+<main class="sub-body">
+  <div class="wrap">
+    <div class="state-page">
+      <img src="../assets/img/sub/char-panda-think.svg" alt="" aria-hidden="true">
+      <p class="sec-badge" id="prog-name">수강신청</p>
+      <h1>수강신청 기간이 아닙니다</h1>
+      <p>신청 기간이 열리면 이 단추로 신청 화면에 들어갈 수 있습니다.<br>신청 일정은 공지사항으로 안내합니다.</p>
+      <div class="state-actions">
+        <a class="btn-pill" href="../board/">공지사항 보기 <span aria-hidden="true">→</span></a>
+        <a class="btn-pill is-line" href="./"><span aria-hidden="true">←</span> 수강신청 첫 화면</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="om-footer"></div>
+<script src="../assets/js/common.js"></script>
+<script>
+(function () {
+  var NAMES = {
+    online:   '온라인 공동교육과정',
+    regional: '지역연계 공동교육과정',
+    dual:     '고교-대학 연계 학점 인정 학교 밖 교육 과목',
+    dreamup:  '꿈키움 학교 밖 교육 창의적체험활동'
+  };
+  var p = new URLSearchParams(location.search).get('p');
+  if (NAMES[p]) {
+    document.getElementById('prog-name').textContent = NAMES[p];
+    document.title = NAMES[p] + ' 수강신청 기간이 아닙니다 · 온마당';
+  }
+})();
+</script>
+<script data-goatcounter="https://onmadang.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
