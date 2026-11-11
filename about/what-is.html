@@ -9,126 +9,64 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="../assets/css/common.css">
 <style>
-  .doc{padding:44px 0 80px}
-  .doc .wrap{max-width:900px}
-
-  /* 섹션 공통 */
-  .sec{background:var(--surface);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-sm);margin-bottom:24px}
-  .sec-eyebrow{font-size:12px;font-weight:800;letter-spacing:1px;color:var(--accent-d);margin-bottom:6px}
-  .sec h2{font-size:21px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
-  .sec .lead{font-size:14.5px;color:var(--ink-soft);margin-bottom:22px}
-  .sec p{font-size:14.5px;color:var(--ink-soft);line-height:1.85}
-  .sec p + p{margin-top:12px}
-
-  /* 정의 강조 박스 */
-  .define{background:linear-gradient(135deg,var(--brand),var(--brand-l));color:#fff;border-radius:var(--radius);padding:34px 32px;margin-bottom:24px}
-  .define h2{font-size:20px;font-weight:800;margin-bottom:12px}
-  .define p{font-size:16px;line-height:1.8;opacity:.95}
-  .define b{color:#eafbe9}
-
+  /* 시안 sub01_01 — 띠 구역·말풍선 제목은 common.css(.band, .talk-head, .sec-badge) */
   /* 이전 vs 이후 */
-  .vs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
-  .vs-card{border-radius:var(--radius-sm);padding:22px 20px}
-  .vs-before{background:var(--soft);border:1px solid var(--line)}
-  .vs-after{background:#f1faf1;border:1.5px solid var(--accent)}
-  .vs-card h4{font-size:14px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:7px}
-  .vs-before h4{color:var(--ink-faint)}
-  .vs-after h4{color:var(--accent-d)}
-  .vs-tag{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;color:#fff}
-  .vs-before .vs-tag{background:var(--ink-faint)}
-  .vs-after .vs-tag{background:var(--accent-d)}
-  .vs-card ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .vs-card li{font-size:13.5px;color:var(--ink-soft);padding-left:16px;position:relative}
-  .vs-card li::before{content:"·";position:absolute;left:4px;font-weight:800}
-
-  /* 배경 6카드 */
-  .bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
-  .bg-card{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:20px 18px}
-  .bg-card .bg-ic{font-size:22px;margin-bottom:8px}
-  .bg-card h4{font-size:14.5px;font-weight:800;color:var(--brand);margin-bottom:5px}
-  .bg-card p{font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin:0}
-
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.4vw,20px)}
+  .vs-card{padding:clamp(28px,3vw,40px) 20px;border-radius:40px;background:var(--surface);text-align:center}
+  .vs-after{background:var(--plum-l)}
+  .vs-card h3{font-size:clamp(16px,1.4vw,20px);font-weight:500;margin-bottom:2px}
+  .vs-card h3 .ar{display:block;font-size:18px;margin-bottom:10px}
+  .vs-card ul{list-style:none}
+  .vs-card li{font-size:clamp(16px,1.4vw,20px);line-height:2}
+  /* 배경 6카드 — 하늘·보라 엇갈림 (시안) */
+  .bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.2vw,18px)}
+  .bg-card{display:flex;flex-direction:column;justify-content:flex-end;min-height:clamp(110px,12vw,172px);padding:20px clamp(16px,1.6vw,24px);border-radius:var(--radius);background:var(--bg)}
+  .bg-card:nth-child(2),.bg-card:nth-child(4),.bg-card:nth-child(6){background:var(--plum-l)}
+  .bg-card h3{font-size:clamp(16px,1.4vw,20px);font-weight:700;margin-bottom:4px}
+  .bg-card p{font-size:clamp(13px,1vw,14.5px);line-height:1.55}
   /* 타임라인 */
-  .tl{position:relative;margin-top:10px;padding-left:8px}
-  .tl-row{display:grid;grid-template-columns:56px 14px 1fr;gap:14px;position:relative;padding-bottom:18px}
-  .tl-row:last-child{padding-bottom:0}
-  .tl-year{font-size:15px;font-weight:800;color:var(--brand);text-align:right}
-  .tl-row.on .tl-year{color:var(--accent-d)}
-  .tl-dot{position:relative}
-  .tl-dot::before{content:"";position:absolute;left:-12px;top:5px;width:11px;height:11px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 3px #fff}
-  .tl-row.on .tl-dot::before{background:var(--accent-d)}
-  .tl-dot::after{content:"";position:absolute;left:-7px;top:16px;bottom:-18px;width:2px;background:var(--line)}
-  .tl-row:last-child .tl-dot::after{display:none}
-  .tl-text{font-size:13.5px;color:var(--ink-soft);line-height:1.6}
-
-  /* 통계 3카드 */
-  .stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
-  .stat{background:var(--soft);border-radius:var(--radius-sm);padding:24px 20px}
-  .stat b{display:block;font-size:34px;font-weight:800;color:var(--brand);letter-spacing:-1px;line-height:1}
-  .stat b small{font-size:16px;font-weight:700}
-  .stat span{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:10px}
-
-  /* 표 */
-  .tbl{width:100%;border-collapse:collapse;margin-top:6px;font-size:13.5px}
-  .tbl th,.tbl td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
-  .tbl thead th{background:var(--brand);color:#fff;font-weight:700;font-size:13px}
-  .tbl tbody th{color:var(--brand);font-weight:800;white-space:nowrap;width:110px}
-  .tbl td{color:var(--ink-soft)}
-  .tbl.center th,.tbl.center td{text-align:center}
-  .tbl .imp{color:var(--accent-d);font-weight:800}
-
-  /* 2단 박스 (이수기준 + 성취도) */
-  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .mini{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:22px 20px}
-  .mini h4{font-size:14.5px;font-weight:800;margin-bottom:12px}
-  .mini ul{list-style:none;display:flex;flex-direction:column;gap:9px}
-  .mini li{font-size:13px;color:var(--ink-soft);padding-left:16px;position:relative;line-height:1.5}
-  .mini li::before{content:"✓";position:absolute;left:0;color:var(--accent-d);font-weight:800}
-
-  /* 최소성취수준 다크 박스 */
-  .msl{background:var(--ink);color:#fff;border-radius:var(--radius);padding:28px 30px;margin-top:16px}
-  .msl h4{font-size:15px;font-weight:800;margin-bottom:18px}
+  .tl{list-style:none;max-width:860px;margin:0 auto}
+  .tl li{display:grid;grid-template-columns:clamp(48px,5.5vw,80px) 28px 1fr;gap:clamp(8px,1.4vw,20px);align-items:baseline;padding:6px 0;font-size:clamp(14px,1.3vw,18px);line-height:1.6}
+  .tl .yr{font-weight:800;text-align:right}
+  .tl .dot{position:relative;align-self:stretch}
+  .tl .dot::before{content:"";position:absolute;left:50%;top:calc(.8em - 5px);width:11px;height:11px;margin-left:-5.5px;border-radius:50%;background:var(--brand)}
+  .tl .dot::after{content:"";position:absolute;left:50%;top:calc(.8em + 6px);bottom:-18px;width:2px;margin-left:-1px;background:var(--line)}
+  .tl li:last-child .dot::after{display:none}
+  .tl li.on{color:var(--plum-d);font-weight:700}
+  .tl li.on .dot::before{background:var(--plum-d)}
+  /* 기본 사항 */
+  .stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.2vw,18px);margin-bottom:clamp(12px,1.2vw,18px)}
+  .stat{display:flex;flex-direction:column;justify-content:flex-end;min-height:clamp(120px,12vw,172px);padding:20px 22px;background:var(--bg);border-radius:var(--radius)}
+  .stat b{font-size:clamp(28px,2.8vw,40px);font-weight:800;color:var(--brand-d);letter-spacing:-1px;line-height:1.1}
+  .stat b small{font-size:.45em;font-weight:700}
+  .stat span{font-size:14px;line-height:1.55;margin-top:8px;word-break:keep-all}
+  .struct{background:var(--plum-l);border-radius:var(--radius);padding:8px clamp(12px,1.6vw,22px)}
+  .struct table{width:100%;border-collapse:collapse;font-size:clamp(14px,1.2vw,17px);line-height:1.6}
+  .struct th,.struct td{padding:10px 8px;text-align:left;vertical-align:top;word-break:keep-all}
+  .struct tr + tr > *{border-top:1px solid var(--surface)}
+  .struct th{font-weight:500;white-space:nowrap}
+  /* 이수 기준 */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.2vw,18px)}
+  .mini{background:var(--bg);border-radius:40px;padding:clamp(24px,2.6vw,36px) clamp(20px,2.6vw,40px)}
+  .mini h3{font-size:clamp(18px,1.6vw,22px);font-weight:800;margin-bottom:16px}
+  .mini ul{list-style:none;padding-left:clamp(0px,2vw,24px)}
+  .mini li{font-size:clamp(14px,1.2vw,17px);line-height:2.1}
+  .grade{width:100%;border-collapse:collapse;font-size:clamp(14px,1.2vw,17px);text-align:center}
+  .grade thead th{background:var(--brand);color:#fff;font-weight:700;padding:12px 8px}
+  .grade td{padding:12px 8px;border-bottom:1px solid var(--ink-faint)}
+  .msl{margin-top:clamp(12px,1.2vw,18px);background:var(--plum-l);border-radius:var(--radius);padding:clamp(22px,2.4vw,32px)}
+  .msl h3{font-size:clamp(18px,1.6vw,22px);font-weight:800;margin-bottom:18px}
   .msl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  .msl-col h5{font-size:13.5px;font-weight:800;color:var(--accent);margin-bottom:7px}
-  .msl-col p{font-size:12.5px;color:rgba(255,255,255,.8);line-height:1.6;margin:0}
-
-  /* 변경사항 카드 */
-  .chg{display:flex;flex-direction:column;gap:12px}
-  .chg-row{display:grid;grid-template-columns:170px 1fr auto;gap:16px;align-items:center;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:18px 20px}
-  .chg-row .chg-t{font-size:14.5px;font-weight:800;color:var(--ink)}
-  .chg-row .chg-d{font-size:13px;color:var(--ink-soft);line-height:1.55}
-  .chg-row .chg-when{font-size:11.5px;color:var(--online-d);font-weight:700;font-style:italic;white-space:nowrap}
-
-  /* 근거 각주 */
-  .foot-note{font-size:12.5px;color:var(--ink-faint);font-style:italic;margin-top:14px}
-
-  /* 영상·자료 자리 (편집용) */
-  .media-slot{background:var(--soft);border:2px dashed var(--line);border-radius:var(--radius);padding:0;overflow:hidden;margin-bottom:24px}
-  .media-slot .ratio{position:relative;padding-top:56.25%;background:#dfeef8}
-  .media-slot .ratio span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--ink-faint);font-size:13.5px;font-weight:600}
-  .media-slot .ratio .big{font-size:30px}
-  .files{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
-  .file-btn{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--brand);background:var(--soft);border:1px solid var(--line);border-radius:var(--radius-pill);padding:9px 16px;transition:.15s}
-  .file-btn:hover{background:var(--brand);color:#fff}
-
-  /* 하단 이동 */
-  .nextnav{display:flex;justify-content:space-between;gap:12px;margin-top:12px}
-  .nextnav a{flex:1;background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px 20px;transition:.15s}
-  .nextnav a:hover{border-color:var(--brand);box-shadow:var(--shadow-sm)}
-  .nextnav .nl{font-size:11.5px;color:var(--ink-faint);font-weight:700}
-  .nextnav .nt{font-size:14.5px;font-weight:700;color:var(--brand);margin-top:2px}
-  .nextnav .r{text-align:right}
+  .msl-col h4{font-size:clamp(14px,1.2vw,17px);font-weight:700;color:var(--plum-d)}
+  .msl-col p{font-size:clamp(14px,1.2vw,17px);line-height:1.6;word-break:keep-all}
 
   @media(max-width:720px){
-    .vs,.two{grid-template-columns:1fr}
+    .vs,.two,.msl-grid{grid-template-columns:1fr}
     .bg-grid,.stat3{grid-template-columns:1fr 1fr}
-    .msl-grid{grid-template-columns:1fr}
-    .chg-row{grid-template-columns:1fr;gap:6px}
-    .chg-row .chg-when{white-space:normal}
+    .struct tr{display:grid;grid-template-columns:1fr}
+    .struct th{padding-bottom:0;font-weight:700}
   }
-  @media(max-width:480px){
-    .bg-grid,.stat3{grid-template-columns:1fr}
-  }
+  @media(max-width:480px){.bg-grid,.stat3{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -139,31 +77,31 @@
 <div class="page-hero">
   <div class="wrap">
     <nav class="breadcrumb" aria-label="이동 경로">
-      <a href="../index.html">홈</a> › <a href="./index.html">고교학점제 안내</a> › <strong>고교학점제란?</strong>
+      <a href="../index.html">홈</a> › <a href="./index.html">고교학점제</a> › <strong>고교학점제란?</strong>
     </nav>
     <h1>고교학점제란?</h1>
     <p>학생에게 과목 선택의 권한과 과목 이수의 책임을 부여하는 교육 시스템입니다.</p>
   </div>
 </div>
 
-<main class="doc">
-  <div class="wrap">
-
-    <!-- 소개 영상-->
-
-    <!-- 정의 -->
-    <div class="define">
-      <p><b>고교학점제</b>는 학생이 자신의 진로와 적성에 따라 과목을 <b>직접 선택·이수</b>하고, 누적 학점이 기준에 도달하면 졸업하는 제도입니다. 졸업의 기준이 <b>‘출석한 시간’에서 ‘이수한 학점(성취)’</b>으로 바뀌었습니다.</p>
+<main class="sub-body">
+  <section class="band">
+    <div class="wrap">
+      <p class="sub-lead">고교학점제는 학생이 자신의 진로와 적성에 따라 과목을 직접 선택·이수하고,<br>누적 학점이 기준에 도달하면 졸업하는 제도입니다.<br>졸업의 기준이 ‘출석한 시간’에서 ‘이수한 학점(성취)’으로 바뀌었습니다.</p>
     </div>
+  </section>
 
-    <!-- 무엇이 달라지나 -->
-    <div class="sec">
-      <div class="sec-eyebrow">출발점</div>
-      <h2>무엇이 달라지나요?</h2>
-      <p class="lead">“고등학교 졸업장 = 고등학교 학력”이 되도록, 배움의 질에 초점을 둡니다.</p>
+  <section class="band is-fade" aria-labelledby="s-change">
+    <div class="wrap">
+      <div class="talk-head">
+        <img src="../assets/img/sub/char-rabbit-point.svg" alt="" aria-hidden="true">
+        <span class="sec-badge">출발점</span>
+        <h2 id="s-change">무엇이 달라지나요?</h2>
+        <p>“고등학교 졸업장 = 고등학교 학력”이 되도록, 배움의 질에 초점을 둡니다.</p>
+      </div>
       <div class="vs">
-        <div class="vs-card vs-before">
-          <h4><span class="vs-tag">↓</span> 고교학점제 이전</h4>
+        <div class="vs-card">
+          <h3><span class="ar" aria-hidden="true">↓</span>고교학점제 이전</h3>
           <ul>
             <li>출석하면 진급·졸업</li>
             <li>시간의 경과 = 이수</li>
@@ -172,7 +110,7 @@
           </ul>
         </div>
         <div class="vs-card vs-after">
-          <h4><span class="vs-tag">↑</span> 고교학점제 이후</h4>
+          <h3><span class="ar" aria-hidden="true">↑</span>고교학점제 이후</h3>
           <ul>
             <li>이수해야 학점·졸업</li>
             <li>성취가 곧 이수</li>
@@ -182,64 +120,81 @@
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- 등장 배경 -->
-    <div class="sec">
-      <div class="sec-eyebrow">추진 배경</div>
-      <h2>고교학점제는 왜 등장했나요?</h2>
-      <p class="lead">사회·학습자·교육 환경의 변화가 맞물리며 등장했습니다.</p>
+  <section class="band" aria-labelledby="s-why">
+    <div class="wrap">
+      <div class="talk-head">
+        <img src="../assets/img/sub/char-panda-think.svg" alt="" aria-hidden="true">
+        <span class="sec-badge">추진 배경</span>
+        <h2 id="s-why">고교학점제는 왜 등장했나요?</h2>
+        <p>사회·학습자·교육 환경의 변화가 맞물리며 등장했습니다.</p>
+      </div>
       <div class="bg-grid">
-        <div class="bg-card"><div class="bg-ic">⚙️</div><h4>4차 산업혁명</h4><p>제조업 등 사회적 요구의 진화</p></div>
-        <div class="bg-card"><div class="bg-ic">👥</div><h4>학습자 변화</h4><p>학습자 존재의 변화와 요구 다양화</p></div>
-        <div class="bg-card"><div class="bg-ic">💡</div><h4>역량 강조</h4><p>지식 축적에서 수행력(역량) 중심으로</p></div>
-        <div class="bg-card"><div class="bg-ic">📉</div><h4>학령인구 감소</h4><p>학생 수 감소에 따른 학교 여건 변화</p></div>
-        <div class="bg-card"><div class="bg-ic">⚖️</div><h4>교육 불평등</h4><p>소득 격차·사회 양극화·교육 격차 심화</p></div>
-        <div class="bg-card"><div class="bg-ic">🌐</div><h4>학습 환경 변화</h4><p>정규교육 외 수요 증가·사이버 학습 콘텐츠 확대</p></div>
+        <div class="bg-card"><h3>4차 산업혁명</h3><p>제조업 등 사회적 요구의 진화</p></div>
+        <div class="bg-card"><h3>학습자 변화</h3><p>학습자 존재의 변화와 요구 다양화</p></div>
+        <div class="bg-card"><h3>역량 강조</h3><p>지식 축적에서 수행력(역량) 중심으로</p></div>
+        <div class="bg-card"><h3>학령인구 감소</h3><p>학생 수 감소에 따른 학교 여건 변화</p></div>
+        <div class="bg-card"><h3>교육 불평등</h3><p>소득 격차·사회 양극화·교육 격차 심화</p></div>
+        <div class="bg-card"><h3>학습 환경 변화</h3><p>정규교육 외 수요 증가·사이버 학습 콘텐츠 확대</p></div>
       </div>
     </div>
+  </section>
 
-    <!-- 추진 경과 -->
-    <div class="sec">
-      <div class="sec-eyebrow">추진 경과</div>
-      <h2>여기까지 온 길</h2>
-      <div class="tl">
-        <div class="tl-row"><div class="tl-year">1995</div><div class="tl-dot"></div><div class="tl-text">김영삼 정부 5·31 교육개혁 — 학생중심 교육·선택권 보장 선언</div></div>
-        <div class="tl-row"><div class="tl-year">2009</div><div class="tl-dot"></div><div class="tl-text">교육부 「고등학교 선진화를 위한 입학제도 및 체제개편 방안」 (영어·수학 무학년제·학점제 운영안)</div></div>
-        <div class="tl-row"><div class="tl-year">2015</div><div class="tl-dot"></div><div class="tl-text">「2015 개정 교육과정」 고시 — 고교학점제의 절반인 ‘학생 선택 중심 교육과정’ 본격화</div></div>
-        <div class="tl-row"><div class="tl-year">2017</div><div class="tl-dot"></div><div class="tl-text">「지능정보사회 대응 중장기 교육정책」 · 11월 「고교학점제 추진 방향」 발표</div></div>
-        <div class="tl-row"><div class="tl-year">2018</div><div class="tl-dot"></div><div class="tl-text">연구·선도학교 운영 시작 (전국 약 700여 개교로 확대)</div></div>
-        <div class="tl-row"><div class="tl-year">2021</div><div class="tl-dot"></div><div class="tl-text">2월 「종합 추진계획」 · 8월 「단계적 이행 계획(2022–2024)」 발표</div></div>
-        <div class="tl-row"><div class="tl-year">2022</div><div class="tl-dot"></div><div class="tl-text">특성화고 도입 · 12월 「2022 개정 교육과정」 고시</div></div>
-        <div class="tl-row"><div class="tl-year">2023</div><div class="tl-dot"></div><div class="tl-text">일반계고 단계적 적용 시작 (2015 개정 교육과정 기반)</div></div>
-        <div class="tl-row on"><div class="tl-year">2025</div><div class="tl-dot"></div><div class="tl-text"><b>전체 고등학교 1학년 전면 시행</b> (2022 개정 교육과정 적용)</div></div>
+  <section class="band is-tint" aria-labelledby="s-road">
+    <div class="wrap">
+      <div class="talk-head">
+        <img src="../assets/img/sub/char-caterpillar.svg" alt="" aria-hidden="true">
+        <span class="sec-badge">추진 경과</span>
+        <h2 id="s-road">여기까지 온 길</h2>
       </div>
+      <ol class="tl">
+        <li><span class="yr">1995</span><span class="dot"></span><span>김영삼 정부 5·31 교육개혁 — 학생중심 교육·선택권 보장 선언</span></li>
+        <li><span class="yr">2009</span><span class="dot"></span><span>교육부 「고등학교 선진화를 위한 입학제도 및 체제개편 방안」 (영어·수학 무학년제·학점제 운영안)</span></li>
+        <li><span class="yr">2015</span><span class="dot"></span><span>「2015 개정 교육과정」 고시 — 고교학점제의 절반인 ‘학생 선택 중심 교육과정’ 본격화</span></li>
+        <li><span class="yr">2017</span><span class="dot"></span><span>「지능정보사회 대응 중장기 교육정책」 · 11월 「고교학점제 추진 방향」 발표</span></li>
+        <li><span class="yr">2018</span><span class="dot"></span><span>연구·선도학교 운영 시작 (전국 약 700여 개교로 확대)</span></li>
+        <li><span class="yr">2021</span><span class="dot"></span><span>2월 「종합 추진계획」 · 8월 「단계적 이행 계획(2022–2024)」 발표</span></li>
+        <li><span class="yr">2022</span><span class="dot"></span><span>특성화고 도입 · 12월 「2022 개정 교육과정」 고시</span></li>
+        <li><span class="yr">2023</span><span class="dot"></span><span>일반계고 단계적 적용 시작 (2015 개정 교육과정 기반)</span></li>
+        <li class="on"><span class="yr">2025</span><span class="dot"></span><span>전체 고등학교 1학년 전면 시행 (2022 개정 교육과정 적용)</span></li>
+      </ol>
     </div>
+  </section>
 
-    <!-- 제도 기본사항 -->
-    <div class="sec">
-      <div class="sec-eyebrow">기본 사항</div>
-      <h2>졸업 요건과 학점 구조</h2>
+  <section class="band" aria-labelledby="s-basic">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-badge">기본 사항</span>
+        <h2 id="s-basic">졸업 요건과 학점 구조</h2>
+      </div>
       <div class="stat3">
         <div class="stat"><b>192<small> 학점</small></b><span>3년간 졸업 이수 기준 (기존 204단위에서 조정)</span></div>
         <div class="stat"><b>16<small> 회</small></b><span>1학점 = 50분 수업 16회 (기존 17회에서 조정)</span></div>
         <div class="stat"><b>84 / 90</b><span>교과 필수 이수 84 · 자율 이수 90</span></div>
       </div>
-      <table class="tbl">
-        <tbody>
-          <tr><th>공통 과목</th><td>1학년 중심. 공통국어·수학·영어, 통합사회·통합과학, 한국사 등</td><td>상대평가(석차 5등급) + 성취평가 병기</td></tr>
-          <tr><th>선택 과목</th><td>2~3학년 중심. 일반선택·진로선택·융합선택으로 편성</td><td>성취평가(A~E) 적용</td></tr>
-          <tr><th>학사 운영</th><td>단위 → 학점 기준으로 전환. 학기 단위 과목 운영</td><td>출석 일수 기준 → 학점 이수 기준</td></tr>
-        </tbody>
-      </table>
+      <div class="struct">
+        <table>
+          <caption class="sr-only">과목 구분별 운영과 평가</caption>
+          <tbody>
+            <tr><th scope="row">공통 과목</th><td>1학년 중심. 공통국어·수학·영어, 통합사회·통합과학, 한국사 등</td><td>상대평가(석차 5등급) + 성취평가 병기</td></tr>
+            <tr><th scope="row">선택 과목</th><td>2~3학년 중심. 일반선택·진로선택·융합선택으로 편성</td><td>성취평가(A~E) 적용</td></tr>
+            <tr><th scope="row">학사 운영</th><td>단위 → 학점 기준으로 전환. 학기 단위 과목 운영</td><td>출석 일수 기준 → 학점 이수 기준</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </section>
 
-    <!-- 이수 기준 & 성취도 -->
-    <div class="sec">
-      <div class="sec-eyebrow">이수 기준</div>
-      <h2>학점은 어떻게 이수하나요?</h2>
+  <section class="band" aria-labelledby="s-credit">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-badge">이수 기준</span>
+        <h2 id="s-credit">학점은 어떻게 이수하나요?</h2>
+      </div>
       <div class="two">
         <div class="mini">
-          <h4>학점 이수 인정 기준</h4>
+          <h3>학점 이수 인정 기준</h3>
           <ul>
             <li>과목 출석률 2/3 이상 (공통·선택 공통)</li>
             <li>공통 과목: 학업성취율 40% 이상 추가</li>
@@ -247,38 +202,30 @@
           </ul>
         </div>
         <div class="mini">
-          <h4>성취도 평정 (보통교과)</h4>
-          <table class="tbl center" style="margin-top:0">
-            <thead><tr><th>성취도</th><th>성취율</th></tr></thead>
+          <h3>성취도 평정 (보통교과)</h3>
+          <table class="grade">
+            <thead><tr><th scope="col">성취도</th><th scope="col">성취율</th></tr></thead>
             <tbody>
               <tr><td>A</td><td>90% 이상</td></tr>
               <tr><td>B</td><td>80% 이상</td></tr>
               <tr><td>C</td><td>70% 이상</td></tr>
               <tr><td>D</td><td>60% 이상</td></tr>
               <tr><td>E</td><td>40% 이상</td></tr>
-              <tr><td class="imp">I (미이수)</td><td class="imp">40% 미만</td></tr>
+              <tr><td>I (미이수)</td><td>40% 미만</td></tr>
             </tbody>
           </table>
         </div>
       </div>
-
       <div class="msl">
-        <h4>최소 성취수준 보장지도</h4>
+        <h3>최소 성취수준 보장지도</h3>
         <div class="msl-grid">
-          <div class="msl-col"><h5>예방지도</h5><p>미도달 예상 학생 대상, 이수 전 선제 지도</p></div>
-          <div class="msl-col"><h5>보충지도</h5><p>미도달 학생 대상, 학기말·방학 보충 (이수 시 E까지 취득)</p></div>
-          <div class="msl-col"><h5>추가학습</h5><p>과목 출석률 미충족 학생 대상, 학기말·방학 추가학습 운영</p></div>
+          <div class="msl-col"><h4>예방지도</h4><p>미도달 예상 학생 대상,<br>이수 전 선제 지도</p></div>
+          <div class="msl-col"><h4>보충지도</h4><p>미도달 학생 대상, 학기말·방학 보충<br>(이수 시 E까지 취득)</p></div>
+          <div class="msl-col"><h4>추가학습</h4><p>과목 출석률 미충족 학생 대상,<br>학기말·방학 추가학습 운영</p></div>
         </div>
       </div>
     </div>
-
-    <!-- 다음 이동 -->
-    <div class="nextnav">
-      <a href="./index.html"><div class="nl">◀ 목록</div><div class="nt">고교학점제 안내</div></a>
-      <a href="./student-agency.html" class="r"><div class="nl">다음 ▶</div><div class="nt">학생 주도성과 고교학점제</div></a>
-    </div>
-
-  </div>
+  </section>
 </main>
 
 <div id="om-footer"></div>

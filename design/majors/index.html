@@ -130,45 +130,35 @@ input { font-family: inherit; }
 /* ──────────────────────────────────────────────
    HERO (landing only — collapses when filtering/searching)
    ────────────────────────────────────────────── */
+/* 시안 sub02_02 — 옅은 하늘색 바탕, 검정 큰 제목, 캐릭터 3인 (2026-11-11) */
 .hero {
-  padding: 44px 28px 24px;
+  padding: clamp(36px, 5vw, 72px) 28px clamp(32px, 6vw, 96px);
   display: flex; gap: 36px;
   align-items: center;
 }
 .hero-text { flex: 1; min-width: 0; }
-.hero-eyebrow {
-  font-family: var(--font-mono-local);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: var(--ink-4);
-  margin-bottom: 14px;
-  text-transform: uppercase;
-}
+.hero-crumb { font-size: 13px; color: var(--brand); margin-bottom: 12px; }
+.hero-crumb a:hover { text-decoration: underline; }
+.hero-crumb strong { font-weight: 600; }
 .hero-title {
-  font-size: clamp(28px, 4vw, 44px);
-  font-weight: 900;
-  line-height: 1.15;
-  letter-spacing: -0.035em;
-}
-.hero-title .grad {
-  background: linear-gradient(120deg, #94AAE0 25%, #4F6EBE 75%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: clamp(32px, 3.9vw, 56px);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
 }
 .hero-desc {
-  font-size: 15px;
-  color: var(--ink-3);
-  margin-top: 14px;
-  line-height: 1.7;
-  max-width: 460px;
+  font-size: clamp(15px, 1.25vw, 18px);
+  margin-top: clamp(24px, 3.4vw, 48px);
+  line-height: 1.75;
+  max-width: 520px;
 }
 
 .hero-illust {
-  width: 360px; height: 260px;
+  width: clamp(280px, 26vw, 380px);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
+.hero-illust img { width: 100%; height: auto; }
 
 /* ──────────────────────────────────────────────
    SITE BRIDGE NAV (서브헤더 — 사이트 간 이동)
@@ -984,10 +974,12 @@ mark {
   <!-- ╭───── HERO ─────╮ -->
   <section class="hero" id="hero">
     <div class="hero-text">
-      <div class="hero-eyebrow">꾸꾸클럽 · 대학 학과와 권장 과목 안내</div>
+      <nav class="hero-crumb" aria-label="이동 경로">
+        <a href="../../index.html">홈</a> › <a href="../">진로·학업 설계</a> › <strong>학과·과목 탐색</strong>
+      </nav>
       <h1 class="hero-title">
         어떤 계열이<br>
-        <span class="grad">나에게 어울릴까?</span>
+        나에게 어울릴까?
       </h1>
       <p class="hero-desc">
         10개 계열 · 170여 학과를 한 곳에서.<br>
@@ -995,8 +987,7 @@ mark {
       </p>
     </div>
     <div class="hero-illust" id="heroIllust" aria-hidden="true">
-      <img src="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/assets/characters/tokkumi.svg"
-           alt="토꾸미" style="width:220px;height:auto;filter:drop-shadow(0 8px 24px rgba(79,110,190,0.18));">
+      <img src="../../assets/img/sub/char-trio.svg" alt="">
     </div>
   </section>
 
