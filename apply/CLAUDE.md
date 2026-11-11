@@ -7,7 +7,7 @@
 
 이 문서 본문은 **아직 단일 프로그램(꿈키움) 전제로 작성된 과거 상태**다. 지역연계 공동교육과정·고교-대학 연계까지 `app.html` 하나로 같이 서빙하도록 확장하는 작업이 진행 중이며, 완료 전까지 아래와 실제 코드가 어긋날 수 있다. **설계 전체는 `.claude/plans/cheerful-soaring-sparkle.md`(Track B) 참고.**
 
-진행 상황(이 레포 기준, `main` 미병합):
+진행 상황 — **2026-11-11 `main`에 병합**(지역연계 2026-11-21 신청 시작 대비). 테스트 사본 `apply/admin-test/`·`apply/app-test.html`은 정식 주소로 넘기는 이동 페이지가 됐다:
 - ✅ `supabase/sql/rpc_backup_query.sql` — RPC 7개 실제 정의 백업 완료(2026-10-21, 하단에 전문 보관).
 - ✅ `supabase/sql/program_column_migration.sql` — **실행 완료 + 검증 완료(2026-10-21)**. `courses`(새 컬럼 전부 포함, 기존 66강좌 전부 `program='dream_up'` 확인)/`enrollments`에 `program` 컬럼, `programs` 3행(`dream_up`/`dual_credit`/`joint_regional`)·빈 `staff_profiles` 테이블 생성, 기존 `settings` 1행에 `program='dream_up'` 백필까지 전부 확인됨.
   **설계 변경**: 처음 계획했던 신규 `cycles` 테이블은 쓰지 않는다 — 실제 RPC가 이미 `settings`(1차/2차 2단계 모델: `open_at/close1_at/open2_at/close2_at`)를 쓰고 있어, 검증된 로직을 유지하는 쪽으로 바꿨다.
