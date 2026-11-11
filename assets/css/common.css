@@ -272,12 +272,16 @@ a.sub-wide:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 
 /* 4대 안전망 첫 화면 칸 — 세로 카드 4장. 글자는 검정(가장 낮은 brand 칸 4.45:1, 25px 굵은 글씨 기준 통과) */
 .net-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.net-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(24px,4vw,56px);min-height:clamp(260px,26vw,375px);padding:32px 16px;
+.net-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(18px,2.4vw,32px);min-height:clamp(260px,26vw,375px);padding:32px 16px;
   border-radius:40px;color:var(--ink);text-align:center;transition:transform .2s,box-shadow .2s}
 .net-tile:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
 .net-tile .ic{width:clamp(72px,7.5vw,108px);aspect-ratio:1;background:currentColor;-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
-.net-tile strong{font-size:clamp(19px,1.8vw,25px);font-weight:700;line-height:1.5;word-break:keep-all}
-.net-tile:nth-child(1){background:var(--brand);--ic:url("../img/sub/icon-net-school.svg")}
+/* 제목은 로고타입처럼 — 작은 이름표(브랜드) + 굵은 이름. 아래 한 줄 설명 (담당자 요청 2026-11-11) */
+.net-tile .nt-logo{display:flex;flex-direction:column;align-items:center;gap:8px}
+.net-tile .nt-pre{display:inline-block;font-size:clamp(13px,1.1vw,15px);font-weight:700;line-height:1.4;padding:2px 12px;border:1.5px solid currentColor;border-radius:var(--radius-pill)}
+.net-tile .nt-name{font-size:clamp(22px,2.2vw,30px);font-weight:900;letter-spacing:-.06em;line-height:1.15;word-break:keep-all}
+.net-tile .nt-desc{font-size:clamp(14px,1.05vw,15px);line-height:1.65;word-break:keep-all;max-width:15em}
+.net-tile:nth-child(1){background:var(--brand);color:#fff;--ic:url("../img/sub/icon-net-school.svg")} /* 파랑 칸만 흰 글자 (4.72:1, 검정은 4.45) */
 .net-tile:nth-child(2){background:var(--online);--ic:url("../img/sub/icon-net-online.svg")}
 .net-tile:nth-child(3){background:var(--plum);--ic:url("../img/sub/icon-net-joint.svg")}
 .net-tile:nth-child(4){background:var(--accent);--ic:url("../img/sub/icon-net-outside.svg")}
@@ -316,6 +320,17 @@ a.sub-wide:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .btn-pill.is-line{background:var(--surface);color:var(--brand-d)}
 .btn-pill:hover{transform:translateY(-2px)}
 .btn-pill:focus-visible{outline:3px solid var(--brand-d);outline-offset:3px}
+
+/* 이전/다음 이동 막대 — 안내 페이지가 순서대로 이어지도록 */
+.page-nav{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.2vw,18px);max-width:var(--sub-w);margin:clamp(56px,7vw,100px) auto 0;padding:0 24px}
+.page-nav a{display:flex;flex-direction:column;gap:2px;padding:clamp(18px,2vw,26px) clamp(20px,2.4vw,32px);background:var(--bg);border-radius:var(--radius);transition:transform .2s,box-shadow .2s}
+.page-nav a:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.page-nav a:focus-visible{outline:3px solid var(--brand-d);outline-offset:3px}
+.page-nav .pn-next{grid-column:2;text-align:right}
+.page-nav .pn-l{font-size:13px;font-weight:600;color:var(--brand-d)}
+.page-nav .pn-t{font-size:clamp(16px,1.4vw,19px);font-weight:700;word-break:keep-all}
+.band + .page-nav{margin-top:0}
+@media(max-width:680px){.page-nav{grid-template-columns:1fr}.page-nav .pn-next{grid-column:auto}}
 
 @media(max-width:900px){
   .net-tiles{grid-template-columns:repeat(2,1fr)}
