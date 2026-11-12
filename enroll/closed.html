@@ -49,7 +49,8 @@
   if (PROG[p]) OM_ENROLL_STATUS.get(PROG[p]).then(function (s) {
     var el = document.getElementById('next-open');
     if (s.isOpen) { el.innerHTML = '지금 신청 중입니다. <a class="txt-link" href="' + s.appUrl + '">신청 화면으로 가기</a>'; el.hidden = false; }
-    else if (s.openAt) { el.textContent = '다음 신청 시작: ' + OM_ENROLL_STATUS.fmt(s.openAt); el.hidden = false; }
+    else if (s.isPreview) { el.innerHTML = '신청은 ' + OM_ENROLL_STATUS.fmt(s.openAt) + '에 시작합니다. 지금은 강좌 목록을 미리 볼 수 있습니다. <a class="txt-link" href="' + s.appUrl + '">강좌 보기</a>'; el.hidden = false; }
+    else if (s.openAt) { el.textContent = '다음 신청 시작: ' + OM_ENROLL_STATUS.fmt(s.openAt) + ' · 강좌 공개: ' + OM_ENROLL_STATUS.fmt(s.previewAt); el.hidden = false; }
   });
   if (NAMES[p]) {
     document.getElementById('prog-name').textContent = NAMES[p];

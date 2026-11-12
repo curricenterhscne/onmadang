@@ -66,6 +66,13 @@
     - 지역 관문 프로그램은 `get_open_status_region`을 쓰고, 지역을 바꾸면 다시 불러온다.
     - 상태줄 아래에 「○○ 신청 기간 11. 20.(목) 09:00 ~ …」을 표시한다.
     - 기간 미설정 지역은 안내 문구를 띄운다.
+- 🔧 **강좌 공개(미리 보기) 시각(2026-11-12)** — 신청 시작 전에 학생이 강좌 목록을 먼저 본다.
+  - `settings.preview_at`(NULL = `open_at` 7일 전). `supabase/sql/preview_period.sql`이 칸을 더하고 `get_open_status_region`이 `preview_at`·`preview_set`·`is_preview`를 돌려주게 교체한다(시그니처 그대로). **SQL 실행·`admin-periods` 재배포는 사용자가 직접**.
+  - 화면은 응답에 `preview_at`이 없으면 `open_at - 7일`로 계산하므로 SQL 실행 전에도 「1주일 전 공개」로 동작한다.
+  - `app.html`: 공개 전(`before_open` + 공개 시각 전)에는 목록 대신 「강좌 목록은 ○에 공개합니다」. 공개 후에는 목록·상세는 보이고 신청 단추만 막힌다.
+  - `assets/js/enroll-status.js`가 `isPreview`·`previewAt`을 주고, 입구(`enroll/`) 칸은 `isOpen || isPreview`면 신청 화면으로 연결한다. 입구는 기본 기간만 본다(지역 기간 무관).
+  - 관리 화면 「신청 기간」 표에 「강좌 공개(선택)」 열. `admin-periods`는 `preview_at < open_at`을 검사한다.
+- ✅ **웹 매뉴얼(2026-11-12)** — `apply/admin/guide/region.html`(지역청 담당자) · `province.html`(도교육청) · `guide.css` · `index.html`(region으로 이동). 관리 화면 로그인 창과 머리글 「매뉴얼」 단추(역할별로 주소가 바뀜)에서 연결. noindex. **공개 저장소이므로 지역청 아이디 목록·비밀번호 보관 위치는 싣지 않는다**(docx 2판 `G:\26\(4)온마당 고도화\…_운영매뉴얼_2026-11-12.docx`에만 있다). 관리 화면 기능이 바뀌면 두 페이지를 함께 고칠 것.
 - ❌ 아직 안 한 것: GNB에 지역연계·고교대학연계로 가는 공개 링크/안내 페이지 연결(`safety/jointcurricula.html` 등), 14개 지역청 실제 계정 발급·강좌 입력, `dual_credit/enroll.js`의 신청 링크 제어를 `settings`/`cycles` 기반으로 전환.
 
 **지금 운영 중이던 꿈키움(2026-10-17~11-29) 데이터는 백업 후 삭제됨** — 다음 회차부터는 새 관리자 도구로 강좌를 다시 등록한다. 레거시 `ADMIN_PASSWORD` 경로는 계속 유지되고 있어 운영 전환 자체는 지장 없음(배포 직후·삭제 전 각각 정상 동작 확인함).

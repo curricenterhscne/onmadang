@@ -835,6 +835,9 @@ let sbClient;
 let serverTimeDiff = 0;
 let isOpen = false;
 let openAt = null;
+// 강좌 공개(미리 보기) 시각 전이면 목록을 숨긴다. 관리 화면 「강좌 공개」 값, 없으면 신청 시작 7일 전
+let previewAt = null;
+let coursesHidden = false;
 let courses = [];
 let filterField  = '';
 let filterOrg    = '';
@@ -1177,7 +1180,13 @@ async function loadOpenStatus() {
     serverTimeDiff = new Date(data.server_now).getTime() - Date.now();
     isOpen = data.is_open;
     openAt = data.open_at ? new Date(data.open_at) : null;
+    previewAt = data.preview_at ? new Date(data.preview_at)
+      : (openAt ? new Date(openAt.getTime() - 7 * 864e5) : null);   // preview_period.sql 실행 전 응답
+    const wasHidden = coursesHidden;
+    coursesHidden = data.phase === 'before_open' && !!previewAt
+      && (Date.now() + serverTimeDiff) < previewAt.getTime();
     renderStatusBar(data);
+    if (wasHidden !== coursesHidden && courses.length) renderCourses();
   } catch(e) {
     console.warn('get_open_status:', e);
     document.getElementById('countdown').textContent = '상태를 확인할 수 없습니다.';
@@ -1228,7 +1237,8 @@ function renderStatusBar(d) {
       cd.textContent = left > 0 ? `2차 신청 시작까지 ⏳ ${fmtTime(left)}` : '잠시 후 2차 신청이 시작됩니다.';
     } else if (phase === 'before_open' && d.open_at) {
       const left = Math.round((new Date(d.open_at).getTime() - now) / 1000);
-      cd.textContent = left > 0 ? `신청 시작까지 ⏳ ${fmtTime(left)}` : '신청이 곧 시작됩니다.';
+      const pre = coursesHidden ? '' : '강좌 미리 보기 기간입니다. ';
+      cd.textContent = left > 0 ? `${pre}신청 시작까지 ⏳ ${fmtTime(left)}` : '신청이 곧 시작됩니다.';
     } else if (phase === 'not_configured') {
       cd.textContent = regionGate && !filterRegion ? '교육지원청을 고르면 신청 기간이 표시됩니다.' : '신청 기간이 아직 정해지지 않았습니다.';
     } else {
@@ -1268,6 +1278,11 @@ async function loadCourses() {
 
 function renderCourses() {
   if (regionGate && !renderRegionGate()) return;
+  if (coursesHidden) {
+    document.getElementById('course-grid').innerHTML =
+      `<div class="empty-msg">강좌 목록은 ${fmtKst(previewAt.toISOString())}에 공개합니다.<br>신청은 ${fmtKst(openAt.toISOString())}에 시작합니다.</div>`;
+    return;
+  }
   let list = regionCourses();
   if (filterField)  list = list.filter(c => { const d = DETAIL_MAP[c.code]; return d && d.field.includes(filterField); });
   if (filterOrg)    list = list.filter(c => c.org === filterOrg);

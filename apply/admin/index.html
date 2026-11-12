@@ -51,6 +51,7 @@
     padding: 7px 14px; border-radius: 7px; border: none; cursor: pointer;
     font-size: .85rem; font-weight: 500;
   }
+  a.btn { display: inline-block; text-decoration: none; line-height: normal; }
   .btn-primary { background: #4F6EBE; color: #fff; }
   .btn-primary:hover { background: #3a539b; }
   .btn-outline { background: #fff; color: #444; border: 1px solid #ddd; }
@@ -237,6 +238,7 @@
       </span>
       · <a id="toggle-register">지역청/기관 담당자 가입 신청</a>
     </div>
+    <div class="login-toggle"><a href="./guide/region.html" target="_blank" rel="noopener">지역청 담당자 매뉴얼</a> · <a href="./guide/province.html" target="_blank" rel="noopener">도교육청 매뉴얼</a></div>
   </div>
 </div>
 
@@ -249,6 +251,7 @@
     </div>
     <div class="header-actions">
       <button class="btn btn-outline" id="staff-btn" style="display:none">가입 승인</button>
+      <a class="btn btn-outline" id="guide-link" href="./guide/region.html" target="_blank" rel="noopener">매뉴얼</a>
       <button class="btn btn-outline" id="period-btn">신청 기간</button>
       <button class="btn btn-outline" id="refresh-btn">새로고침</button>
       <button class="btn btn-primary" id="new-course-btn">+ 강좌 등록</button>
@@ -464,10 +467,11 @@
       <select id="period-program"></select>
     </div>
     <p class="period-help">시각은 한국 시간입니다. 지역 기간을 넣지 않은 교육지원청은 <b>기본 기간</b>을 따릅니다.
-      2차 신청은 필요할 때만 시작과 마감을 함께 넣습니다. 저장하면 학생 화면과 좌석 예약에 바로 적용됩니다.</p>
+      2차 신청은 필요할 때만 시작과 마감을 함께 넣습니다.
+      <b>강좌 공개</b>는 학생이 신청 전에 강좌 목록을 볼 수 있게 되는 시각이며, 비워 두면 1차 시작 7일 전입니다. 저장하면 학생 화면과 좌석 예약에 바로 적용됩니다.</p>
     <div class="modal-table-wrap">
       <table class="period-table">
-        <thead><tr><th>구분</th><th>1차 시작</th><th>1차 마감</th><th>2차 시작(선택)</th><th>2차 마감(선택)</th><th>적용</th><th></th></tr></thead>
+        <thead><tr><th>구분</th><th>강좌 공개(선택)</th><th>1차 시작</th><th>1차 마감</th><th>2차 시작(선택)</th><th>2차 마감(선택)</th><th>적용</th><th></th></tr></thead>
         <tbody id="period-tbody"></tbody>
       </table>
     </div>
@@ -660,6 +664,7 @@
       badge.style.display = 'inline-block';
     }
     document.getElementById('staff-btn').style.display = (ME && ME.role === 'province') ? 'inline-block' : 'none';
+    document.getElementById('guide-link').href = (ME && ME.role === 'province') ? './guide/province.html' : './guide/region.html';
   }
 
   async function loadPrograms() {
@@ -1416,8 +1421,8 @@
   // ── 신청 기간 (지역청별) ──────────────────────────────────────────────
   // admin-periods 함수로 settings의 프로그램 기본 기간·지역 기간을 읽고 쓴다.
   const REGIONS_FULL = ['천안','공주','보령','아산','서산','논산계룡','당진','금산','부여','서천','청양','홍성','예산','태안'].map(r => r + '교육지원청');
-  const P_FIELDS = ['open_at','close1_at','open2_at','close2_at'];
-  const P_LABEL = { open_at: '1차 시작', close1_at: '1차 마감', open2_at: '2차 시작', close2_at: '2차 마감' };
+  const P_FIELDS = ['preview_at','open_at','close1_at','open2_at','close2_at'];
+  const P_LABEL = { preview_at: '강좌 공개', open_at: '1차 시작', close1_at: '1차 마감', open2_at: '2차 시작', close2_at: '2차 마감' };
   const pEsc = v => String(v == null ? '' : v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   // ISO(UTC) → datetime-local 값(KST)
   function isoToKst(iso) {
@@ -1441,7 +1446,7 @@
   async function loadPeriods() {
     const program = document.getElementById('period-program').value;
     const tbody = document.getElementById('period-tbody');
-    tbody.innerHTML = '<tr><td colspan="7" class="empty-msg">불러오는 중...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="empty-msg">불러오는 중...</td></tr>';
     try {
       const res = await authFetch(`${SUPABASE_FN}/admin-periods?program=${encodeURIComponent(program)}`);
       if (res.status === 401) { logout(); return; }
@@ -1449,7 +1454,7 @@
       if (!res.ok) throw new Error(data.error || `서버 오류 ${res.status}`);
       renderPeriods(program, data.rows || []);
     } catch (e) {
-      tbody.innerHTML = `<tr><td colspan="7" class="empty-msg">오류: ${pEsc(e.message)}</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8" class="empty-msg">오류: ${pEsc(e.message)}</td></tr>`;
     }
   }
 

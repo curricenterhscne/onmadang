@@ -4,7 +4,8 @@
 // GET  ?program=joint_regional
 //      → { rows: [{id, program, region, open_at, close1_at, open2_at, close2_at}] }
 //        region이 null인 행이 프로그램 기본 기간이다.
-// POST { program, region|null, open_at, close1_at?, open2_at?, close2_at? }  → 저장(없으면 추가)
+// POST { program, region|null, preview_at?, open_at, close1_at?, open2_at?, close2_at? }  → 저장(없으면 추가)
+//      preview_at(강좌 공개 시각)은 비우면 NULL = 신청 시작 7일 전(preview_period.sql, 2026-11-12)
 // POST { action: "delete", program, region }                              → 지역 행 삭제(기본 기간으로 돌아감)
 //
 // 권한
@@ -19,7 +20,7 @@ import { authenticateStaff, CORS_HEADERS, StaffProfile } from "../_shared/authz.
 
 // admin-upsert-course·관리 화면의 REGION_PROGRAMS와 같아야 한다
 const REGION_PROGRAMS = ["joint_regional"];
-const FIELDS = ["open_at", "close1_at", "open2_at", "close2_at"] as const;
+const FIELDS = ["preview_at", "open_at", "close1_at", "open2_at", "close2_at"] as const;
 
 function json(body: unknown, status = 200) {
   return Response.json(body, { status, headers: CORS_HEADERS });
@@ -58,7 +59,7 @@ serve(async (req) => {
     if (!program) return json({ error: "program required" }, 400);
     if (!canRead(staff, program)) return json({ error: "Forbidden" }, 403);
     let q = `${SUPABASE_URL}/rest/v1/settings?program=eq.${encodeURIComponent(program)}` +
-      `&select=id,program,region,open_at,close1_at,open2_at,close2_at&order=region.nullsfirst`;
+      `&select=id,program,region,preview_at,open_at,close1_at,open2_at,close2_at&order=region.nullsfirst`;
     // 지역청은 기본 기간 + 자기 지역 행만
     if (staff.role === "region") {
       const sv = encodeURIComponent(staff.scope_value || "__none__");
@@ -98,6 +99,7 @@ serve(async (req) => {
   if (t.open_at === null) return json({ error: "신청 시작 일시는 꼭 넣어야 합니다" }, 400);
   if (t.close1_at === null) return json({ error: "신청 마감 일시는 꼭 넣어야 합니다" }, 400);
   if (t.close1_at <= t.open_at) return json({ error: "마감은 시작보다 뒤여야 합니다" }, 400);
+  if (t.preview_at !== null && t.preview_at >= t.open_at) return json({ error: "강좌 공개는 신청 시작보다 앞이어야 합니다" }, 400);
   if ((t.open2_at === null) !== (t.close2_at === null)) return json({ error: "2차 신청은 시작과 마감을 함께 넣어야 합니다" }, 400);
   if (t.open2_at !== null && t.close2_at !== null) {
     if (t.open2_at <= t.close1_at) return json({ error: "2차 시작은 1차 마감보다 뒤여야 합니다" }, 400);

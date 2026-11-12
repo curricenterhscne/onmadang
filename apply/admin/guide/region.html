@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#DAF2FC">
+<meta name="description" content="온마당 수강신청 시스템 교육지원청 담당자 매뉴얼">
+<title>지역청 담당자 매뉴얼 · 온마당 수강신청</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../../../assets/css/common.css">
+<link rel="stylesheet" href="./guide.css">
+</head>
+<body>
+
+<div id="om-header" data-active="enroll"></div>
+
+<!-- 교육지원청 담당자용 운영 매뉴얼 (2026-11-12, 웹판).
+     관리 화면 로그인 창과 머리글 「매뉴얼」 단추에서 연결된다. 검색 제외(noindex).
+     기능이 바뀌면 이 문서와 province.html(도교육청용)을 함께 고친다. -->
+<section class="page-hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="이동 경로"><a href="../">수강신청 관리 화면</a> › <strong>매뉴얼</strong></nav>
+    <h1>지역청 담당자 매뉴얼</h1>
+    <p>지역연계 공동교육과정 수강신청을 운영하는 교육지원청 담당자가 관리 화면에서 하는 일을 순서대로 적었습니다.</p>
+  </div>
+</section>
+
+<main class="guide-body">
+  <div class="guide">
+    <nav class="guide-toc" aria-label="목차">
+      <strong>목차</strong>
+      <ol>
+        <li><a href="#s1">1. 한눈에 보기</a></li>
+        <li><a href="#s2">2. 로그인</a></li>
+        <li><a href="#s3">3. 화면 구성</a></li>
+        <li><a href="#s4">4. 강좌 등록</a></li>
+        <li><a href="#s5">5. 엑셀로 한꺼번에 등록</a></li>
+        <li><a href="#s6">6. 강좌 수정·삭제</a></li>
+        <li><a href="#s7">7. 신청 기간 설정</a></li>
+        <li><a href="#s8">8. 학생에게 안내할 주소</a></li>
+        <li><a href="#s9">9. 신청 기간 중 관리</a></li>
+        <li><a href="#s10">10. 명단 내려받기</a></li>
+        <li><a href="#s11">11. 자주 받는 문의</a></li>
+        <li><a href="#s12">12. 문제 해결</a></li>
+        <li><a href="#s13">13. 도교육청에 요청할 일</a></li>
+      </ol>
+    </nav>
+
+    <div class="guide-main">
+      <div class="guide-switch">
+        <a href="./region.html" aria-current="page">지역청 담당자</a>
+        <a href="./province.html">도교육청 담당자</a>
+      </div>
+      <p class="guide-meta">2026. 11. 12. 기준 · 관리 화면 <a class="txt-link" href="../">onmadang.or.kr/apply/admin/</a></p>
+
+      <section class="guide-sec" id="s1">
+        <h2>1. 한눈에 보기</h2>
+        <p>지역청 담당자는 자기 교육지원청의 <b>지역연계 공동교육과정</b> 강좌와 신청자만 보고 관리합니다. 다른 지원청 강좌와 다른 프로그램(꿈키움, 고교-대학 연계)은 보이지 않습니다.</p>
+        <h3>회차 운영 순서</h3>
+        <ul class="check">
+          <li>강좌 등록 — 1개씩(4장) 또는 엑셀로 한꺼번에(5장)</li>
+          <li>신청 기간 확인, 필요하면 우리 지원청 기간 입력(7장)</li>
+          <li>학교·학생에게 신청 주소와 기간 안내(8장)</li>
+          <li>강좌 공개일에 학생 화면에서 강좌 목록 확인(7-3)</li>
+          <li>신청 기간 중 문의 대응, 정원 조정, 강제마감(9장)</li>
+          <li>마감 후 명단 내려받기, 폐강 여부 판단(10장)</li>
+        </ul>
+        <h3>학생 신청이 처리되는 순서</h3>
+        <ol>
+          <li>학생이 강좌의 「신청하기」를 누르면 좌석 1개가 3분 동안 그 학생 몫으로 잡힙니다. 명단에는 「선점중」으로 보입니다.</li>
+          <li>3분 안에 학교·학번·이름·연락처·취소비번(숫자 4자리)을 입력하면 신청이 확정됩니다.</li>
+          <li>3분 안에 확정하지 않으면 좌석이 자동으로 풀립니다.</li>
+          <li>지역연계 공동교육과정은 <b>한 학생 1강좌</b>입니다. 다른 강좌로 바꾸려면 먼저 신청한 강좌를 취소해야 합니다.</li>
+          <li>학생은 「내 신청 확인·취소」에서 신청을 확인하거나 취소합니다. 신청 기간이 끝나면 학생이 직접 취소할 수 없습니다.</li>
+        </ol>
+      </section>
+
+      <section class="guide-sec" id="s2">
+        <h2>2. 로그인</h2>
+        <ol>
+          <li>관리 화면 <a href="../">https://onmadang.or.kr/apply/admin/</a>을 엽니다.</li>
+          <li>지원청 아이디(예: <code>cheonan@onmadang.kr</code>)와 비밀번호를 입력하고 <span class="ui">로그인</span>을 누릅니다.</li>
+          <li>화면 위쪽 제목 옆에 「이름 · 지역청 (○○교육지원청)」이 보이면 정상입니다.</li>
+        </ol>
+        <div class="note">
+          <strong>비밀번호</strong>
+          <p>아이디는 로그인용이며 실제로 메일을 받는 주소가 아닙니다. 그래서 「비밀번호 찾기」 메일은 오지 않습니다. 비밀번호를 잊었거나 담당자가 바뀌면 도교육청 담당자에게 초기화를 요청하십시오.</p>
+          <p>비밀번호를 공문·단체 메신저에 적지 마십시오.</p>
+        </div>
+        <p>로그인 상태는 브라우저 탭을 닫으면 끝납니다. 공용 PC에서는 다 쓴 뒤 <span class="ui">로그아웃</span>을 누르십시오.</p>
+      </section>
+
+      <section class="guide-sec" id="s3">
+        <h2>3. 화면 구성</h2>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">위치</th><th scope="col">설명</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">위쪽 단추</th><td>신청 기간 · 새로고침 · + 강좌 등록 · 전체 엑셀 · 로그아웃</td></tr>
+            <tr><th scope="row">프로그램 탭</th><td>「지역연계 공동교육과정」 하나만 보임</td></tr>
+            <tr><th scope="row">요약 카드</th><td>전체 신청자 수 · 마감 강좌 수(정원이 찬 강좌 + 강제마감) · 폐강 위험 강좌 수(신청자가 최소 개설 인원 미만)</td></tr>
+            <tr><th scope="row">표 위 단추</th><td>엑셀 양식 다운로드 · 엑셀 일괄 등록</td></tr>
+            <tr><th scope="row">강좌 표</th><td>코드 · 강좌명 · 기관 · 지역 · 신청/정원 · 잔여 · 강제마감 · 정원수정 · 명단 · 엑셀 · 수정 · 삭제. 분홍 줄은 마감, 노란 줄은 폐강 위험</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="guide-sec" id="s4">
+        <h2>4. 강좌 등록 (1개씩)</h2>
+        <ol>
+          <li><span class="ui">+ 강좌 등록</span>을 누릅니다. 프로그램과 지역은 우리 지원청으로 정해져 있어 바꿀 수 없습니다.</li>
+          <li>아래 표를 참고해 칸을 채우고 <span class="ui">저장</span>을 누릅니다. 필수는 강좌명뿐이지만 학생 화면에 그대로 보이므로 되도록 모두 채웁니다.</li>
+          <li>저장하면 강좌 표에 추가되고 강좌 코드가 자동으로 붙습니다(예: <code>JR271CA01</code> = 지역연계 · 2027학년도 1학기 · 천안 · 1번).</li>
+        </ol>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">항목</th><th scope="col">적는 방법</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">강좌 코드</th><td>비워 둠. 저장할 때 자동으로 붙음</td></tr>
+            <tr><th scope="row">운영 기간</th><td>1학기 · 여름방학 · 2학기 · 겨울방학. 코드를 만드는 데만 쓰며, 비워 두면 시작일로 판단</td></tr>
+            <tr><th scope="row">운영 기관</th><td>수업을 운영하는 학교·기관 이름</td></tr>
+            <tr><th scope="row">정원 / 최소 개설 인원</th><td>정원은 신청 가능한 최대 인원. 신청자가 최소 개설 인원보다 적으면 「폐강 위험」으로 표시</td></tr>
+            <tr><th scope="row">신청 가능(목록 노출)</th><td>체크를 풀면 학생 화면 목록에서 빠지고 신청을 받지 않음(별도 모집 강좌용)</td></tr>
+            <tr><th scope="row">학년 제한 강좌</th><td>체크하면 「수강 대상」의 학년이 아닌 학생의 신청을 막음. 아래 「학년 제한」 참고</td></tr>
+            <tr><th scope="row">수강 대상</th><td>예: 2학년, 2~3학년, 1~2학년</td></tr>
+            <tr><th scope="row">강좌 상세</th><td>계열 · 소개 · 수업 방식 · 장소 · 준비물 · 추천 대상 · 강사 소개. 학생 화면의 「상세보기」에 나옴</td></tr>
+            <tr><th scope="row">일정</th><td>시작일 · 종료일 · 총 차시. <b>시작일은 꼭 넣음</b>(학년 제한 판단에 씀)</td></tr>
+            <tr><th scope="row">강사진</th><td>「+ 강사 추가」로 이름 · 소속 · 전공을 한 줄씩</td></tr>
+            <tr><th scope="row">차시별 계획</th><td>「+ 차시 추가」로 차시 · 날짜 · 시간 · 내용 · 강사를 한 줄씩. 많으면 엑셀 일괄 등록(5장)이 편함</td></tr>
+            <tr><th scope="row">학습 목표</th><td>한 줄에 하나씩</td></tr>
+            <tr><th scope="row">요일별 일정(고급)</th><td>비워 둠. 차시별 계획으로 자동 작성</td></tr>
+          </tbody>
+        </table></div>
+        <h3>학년 제한 — 운영 학년도 기준으로 적습니다</h3>
+        <p>신청은 강좌가 운영되기 전 학년도에 받는 경우가 많습니다. 그래서 「수강 대상」에는 <b>강좌가 운영되는 학년도의 학년</b>을 적고, 학생 화면이 이를 현재 학년으로 환산해 신청을 받습니다.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">2027학년도 1학기 강좌의 「수강 대상」</th><th scope="col">2026년 11월에 신청할 수 있는 학생</th></tr></thead>
+          <tbody>
+            <tr><td>3학년</td><td>현재 2학년</td></tr>
+            <tr><td>2~3학년</td><td>현재 1·2학년</td></tr>
+            <tr><td>2학년</td><td>현재 1학년</td></tr>
+            <tr><td>1~2학년</td><td>현재 1학년(내년 1학년은 지금 중학생)</td></tr>
+          </tbody>
+        </table></div>
+        <p>운영 학년도는 <b>시작일</b>로 판단합니다(3월에 학년도가 바뀌며 1·2월은 전년도). 학생 화면 강좌 카드에는 「2027학년도 3학년 대상 · 현재 2학년 신청」처럼 표시됩니다.</p>
+      </section>
+
+      <section class="guide-sec" id="s5">
+        <h2>5. 엑셀로 한꺼번에 등록</h2>
+        <p>강좌나 차시가 많을 때 씁니다. 강사진 · 차시별 계획 · 학습 목표까지 한 번에 등록됩니다.</p>
+        <ol>
+          <li><span class="ui">엑셀 양식 다운로드</span>를 누릅니다.</li>
+          <li>양식의 「작성안내」 시트를 읽고, 예시 행(번호 1, 2)을 지운 뒤 작성합니다.</li>
+          <li><span class="ui">엑셀 일괄 등록</span>을 누르고 작성한 파일을 고릅니다.</li>
+          <li>확인 창에 강좌 · 강사 · 차시 건수와 오류 행이 나옵니다. 맞으면 <span class="ui">확인</span>을 누릅니다.</li>
+          <li>끝나면 성공 · 실패 건수와 강좌마다 부여된 코드가 나옵니다. 실패한 행은 이유를 보고 고쳐서 그 행만 다시 올립니다.</li>
+        </ol>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">시트</th><th scope="col">작성 방법</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">강좌목록</th><td>한 줄에 강좌 하나. 「번호」는 1, 2, 3…처럼 강좌마다 다르게. 「코드」는 비워 둠. 학습목표는 1~3 칸</td></tr>
+            <tr><th scope="row">강사진</th><td>번호(강좌목록의 번호) · 이름 · 소속 · 전공. 강사가 여럿이면 같은 번호로 여러 줄</td></tr>
+            <tr><th scope="row">차시계획</th><td>번호 · 차시 · 날짜 · 시간 · 내용 · 강사. 시간은 <code>09:00</code> 또는 <code>09:00~09:50</code>. 시작 시각만 적으면 50분 수업으로 계산</td></tr>
+          </tbody>
+        </table></div>
+        <div class="note is-info">
+          <strong>알아 두면 좋은 점</strong>
+          <p>지역청 계정으로 올리면 「프로그램」「지역」 칸은 무엇을 적든 우리 지원청의 지역연계 강좌로 저장됩니다.</p>
+          <p>날짜는 <code>2027-03-13</code> 형식으로 적습니다.</p>
+          <p>이미 등록한 강좌를 고치려면 「코드」에 그 강좌 코드를 적습니다. 그 번호의 강사진 · 차시계획 줄이 없으면 기존 강사 · 차시는 그대로 둡니다.</p>
+        </div>
+      </section>
+
+      <section class="guide-sec" id="s6">
+        <h2>6. 강좌 수정·삭제</h2>
+        <ul>
+          <li><span class="ui">수정</span>: 등록 화면과 같은 창이 열립니다. 코드는 바꿀 수 없습니다. 신청자가 있어도 수정할 수 있으며 신청 인원은 바뀌지 않습니다.</li>
+          <li><span class="ui">삭제</span>: 확정된 신청이나 선점 중인 좌석이 있으면 지워지지 않고, 오류 창에 그 건수가 나옵니다. 취소 · 만료된 신청 기록만 남은 강좌는 지워집니다.</li>
+          <li>신청자가 있는 강좌를 더 받지 않으려면 삭제 대신 <span class="ui">강제마감</span>(9장)을 쓰십시오.</li>
+        </ul>
+      </section>
+
+      <section class="guide-sec" id="s7">
+        <h2>7. 신청 기간 설정</h2>
+        <p>지역연계 공동교육과정에는 도교육청이 넣는 <b>기본 기간</b>이 있습니다. 우리 지원청이 기본 기간과 다르게 운영할 때만 <b>지역 기간</b>을 넣습니다. 지역 기간이 있으면 우리 지원청 강좌에는 그 기간이 적용됩니다.</p>
+        <h3 id="s7-1">7-1. 넣는 방법</h3>
+        <ol>
+          <li>위쪽 <span class="ui">신청 기간</span>을 누릅니다.</li>
+          <li>표 첫 줄 「기본 기간 (전체)」은 읽기만 할 수 있습니다. 그 아래 우리 지원청 줄에 입력합니다.</li>
+          <li>1차 시작 · 1차 마감을 넣습니다. 2차를 받을 때만 2차 시작 · 2차 마감을 함께 넣습니다.</li>
+          <li><span class="ui">저장</span>을 누릅니다. 「적용」 칸이 「지역 기간」으로 바뀌면 저장된 것입니다.</li>
+        </ol>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">「적용」 표시</th><th scope="col">뜻</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">지역 기간</th><td>우리 지원청만의 기간이 들어 있음. 기본 기간보다 우선</td></tr>
+            <tr><th scope="row">기본 기간 따름</th><td>지역 기간이 없어 도교육청 기본 기간을 씀</td></tr>
+            <tr><th scope="row">미설정 · 신청 불가</th><td>기본 기간도 지역 기간도 없음. 학생이 신청할 수 없음</td></tr>
+          </tbody>
+        </table></div>
+        <h3 id="s7-2">7-2. 입력 규칙</h3>
+        <ul>
+          <li>시각은 한국 시간으로 넣습니다.</li>
+          <li>1차 시작과 1차 마감은 꼭 넣어야 하며, 마감은 시작보다 뒤여야 합니다.</li>
+          <li>2차는 시작과 마감을 함께 넣고, 2차 시작은 1차 마감보다 뒤여야 합니다.</li>
+          <li>규칙에 맞지 않으면 그 줄 오른쪽에 이유가 나오고 저장되지 않습니다.</li>
+          <li>지역 기간을 없애려면 <span class="ui">지역 기간 삭제</span>를 누릅니다. 그 뒤로는 기본 기간을 따릅니다.</li>
+        </ul>
+        <h3 id="s7-3">7-3. 강좌 공개(미리 보기)</h3>
+        <p>학생은 신청 시작 전에 강좌 목록을 먼저 볼 수 있습니다. 「강좌 공개」 칸을 비워 두면 <b>1차 시작 7일 전</b>부터 공개됩니다. 다른 날로 정하려면 「강좌 공개」에 시각을 넣습니다(1차 시작보다 앞이어야 합니다).</p>
+        <ul>
+          <li>공개 전: 학생 화면에 「강좌 목록은 ○월 ○일에 공개합니다」만 보입니다.</li>
+          <li>공개 후 ~ 신청 시작 전: 강좌 목록과 상세보기를 볼 수 있고, 신청 단추는 눌리지 않습니다.</li>
+          <li>신청 시작 후: 신청을 받습니다.</li>
+        </ul>
+        <div class="note">
+          <strong>강좌는 공개 전에 모두 등록해 두십시오</strong>
+          <p>공개된 뒤에 등록하거나 고친 내용도 학생 화면에 바로 반영되지만, 먼저 본 학생에게는 다르게 안내될 수 있습니다.</p>
+        </div>
+        <p>좌석 선점과 취소는 학생이 고른 지역이 아니라 <b>강좌의 지역</b>에 해당하는 기간으로 판단합니다. 다른 지역 학생이 우리 지원청 강좌를 신청할 때도 우리 지원청 기간이 적용됩니다.</p>
+      </section>
+
+      <section class="guide-sec" id="s8">
+        <h2>8. 학생에게 안내할 주소</h2>
+        <p>우리 지원청 강좌만 바로 열리는 주소를 안내하십시오. 주소 끝의 지역 이름만 바꾸면 됩니다.</p>
+        <pre>https://onmadang.or.kr/apply/app.html?program=joint_regional&amp;region=천안</pre>
+        <p>지역 이름은 천안 · 공주 · 보령 · 아산 · 서산 · 논산계룡 · 당진 · 금산 · 부여 · 서천 · 청양 · 홍성 · 예산 · 태안 중 하나로 적습니다.</p>
+        <div class="note is-info">
+          <strong>수강신청 입구와의 관계</strong>
+          <p>온마당 첫 화면의 「수강신청」 단추(<code>onmadang.or.kr/enroll/</code>)는 도교육청 <b>기본 기간</b>을 기준으로 신청 화면으로 연결됩니다. 지역 기간이 기본 기간과 다른 지원청은 위의 지역 주소를 안내해야 학생이 제때 들어올 수 있습니다.</p>
+        </div>
+      </section>
+
+      <section class="guide-sec" id="s9">
+        <h2>9. 신청 기간 중 관리</h2>
+        <h3>강제마감</h3>
+        <p>강좌 표의 <span class="ui">강제마감</span>을 누르면 「마감중」으로 바뀌고, 정원이 남아 있어도 더 이상 신청을 받지 않습니다. 다시 누르면 풀립니다. 이미 신청한 학생은 그대로 남습니다.</p>
+        <h3>정원 수정</h3>
+        <ol>
+          <li>「정원수정」 열의 숫자를 누르면 입력칸으로 바뀝니다.</li>
+          <li>새 정원을 입력하고 Enter를 누르면 저장됩니다(Esc는 취소).</li>
+        </ol>
+        <p>정원을 현재 신청 인원보다 적게 줄여도 이미 신청한 학생은 지워지지 않고, 새 신청만 막힙니다.</p>
+        <h3>신청자 명단 보기·삭제</h3>
+        <ol>
+          <li>강좌의 <span class="ui">명단</span>을 누르면 학번 · 이름 · 학교 · 연락처 · 상태가 나옵니다. 「선점중」은 학생이 3분 안에 정보를 입력하는 중이라는 뜻입니다.</li>
+          <li>삭제할 학생 줄의 <span class="ui">삭제</span>를 누르고 확인합니다. 신청 인원이 1 줄고 그 자리는 다시 신청할 수 있게 됩니다.</li>
+        </ol>
+        <div class="note">
+          <strong>신청 삭제는 되돌릴 수 없습니다</strong>
+          <p>삭제 전에 학생 본인 또는 학교에 확인하십시오. 필요하면 「엑셀 내보내기」로 먼저 명단을 저장해 두십시오.</p>
+        </div>
+      </section>
+
+      <section class="guide-sec" id="s10">
+        <h2>10. 명단 내려받기</h2>
+        <ul>
+          <li><span class="ui">전체 엑셀</span>(위쪽 단추): 우리 지원청의 모든 신청자를 한 파일로 내려받습니다.</li>
+          <li><span class="ui">엑셀</span>(강좌 표) 또는 명단 창의 <span class="ui">엑셀 내보내기</span>: 그 강좌 신청자만 내려받습니다.</li>
+        </ul>
+        <p>파일 열: 강좌코드 · 강좌명 · 학번 · 이름 · 학교코드 · 학교명 · 연락처 · 신청일시</p>
+        <div class="note">
+          <strong>개인정보</strong>
+          <p>명단에는 학생 이름과 연락처가 들어 있습니다. 업무용 PC에만 저장하고, 메일로 보낼 때는 암호를 걸어 보내십시오. 회차가 끝나 보관 기간이 지나면 파일을 삭제하십시오.</p>
+        </div>
+        <h3>마감 후 할 일</h3>
+        <ul class="check">
+          <li>「전체 엑셀」로 명단 내려받기</li>
+          <li>요약 카드의 「폐강 위험」 강좌 확인 → 폐강 여부 결정</li>
+          <li>폐강 강좌 신청자에게 안내한 뒤 필요하면 신청 삭제</li>
+          <li>개설 확정 명단을 학교에 송부</li>
+        </ul>
+      </section>
+
+      <section class="guide-sec" id="s11">
+        <h2>11. 자주 받는 문의</h2>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">문의</th><th scope="col">대응</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">취소비번을 잊었어요</th><td>취소비번은 담당자도 볼 수 없습니다. 본인 확인 후 명단에서 그 신청을 삭제하고, 다시 신청하도록 안내합니다.</td></tr>
+            <tr><th scope="row">다른 강좌로 바꾸고 싶어요</th><td>학생이 「내 신청 확인·취소」에서 취소한 뒤 새로 신청합니다. 취소비번을 모르면 위와 같이 처리합니다.</td></tr>
+            <tr><th scope="row">2번째 강좌가 신청되지 않아요</th><td>지역연계 공동교육과정은 1인 1강좌이므로 정상입니다.</td></tr>
+            <tr><th scope="row">학년 때문에 신청이 안 돼요</th><td>학년 제한 강좌는 운영 학년도 기준 학년을 현재 학년으로 환산해 받습니다(4장). 강좌 카드의 「현재 ○학년 신청」 표시를 안내합니다. 표시가 맞지 않으면 강좌의 시작일과 「수강 대상」을 확인합니다.</td></tr>
+            <tr><th scope="row">마감 뒤에 취소하고 싶어요</th><td>신청 기간이 끝나면 학생이 직접 취소할 수 없습니다. 본인 확인 후 명단에서 삭제합니다.</td></tr>
+            <tr><th scope="row">강좌 목록이 안 보여요</th><td>강좌 공개 전입니다(7-3). 화면에 공개 일시가 나옵니다.</td></tr>
+            <tr><th scope="row">학교 이름이 검색되지 않아요</th><td>학교명을 도교육청 담당자에게 알려 추가를 요청합니다.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="guide-sec" id="s12">
+        <h2>12. 문제 해결</h2>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">증상</th><th scope="col">확인할 것</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">로그인이 안 됨</th><td>① 아이디 · 비밀번호 오타 ② 그래도 안 되면 도교육청에 비밀번호 초기화 요청</td></tr>
+            <tr><th scope="row">로그인 후 바로 로그인 화면으로 돌아옴</th><td>로그인이 만료된 것입니다. 다시 로그인하십시오. 반복되면 브라우저를 완전히 닫았다 여십시오.</td></tr>
+            <tr><th scope="row">강좌가 학생 화면에 보이지 않음</th><td>① 강좌 공개 전인지(7-3) ② 「신청 가능(목록 노출)」 체크 ③ 학생 화면에서 우리 지원청을 골랐는지</td></tr>
+            <tr><th scope="row">학생 화면에 「신청 기간이 아직 정해지지 않았습니다」</th><td>「신청 기간」 창에서 우리 지원청 줄이 「미설정 · 신청 불가」인지 확인하고 기간을 넣거나 도교육청에 기본 기간을 요청합니다.</td></tr>
+            <tr><th scope="row">엑셀 일괄 등록 오류</th><td>오류 메시지에 행 번호와 이유가 나옵니다. 「번호 ○에 해당하는 강좌가 없습니다」는 강사진 · 차시계획의 번호가 강좌목록에 없다는 뜻입니다.</td></tr>
+            <tr><th scope="row">강좌가 삭제되지 않음</th><td>확정 신청이나 선점 중인 좌석이 있는 강좌입니다. 명단에서 신청을 지운 뒤 삭제하거나 강제마감을 쓰십시오.</td></tr>
+            <tr><th scope="row">「현재 ○학년 신청」 표시가 이상함</th><td>강좌의 시작일이 비어 있거나 틀리지 않은지, 「수강 대상」이 「3학년」「2~3학년」처럼 적혀 있는지 확인합니다.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="guide-sec" id="s13">
+        <h2>13. 도교육청에 요청할 일</h2>
+        <ul>
+          <li>비밀번호 초기화, 담당자 교체에 따른 계정 변경</li>
+          <li>기본 신청 기간 변경</li>
+          <li>학교 목록 추가</li>
+          <li>강좌 코드 직접 지정이 필요한 경우</li>
+          <li>관리 화면 오류 신고(화면을 캡처해 함께 보내 주십시오)</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</main>
+
+<div id="om-footer"></div>
+<script src="../../../assets/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#DAF2FC">
+<meta name="description" content="온마당 수강신청 시스템 도교육청 담당자 운영 매뉴얼">
+<title>도교육청 담당자 매뉴얼 · 온마당 수강신청</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../../../assets/css/common.css">
+<link rel="stylesheet" href="./guide.css">
+</head>
+<body>
+
+<div id="om-header" data-active="enroll"></div>
+
+<!-- 도교육청(마스터 계정) 운영 매뉴얼 웹판 (2026-11-12). 원본은 docx 2판
+     「수강신청시스템_도교육청_운영매뉴얼_2026-11-12.docx」.
+     공개 저장소이므로 지역청 아이디 목록·비밀번호 보관 위치는 싣지 않는다(docx에만 둔다). -->
+<section class="page-hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="이동 경로"><a href="../">수강신청 관리 화면</a> › <strong>매뉴얼</strong></nav>
+    <h1>도교육청 담당자 매뉴얼</h1>
+    <p>수강신청 시스템을 운영하는 도교육청 담당자(마스터 계정)가 회차를 준비하고 마감하기까지 하는 일을 적었습니다.</p>
+  </div>
+</section>
+
+<main class="guide-body">
+  <div class="guide">
+    <nav class="guide-toc" aria-label="목차">
+      <strong>목차</strong>
+      <ol>
+        <li><a href="#p1">1. 시스템 한눈에 보기</a></li>
+        <li><a href="#p2">2. 계정과 권한</a></li>
+        <li><a href="#p3">3. 회차 운영 체크리스트</a></li>
+        <li><a href="#p4">4. 관리 화면과 강좌 관리</a></li>
+        <li><a href="#p5">5. 신청 기간 설정</a></li>
+        <li><a href="#p6">6. 신청 기간 중 관리</a></li>
+        <li><a href="#p7">7. 명단 내려받기</a></li>
+        <li><a href="#p8">8. 계정 관리와 문제 해결</a></li>
+        <li><a href="#p9">9. 회차 종료 후 정리</a></li>
+        <li><a href="#p10">10. Supabase 요금제</a></li>
+        <li><a href="#p11">11. 하지 말아야 할 것</a></li>
+      </ol>
+    </nav>
+
+    <div class="guide-main">
+      <div class="guide-switch">
+        <a href="./region.html">지역청 담당자</a>
+        <a href="./province.html" aria-current="page">도교육청 담당자</a>
+      </div>
+      <p class="guide-meta">2026. 11. 12. 기준 · 강좌 등록·기간 입력·명단 관리 같은 화면 조작은 <a class="txt-link" href="./region.html">지역청 담당자 매뉴얼</a>과 같습니다. 이 문서는 도교육청만 하는 일을 중심으로 적었습니다.</p>
+
+      <section class="guide-sec" id="p1">
+        <h2>1. 시스템 한눈에 보기</h2>
+        <p>한 시스템에서 세 프로그램을 함께 운영하며, 프로그램마다 강좌 · 신청 기간 · 신청자가 따로 관리됩니다.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">구성</th><th scope="col">주소·위치</th><th scope="col">하는 일</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">관리 화면</th><td><code>onmadang.or.kr/apply/admin/</code></td><td>강좌 등록 · 수정 · 삭제, 신청 기간 설정, 정원 · 마감 관리, 명단 확인 · 내려받기, 담당자 가입 승인</td></tr>
+            <tr><th scope="row">수강신청 입구</th><td><code>onmadang.or.kr/enroll/</code></td><td>학생이 처음 들어오는 화면. 프로그램 칸이 강좌 공개 · 신청 기간에 맞춰 신청 화면 또는 「기간 아님」 안내로 연결</td></tr>
+            <tr><th scope="row">학생 신청 화면</th><td><code>onmadang.or.kr/apply/app.html?program=코드</code></td><td>강좌 목록, 좌석 선점(3분), 신청 확정, 내 신청 확인 · 취소</td></tr>
+            <tr><th scope="row">Supabase</th><td>supabase.com 대시보드</td><td>계정 비밀번호 초기화, 숫자 보정 등 관리 화면에 없는 작업(SQL)</td></tr>
+          </tbody>
+        </table></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">프로그램</th><th scope="col">코드</th><th scope="col">관리 주체</th><th scope="col">신청 규칙</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">지역연계 공동교육과정</th><td><code>joint_regional</code></td><td>14개 교육지원청</td><td>1인 1강좌 (2026. 11. 11. 변경, 예전에는 2과목)</td></tr>
+            <tr><th scope="row">꿈키움 창의적체험활동</th><td><code>dream_up</code></td><td>도교육청</td><td>1인 1강좌</td></tr>
+            <tr><th scope="row">고교-대학 연계</th><td><code>dual_credit</code></td><td>기관(대학)</td><td>1인 1강좌</td></tr>
+          </tbody>
+        </table></div>
+        <p>프로그램이 서로 다르면 각각 신청할 수 있습니다. 지역연계 학생 화면은 강좌 목록 전에 교육지원청을 고르는 화면이 먼저 나오며, 주소 끝에 <code>&amp;region=천안</code>처럼 붙이면 그 지역 강좌가 바로 열립니다. 신청 자체를 지역으로 막지는 않습니다.</p>
+        <div class="note is-info">
+          <strong>예전 테스트 주소</strong>
+          <p>시범 운영 때 쓴 <code>…/apply/admin-test/</code>, <code>…/apply/app-test.html</code>은 2026. 11. 11.부터 정식 주소로 저절로 넘어갑니다.</p>
+        </div>
+      </section>
+
+      <section class="guide-sec" id="p2">
+        <h2>2. 계정과 권한</h2>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">역할</th><th scope="col">볼 수 있는 것·할 수 있는 것</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">도교육청(마스터)</th><td>모든 프로그램 · 강좌 · 신청자. 담당자 가입 승인, 모든 신청 기간 설정, 프로그램 전체 초기화, 강좌 코드 직접 입력</td></tr>
+            <tr><th scope="row">지역청 담당</th><td>지역연계 중 자기 지원청 강좌 · 신청자, 자기 지원청 신청 기간. 다른 프로그램은 보이지 않음</td></tr>
+            <tr><th scope="row">기관 담당</th><td>자기 기관 강좌 · 신청자</td></tr>
+          </tbody>
+        </table></div>
+        <p>14개 지원청 계정은 <code>영문지원청명@onmadang.kr</code> 형식으로 만들어 승인해 두었습니다. 아이디 목록과 임시 비밀번호는 별도 계정 파일에만 있습니다. 각 계정의 소관은 「천안교육지원청」처럼 전체 이름이며, 강좌의 「지역」 값이 이 이름과 같아야 그 담당자에게 보입니다.</p>
+        <div class="note">
+          <strong>공유 비밀번호 로그인</strong>
+          <p>로그인 창 아래 「공유 비밀번호로 로그인」은 개인 계정 이전의 방식이며 마스터와 같은 권한을 가집니다. 공유 비밀번호를 다른 사람에게 알려 주지 마십시오.</p>
+        </div>
+      </section>
+
+      <section class="guide-sec" id="p3">
+        <h2>3. 회차 운영 체크리스트</h2>
+        <h3>신청 시작 3~4주 전</h3>
+        <ul class="check">
+          <li>지난 회차 명단을 모두 내려받아 보관했는지 확인(7장)</li>
+          <li>지난 회차 강좌 · 신청자 정리 — 「이 프로그램 전체 초기화」(9장)</li>
+          <li>지역청 담당자 계정 상태 확인: 퇴직 · 전보자가 있으면 비밀번호 초기화 또는 정지(8장)</li>
+          <li>지역청에 강좌 등록 기한, 엑셀 양식, <a href="./region.html">지역청 담당자 매뉴얼</a> 주소 안내</li>
+        </ul>
+        <h3>신청 시작 1~2주 전</h3>
+        <ul class="check">
+          <li>기본 신청 기간 입력, 필요하면 강좌 공개 시각 입력(5장)</li>
+          <li>지역청별 강좌 등록 현황 확인 — 강좌 표의 지역 열</li>
+          <li>강좌명 · 정원 · 최소 개설 인원 · 대상 학년 · 일정 점검. 학년 제한 강좌는 「수강 대상」이 운영 학년도 기준인지와 시작일 확인</li>
+          <li>Supabase 요금제를 Pro로 올림(10장)</li>
+          <li>학교 · 학생 안내 공문에 수강신청 입구 주소(지역 기간이 다르면 지역별 주소), 강좌 공개일, 신청 기간 기재</li>
+        </ul>
+        <h3>강좌 공개일 ~ 신청 기간 중</h3>
+        <ul class="check">
+          <li>공개일에 수강신청 입구 칸이 신청 화면으로 연결되는지, 강좌 목록이 보이는지 확인</li>
+          <li>신청 시작 직후 관리 화면에서 신청 수가 올라가는지 확인(「새로고침」)</li>
+          <li>문의 대응, 정원 조정, 강제마감(6장)</li>
+        </ul>
+        <h3>신청 마감 후</h3>
+        <ul class="check">
+          <li>「전체 엑셀」로 전체 명단 내려받기</li>
+          <li>「폐강 위험」 강좌 확인 → 지역청과 폐강 여부 협의</li>
+          <li>개설 확정 명단을 지역청 · 학교에 송부</li>
+          <li>Supabase 요금제를 Free로 되돌림</li>
+        </ul>
+      </section>
+
+      <section class="guide-sec" id="p4">
+        <h2>4. 관리 화면과 강좌 관리</h2>
+        <p>강좌 등록 · 엑셀 일괄 등록 · 수정 · 삭제와 학년 제한 규칙은 <a href="./region.html#s4">지역청 매뉴얼 4~6장</a>과 같습니다. 도교육청 계정에서 다른 점은 다음과 같습니다.</p>
+        <ul>
+          <li>위쪽 단추에 <span class="ui">가입 승인</span>이 더 있고, 프로그램 탭에 「전체」와 세 프로그램이 모두 보입니다.</li>
+          <li>등록할 프로그램 탭을 먼저 누른 뒤 <span class="ui">+ 강좌 등록</span>을 누르면 프로그램이 미리 선택됩니다.</li>
+          <li>지역은 반드시 「○○교육지원청」 전체 이름으로 적습니다. 약칭으로 적으면 지역청 담당자에게 보이지 않고, 강좌 코드의 지원청 자리에 <code>ZZ</code>가 들어갑니다.</li>
+          <li>강좌 코드를 직접 입력할 수 있습니다(등록 후에는 바꿀 수 없음).</li>
+          <li>특정 프로그램 탭을 누르면 빨간 「위험 구역」(9장)이 나타납니다.</li>
+        </ul>
+        <h3>강좌 코드 규칙</h3>
+        <p>프로그램 2자 + 학년도 2자 + 운영 기간 1자 + 지원청 2자 + 순번 2자. 예: <code>JR27SCA01</code> = 지역연계 · 2027학년도 · 여름방학 · 천안 · 1번</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">구분</th><th scope="col">값</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">프로그램</th><td>지역연계 JR · 고교-대학 연계 DC · 꿈키움 DU</td></tr>
+            <tr><th scope="row">운영 기간</th><td>1학기 1 · 여름방학 S · 2학기 2 · 겨울방학 W. 고르지 않으면 시작일의 달로 정함(3~6월 1, 7~8월 S, 9~12월 2, 1~2월 W)</td></tr>
+            <tr><th scope="row">지원청</th><td>천안 CA · 공주 GJ · 보령 BR · 아산 AS · 서산 SS · 논산계룡 NG · 당진 DJ · 금산 GS · 부여 BY · 서천 SC · 청양 CY · 홍성 HS · 예산 YS · 태안 TA · 그 외 ZZ</td></tr>
+          </tbody>
+        </table></div>
+        <p>학년도는 3월에 바뀝니다. 2028년 1월 겨울방학 강좌는 2027학년도이므로 <code>27W</code>입니다.</p>
+      </section>
+
+      <section class="guide-sec" id="p5">
+        <h2>5. 신청 기간 설정</h2>
+        <p>신청 기간은 관리 화면 <span class="ui">신청 기간</span> 창에서 프로그램별로 넣습니다. 저장하면 학생 화면과 좌석 선점에 바로 적용됩니다.</p>
+        <ol>
+          <li><span class="ui">신청 기간</span>을 누르고 창 위쪽 「프로그램」에서 프로그램을 고릅니다.</li>
+          <li>첫 줄 「기본 기간 (전체)」에 강좌 공개(선택) · 1차 시작 · 1차 마감을 넣습니다. 2차는 필요할 때만 시작과 마감을 함께 넣습니다.</li>
+          <li><span class="ui">저장</span>을 누릅니다.</li>
+        </ol>
+        <h3>기본 기간과 지역 기간</h3>
+        <p>지역연계는 기본 기간 아래에 14개 지원청 줄이 있습니다. 학생 화면은 ① 그 지원청의 지역 기간 → ② 없으면 기본 기간 → ③ 둘 다 없으면 신청 불가 순으로 기간을 고릅니다. 지역청 담당자는 자기 지원청 줄만 저장할 수 있고, 도교육청은 모든 줄을 고칠 수 있습니다.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">「적용」 표시</th><th scope="col">뜻</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">설정됨 / 미설정</th><td>기본 기간이 있음 / 없음</td></tr>
+            <tr><th scope="row">지역 기간</th><td>그 지원청만의 기간. 기본 기간보다 우선</td></tr>
+            <tr><th scope="row">기본 기간 따름</th><td>지역 기간이 없어 기본 기간을 씀</td></tr>
+            <tr><th scope="row">미설정 · 신청 불가</th><td>기본 기간과 지역 기간이 모두 없음</td></tr>
+          </tbody>
+        </table></div>
+        <p>좌석 선점 · 취소는 학생이 고른 지역이 아니라 <b>강좌의 지역</b> 기간으로 판단합니다. 학생 취소는 신청 기간이 끝나면(2차가 있으면 2차 마감 뒤) 막힙니다.</p>
+        <h3>강좌 공개(미리 보기)</h3>
+        <p>「강좌 공개」를 비워 두면 1차 시작 7일 전부터 학생이 강좌 목록을 볼 수 있습니다. 공개 전에는 학생 화면에 공개 일시만 나오고, 공개 후 신청 시작 전에는 목록 · 상세보기만 되고 신청 단추는 눌리지 않습니다. 수강신청 입구 칸도 공개 시각부터 신청 화면으로 연결됩니다.</p>
+        <div class="note">
+          <strong>수강신청 입구는 기본 기간을 따릅니다</strong>
+          <p>입구의 지역연계 칸은 기본 기간(과 그 공개 시각)만 보고 바뀝니다. 기본 기간보다 먼저 여는 지원청은 <code>…/apply/app.html?program=joint_regional&amp;region=천안</code>처럼 지역 주소를 직접 안내해야 합니다.</p>
+        </div>
+        <h3>입력 규칙</h3>
+        <ul>
+          <li>시각은 한국 시간입니다. 1차 시작 · 1차 마감은 필수이며 마감이 시작보다 뒤여야 합니다.</li>
+          <li>강좌 공개는 1차 시작보다 앞이어야 합니다.</li>
+          <li>2차는 시작과 마감을 함께 넣고, 2차 시작은 1차 마감보다 뒤여야 합니다.</li>
+        </ul>
+        <div class="note">
+          <strong>급히 신청을 멈출 때</strong>
+          <p>「1차 마감」(2차가 있으면 「2차 마감」)을 지금보다 이전 시각으로 바꿔 저장하십시오. 학생 화면은 1분 안에 「마감」으로 바뀝니다. 강좌 하나만 멈출 때는 「강제마감」을 쓰십시오.</p>
+        </div>
+        <div class="note is-info">
+          <strong>꿈키움 화면의 안내 문구</strong>
+          <p>꿈키움 학생 화면 위쪽의 일정 안내 문구는 화면 파일에 직접 적혀 있어 기간을 바꿔도 따라 바뀌지 않습니다. 꿈키움 일정을 바꿀 때는 개발 담당에게 문구 수정을 함께 요청하십시오.</p>
+        </div>
+        <h3>학생 화면 상태</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">상태(phase)</th><th scope="col">학생 화면</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">before_open</th><td>공개 전: 「강좌 목록은 ○월 ○일에 공개합니다」 / 공개 후: 강좌 목록과 「강좌 미리 보기 기간입니다. 신청 시작까지 ⏳」</td></tr>
+            <tr><th scope="row">open1</th><td>1차 신청 가능, 마감까지 카운트다운</td></tr>
+            <tr><th scope="row">between</th><td>1차 마감 후 2차 시작 전, 「2차 신청 시작까지」 카운트다운</td></tr>
+            <tr><th scope="row">open2</th><td>2차 신청 가능</td></tr>
+            <tr><th scope="row">closed</th><td>「신청이 마감되었습니다」</td></tr>
+            <tr><th scope="row">not_configured</th><td>적용되는 기간이 없음. 기본 기간을 넣어야 함</td></tr>
+          </tbody>
+        </table></div>
+        <h3>SQL로 한꺼번에 확인하기</h3>
+        <p>Supabase 대시보드 → SQL Editor → New query에 붙여 넣고 Run을 누릅니다. 지역이 「(기본 기간)」인 줄이 기본 기간입니다. 기간을 SQL로 바꾸지는 마십시오.</p>
+        <pre>SELECT program,
+       coalesce(region, '(기본 기간)') AS 지역,
+       preview_at AT TIME ZONE 'Asia/Seoul' AS "강좌 공개",
+       open_at    AT TIME ZONE 'Asia/Seoul' AS "1차 시작",
+       close1_at  AT TIME ZONE 'Asia/Seoul' AS "1차 마감",
+       open2_at   AT TIME ZONE 'Asia/Seoul' AS "2차 시작",
+       close2_at  AT TIME ZONE 'Asia/Seoul' AS "2차 마감"
+  FROM settings ORDER BY program, region NULLS FIRST;</pre>
+      </section>
+
+      <section class="guide-sec" id="p6">
+        <h2>6. 신청 기간 중 관리</h2>
+        <p>강제마감 · 정원 수정 · 명단 삭제 방법은 <a href="./region.html#s9">지역청 매뉴얼 9장</a>과 같습니다. 도교육청 계정은 모든 프로그램의 강좌에 할 수 있습니다.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">문의</th><th scope="col">대응</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">취소비번을 잊었어요</th><td>본인 확인 후 명단에서 그 신청을 삭제하고, 다시 신청하도록 안내합니다.</td></tr>
+            <tr><th scope="row">지역연계 2번째 강좌가 안 돼요</th><td>지역연계도 1인 1강좌이므로 정상입니다.</td></tr>
+            <tr><th scope="row">학년 때문에 신청이 안 돼요</th><td>학년 제한 강좌는 운영 학년도 기준 학년을 현재 학년으로 환산합니다. 강좌의 시작일과 「수강 대상」을 확인합니다.</td></tr>
+            <tr><th scope="row">마감 뒤에 취소하고 싶어요</th><td>학생이 직접 취소할 수 없습니다. 본인 확인 후 명단에서 삭제합니다.</td></tr>
+            <tr><th scope="row">다른 지역과 신청 기간이 달라요</th><td>그 지원청에 지역 기간이 들어 있는 것입니다. 「신청 기간」 창에서 확인합니다.</td></tr>
+            <tr><th scope="row">학교 이름이 검색되지 않아요</th><td>학교 목록은 화면 파일에 있습니다. 개발 담당에게 추가를 요청합니다.</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <section class="guide-sec" id="p7">
+        <h2>7. 명단 내려받기</h2>
+        <ul>
+          <li><span class="ui">전체 엑셀</span>: 지금 보고 있는 탭과 관계없이 로그인한 계정이 볼 수 있는 모든 신청자를 내려받습니다. 마스터 계정이면 모든 프로그램이 들어갑니다.</li>
+          <li>강좌별 <span class="ui">엑셀</span>: 그 강좌 신청자만 내려받습니다.</li>
+        </ul>
+        <div class="note">
+          <strong>개인정보</strong>
+          <p>명단에는 학생 이름과 연락처가 들어 있습니다. 업무용 PC에만 저장하고, 메일로 보낼 때는 암호를 걸어 보내십시오. 보관 기간이 지나면 파일을 삭제하십시오.</p>
+        </div>
+      </section>
+
+      <section class="guide-sec" id="p8">
+        <h2>8. 계정 관리와 문제 해결</h2>
+        <h3>새 담당자 계정 (가입 신청 → 승인)</h3>
+        <ol>
+          <li>새 담당자(또는 도교육청 담당자가 대신)가 로그인 창 아래 「지역청/기관 담당자 가입 신청」을 누릅니다.</li>
+          <li>이메일 → 비밀번호(8자 이상) → 이름 → 역할(지역청 <code>region</code>, 기관 <code>org</code>) → 소관 이름을 차례로 입력합니다. 소관은 지역청이면 「천안교육지원청」처럼 전체 이름, 기관이면 강좌의 「운영 기관」과 같은 이름입니다.</li>
+          <li>마스터 계정으로 <span class="ui">가입 승인</span>을 눌러 이름 · 역할 · 소관을 확인하고 승인합니다.</li>
+        </ol>
+        <h3>비밀번호 초기화 (SQL)</h3>
+        <pre>UPDATE auth.users
+   SET encrypted_password = extensions.crypt('새비밀번호', extensions.gen_salt('bf')),
+       updated_at = now()
+ WHERE email = 'cheonan@onmadang.kr';      -- 대상 아이디</pre>
+        <p>결과가 「1 row」이면 바뀐 것이고, 「0 rows」이면 이메일을 잘못 적은 것입니다.</p>
+        <h3>계정 사용 중지·다시 사용 (SQL)</h3>
+        <pre>-- 중지
+UPDATE staff_profiles SET status = 'rejected'
+ WHERE id = (SELECT id FROM auth.users WHERE email = 'cheonan@onmadang.kr');
+-- 다시 사용
+UPDATE staff_profiles SET status = 'approved'
+ WHERE id = (SELECT id FROM auth.users WHERE email = 'cheonan@onmadang.kr');</pre>
+        <h3>마스터 계정 추가 (후임자 인계)</h3>
+        <p>후임자가 가입 신청(역할 <code>region</code>, 소관은 아무 값)을 한 뒤, 승인하지 말고 아래를 실행합니다. 후임자 화면에 「가입 승인」 단추가 보이면 완료이며, 전임자 계정은 중지합니다.</p>
+        <pre>UPDATE staff_profiles
+   SET role = 'province', scope_value = NULL, status = 'approved'
+ WHERE id = (SELECT id FROM auth.users WHERE email = '후임자이메일');</pre>
+        <h3>문제 해결</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">증상</th><th scope="col">확인할 것</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">로그인이 안 됨</th><td>① 오타 ② 계정 승인 상태(「가입 승인」 창) ③ 비밀번호 초기화</td></tr>
+            <tr><th scope="row">강좌가 학생 화면에 안 보임</th><td>① 강좌 공개 전인지 ② 주소의 program= 값 ③ 「신청 가능(목록 노출)」 체크 ④ 지역연계는 강좌 「지역」 값과 학생이 고른 지역이 같은지</td></tr>
+            <tr><th scope="row">지역청 담당자에게 강좌가 안 보임</th><td>강좌 「지역」 값이 담당자 소관과 글자까지 같은지 확인하고 「수정」으로 고칩니다.</td></tr>
+            <tr><th scope="row">학생 화면이 「신청 기간이 아님」</th><td>「신청 기간」 창에서 기본 기간과 그 지역 줄을 확인합니다.</td></tr>
+            <tr><th scope="row">신청/정원 숫자가 명단과 다름</th><td>아래 보정 SQL을 실행합니다.</td></tr>
+            <tr><th scope="row">강좌가 삭제되지 않음</th><td>확정 신청이나 선점 중인 좌석이 있는 강좌입니다. 신청을 지운 뒤 삭제하거나 강제마감을 씁니다.</td></tr>
+          </tbody>
+        </table></div>
+        <pre>UPDATE courses SET enrolled_count = (
+  SELECT COUNT(*) FROM enrollments
+   WHERE enrollments.course_code = courses.code
+     AND enrollments.status IN ('active', 'pending')
+);</pre>
+      </section>
+
+      <section class="guide-sec" id="p9">
+        <h2>9. 회차 종료 후 정리 (전체 초기화)</h2>
+        <p>한 회차가 끝나 다음 회차 강좌를 새로 받기 전에, 그 프로그램의 강좌와 신청자를 모두 지웁니다. 프로그램 정보와 신청 기간 설정은 남습니다.</p>
+        <ol>
+          <li>「전체 엑셀」로 명단을 내려받아 보관했는지 먼저 확인합니다.</li>
+          <li>지울 프로그램 탭을 누르고, 빨간 「위험 구역」의 <span class="ui">이 프로그램 전체 초기화</span>를 누릅니다.</li>
+          <li>입력 창에 프로그램 이름을 정확히 입력하고(예: 지역연계 공동교육과정) 마지막 확인 창에서 확인합니다.</li>
+        </ol>
+        <div class="note">
+          <strong>되돌릴 수 없습니다</strong>
+          <p>지역연계에는 이미 실제 강좌가 등록되어 있습니다. 남은 데모 강좌(<code>JR26DEMO1</code>)는 전체 초기화가 아니라 강좌 표의 「삭제」로 지우십시오.</p>
+        </div>
+      </section>
+
+      <section class="guide-sec" id="p10">
+        <h2>10. Supabase 요금제</h2>
+        <p>신청 기간에는 동시 접속이 많아 Pro로 운영하고, 평소에는 Free로 둡니다. 대시보드 → 조직 설정(Organization) → Billing에서 바꿉니다. Free 요금제는 오래 접속이 없으면 프로젝트가 일시 중지될 수 있으니(「Paused」 → 「Restore」), 강좌 공개 전에 반드시 확인하십시오.</p>
+      </section>
+
+      <section class="guide-sec" id="p11">
+        <h2>11. 하지 말아야 할 것</h2>
+        <ul>
+          <li>SQL 편집기에서 이 문서에 없는 문(특히 DELETE · DROP · TRUNCATE)을 실행하지 마십시오.</li>
+          <li>settings 표(신청 기간)를 SQL이나 Table Editor로 직접 고치지 마십시오. 1판 매뉴얼의 기간 설정 SQL(<code>INSERT … ON CONFLICT</code>)은 이제 오류가 납니다.</li>
+          <li>신청 기간 중에 「전체 초기화」를 누르지 마십시오.</li>
+          <li>공유 비밀번호와 계정 비밀번호를 공문 · 단체 메신저에 적지 마십시오.</li>
+          <li>강좌의 「지역」을 약칭(예: 천안)으로 적지 마십시오.</li>
+          <li>Table Editor에서 courses · enrollments 표를 직접 고치지 마십시오. 신청 인원 숫자가 어긋납니다.</li>
+        </ul>
+        <h3>개발 담당에게 요청할 일</h3>
+        <ul>
+          <li>학교 목록 추가, 학생 화면 안내 문구 변경, 새 프로그램 추가</li>
+          <li>지원청 코드표 · 프로그램 코드 변경</li>
+          <li>관리 화면 기능 추가 · 오류 수정</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</main>
+
+<div id="om-footer"></div>
+<script src="../../../assets/js/common.js"></script>
+</body>
+</html>

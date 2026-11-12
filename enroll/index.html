@@ -78,7 +78,8 @@
 document.querySelectorAll('.net-tile[data-program]').forEach(function (a) {
   OM_ENROLL_STATUS.get(a.dataset.program).then(function (s) {
     a.querySelector('.nt-go').textContent = s.label;
-    if (s.isOpen) { a.href = s.appUrl; a.classList.add('is-open'); }
+    // 신청 중이거나 강좌 공개(미리 보기) 기간이면 신청 화면으로 연결한다
+    if (s.isOpen || s.isPreview) { a.href = s.appUrl; a.classList.add('is-open'); }
   });
 });
 </script>

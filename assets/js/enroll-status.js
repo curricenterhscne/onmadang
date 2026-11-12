@@ -8,7 +8,9 @@
    anon 키는 공개용(RLS로 보호) — apply/app.html과 같은 값.
 
    OM_ENROLL_STATUS.get('joint_regional') → Promise<{
-     program, isOpen, phase, openAt, closeAt, label, appUrl }>
+     program, isOpen, isPreview, phase, previewAt, openAt, closeAt, label, appUrl }>
+   isPreview — 강좌 공개(미리 보기) 기간: 신청 시작 전이지만 신청 화면에서 강좌를 볼 수 있다.
+   공개 시각은 관리 화면 「강좌 공개」 값, 비어 있으면 신청 시작 7일 전(preview_period.sql).
    ============================================================ */
 (function () {
   'use strict';
@@ -37,15 +39,22 @@
     }).then(function (r) { return r.ok ? r.json() : null; })
       .catch(function () { return null; })
       .then(function (d) {
-        var s = { program: program, isOpen: false, phase: 'unknown', openAt: null, closeAt: null,
+        var s = { program: program, isOpen: false, isPreview: false, phase: 'unknown', previewAt: null, openAt: null, closeAt: null,
                   appUrl: base + 'apply/app.html?program=' + encodeURIComponent(program) };
         if (!d) { s.label = '신청 상태를 확인하지 못했습니다'; return s; }
         s.isOpen = !!d.is_open; s.phase = d.phase;
         if (d.phase === 'open1') { s.closeAt = d.close1_at; }
         if (d.phase === 'open2') { s.closeAt = d.close2_at; }
-        if (d.phase === 'before_open') { s.openAt = d.open_at; }
+        if (d.phase === 'before_open') {
+          s.openAt = d.open_at;
+          // preview_at이 없는 응답(preview_period.sql 실행 전)은 7일 전으로 계산한다
+          s.previewAt = d.preview_at || (d.open_at ? new Date(new Date(d.open_at).getTime() - 7 * 864e5).toISOString() : null);
+          var now = d.server_now ? new Date(d.server_now).getTime() : Date.now();
+          s.isPreview = !!s.previewAt && now >= new Date(s.previewAt).getTime();
+        }
         if (d.phase === 'between') { s.openAt = d.open2_at; }
         s.label = s.isOpen ? ('신청 중 · ' + fmt(s.closeAt) + ' 마감')
+          : s.isPreview ? ('강좌 미리 보기 · ' + fmt(s.openAt) + ' 신청 시작')
           : (s.openAt ? (fmt(s.openAt) + ' 신청 시작') : '수강신청 기간이 아닙니다');
         return s;
       });
