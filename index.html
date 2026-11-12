@@ -158,8 +158,10 @@
   .snet-q:focus-visible{outline:3px solid currentColor;outline-offset:-8px;z-index:1}
   .snet-q1{background:var(--brand);color:#fff;grid-area:1/1;align-items:flex-end;text-align:right}
   .snet-q2{background:var(--online);color:var(--ink);grid-area:1/2;align-items:flex-start}
-  .snet-q3{background:var(--accent);color:var(--ink);grid-area:2/2;align-items:flex-start;flex-direction:column-reverse}
-  .snet-q4{background:var(--plum-d);color:#fff;grid-area:2/1;align-items:flex-end;text-align:right;flex-direction:column-reverse}
+  /* 공동교육과정 = 보라, 학교 밖 교육 = 라임그린 (업체 확인 2026-11-12, 4대 안전망 첫 화면 sub03과 같은 배치).
+     보라 칸은 흰 글자 대비를 위해 한 단계 어두운 --plum-d를 쓴다 */
+  .snet-q3{background:var(--plum-d);color:#fff;grid-area:2/2;align-items:flex-start;flex-direction:column-reverse}
+  .snet-q4{background:var(--accent);color:var(--ink);grid-area:2/1;align-items:flex-end;text-align:right;flex-direction:column-reverse}
   .snet-ic{width:80px;height:80px;flex-shrink:0}
   .snet-tt{font-size:clamp(16px,1.8vw,22px);font-weight:800;line-height:1.4;word-break:keep-all}
 

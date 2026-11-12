@@ -53,12 +53,14 @@
   .dim h3{font-size:clamp(16px,1.4vw,20px);font-weight:700;margin-bottom:6px}
   .dim p{font-size:clamp(13px,1vw,14.5px);line-height:1.6;word-break:keep-all}
   .dim .en{display:block;margin-top:6px}
+  .dim-art{display:block;width:auto;height:clamp(110px,12vw,170px);max-width:100%;margin:auto auto clamp(14px,1.6vw,22px)} /* 업체 sub01_02_ch_03~05 (2026-11-05) */
   .dims-update .dim{min-height:0;justify-content:flex-start;text-align:left;padding:24px 22px}
   .dims-update .dim:nth-child(n){background:var(--plum-l)}
   .co-note{margin-top:clamp(12px,1.2vw,18px);background:var(--plum-l);border-radius:var(--radius);padding:clamp(20px,2.4vw,32px) clamp(20px,3vw,48px);text-align:center;font-size:clamp(14px,1.2vw,17px);line-height:1.8;word-break:keep-all}
 
   /* 주입이 아니라 실천 */
-  .band.is-brand{background:var(--brand);color:#fff;text-align:center}
+  .band.is-brand{background:var(--brand);color:#fff;text-align:center;padding-bottom:0}
+  .claim-art{display:block;width:min(100%,560px);height:auto;margin:clamp(28px,4vw,56px) auto 0} /* 업체 sub01_02_ch_06 — 띠 아래 끝에 붙는다 */
   .claim-big{font-size:clamp(26px,2.6vw,38px);font-weight:400;line-height:1.5;letter-spacing:-.6px}
   .claim-big strong{font-weight:800}
   .claim-p{max-width:720px;margin:clamp(20px,2.4vw,32px) auto 0;font-size:clamp(15px,1.2vw,17px);line-height:1.85;word-break:keep-all}
@@ -111,6 +113,7 @@
     .agency-row img{width:240px}
     .tc-grid,.dims,.axes,.bridge{grid-template-columns:1fr}
     .dim{min-height:0}
+    .dim-art{height:120px}
     .aar{grid-template-columns:1fr;padding-bottom:56px}
     .aar::before{display:none}
     .aar-arrow{transform:rotate(90deg);justify-self:center}
@@ -185,9 +188,9 @@
         <h2 id="s-what">주도성은 <em>이런 모습</em>입니다.</h2>
       </div>
       <div class="dims">
-        <div class="dim"><h3>행동의 주체</h3><p>다른 사람이 시켜서가 아니라, 스스로 움직입니다.<span class="en" lang="en">acting, not being acted upon</span></p></div>
-        <div class="dim"><h3>세상을 만들어감</h3><p>주어진 환경을 받아들이기보다, 바꾸어 갑니다.<span class="en" lang="en">shaping, not being shaped</span></p></div>
-        <div class="dim"><h3>책임 있는 선택</h3><p>다른 사람이 정해 준 결정이 아니라, 스스로 판단합니다.<span class="en" lang="en">responsible decision-making</span></p></div>
+        <div class="dim"><img class="dim-art" src="../assets/img/sub/char-rabbit-walk.svg" alt="" aria-hidden="true"><h3>행동의 주체</h3><p>다른 사람이 시켜서가 아니라, 스스로 움직입니다.<span class="en" lang="en">acting, not being acted upon</span></p></div>
+        <div class="dim"><img class="dim-art" src="../assets/img/sub/char-caterpillar-sprout.svg" alt="" aria-hidden="true"><h3>세상을 만들어감</h3><p>주어진 환경을 받아들이기보다, 바꾸어 갑니다.<span class="en" lang="en">shaping, not being shaped</span></p></div>
+        <div class="dim"><img class="dim-art" src="../assets/img/sub/char-panda-compass.svg" alt="" aria-hidden="true"><h3>책임 있는 선택</h3><p>다른 사람이 정해 준 결정이 아니라, 스스로 판단합니다.<span class="en" lang="en">responsible decision-making</span></p></div>
       </div>
       <p class="co-note">주도성은 <strong>혼자서</strong> 함양되지 않습니다. OECD는 또래·교사·부모·지역사회와 서로를 지지하는 관계 속에서<br>함께 자라는 <strong>협력적 주도성(Co-agency)</strong>을 강조합니다. 학생을 둘러싼 관계와 환경이 주도성의 토양입니다.</p>
     </div>
@@ -197,6 +200,7 @@
     <div class="wrap">
       <h2 class="claim-big" id="s-claim">주도성은<br>주입이 아니라<br><strong>실천</strong>으로 자랍니다</h2>
       <p class="claim-p">나침반 사용법을 아무리 설명해도, 직접 길을 잡아보지 않으면 방향 감각은 생기지 않습니다. 주도성도 마찬가지입니다. “주도적으로 살아라”라고 가르친다고 길러지지 않습니다. 스스로 목표를 정하고, 선택하고, 그 결과를 책임지는 경험을 반복할 때 비로소 길러집니다.</p>
+      <img class="claim-art" src="../assets/img/sub/char-trio-peek.svg" alt="" aria-hidden="true">
     </div>
   </section>
 

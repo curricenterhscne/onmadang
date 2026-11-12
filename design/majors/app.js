@@ -380,8 +380,8 @@ function render() {
   if (results.length === 0) {
     grid.innerHTML = `
       <div class="kk-empty">
-        <img src="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/assets/characters/tokkumi.svg"
-             alt="토꾸미" class="kk-empty__char">
+        <img src="../../assets/img/sub/char-rabbit-clover.svg"
+             alt="" aria-hidden="true" class="kk-empty__char">
         <h3 class="kk-empty__title">찾는 학과가 없어요</h3>
         <p class="kk-empty__body">다른 키워드나 계열을 선택해 보세요.<br>행운은 준비된 사람의 것이에요!</p>
       </div>`;

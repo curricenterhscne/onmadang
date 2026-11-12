@@ -215,6 +215,9 @@ header{
 .page-hero.is-light{--hero-icon:url("../img/sub/char-trio.svg");min-height:0;padding:clamp(40px,5vw,72px) 0 clamp(48px,6vw,96px);background:var(--bg);color:var(--ink)}
 .page-hero.is-light .wrap{max-width:1180px;padding-left:24px;padding-right:calc(48px + clamp(220px,26vw,380px))}
 .page-hero.is-light .wrap::before{left:auto;right:24px;top:50%;transform:translateY(-50%);width:clamp(220px,26vw,380px);height:auto;aspect-ratio:542/392}
+/* 내 선택 점검 — 업체 sub02_04_ch_01 (2026-11-12) */
+.page-hero.is-light.hero-check{--hero-icon:url("../img/sub/char-caterpillar-laptop.svg")}
+.page-hero.is-light.hero-check .wrap::before{aspect-ratio:505/294}
 /* 캐릭터를 왼쪽에 두는 밝은 머리 영역 (시안 sub01_03 꾸꾸클럽) */
 .page-hero.is-light.char-left .wrap{padding-left:calc(48px + clamp(220px,30vw,430px));padding-right:24px}
 .page-hero.is-light.char-left .wrap::before{left:24px;right:auto;width:clamp(220px,30vw,430px)}
