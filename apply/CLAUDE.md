@@ -243,6 +243,7 @@ _embed_data.js (정적)          Supabase RPC (실시간)
    새 오버레이는 이 사이 값을 쓰고 목록을 갱신할 것.
 5. **학번 형식** — `학년-반(2자리)-번호(2자리)`, e.g. `"2-01-15"`.
 6. **학년 제한** — 현재 66강좌 전부 **1~3학년** 대상이라 학년 선택에 **3학년이 있다**(`app.html`의 `my-grade`·`r-grade` 두 곳). `gradeRestricted` 로직은 남아 있으나 현재 해당 강좌가 없다. 학년 제한 강좌가 생기면 `gradeRestricted:true` + `target`에 「N학년」 표기를 넣으면 확정 시 자동 차단된다.
+   **2026-11-12 — `target`의 학년은 운영 학년도 기준이다.** 다음 학년도 강좌를 올해 받으므로(2027학년도 3학년 대상 → 2026년 현재 2학년이 신청) `gradeRule()`이 학년차만큼 빼서 현재 학년으로 환산한다. 운영 학년도는 `start_date`(3월 기준, 1·2월은 전년도) → 없으면 자동 부여 코드의 학년도 2자리로 정한다. `target`은 「3학년」「2~3학년」「2·3학년」을 모두 읽는다(예전에는 첫 숫자 하나만 읽어 「2~3학년」이 2학년 전용으로 막혔다). 검사는 학생 화면에서만 하며 RPC에는 학년 검사가 없다.
 7. **강좌 안내 링크** — `../dual_credit/`로 연결 (off-campus_courses 아님).
 8. **`app.html`의 GNB는 손으로 관리한다** — `common.js`를 안 쓰므로 GNB가 자동 동기화되지 않는다. 온마당 메뉴가 바뀌면 `app.html`의 데스크톱 nav(`.onmadang-links`)와 모바일 nav(`.om-mobile-nav`) **양쪽을 직접 고쳐야 한다.** (2026-08-13에 `알림·소통 마당`이 홈으로 가던 오류와 `고교학점제` 메뉴 누락을 이 방식으로 정정했다.)
 9. **상단 안내 배너는 2026-08-20에 제거됨** — 「리디자인 작업 중」 문구를 3곳(`assets/js/common.js`, **`apply/app.html`**, `design/selector/guide.html`)에서 모두 지웠다. 다시 띄울 때도 **3곳 동시 작업**이다: `common.js`는 `var banner`에 HTML을 채우고, `app.html`·`guide.html`은 `common.js`를 안 쓰므로 `<div class="renewal-banner" role="note">`를 인라인으로 직접 넣는다. (`apply/index.html`은 `common.js`가 주입하므로 별도 수정 불필요.)

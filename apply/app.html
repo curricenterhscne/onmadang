@@ -1106,6 +1106,58 @@ function initStnoSelects(clsId, numId) {
   if (n) for (let i = 1; i <= 50; i++) n.innerHTML += `<option value="${i}">${i}</option>`;
 }
 
+// ── 학년 제한: 운영 학년도 기준 → 현재 학년 기준 환산 ──
+// target의 「N학년」은 강좌가 운영되는 학년도의 학년이다. 신청은 그 전에 받으므로
+// (예: 2026년 11월에 2027학년도 강좌 신청) 학생이 입력하는 현재 학년과 다를 수 있다.
+// 학년도는 3월에 바뀐다(1·2월은 전년도). 운영 학년도는 시작일 → 강좌 코드 순으로 판단한다.
+function schoolYearOf(y, m) { return m >= 3 ? y : y - 1; }
+function courseSchoolYear(d, code) {
+  const m = /^(\d{4})-(\d{2})/.exec(d.startDate || '');
+  if (m) return schoolYearOf(+m[1], +m[2]);
+  const c = /^[A-Z]{2}(\d{2})[12SW]/.exec(code || '');   // 자동 부여 코드: JR27S…
+  return c ? 2000 + +c[1] : null;
+}
+function parseTargetGrades(text) {
+  const t = String(text || '');
+  const range = /([1-3])\s*[~∼\-–]\s*([1-3])\s*학년/.exec(t);
+  if (range) {
+    const out = [];
+    for (let g = +range[1]; g <= +range[2]; g++) out.push(g);
+    return out;
+  }
+  const set = new Set();
+  for (const m of t.matchAll(/((?:[1-3]\s*(?:학년)?\s*[·,、\/및]\s*)*[1-3])\s*학년/g)) {
+    for (const g of m[1].match(/[1-3]/g)) set.add(+g);
+  }
+  return [...set].sort();
+}
+// 반환: null(제한 없음) 또는 { targets, allowed, shift, courseYear, nowYear }
+function gradeRule(code) {
+  const d = DETAIL_MAP[code];
+  if (!d || !d.gradeRestricted) return null;
+  const targets = parseTargetGrades(d.target);
+  if (!targets.length) return null;
+  const kst = new Date(Date.now() + serverTimeDiff + 9 * 3600 * 1000);
+  const nowYear = schoolYearOf(kst.getUTCFullYear(), kst.getUTCMonth() + 1);
+  const courseYear = courseSchoolYear(d, code);
+  const shift = courseYear && courseYear > nowYear ? courseYear - nowYear : 0;
+  const allowed = targets.map(g => g - shift).filter(g => g >= 1 && g <= 3);
+  return { targets, allowed, shift, courseYear, nowYear };
+}
+function gradeList(gs) { return gs.join('·') + '학년'; }
+// 짧은 표기(카드 배지·상세 칩)
+function gradeRuleLabel(r) {
+  if (!r.shift) return `${gradeList(r.targets)}만 신청 가능`;
+  if (!r.allowed.length) return `${r.courseYear}학년도 ${gradeList(r.targets)} 대상`;
+  return `${r.courseYear}학년도 ${gradeList(r.targets)} 대상 · 현재 ${gradeList(r.allowed)} 신청`;
+}
+// 안내·오류 문장
+function gradeRuleSentence(r) {
+  if (!r.shift) return `이 강좌는 ${gradeList(r.targets)}만 신청할 수 있습니다.`;
+  if (!r.allowed.length) return `이 강좌는 ${r.courseYear}학년도 ${gradeList(r.targets)} 대상이며, 현재 학년 기준으로 신청할 수 있는 학년이 없습니다.`;
+  return `이 강좌는 ${r.courseYear}학년도 ${gradeList(r.targets)} 대상입니다. 현재(${r.nowYear}학년도) ${gradeList(r.allowed)} 학생이 신청할 수 있습니다.`;
+}
+
 function buildStno(gradeId, clsId, numId) {
   const g = document.getElementById(gradeId).value;
   const c = document.getElementById(clsId).value;
@@ -1238,7 +1290,8 @@ function renderCard(c) {
   const uniColor = UNI_COLORS[uni] || '#152460';
 
   // Grade restriction badge
-  const gradeBadge = d.gradeRestricted ? `<span class="grade-badge">${d.target||''} 신청 가능</span>` : '';
+  const gRule = gradeRule(c.code);
+  const gradeBadge = gRule ? `<span class="grade-badge">${gradeRuleLabel(gRule)}</span>` : '';
 
   // 창의적체험활동 영역·차시 요약 (학점 인정 아님)
   const areaHtml = d.activityArea
@@ -1286,14 +1339,11 @@ async function openReserveModal(code, btn) {
   if (!isOpen) { showToast('신청 기간이 아닙니다.', 'error'); return; }
 
   // Grade restriction check
-  const detail = DETAIL_MAP[code];
-  if (detail && detail.gradeRestricted) {
-    const targetGrade = (detail.target || '').match(/(\d)학년/);
-    if (targetGrade) {
-      const allowed = targetGrade[1];
-      const msg = `이 강좌는 ${allowed}학년만 신청 가능합니다.\n해당 학년이 아니면 신청이 거부됩니다. 계속하시겠습니까?`;
-      if (!confirm(msg)) return;
-    }
+  const gRule = gradeRule(code);
+  if (gRule) {
+    if (!gRule.allowed.length) { showToast(gradeRuleSentence(gRule), 'error'); return; }
+    const msg = `${gradeRuleSentence(gRule)}\n해당 학년이 아니면 신청이 거부됩니다. 계속하시겠습니까?`;
+    if (!confirm(msg)) return;
   }
 
   const origTxt = btn ? btn.textContent : '';
@@ -1431,15 +1481,12 @@ async function submitConfirm() {
   if (!/^\d{4}$/.test(pin))           { showToast('취소비번은 숫자 4자리입니다.', 'error'); return; }
 
   // Grade restriction enforcement
-  const detail = DETAIL_MAP[currentCode];
-  if (detail && detail.gradeRestricted) {
-    const targetGrade = (detail.target || '').match(/(\d)학년/);
-    if (targetGrade) {
-      const selectedGrade = document.getElementById('r-grade').value;
-      if (selectedGrade !== targetGrade[1]) {
-        showToast(`이 강좌는 ${targetGrade[1]}학년만 신청 가능합니다.`, 'error');
-        return;
-      }
+  const gRule = gradeRule(currentCode);
+  if (gRule) {
+    const selectedGrade = +document.getElementById('r-grade').value;
+    if (!gRule.allowed.includes(selectedGrade)) {
+      showToast(gradeRuleSentence(gRule), 'error');
+      return;
     }
   }
 
@@ -1506,7 +1553,8 @@ function openDetailModal(code) {
   // ── 컬러 헤더 ──
   const head = document.getElementById('d-head');
   head.style.background = `linear-gradient(135deg,${color}f0 0%,${color} 100%)`;
-  const gradeBadgeHtml = d.gradeRestricted ? `<span class="d-chip" style="background:#fcd34d;color:#92400e;font-weight:700">⚠️ ${d.target}만 신청 가능</span>` : '';
+  const gRule = gradeRule(code);
+  const gradeBadgeHtml = gRule ? `<span class="d-chip" style="background:#fcd34d;color:#92400e;font-weight:700">⚠️ ${gradeRuleLabel(gRule)}</span>` : '';
   const chips = [
     d.method       ? `<span class="d-chip">${d.method}</span>` : '',
     d.target       ? `<span class="d-chip">👨‍🎓 ${d.target}</span>` : '',
