@@ -4,6 +4,20 @@
 
 ---
 
+## 2026-11-13: 수강신청 학생 화면(`apply/app.html`) 디자인 리뉴얼 반영, 강좌 공개 시각 저장 문제 해결
+
+### 강좌 공개 시각이 저장되지 않던 문제
+- **원인**: `preview_period.sql` 미실행(`settings.preview_at` 칸 없음) + `admin-periods` 옛 버전 배포 상태. 옛 함수는 `preview_at`을 오류 없이 버렸다.
+- **조치**: 담당자가 SQL 실행 → `admin-periods` 재배포. RPC가 `preview_at`·`is_preview`를 돌려주는 것을 확인했다.
+
+### 학생 화면 리뉴얼
+- `common.css`를 연결하고(`common.js`는 쓰지 않는다) 헤더·모바일 메뉴·푸터를 `common.js` 출력과 같은 마크업으로 바꿨다. 헤더 「수강신청」 단추가 현재 위치로 켜진다.
+- 머리 영역은 `.page-hero.is-light`(캐릭터 3인) + 이동 경로(홈 › 수강신청 › 프로그램명). 프로그램명은 `applyProgramBranding()`이 채운다.
+- 앱 스타일 전체를 DS v2.0 토큰으로 다시 썼다. 탭·칩·단추는 알약 모양, 카드 모서리 20, 비활성 단추 `--inactive`, 키보드 포커스 표시를 더했다. 서체는 Pretendard 하나(Noto Sans/Serif 제거).
+- 안내 상자·도움말의 인라인 색 스타일을 클래스(`.notice-item`·`.notice-alert.is-danger|is-warn|is-info`·`.guide-tip` 등)로 옮겼다. JS의 인라인 색(`--red`·`--gold`·`--mint`·`#152460`)도 토큰·클래스로 바꿨다. 기관 색(`UNI_COLORS`)은 데이터라 그대로 둔다.
+- 상태색 대비(흰 바탕/옅은 바탕 기준): `--ok` 5.28 이상, `--warn` 7.25, `--danger` 4.92 이상.
+- 기능 로직은 바꾸지 않았다. 문구도 그대로다(문체 규칙 5-2 미적용 — 「~하세요」 등 남아 있음).
+
 ## 2026-11-11 (10): 모바일 시안 3장 반영, 홈 첫 화면 교육청 사진 넘기기
 
 ### 모바일 시안 반영 (`mobile_main`·`mobile_sub01_01`·`mobile_sub04_01`, 담당자 로컬 저장본)

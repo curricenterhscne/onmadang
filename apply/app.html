@@ -1,401 +1,329 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-section="enroll">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>2026-2학기 꿈키움 학교 밖 교육 창의적체험활동 수강신청</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23152460'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-size='20'%3E🌱%3C/text%3E%3C/svg%3E"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23526ADC'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-size='20'%3E🌱%3C/text%3E%3C/svg%3E"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"/>
+<!-- 디자인 토큰·공통 헤더/푸터·서브 머리 영역은 common.css를 그대로 쓴다 (common.js는 쓰지 않는다 — 헤더·푸터 마크업은 아래에 직접 둔다) -->
+<link rel="stylesheet" href="../assets/css/common.css"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="_embed_data.js"></script>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+/* ============================================================
+   수강신청 앱 — DS v2.0 토큰으로 입힌 앱 전용 스타일 (2026-11-13 리뉴얼)
+   색·모서리·그림자는 common.css 토큰을 쓴다. DS에 없는 상태색만 아래에 정의한다.
+   ============================================================ */
 :root{
-  --navy:#152460;--blue:#2952d9;--sky:#e9effe;--gold:#e8970f;
-  --mint:#0f9e7b;--mint-bg:#d6f5ee;--red:#dc2626;--red-bg:#fef2f2;
-  --white:#fff;--g50:#f7f8fc;--g100:#eef0f8;--g200:#dde1f0;
-  --g400:#8892b0;--g700:#3c4a6b;--text:#111827;
-  --r:14px;--sh:0 2px 16px rgba(21,36,96,.08);--sh2:0 8px 36px rgba(21,36,96,.18);
+  --ok:#35704A;           --ok-bg:var(--mint);        /* 신청 가능·잔여석 — --accent-d는 민트 바탕에서 4.49:1이라 한 단계 어둡게 (5.28:1) */
+  --warn:#7A4A00;         --warn-bg:var(--sunny);  --warn-line:#E6CF6A; /* 잔여 적음·유의사항 */
+  --danger:#C62828;       --danger-bg:#FDECEC;     --danger-line:#F3B9B9; /* 마감·폐강 안내 */
+  --info-bg:var(--online-l); --info-line:#A9DDF2;   /* 이수 안내 */
 }
-html{scroll-behavior:smooth}
-body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--text);line-height:1.6}
+body{background:var(--soft)}
 
-/* ── Hero ── */
-.hero{background:linear-gradient(135deg,#0d1940 0%,var(--navy) 45%,#1e3d9e 100%);
-  padding:48px 24px 36px;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 20% 60%,rgba(41,82,217,.25) 0%,transparent 55%),
-             radial-gradient(ellipse at 80% 20%,rgba(232,151,15,.12) 0%,transparent 50%)}
-.hero-in{position:relative;z-index:1;max-width:820px;margin:0 auto}
-.hero-badge{display:inline-block;background:var(--gold);color:var(--navy);
-  font-size:11px;font-weight:800;padding:4px 14px;border-radius:20px;letter-spacing:.8px;margin-bottom:14px}
-.hero h1{font-family:'Noto Serif KR',serif;font-size:clamp(20px,4vw,30px);
-  color:#fff;margin-bottom:6px;line-height:1.4}
-.hero p{color:rgba(255,255,255,.8);font-size:13px}
-.hero-stats{display:flex;justify-content:center;gap:28px;margin-top:24px;flex-wrap:wrap}
-.hero-stat .val{font-size:26px;font-weight:900;color:var(--gold)}
-.hero-stat .lbl{font-size:11px;color:rgba(255,255,255,.7);margin-top:2px}
-.hero-open-tag{display:inline-block;margin-top:16px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:.3px}
-.hero-open-tag em{color:var(--gold);font-style:normal}
+/* ── 머리 영역 (common.css .page-hero.is-light 위에 앱 정보만 얹는다) ── */
+.app-hero h1{font-size:clamp(26px,3vw,42px);margin-bottom:clamp(14px,2vw,24px)}
+.app-hero p{margin-bottom:0}
+.hero-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.hero-stat{display:flex;align-items:baseline;gap:4px;background:var(--surface);border-radius:var(--radius-pill);padding:6px 16px}
+.hero-stat .val{font-size:20px;font-weight:800;color:var(--brand-d)}
+.hero-stat .lbl{font-size:14px;font-weight:600}
+.hero-open-tag{display:inline-block;margin-top:14px;background:var(--sunny);border-radius:var(--radius-pill);padding:6px 16px;font-size:14px;font-weight:700}
+.hero-open-tag em{font-style:normal}
+.hero-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
 
-/* ── Notice box ── */
-.notice-box{background:var(--white);border-left:4px solid var(--gold);border-radius:0 var(--r) var(--r) 0;box-shadow:var(--sh);padding:16px 20px;margin:0 0 0 0}
-.notice-box .notice-title{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800;color:var(--navy);margin-bottom:10px}
-.notice-box .notice-title .badge{background:var(--gold);color:#fff;font-size:11px;font-weight:800;padding:2px 10px;border-radius:20px}
-.notice-start{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px}
-.notice-start .sub{font-size:11px;font-weight:500;color:var(--g400);margin-left:6px}
-.notice-rows{display:flex;flex-direction:column;gap:5px}
-.notice-row{display:flex;gap:8px;font-size:12px;color:var(--g700);line-height:1.5}
-.notice-row::before{content:'·';color:var(--gold);font-weight:700;flex-shrink:0}
-.notice-section{background:var(--g50);padding:20px;border-bottom:1px solid var(--g200)}
+/* ── 안내 상자 ── */
+.notice-section{background:var(--surface);padding:clamp(32px,4vw,48px) 0;border-bottom:1px solid var(--line)}
+.notice-box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(20px,2.4vw,28px)}
+.notice-box .notice-title{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:800;margin-bottom:12px}
+.notice-lead{font-size:15px;line-height:1.85;margin-bottom:16px}
+.notice-items{display:grid;gap:10px;font-size:15px}
+.notice-item{display:flex;gap:12px;line-height:1.7}
+.notice-item > b:first-child{flex-shrink:0;min-width:64px;color:var(--brand-d)}
+.notice-sched{line-height:2}
+.notice-note{font-size:13px;color:var(--ink-soft)}
+.notice-alert{border-radius:var(--radius-sm);padding:12px 16px;font-size:14px;line-height:1.9;border:1px solid var(--line);background:var(--soft)}
+.notice-alert > b:first-child{display:block}
+.notice-alert.is-danger{background:var(--danger-bg);border-color:var(--danger-line)}
+.notice-alert.is-danger > b:first-child,.notice-strong-danger{color:var(--danger)}
+.notice-alert.is-warn{background:var(--warn-bg);border-color:var(--warn-line)}
+.notice-alert.is-info{background:var(--info-bg);border-color:var(--info-line)}
+.notice-contact{font-size:14px;color:var(--ink-soft)}
 
-/* ── Guide ── */
-.guide{background:var(--white);border-bottom:1px solid var(--g200);padding:36px 20px}
-.guide .wrap{max-width:860px;margin:0 auto}
-.guide h2{text-align:center;color:var(--navy);font-size:17px;font-weight:700;margin-bottom:24px}
+/* ── 신청 방법 ── */
+.guide{background:var(--surface);border-bottom:1px solid var(--line);padding:clamp(36px,4vw,56px) 0}
+.guide h2{text-align:center;font-size:clamp(22px,2.2vw,28px);font-weight:800;letter-spacing:-.5px;margin-bottom:24px}
 .guide-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
-.guide-step{display:flex;flex-direction:column;align-items:center;text-align:center;
-  background:var(--g50);border-radius:var(--r);padding:18px 14px}
-.step-num{width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;
-  font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
-.step-title{font-weight:700;font-size:13px;color:var(--navy);margin-bottom:5px}
-.step-desc{font-size:12px;color:var(--g700);line-height:1.55}
+.guide-step{display:flex;flex-direction:column;align-items:center;text-align:center;background:var(--bg);border-radius:var(--radius);padding:22px 16px}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--brand);color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.step-title{font-weight:700;font-size:16px;margin-bottom:6px}
+.step-desc{font-size:14px;line-height:1.65}
+.guide-tip{margin-top:18px;background:var(--sunny);border-radius:var(--radius-sm);padding:12px 18px;text-align:center;font-size:14px;font-weight:600;line-height:1.6}
 
-/* ── Status bar ── */
-.status-wrap{background:var(--sky);border-bottom:1px solid var(--g200);padding:11px 20px;text-align:center;min-height:42px}
-#open-badge{display:none;background:var(--mint);color:#fff;
-  font-size:12px;font-weight:700;padding:3px 14px;border-radius:20px;margin-right:8px}
+/* ── 상태 줄 ── */
+.status-wrap{background:var(--surface);border-bottom:1px solid var(--line);padding:12px 20px;text-align:center;min-height:46px;font-size:14px}
+#open-badge{display:none;background:var(--accent);color:var(--ink);font-size:13px;font-weight:700;padding:3px 14px;border-radius:var(--radius-pill);margin-right:8px}
 #open-badge.visible{display:inline-block}
-#countdown{font-size:13px;color:var(--g700)}
-#period-range{display:block;font-size:12px;color:var(--g700);margin-top:2px}
+#countdown{font-weight:600}
+#period-range{display:block;font-size:13px;color:var(--ink-soft);margin-top:2px}
 #period-range:empty{display:none}
 
-/* ── Main ── */
-.wrap{max-width:900px;margin:0 auto;padding:20px 14px 64px}
+/* ── 본문 ── */
+.app-main{max-width:var(--sub-w);margin:0 auto;padding:24px 16px 80px}
 
-/* ── Tabs ── */
-.tabs{display:flex;gap:0;margin-bottom:18px;border-bottom:2px solid var(--g200)}
-.tab-btn{flex:1;padding:11px 8px;font-size:14px;font-weight:600;background:none;border:none;
-  cursor:pointer;color:var(--g400);border-bottom:3px solid transparent;margin-bottom:-2px;
-  transition:all .2s;font-family:inherit}
-.tab-btn.active{color:var(--navy);border-bottom-color:var(--navy)}
-.tab-btn:hover:not(.active){color:var(--g700)}
+/* ── 탭 (GNB와 같은 알약 모양) ── */
+.tabs{display:flex;gap:8px;margin-bottom:18px}
+.tab-btn{flex:1;padding:12px 8px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;
+  background:var(--surface);color:var(--ink-menu);border:1.5px solid var(--brand-l);border-radius:var(--radius-pill);transition:.18s}
+.tab-btn:hover:not(.active){background:var(--bg);border-color:var(--brand)}
+.tab-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
 
-/* ── Region gate (지원청 단위 프로그램) ── */
-.region-gate{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:22px 18px;margin-bottom:14px;text-align:center}
-.region-gate h3{font-size:16px;color:var(--navy);margin-bottom:4px}
-.region-gate p{font-size:12.5px;color:var(--g400);margin-bottom:14px;line-height:1.6}
-.region-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:8px}
-.region-btn{border:1.5px solid var(--g200);background:var(--white);color:var(--g700);padding:10px 6px;
-  border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .16s}
-.region-btn small{display:block;font-size:11px;font-weight:600;color:var(--g400);margin-top:2px}
-.region-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
-.region-btn:disabled{opacity:.45;cursor:default}
-.region-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;font-size:13px;color:var(--g700)}
-.region-bar strong{color:var(--navy)}
-.region-change{border:1.5px solid var(--g200);background:var(--white);color:var(--blue);padding:3px 11px;
-  border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
-.region-change:hover{border-color:var(--blue)}
+/* ── 지역 관문 (지원청 단위 프로그램) ── */
+.region-gate{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 18px;margin-bottom:14px;text-align:center}
+.region-gate h3{font-size:18px;font-weight:800;margin-bottom:4px}
+.region-gate p{font-size:14px;color:var(--ink-soft);margin-bottom:16px;line-height:1.6}
+.region-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
+.region-btn{border:1.5px solid var(--brand-l);background:var(--surface);color:var(--ink-menu);padding:10px 6px;
+  border-radius:var(--radius-sm);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:.16s}
+.region-btn small{display:block;font-size:12px;font-weight:600;color:var(--ink-faint);margin-top:2px}
+.region-btn:hover:not(:disabled){background:var(--bg);border-color:var(--brand)}
+.region-btn:disabled{background:var(--inactive);border-color:var(--inactive);color:var(--ink);cursor:default}
+.region-btn:disabled small{color:var(--ink)}
+.region-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;font-size:14px;color:var(--ink-soft)}
+.region-bar strong{color:var(--ink)}
+.region-change{border:1.5px solid var(--brand);background:var(--surface);color:var(--brand-d);padding:3px 12px;
+  border-radius:var(--radius-pill);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.region-change:hover{background:var(--bg)}
 
-/* ── Filter section ── */
-.filter-section{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:14px 16px;margin-bottom:14px}
-.filter-search-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.search-box{flex:1;border:1.5px solid var(--g200);background:var(--g50);color:var(--text);
-  padding:6px 14px;border-radius:20px;font-size:13px;outline:none;font-family:inherit;transition:border-color .16s}
-.search-box:focus{border-color:var(--blue);background:var(--white)}
-#poll-ts{font-size:11px;color:var(--g400);white-space:nowrap}
-.filter-group{margin-bottom:8px}
+/* ── 검색·필터 ── */
+.filter-section{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px}
+.filter-search-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.search-box{flex:1;border:1.5px solid var(--line);background:var(--soft);color:var(--ink);
+  padding:8px 16px;border-radius:var(--radius-pill);font-size:15px;font-family:inherit;transition:border-color .16s}
+.search-box:focus{border-color:var(--brand);background:var(--surface)}
+#poll-ts{font-size:12px;color:var(--ink-faint);white-space:nowrap}
+.filter-group{margin-bottom:10px}
 .filter-group:last-child{margin-bottom:0}
-.filter-label{font-size:10px;font-weight:800;color:var(--g400);letter-spacing:.6px;text-transform:uppercase;margin-bottom:6px}
-.filter-chips{display:flex;gap:5px;flex-wrap:wrap}
-.filter-chip{border:1.5px solid var(--g200);background:var(--white);color:var(--g700);
-  padding:3px 11px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;
-  transition:all .16s;white-space:nowrap;font-family:inherit}
-.filter-chip:hover{border-color:var(--blue);color:var(--blue)}
-.filter-chip.active{background:var(--navy);border-color:var(--navy);color:#fff}
-.filter-chip.sm{font-size:11px;padding:2px 9px}
+.filter-label{font-size:13px;font-weight:700;color:var(--ink-soft);margin-bottom:6px}
+.filter-chips{display:flex;gap:6px;flex-wrap:wrap}
+.filter-chip{border:1.5px solid var(--line);background:var(--surface);color:var(--ink-menu);
+  padding:4px 12px;border-radius:var(--radius-pill);font-size:13px;font-weight:600;cursor:pointer;
+  transition:.16s;white-space:nowrap;font-family:inherit}
+.filter-chip:hover{border-color:var(--brand);background:var(--bg)}
+.filter-chip.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.filter-chip.sm{font-size:12.5px;padding:3px 10px}
 
-/* ── Course cards ── */
+/* ── 강좌 카드 ── */
 #course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-.card{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);
-  padding:16px;display:flex;flex-direction:column;gap:9px;transition:box-shadow .18s}
-.card:hover{box-shadow:var(--sh2)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  padding:18px;display:flex;flex-direction:column;gap:10px;transition:box-shadow .2s}
+.card:hover{box-shadow:var(--shadow)}
+.card-uni-bar{height:6px;margin:-18px -18px 6px} /* 운영 기관 색 띠 (기관 식별용 장식) */
 .card-top{display:flex;align-items:flex-start;gap:8px}
-.field-badge{font-size:10px;font-weight:700;padding:3px 7px;border-radius:8px;
-  background:var(--sky);color:var(--blue);white-space:nowrap;flex-shrink:0;margin-top:2px}
-.card-name{font-weight:700;font-size:13px;color:var(--navy);line-height:1.4}
-.card-meta{font-size:11px;color:var(--g400);display:flex;flex-direction:column;gap:1px}
-.card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:2px}
-.seats{font-size:12px;font-weight:700}
-.seats.ok{color:var(--mint)}
-.seats.warn{color:var(--gold)}
-.seats.full{color:var(--red)}
-.card-btns{display:flex;gap:5px}
-.btn-sm{padding:5px 11px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;
-  border:1.5px solid transparent;transition:all .16s;font-family:inherit}
-.btn-detail{background:var(--white);border-color:var(--g200);color:var(--g700)}
-.btn-detail:hover{border-color:var(--blue);color:var(--blue)}
-.btn-apply{background:var(--blue);color:#fff;border-color:var(--blue)}
-.btn-apply:hover:not(:disabled){background:#1a3ec7}
-.btn-apply:disabled{background:var(--g200);border-color:var(--g200);color:var(--g400);cursor:not-allowed}
-.card.is-full{opacity:.72}
+.field-badge{font-size:12px;font-weight:700;padding:3px 9px;border-radius:var(--radius-pill);
+  background:var(--bg);color:var(--brand-d);white-space:nowrap;flex-shrink:0;margin-top:1px}
+.card-name{font-weight:700;font-size:16px;line-height:1.45}
+.card-meta{font-size:13px;color:var(--ink-soft);display:flex;flex-direction:column;gap:2px}
+.card-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:4px}
+.seats{font-size:14px;font-weight:700}
+.seats.ok{color:var(--ok)}
+.seats.warn{color:var(--warn)}
+.seats.full{color:var(--danger)}
+.card-btns{display:flex;gap:6px}
+.btn-sm{padding:6px 14px;border-radius:var(--radius-pill);font-size:14px;font-weight:700;cursor:pointer;
+  border:1.5px solid transparent;transition:.16s;font-family:inherit}
+.btn-detail{background:var(--surface);border-color:var(--brand-l);color:var(--ink-menu)}
+.btn-detail:hover{background:var(--bg);border-color:var(--brand)}
+.btn-apply{background:var(--brand);color:#fff;border-color:var(--brand)}
+.btn-apply:hover:not(:disabled){background:var(--bg);color:var(--brand-d)}
+.btn-apply:disabled{background:var(--inactive);border-color:var(--inactive);color:var(--ink);cursor:not-allowed}
+.card.is-full{opacity:.75}
 
-/* ── Loading / empty ── */
-.loading{text-align:center;padding:56px 0;color:var(--g400)}
-.spinner{width:34px;height:34px;border:3px solid var(--g200);border-top-color:var(--blue);
+/* ── 불러오는 중·빈 목록 ── */
+.loading{text-align:center;padding:56px 0;color:var(--ink-soft)}
+.spinner{width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--brand);
   border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.empty-msg{text-align:center;padding:56px 0;color:var(--g400);font-size:14px}
+@media(prefers-reduced-motion:reduce){.spinner{animation-duration:2.4s}}
+.empty-msg{grid-column:1/-1;text-align:center;padding:56px 16px;color:var(--ink-soft);font-size:15px;line-height:1.8;background:var(--surface);border-radius:var(--radius)}
 
-/* ── Modals ── */
-.backdrop{position:fixed;inset:0;background:rgba(21,36,96,.55);
+/* ── 모달 ── */
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);
   backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
   z-index:9100;display:flex;align-items:center;justify-content:center;padding:12px}
-.modal{background:var(--white);border-radius:var(--r);box-shadow:var(--sh2);
-  width:100%;max-width:480px;max-height:92vh;overflow-y:auto;display:flex;flex-direction:column}
+.modal{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-lg);
+  width:100%;max-width:520px;max-height:92vh;overflow-y:auto;display:flex;flex-direction:column}
 .modal-head{display:flex;align-items:flex-start;justify-content:space-between;
-  padding:16px 18px 12px;border-bottom:1px solid var(--g200);gap:12px}
-.modal-head h3{font-size:15px;font-weight:700;color:var(--navy);line-height:1.35}
-.btn-close{background:none;border:none;cursor:pointer;color:var(--g400);font-size:17px;
-  padding:2px 4px;border-radius:6px;transition:color .16s;flex-shrink:0;font-family:inherit}
-.btn-close:hover{color:var(--navy)}
-.modal-body{padding:18px}
+  padding:18px 20px 14px;border-bottom:1px solid var(--line);gap:12px}
+.modal-head h3{font-size:17px;font-weight:800;line-height:1.4}
+.btn-close{background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:18px;
+  padding:2px 6px;border-radius:50%;transition:.16s;flex-shrink:0;font-family:inherit}
+.btn-close:hover{color:var(--ink);background:var(--soft)}
+.modal-body{padding:20px}
 
-/* ── Timer ── */
-.timer-section{background:var(--g50);border-radius:10px;padding:12px 14px;margin-bottom:16px}
-.timer-hint{font-size:12px;color:var(--g700);margin-bottom:8px;line-height:1.5}
+/* ── 좌석 확보 타이머 ── */
+.timer-section{background:var(--soft);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:18px}
+.timer-hint{font-size:14px;margin-bottom:8px;line-height:1.6}
 .timer-row{display:flex;align-items:center;gap:12px}
-.timer-num{font-size:28px;font-weight:900;color:var(--navy);min-width:40px}
+.timer-num{font-size:30px;font-weight:900;color:var(--brand-d);min-width:44px}
 .timer-bar-wrap{flex:1}
-.timer-bar{height:8px;background:var(--g200);border-radius:4px;overflow:hidden}
-.timer-fill{height:100%;background:var(--mint);border-radius:4px;
-  transition:width .95s linear,background .4s}
-.timer-unit{font-size:12px;color:var(--g400)}
+.timer-bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.timer-fill{height:100%;background:var(--ok);border-radius:4px;transition:width .95s linear,background .4s}
+.timer-unit{font-size:13px;color:var(--ink-soft)}
 
-/* ── Form ── */
-.form-group{margin-bottom:13px}
-.form-group label{display:block;font-size:12px;font-weight:700;color:var(--g700);margin-bottom:5px}
-.form-input{width:100%;padding:9px 11px;border:1.5px solid var(--g200);border-radius:8px;
-  font-size:14px;font-family:inherit;outline:none;transition:border-color .16s}
-.form-input:focus{border-color:var(--blue)}
-.form-hint{font-size:11px;color:var(--g400);margin-top:4px}
+/* ── 입력 ── */
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:14px;font-weight:700;margin-bottom:6px}
+.req{color:var(--danger)}
+.form-input{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--radius-sm);
+  font-size:15px;font-family:inherit;transition:border-color .16s;background:var(--surface);color:var(--ink)}
+.form-input:focus{border-color:var(--brand)}
+.form-hint{font-size:13px;color:var(--ink-soft);margin-top:4px}
 
-/* ── School search ── */
+/* ── 학교 검색 ── */
 .school-wrap{position:relative}
-.school-dd{position:absolute;top:calc(100% + 2px);left:0;right:0;background:var(--white);
-  border:1.5px solid var(--g200);border-radius:8px;box-shadow:var(--sh2);
+.school-dd{position:absolute;top:calc(100% + 2px);left:0;right:0;background:var(--surface);
+  border:1.5px solid var(--line);border-radius:var(--radius-sm);box-shadow:var(--shadow-lg);
   max-height:200px;overflow-y:auto;z-index:9200;display:none;list-style:none;padding:0}
-.school-dd li{padding:9px 11px;cursor:pointer;font-size:13px;
-  border-bottom:1px solid var(--g100);transition:background .1s}
+.school-dd li{padding:10px 12px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--line);transition:background .1s}
 .school-dd li:last-child{border-bottom:none}
-.school-dd li:hover,.school-dd li.focused{background:var(--sky)}
-.school-dd .s-region{font-size:11px;color:var(--g400);margin-left:6px}
+.school-dd li:hover,.school-dd li.focused{background:var(--bg)}
+.school-dd .s-region{font-size:12px;color:var(--ink-soft);margin-left:6px}
 
-/* ── Stno selects ── */
-.stno-row{display:flex;align-items:center;gap:5px}
-.stno-row select{flex:1;min-width:66px;padding:8px 6px;border:1.5px solid var(--g200);
-  border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:var(--white);
-  transition:border-color .16s}
-.stno-row select:focus{border-color:var(--blue)}
-.stno-sep{font-size:13px;color:var(--g700);flex-shrink:0}
+/* ── 학번 선택 ── */
+.stno-row{display:flex;align-items:center;gap:6px}
+.stno-row select{flex:1;min-width:66px;padding:9px 6px;border:1.5px solid var(--line);
+  border-radius:var(--radius-sm);font-size:15px;font-family:inherit;background:var(--surface);color:var(--ink);transition:border-color .16s}
+.stno-row select:focus{border-color:var(--brand)}
+.stno-sep{font-size:14px;flex-shrink:0}
 
-/* ── PIN ── */
-.pin-input{letter-spacing:6px;font-size:20px;font-weight:700;text-align:center;
-  max-width:130px;-webkit-text-security:disc}
+/* ── 취소비번 ── */
+.pin-input{letter-spacing:6px;font-size:20px;font-weight:700;text-align:center;max-width:140px;-webkit-text-security:disc}
 
-/* ── Buttons ── */
-.btn-primary{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;
-  border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
-  transition:background .16s;margin-top:6px}
-.btn-primary:hover:not(:disabled){background:#1a3ec7}
-.btn-primary:disabled{background:var(--g200);color:var(--g400);cursor:not-allowed}
-.btn-secondary{width:100%;padding:10px;background:var(--white);color:var(--g700);
-  border:1.5px solid var(--g200);border-radius:10px;font-size:14px;font-weight:600;
-  cursor:pointer;font-family:inherit;transition:all .16s;margin-top:8px}
-.btn-secondary:hover{border-color:var(--g400);color:var(--text)}
-.btn-danger{background:var(--red)!important;border-color:var(--red)!important}
-.btn-danger:hover:not(:disabled){background:#b91c1c!important}
+/* ── 단추 (common.css .btn-pill과 같은 상태 규칙) ── */
+.btn-primary{width:100%;padding:12px;background:var(--brand);color:#fff;border:2px solid var(--brand);
+  border-radius:var(--radius-pill);font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;
+  transition:.16s;margin-top:6px}
+.btn-primary:hover:not(:disabled){background:var(--bg);color:var(--brand-d)}
+.btn-primary:disabled{background:var(--inactive);border-color:var(--inactive);color:var(--ink);cursor:not-allowed}
+.btn-secondary{width:100%;padding:11px;background:var(--surface);color:var(--ink-menu);
+  border:1.5px solid var(--brand-l);border-radius:var(--radius-pill);font-size:15px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:.16s;margin-top:8px}
+.btn-secondary:hover{background:var(--bg);border-color:var(--brand)}
+.btn-primary.btn-danger{background:var(--danger);border-color:var(--danger)}
+.btn-primary.btn-danger:hover:not(:disabled){background:var(--danger-bg);color:var(--danger)}
+.btn-primary.btn-gap{margin-top:14px}
 
-/* ── Success box ── */
-.success-box{background:var(--mint-bg);border-radius:10px;padding:20px;margin-bottom:14px}
+/* 키보드 포커스 — 앱 안의 모든 조작 요소 */
+.tab-btn:focus-visible,.filter-chip:focus-visible,.btn-sm:focus-visible,.btn-primary:focus-visible,.btn-secondary:focus-visible,
+.btn-close:focus-visible,.region-btn:focus-visible,.region-change:focus-visible,.d-sess-toggle:focus-visible,
+.search-box:focus-visible,.form-input:focus-visible,.stno-row select:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.d-close:focus-visible{outline-color:#fff}
+
+/* ── 신청 완료 ── */
+.success-box{background:var(--ok-bg);border-radius:var(--radius-sm);padding:20px;margin-bottom:14px}
 .success-box .s-icon{font-size:32px;margin-bottom:8px}
-.success-box h4{color:#0a7a5e;font-size:16px;font-weight:700;margin-bottom:12px}
-.s-dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px}
-.s-dl dt{color:var(--g400);font-weight:600}
-.s-dl dd{color:var(--text)}
-.warn-box{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;
-  padding:10px 13px;font-size:12px;color:#92400e;margin-top:10px;line-height:1.55}
+.success-box h4{color:var(--ok);font-size:18px;font-weight:800;margin-bottom:12px}
+.s-dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
+.s-dl dt{color:var(--ink-soft);font-weight:600}
+.warn-box{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:var(--radius-sm);
+  padding:11px 14px;font-size:14px;margin-top:10px;line-height:1.6}
 
-/* ── Detail modal ── */
-.detail-tbl{width:100%;font-size:13px;border-collapse:collapse;margin-bottom:13px}
-.detail-tbl th{text-align:left;width:72px;color:var(--g400);font-weight:600;
-  padding:6px 0;vertical-align:top;white-space:nowrap;border-bottom:1px solid var(--g100)}
-.detail-tbl td{color:var(--text);padding:6px 0;vertical-align:top;
-  border-bottom:1px solid var(--g100)}
-.detail-intro{font-size:13px;color:var(--g700);line-height:1.7;
-  background:var(--g50);border-radius:8px;padding:13px;margin-bottom:16px}
-.detail-seats{font-size:13px;font-weight:700;margin-bottom:12px}
+/* ── 상세보기 ── */
+.detail-tbl{width:100%;font-size:14px;border-collapse:collapse;margin-bottom:14px}
+.detail-tbl th{text-align:left;width:76px;color:var(--ink-soft);font-weight:600;padding:6px 0;vertical-align:top;white-space:nowrap;border-bottom:1px solid var(--line)}
+.detail-tbl td{padding:6px 0;vertical-align:top;border-bottom:1px solid var(--line)}
+.detail-intro{font-size:14px;line-height:1.75;background:var(--soft);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px}
+.detail-seats{font-size:14px;font-weight:700;margin-bottom:12px}
 
-/* ── My enrollment tab ── */
-.panel{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);
-  padding:18px;margin-bottom:14px}
-.panel h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:14px}
-.result-card{background:var(--g50);border-radius:10px;padding:14px;margin-top:10px}
-.result-card .rc-name{font-weight:700;color:var(--navy);font-size:14px;margin-bottom:5px}
-.result-card .rc-meta{font-size:12px;color:var(--g700)}
-.status-badge{display:inline-block;padding:2px 9px;border-radius:12px;
-  font-size:11px;font-weight:700;margin-left:7px}
-.s-active{background:var(--mint-bg);color:var(--mint)}
-.s-cancelled{background:var(--g100);color:var(--g400)}
+/* ── 내 신청 탭 ── */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:14px}
+.panel h3{font-size:17px;font-weight:800;margin-bottom:14px}
+.panel-empty{color:var(--ink-soft);font-size:15px}
+.result-card{background:var(--soft);border-radius:var(--radius-sm);padding:14px 16px;margin-top:10px}
+.result-card .rc-name{font-weight:700;font-size:16px;margin-bottom:6px}
+.result-card .rc-meta{font-size:14px;color:var(--ink-soft);line-height:1.7}
+.status-badge{display:inline-block;padding:2px 10px;border-radius:var(--radius-pill);font-size:12px;font-weight:700;margin-left:8px}
+.s-active{background:var(--ok-bg);color:var(--ok)}
+.s-cancelled{background:var(--inactive);color:var(--ink)}
 
-/* ── Toast ── */
+/* ── 알림 (토스트) ── */
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
-  background:#1e293b;color:#fff;padding:11px 18px;border-radius:24px;
-  font-size:13px;font-weight:600;box-shadow:var(--sh2);z-index:9300;
+  background:var(--ink);color:#fff;padding:12px 20px;border-radius:var(--radius-pill);
+  font-size:14px;font-weight:600;box-shadow:var(--shadow-lg);z-index:9300;
   opacity:0;transition:opacity .25s;pointer-events:none;max-width:88vw;text-align:center}
-.toast.success{background:var(--mint)}
-.toast.error{background:var(--red)}
+.toast.success{background:var(--ok)}
+.toast.error{background:var(--danger)}
 .toast.show{opacity:1}
 
-/* ── Detail modal header (index.html 스타일) ── */
-.d-mh{padding:20px 22px 16px;position:relative;border-radius:var(--r) var(--r) 0 0;color:#fff;flex-shrink:0}
-.d-mh-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.d-region{border-radius:12px;padding:3px 10px;font-size:11px;font-weight:800;letter-spacing:.3px;background:rgba(255,255,255,.92)}
-.d-code{background:rgba(255,255,255,.22);color:rgba(255,255,255,.92);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:.5px;font-family:monospace}
-.d-inst{font-size:11px;color:rgba(255,255,255,.65);margin-bottom:3px}
-.d-title{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:700;line-height:1.35;margin-bottom:9px}
-.d-ftags{display:flex;flex-wrap:wrap;gap:5px}
-.d-ftag{font-size:11px;padding:3px 10px;border-radius:10px;background:rgba(255,255,255,.22);color:rgba(255,255,255,.95);font-weight:600}
-.d-stitle{font-size:11px;font-weight:700;color:var(--navy);padding:4px 10px;background:var(--sky);border-left:4px solid var(--navy);border-radius:0 7px 7px 0;margin:14px 0 9px;letter-spacing:.3px}
+/* ── 상세보기 머리 (운영 기관 색) ── */
+.d-mh{padding:22px 24px 18px;position:relative;border-radius:var(--radius) var(--radius) 0 0;color:#fff;flex-shrink:0;background:var(--brand)}
+.d-close{position:absolute;top:12px;right:12px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#fff;background:rgba(255,255,255,.2)}
+.d-close:hover{color:#fff;background:rgba(255,255,255,.34)}
+.d-mh-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;padding-right:32px}
+.d-region{border-radius:var(--radius-pill);padding:3px 10px;font-size:12px;font-weight:800;background:rgba(255,255,255,.94)}
+.d-code{background:rgba(255,255,255,.22);font-size:11px;font-weight:700;padding:2px 8px;border-radius:var(--radius-pill);letter-spacing:.5px;font-family:monospace}
+.d-title{font-size:19px;font-weight:800;line-height:1.4;margin-bottom:10px}
+.d-ftags,.d-chips{display:flex;flex-wrap:wrap;gap:5px}
+.d-chips{margin-top:10px}
+.d-ftag,.d-chip{font-size:12px;padding:3px 10px;border-radius:var(--radius-pill);background:rgba(255,255,255,.2);font-weight:600}
+.d-chip.is-grade{background:var(--sunny);color:var(--ink);font-weight:700}
+.d-stitle{display:inline-block;font-size:13px;font-weight:700;color:#fff;padding:2px 12px;background:var(--brand);border-radius:var(--radius-pill);margin:16px 0 10px}
 .d-igrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:4px}
-.d-iitem{background:var(--g50);border-radius:8px;padding:8px 12px}
+.d-iitem{background:var(--soft);border-radius:var(--radius-sm);padding:9px 12px}
 .d-iitem-full{grid-column:1/-1}
-.d-ilabel{font-size:10px;font-weight:700;color:var(--g400);margin-bottom:2px;letter-spacing:.3px}
-.d-ival{font-size:12px;color:var(--text);white-space:pre-line;line-height:1.55}
-.d-ibox{background:var(--sky);border-radius:10px;padding:12px 15px;font-size:13px;color:var(--navy);line-height:1.7;font-weight:500;margin-bottom:4px}
-.d-seats-row{font-size:13px;font-weight:700;margin:10px 0 12px}
-.d-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
-.d-chip{font-size:11px;padding:3px 10px;border-radius:10px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.92);font-weight:500}
+.d-ilabel{font-size:12px;font-weight:700;color:var(--ink-soft);margin-bottom:2px}
+.d-ival{font-size:14px;white-space:pre-line;line-height:1.6}
+.d-ibox{background:var(--bg);border-radius:var(--radius-sm);padding:13px 16px;font-size:15px;line-height:1.75;font-weight:500;margin-bottom:4px}
+.d-seats-row{font-size:15px;font-weight:700;margin:10px 0 12px}
+.d-seats-row.is-full{color:var(--danger)}
+.d-seats-row.is-ok{color:var(--ok)}
 .d-sec{margin-top:4px}
-.d-goal{background:var(--g50);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--text);line-height:1.65;border-left:3px solid var(--blue);margin-bottom:6px}
-.d-goal-gold{border-left-color:var(--gold)}
-.d-recommend{background:var(--g50);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--text);line-height:1.65;white-space:pre-line}
-.d-instr-card{background:var(--g50);border-radius:8px;padding:10px 13px;margin-bottom:6px}
-.d-instr-name{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px}
-.d-instr-org{font-size:11px;color:var(--g400);margin-bottom:4px}
-.d-instr-bio{font-size:11px;color:var(--g700);line-height:1.6}
-.d-sched-table{width:100%;border-collapse:collapse;font-size:12px}
-.d-sched-table th{background:var(--sky);color:var(--navy);font-weight:700;padding:6px 8px;text-align:left;font-size:11px}
-.d-sched-table td{padding:6px 8px;border-bottom:1px solid var(--g200)}
+.d-goal{background:var(--soft);border-radius:var(--radius-sm);padding:10px 14px;font-size:14px;line-height:1.7;border-left:4px solid var(--brand);margin-bottom:6px}
+.d-goal-gold{border-left-color:var(--accent-d)}
+.d-recommend{background:var(--soft);border-radius:var(--radius-sm);padding:10px 14px;font-size:14px;line-height:1.7;white-space:pre-line}
+.d-instr-card{background:var(--soft);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:6px}
+.d-instr-name{font-size:15px;font-weight:700;margin-bottom:2px}
+.d-instr-org{font-size:13px;color:var(--ink-soft);margin-bottom:4px}
+.d-instr-bio{font-size:13px;line-height:1.6}
+.d-sched-table{width:100%;border-collapse:collapse;font-size:13px}
+.d-sched-table th{background:var(--bg);font-weight:700;padding:7px 8px;text-align:left;font-size:12.5px}
+.d-sched-table td{padding:7px 8px;border-bottom:1px solid var(--line)}
 .d-sched-table tr:last-child td{border-bottom:none}
-.d-day-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;background:var(--blue);color:#fff}
-.d-day-badge.sat{background:#e84545}
-.d-day-badge.sun{background:#c0392b}
-.d-total-row td{background:var(--g100);font-weight:700;font-size:11px}
-.d-sess-cnt{display:inline-block;background:var(--mint-bg);color:var(--mint);border-radius:10px;padding:1px 8px;font-size:11px;font-weight:700}
+.d-day-badge{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-size:12px;font-weight:700;background:var(--brand);color:#fff}
+.d-day-badge.sat,.d-day-badge.sun{background:var(--danger)}
+.d-total-row td{background:var(--soft);font-weight:700;font-size:12.5px}
+.d-sess-cnt{display:inline-block;background:var(--ok-bg);color:var(--ok);border-radius:var(--radius-pill);padding:1px 9px;font-size:12px;font-weight:700}
 
-/* ── University color bar on cards ── */
-.card-uni-bar{height:4px;border-radius:var(--r) var(--r) 0 0;margin:-16px -16px 10px}
-.card-credit{font-size:11px;color:#075985;background:#f0f9ff;border-radius:6px;padding:3px 8px;margin-top:2px;line-height:1.4}
-.grade-badge{display:inline-block;font-size:10px;font-weight:700;color:#92400e;background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:1px 8px;margin-left:6px}
+/* ── 카드·상세의 보조 표시 ── */
+.card-credit{font-size:13px;background:var(--info-bg);border-radius:var(--radius-sm);padding:4px 10px;line-height:1.5}
+.grade-badge{display:table;font-size:12px;font-weight:700;line-height:1.5;background:var(--sunny);border:1px solid var(--warn-line);border-radius:8px;padding:2px 9px;margin-top:5px} /* 문구가 길어 강좌명 아래 줄에 둔다 */
+.d-credit-box{background:var(--info-bg);border:1px solid var(--info-line);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:12px}
+.d-credit-title{font-size:14px;font-weight:800;margin-bottom:6px}
+.d-credit-text{font-size:14px;line-height:1.75;white-space:pre-line}
 
-/* ── Credit recognition box in detail modal ── */
-.d-credit-box{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:1.5px solid #7dd3fc;border-radius:10px;padding:14px 16px;margin-bottom:12px}
-.d-credit-title{font-size:12px;font-weight:800;color:#0369a1;margin-bottom:6px}
-.d-credit-text{font-size:13px;color:#0c4a6e;line-height:1.7;white-space:pre-line}
-
-/* ── Collapsible sessions ── */
-.d-sess-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:8px 12px;background:var(--g50);border-radius:8px;border:1px solid var(--g200);margin-bottom:6px;font-size:12px;font-weight:700;color:var(--navy)}
-.d-sess-toggle:hover{background:var(--sky)}
-.d-sess-toggle .arrow{transition:transform .2s;font-size:10px}
+/* ── 차시 계획 펼치기 ── */
+.d-sess-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:9px 14px;background:var(--soft);border-radius:var(--radius-sm);border:1px solid var(--line);margin-bottom:6px;font-size:14px;font-weight:700}
+.d-sess-toggle:hover{background:var(--bg)}
+.d-sess-toggle .arrow{transition:transform .2s;font-size:11px}
 .d-sess-toggle.open .arrow{transform:rotate(180deg)}
 .d-sess-content{display:none;margin-bottom:8px}
 .d-sess-content.open{display:block}
 
-/* ── Responsive ── */
+/* ── 반응형 ── */
 @media(max-width:500px){
   #course-grid{grid-template-columns:1fr}
   .guide-steps{grid-template-columns:1fr 1fr}
-  .hero-stats{gap:18px}
   .modal{max-height:95vh}
+  .d-igrid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
-<style>
-/* ── 온마당 공통 헤더/푸터 ── */
-.onmadang-wrap{font-family:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo",system-ui,sans-serif}
-.renewal-banner{
-  background:#e8edf8;border-bottom:1px solid #c0cce8;
-  color:#3a539b;text-align:center;font-size:13.5px;font-weight:600;padding:11px 20px;line-height:1.6;
-}
-.onmadang-header{
-  position:sticky;top:0;z-index:9000;
-  background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
-  border-bottom:1px solid #c5dcef;
-}
-.onmadang-nav{
-  display:flex;align-items:center;gap:12px;height:60px;
-  max-width:1180px;margin:0 auto;padding:0 24px;
-}
-.onmadang-brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:inherit;flex-shrink:0}
-.onmadang-brand b{font-size:18px;color:#4F6EBE;font-weight:800;display:block;letter-spacing:-.4px;line-height:1.1}
-.onmadang-brand span{font-size:10.5px;color:#51607d;font-weight:500}
-.onmadang-links{display:flex;gap:2px;margin-left:16px;flex:1;flex-wrap:wrap}
-.onmadang-links a{
-  font-size:14px;font-weight:600;color:#51607d;text-decoration:none;
-  padding:8px 13px;border-radius:999px;transition:.18s;
-}
-.onmadang-links a:hover{background:#eef7fc;color:#4F6EBE}
-.onmadang-links a.active{background:#4F6EBE;color:#fff}
-.onmadang-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.onmadang-tools a{
-  display:flex;align-items:center;gap:6px;flex-shrink:0;text-decoration:none;
-  font-weight:700;font-size:13.5px;padding:9px 16px;border-radius:999px;transition:.18s;
-}
-.onmadang-tools .om-link{background:#fff;color:#4F6EBE;border:1.5px solid #4F6EBE}
-.onmadang-tools .om-link:hover{background:#eef7fc}
-.onmadang-tools .om-cta{background:#7BCE7C;color:#1c3d1d;border:none}
-.onmadang-tools .om-cta:hover{background:#5fb260}
-.om-hamburger{
-  display:none;background:none;border:none;font-size:26px;
-  color:#4F6EBE;cursor:pointer;margin-left:auto;padding:4px;
-}
-.om-mobile-menu{
-  display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9500;
-  background:rgba(0,0,0,.4);opacity:0;transition:opacity .25s;
-}
-.om-mobile-menu.open{display:block;opacity:1}
-.om-mobile-panel{
-  position:absolute;top:0;right:0;width:min(320px,85vw);height:100%;
-  background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,.15);
-  padding:24px;overflow-y:auto;
-  transform:translateX(100%);transition:transform .25s;
-}
-.om-mobile-menu.open .om-mobile-panel{transform:translateX(0)}
-.om-mobile-close{
-  display:flex;align-items:center;justify-content:center;
-  width:36px;height:36px;border:none;background:#eef7fc;
-  border-radius:50%;font-size:20px;cursor:pointer;margin-left:auto;margin-bottom:20px;
-}
-.om-mobile-nav{display:flex;flex-direction:column;gap:4px}
-.om-mobile-nav a{display:block;font-size:15px;font-weight:600;color:#51607d;padding:12px 16px;border-radius:12px;transition:.15s;text-decoration:none}
-.om-mobile-nav a:hover{background:#eef7fc;color:#4F6EBE}
-.om-mobile-nav a.active{background:#4F6EBE;color:#fff}
-.om-mobile-divider{height:1px;background:#c5dcef;margin:12px 0}
-.om-mobile-shortcuts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
-.om-mobile-shortcuts a{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#4F6EBE;padding:10px 14px;background:#eef7fc;border-radius:12px;transition:.15s;text-decoration:none}
-.om-mobile-shortcuts a:hover{background:#c5dcef}
-.onmadang-footer{background:#3a539b;color:rgba(255,255,255,.7);padding:32px 0;text-align:center;font-size:13px;font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif}
-@media(max-width:680px){
-  .onmadang-links,.onmadang-tools{display:none}
-  .om-hamburger{display:block}
-}
-</style>
 
-<!-- 클로버 SVG 심볼 -->
+<!-- 클로버 SVG 심볼 (common.js와 같은 정의) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <symbol id="clv" viewBox="0 0 100 100">
     <circle cx="50" cy="32" r="17" fill="#7BCE7C"/>
@@ -407,67 +335,112 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
   </symbol>
 </defs></svg>
 
-<div class="onmadang-wrap">
-
-<!-- ── 온마당 헤더 ── -->
-<header class="onmadang-header">
-  <div class="onmadang-nav">
-    <a href="../index.html" class="onmadang-brand">
-      <svg class="clover" width="38" height="38"><use href="#clv"/></svg>
-      <span><b>온마당</b><span>충남 고교학점제 종합지원</span></span>
+<!-- ── 온마당 헤더 ──
+     common.js를 쓰지 않는 독립 앱이라 common.js가 만드는 마크업을 그대로 옮겨 두었다.
+     ⚠️ 본체 메뉴(common.js subMenus)가 바뀌면 아래 데스크톱·모바일 메뉴와 푸터 사이트맵을 함께 고칠 것 -->
+<header>
+  <div class="nav">
+    <a href="../index.html" class="brand">
+      <img class="brand-logo" src="../assets/img/common/logo.svg" width="38" height="38" alt="">
+      <span class="brand-txt"><b>온마당</b><span>충남 고교학점제 종합지원</span></span>
     </a>
-    <nav class="onmadang-links" aria-label="온마당 메뉴">
-      <a href="../about/">고교학점제</a>
-      <a href="../design/">진로·학업 설계</a>
-      <a href="../safety/">4대 안전망</a>
-      <a href="../board/">알림·소통 마당</a>
+    <nav class="nav-links" aria-label="주 메뉴">
+      <div class="gnb-item"><a href="../about/" class="gnb-top">고교학점제</a><div class="gnb-dd">
+        <a href="../about/what-is.html">고교학점제란?</a>
+        <a href="../about/student-agency.html">학생 주도성과 고교학점제</a>
+        <a href="../about/kkukku-club.html">꾸꾸클럽</a>
+      </div></div>
+      <div class="gnb-item"><a href="../design/" class="gnb-top">진로·학업 설계</a><div class="gnb-dd">
+        <a href="../design/compass/">진로 나침반</a>
+        <a href="../design/majors/">학과·과목 탐색</a>
+        <a href="../design/selector/">과목 선택 실습</a>
+        <a href="../design/check/">내 선택 점검</a>
+      </div></div>
+      <div class="gnb-item"><a href="../safety/" class="gnb-top">4대 안전망</a><div class="gnb-dd">
+        <a href="../safety/schoolcurriculum.html">학교 교육과정</a>
+        <a href="../safety/onlineschool.html">충남온라인학교</a>
+        <a href="../safety/jointcurricula.html">공동교육과정</a>
+        <a href="../safety/off-campus_courses.html">학교 밖 교육</a>
+      </div></div>
+      <div class="gnb-item"><a href="../board/" class="gnb-top">알림·소통 마당</a><div class="gnb-dd">
+        <a href="../board/">공지사항</a>
+        <a href="../board/resources.html">자료실</a>
+      </div></div>
     </nav>
-    <div class="onmadang-tools">
-      <a href="../design/selector/" class="om-link">과목 선택 실습</a>
-      <a href="../enroll/" class="om-cta">수강신청</a>
+    <div class="head-tools">
+      <a href="../enroll/" class="head-link is-enroll" aria-current="page"><svg class="clover" width="15" height="15"><use href="#clv"/></svg><span>수강신청</span></a>
+      <a href="../design/selector/" class="head-link"><svg class="clover" width="15" height="15"><use href="#clv"/></svg><span>과목 선택 실습</span></a>
     </div>
-    <button class="om-hamburger" aria-label="메뉴 열기" onclick="omMenuOpen()">☰</button>
+    <button class="hamburger" aria-label="메뉴 열기">☰</button>
   </div>
 </header>
 
 <!-- 온마당 모바일 메뉴 -->
-<div class="om-mobile-menu" id="omMobileMenu" aria-hidden="true">
-  <div class="om-mobile-panel">
-    <button class="om-mobile-close" aria-label="메뉴 닫기" onclick="omMenuClose()">✕</button>
-    <nav class="om-mobile-nav" aria-label="모바일 메뉴">
-      <a href="../about/">고교학점제</a>
-      <a href="../design/">진로·학업 설계</a>
-      <a href="../safety/">4대 안전망</a>
-      <a href="../board/">알림·소통 마당</a>
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-panel">
+    <button class="mobile-menu-close" aria-label="메뉴 닫기">✕</button>
+    <nav class="mobile-menu-nav" aria-label="모바일 메뉴">
+      <button class="mob-toggle" data-menu="about">고교학점제</button>
+      <div class="mob-sub" data-menu="about">
+        <a href="../about/what-is.html">고교학점제란?</a>
+        <a href="../about/student-agency.html">학생 주도성과 고교학점제</a>
+        <a href="../about/kkukku-club.html">꾸꾸클럽</a>
+      </div>
+      <button class="mob-toggle" data-menu="design">진로·학업 설계</button>
+      <div class="mob-sub" data-menu="design">
+        <a href="../design/compass/">진로 나침반</a>
+        <a href="../design/majors/">학과·과목 탐색</a>
+        <a href="../design/selector/">과목 선택 실습</a>
+        <a href="../design/check/">내 선택 점검</a>
+      </div>
+      <button class="mob-toggle" data-menu="safety">4대 안전망</button>
+      <div class="mob-sub" data-menu="safety">
+        <a href="../safety/schoolcurriculum.html">학교 교육과정</a>
+        <a href="../safety/onlineschool.html">충남온라인학교</a>
+        <a href="../safety/jointcurricula.html">공동교육과정</a>
+        <a href="../safety/off-campus_courses.html">학교 밖 교육</a>
+      </div>
+      <button class="mob-toggle" data-menu="board">알림·소통 마당</button>
+      <div class="mob-sub" data-menu="board">
+        <a href="../board/">공지사항</a>
+        <a href="../board/resources.html">자료실</a>
+      </div>
     </nav>
-    <div class="om-mobile-divider"></div>
-    <div class="om-mobile-shortcuts">
-      <a href="../design/selector/">
-        <svg width="15" height="15"><use href="#clv"/></svg> 과목 선택 실습
-      </a>
-      <a href="../enroll/" class="active">
-        <svg width="15" height="15"><use href="#clv"/></svg> 수강신청
-      </a>
+    <div class="mobile-menu-divider"></div>
+    <div class="mobile-menu-shortcuts">
+      <a href="../enroll/" aria-current="page"><svg class="clover" width="15" height="15"><use href="#clv"/></svg> 수강신청</a>
+      <a href="../design/selector/"><svg class="clover" width="15" height="15"><use href="#clv"/></svg> 과목 선택 실습</a>
     </div>
   </div>
 </div>
-</div><!-- /.onmadang-wrap -->
 
 <script>
-// 온마당 모바일 메뉴
+// 온마당 모바일 메뉴 + 아코디언 (common.js와 같은 동작)
 (function(){
-  var menu=document.getElementById('omMobileMenu');
-  window.omMenuOpen=function(){menu.classList.add('open');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'};
-  window.omMenuClose=function(){menu.classList.remove('open');menu.setAttribute('aria-hidden','true');document.body.style.overflow=''};
-  menu.addEventListener('click',function(e){if(e.target===menu)omMenuClose()});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open'))omMenuClose()});
+  var menu=document.getElementById('mobileMenu');
+  function open(){menu.classList.add('open');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
+  function close(){menu.classList.remove('open');menu.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+  document.querySelector('header .hamburger').addEventListener('click',open);
+  menu.querySelector('.mobile-menu-close').addEventListener('click',close);
+  menu.addEventListener('click',function(e){if(e.target===menu)close()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open'))close()});
+  var toggles=menu.querySelectorAll('.mob-toggle');
+  toggles.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var wasOpen=btn.classList.contains('open');
+      toggles.forEach(function(t){t.classList.remove('open');menu.querySelector('.mob-sub[data-menu="'+t.dataset.menu+'"]').classList.remove('open')});
+      if(!wasOpen){btn.classList.add('open');menu.querySelector('.mob-sub[data-menu="'+btn.dataset.menu+'"]').classList.add('open')}
+    });
+  });
 })();
 </script>
 
-<!-- ══ Hero ══ -->
-<header class="hero">
-  <div class="hero-in">
-    <div class="hero-badge">충청남도교육청</div>
+<!-- ══ 머리 영역 ══ (common.css .page-hero.is-light — 앱 성격 페이지의 밝은 머리, 오른쪽 캐릭터는 장식) -->
+<div class="page-hero is-light app-hero hero">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="이동 경로">
+      <a href="../index.html">홈</a> › <a href="../enroll/">수강신청</a> › <strong class="hero-crumb">꿈키움 학교 밖 교육 창의적체험활동</strong>
+    </nav>
     <h1>2026학년도 2학기<br>꿈키움 학교 밖 교육<br>창의적체험활동 수강 신청</h1>
     <p>충남 관내 고등학교 1~3학년을 대상으로 하는 진로활동 프로그램입니다.<br>강좌별 상세 내용을 확인하고 [신청하기]를 눌러 수강신청하세요.</p>
     <div class="hero-stats">
@@ -475,72 +448,74 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
       <div class="hero-stat"><div class="val">15</div><div class="lbl">개 기관</div></div>
     </div>
     <div class="hero-open-tag">선착순 신청 · <em>1차 2026. 9. 10.(목) 18:00 ~</em></div>
-    <a href="../dream_up/" target="_blank" style="display:inline-block;margin-top:14px;padding:7px 20px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:20px;font-size:13px;text-decoration:none;">📄 강좌 안내 페이지 보기</a>
+    <div class="hero-links">
+      <a class="btn-pill is-line" href="../dream_up/" target="_blank" rel="noopener">📄 강좌 안내 페이지 보기<span class="sr-only"> (새 창)</span></a>
+    </div>
   </div>
-</header>
+</div>
 
 <!-- ══ Notice ══ -->
 <section class="notice-section">
-  <div class="wrap" style="max-width:860px;margin:0 auto">
+  <div class="wrap">
     <div class="notice-box">
       <div class="notice-title">
         <span>📋 2026학년도 2학기 꿈키움 학교 밖 교육 창의적체험활동 안내</span>
       </div>
-      <p style="font-size:13px;color:#444;line-height:1.85;margin-bottom:14px">
+      <p class="notice-lead">
         학생 맞춤형 교육과정 다양화와 자기주도적 진로학업설계 역량 강화를 위한 2026학년도 2학기 꿈키움 학교 밖 교육 창의적체험활동(진로활동) 강좌를 다음과 같이 안내합니다.<br>관심 있는 학생들은 기간 내 신청하여 주시기 바랍니다.
       </p>
-      <div style="display:grid;gap:10px;font-size:13px;color:#1f3a5f">
+      <div class="notice-items">
 
-        <div style="display:flex;gap:10px">
-          <span style="font-weight:700;min-width:72px;color:#b45309">① 대상</span>
+        <div class="notice-item">
+          <b>① 대상</b>
           <span>충남 관내 고등학교 1~3학년 재학생</span>
         </div>
 
-        <div style="display:flex;gap:10px">
-          <span style="font-weight:700;min-width:72px;color:#b45309">② 강좌</span>
-          <span><b>66강좌 (15개 기관)</b> <span style="color:#666;font-size:12px">· 창의적체험활동 진로활동 · 강좌당 16차시</span></span>
+        <div class="notice-item">
+          <b>② 강좌</b>
+          <span><b>66강좌 (15개 기관)</b> <span class="notice-note">· 창의적체험활동 진로활동 · 강좌당 16차시</span></span>
         </div>
 
-        <div style="display:flex;gap:10px">
-          <span style="font-weight:700;min-width:72px;color:#b45309">③ 운영</span>
-          <span>2026. 10. 17.(토) ~ 11. 29.(일) <span style="color:#666;font-size:12px">[강좌별 세부 일정 확인 요망]</span></span>
+        <div class="notice-item">
+          <b>③ 운영</b>
+          <span>2026. 10. 17.(토) ~ 11. 29.(일) <span class="notice-note">[강좌별 세부 일정 확인 요망]</span></span>
         </div>
 
-        <div style="display:flex;gap:10px">
-          <span style="font-weight:700;min-width:72px;color:#b45309">④ 인원</span>
-          <span>강좌별 정원 15명 <span style="color:#b91c1c;font-weight:700">· 최소 개설 인원 8명</span></span>
+        <div class="notice-item">
+          <b>④ 인원</b>
+          <span>강좌별 정원 15명 <b class="notice-strong-danger">· 최소 개설 인원 8명</b></span>
         </div>
 
-        <div style="display:flex;gap:10px">
-          <span style="font-weight:700;min-width:72px;color:#b45309">⑤ 일정</span>
-          <span style="line-height:2">
-            <b>1차 신청 : 2026. 9. 10.(목) 18:00 ~ 9. 13.(일) 15:00</b> <span style="color:#c2410c;font-size:11.5px">선착순</span><br>
+        <div class="notice-item">
+          <b>⑤ 일정</b>
+          <span class="notice-sched">
+            <b>1차 신청 : 2026. 9. 10.(목) 18:00 ~ 9. 13.(일) 15:00</b> <span class="notice-note">선착순</span><br>
             <b>2차 신청 : 2026. 9. 15.(화) 18:00 ~ 22:00</b><br>
             개설강좌 확정 안내 : 2026. 9. 17.(목)
           </span>
         </div>
 
-        <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;font-size:12.5px;color:#7f1d1d;line-height:1.9">
-          <b style="color:#b91c1c">⚠️ 최소 개설 인원 안내</b><br>
+        <div class="notice-alert is-danger">
+          <b>⚠️ 최소 개설 인원 안내</b>
           · <b>강좌별 신청 인원이 8명 미만이면 폐강될 수 있습니다.</b> (이번 학기부터 적용되는 기준입니다)<br>
           · 폐강 여부는 개설강좌 확정 안내(9. 17.)에서 확인할 수 있습니다.
         </div>
 
-        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 14px;font-size:12.5px;color:#444;line-height:1.9">
-          <b style="color:#92400e">📌 유의사항</b><br>
+        <div class="notice-alert is-warn">
+          <b>📌 유의사항</b>
           · 강좌에 따라 운영 일시와 장소가 다르니 수업 운영 계획서 필히 확인<br>
           · <b>1개의 강좌만 신청 가능</b> (2개 이상 신청된 경우 최초 신청 강좌만 인정)<br>
           · 수강 신청 종료 후 추가 모집 계획 없으므로 신중하게 신청<br>
           · 강좌 운영 장소까지 이동은 학부모 책임하에 학생별 개별 이동
         </div>
 
-        <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:10px 14px;font-size:12.5px;color:#444;line-height:1.9">
-          <b style="color:#075985">📚 이수 처리 및 창의적체험활동 인정</b><br>
+        <div class="notice-alert is-info">
+          <b>📚 이수 처리 및 창의적체험활동 인정</b>
           · 이수 기준 : <b>총 16차시 중 2/3(11차시) 이상 출석</b><br>
           · 이수 기준 충족 시 <b>창의적체험활동(진로활동) 시수 인정</b> 및 학교생활기록부 특기사항 기재
         </div>
 
-        <div style="font-size:12.5px;color:#555;line-height:1.9;padding:2px 2px 0">
+        <div class="notice-contact">
           문의 : 충청남도교육청 중등교육과 ☎ 041-640-7221, 7224
         </div>
 
@@ -575,7 +550,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
         <div class="step-desc">'내 신청 확인·취소' 탭에서 <b>취소비번(4자리)</b>을 입력해 언제든지 취소할 수 있습니다.</div>
       </div>
     </div>
-    <div style="margin-top:18px;background:#fff8e1;border:1.5px solid var(--gold);border-radius:10px;padding:11px 18px;text-align:center;font-size:13px;color:#7a5800;font-weight:600;line-height:1.6">
+    <div class="guide-tip">
       💡 강좌 변경을 원하는 경우, 신청한 강좌를 <b>취소</b>하고 창을 <b>새로 고침</b>한 뒤 다시 신청해 주세요.
     </div>
   </div>
@@ -589,7 +564,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
 </div>
 
 <!-- ══ Main ══ -->
-<main class="wrap">
+<main class="app-main">
 
   <!-- Tabs -->
   <div class="tabs">
@@ -689,7 +664,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
       <!-- form -->
       <div id="r-form-wrap">
         <div class="form-group">
-          <label>학교 <span style="color:var(--red)">*</span></label>
+          <label>학교 <span class="req">*</span></label>
           <div class="school-wrap">
             <input id="r-school-inp" class="form-input" type="text" placeholder="학교명을 입력하세요" autocomplete="off"/>
             <input type="hidden" id="r-school-code"/>
@@ -697,7 +672,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
           </div>
         </div>
         <div class="form-group">
-          <label>학번 (학년·반·번호) <span style="color:var(--red)">*</span></label>
+          <label>학번 (학년·반·번호) <span class="req">*</span></label>
           <div class="stno-row">
             <select id="r-grade"><option value="">학년</option><option>1</option><option>2</option><option>3</option></select>
             <span class="stno-sep">학년</span>
@@ -708,15 +683,15 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
           </div>
         </div>
         <div class="form-group">
-          <label for="r-name">이름 <span style="color:var(--red)">*</span></label>
+          <label for="r-name">이름 <span class="req">*</span></label>
           <input id="r-name" class="form-input" type="text" placeholder="홍길동"/>
         </div>
         <div class="form-group">
-          <label for="r-phone">연락처 <span style="color:var(--red)">*</span></label>
+          <label for="r-phone">연락처 <span class="req">*</span></label>
           <input id="r-phone" class="form-input" type="tel" placeholder="01012345678"/>
         </div>
         <div class="form-group">
-          <label for="r-pin">취소비번 (숫자 4자리) <span style="color:var(--red)">*</span></label>
+          <label for="r-pin">취소비번 (숫자 4자리) <span class="req">*</span></label>
           <input id="r-pin" class="form-input pin-input" type="password" maxlength="4" placeholder="••••" inputmode="numeric"/>
           <div class="form-hint">취소 시 필요합니다. 기억하기 쉬운 번호로 설정하세요.</div>
         </div>
@@ -732,7 +707,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--tex
           <dl class="s-dl" id="s-dl"></dl>
         </div>
         <div class="warn-box">⚠️ 취소비번을 꼭 기억해 두세요. '내 신청 확인·취소' 탭에서 취소 시 필요합니다.</div>
-        <button class="btn-primary" style="margin-top:14px" onclick="closeSuccessModal()">확인</button>
+        <button class="btn-primary btn-gap" onclick="closeSuccessModal()">확인</button>
       </div>
     </div>
   </div>
@@ -812,6 +787,8 @@ async function fetchDbCourseDetails() {
   }
 }
 // ── University brand colors ──
+// 기관 색이 없는 강좌(지역연계 등)는 DS 브랜드색 — 상세 머리의 그라데이션이 hex를 쓰므로 토큰 값을 읽어 둔다
+const BRAND_HEX = getComputedStyle(document.documentElement).getPropertyValue('--brand').trim() || '#526ADC';
 const UNI_COLORS = {
   "건양대학교":"#0B5AA6",
   "국립공주대학교":"#1B3A6B",
@@ -909,17 +886,19 @@ async function applyProgramBranding() {
   if (heroEl) heroEl.textContent = `${displayName} 수강 신청`;
   const heroP = document.querySelector('.hero p');
   if (heroP) heroP.innerHTML = '강좌별 상세 내용을 확인하고 [신청하기]를 눌러 수강신청하세요.';
+  const crumb = document.querySelector('.hero-crumb');
+  if (crumb) crumb.textContent = displayName;
   const openTag = document.querySelector('.hero-open-tag');
   if (openTag) openTag.style.display = 'none';
-  const guideLink = document.querySelector('.hero a[href*="dream_up"]');
-  if (guideLink) guideLink.style.display = 'none';
+  const guideLinks = document.querySelector('.hero-links');
+  if (guideLinks) guideLinks.style.display = 'none';
   const noticeSection = document.querySelector('.notice-section');
   if (noticeSection) {
     noticeSection.innerHTML = `
-      <div class="wrap" style="max-width:860px;margin:0 auto">
+      <div class="wrap">
         <div class="notice-box">
           <div class="notice-title"><span>📋 ${displayName} 수강신청 안내</span></div>
-          <p style="font-size:13px;color:#444;line-height:1.85">
+          <p class="notice-lead">
             운영 기관의 안내에 따라 강좌를 확인하고 신청해 주세요. 세부 일정·정원·준비물은 각 강좌 카드의 [상세보기]에서 확인할 수 있습니다.
           </p>
         </div>
@@ -1302,7 +1281,7 @@ function renderCard(c) {
   const period = d.period || '';
   const place  = (d.place || '').split('(')[0].trim().substring(0, 22);
   const uni    = d.university || c.org || '';
-  const uniColor = UNI_COLORS[uni] || '#152460';
+  const uniColor = UNI_COLORS[uni] || BRAND_HEX;
 
   // Grade restriction badge
   const gRule = gradeRule(c.code);
@@ -1424,7 +1403,7 @@ function startReserveTimer(expiresAt) {
     const fill = document.getElementById('timer-fill');
     fill.style.width = pct + '%';
     fill.style.background =
-      left <= 10 ? 'var(--red)' : left <= 20 ? 'var(--gold)' : 'var(--mint)';
+      left <= 10 ? 'var(--danger)' : left <= 20 ? 'var(--warn)' : 'var(--ok)';
 
     if (left <= 0) {
       clearInterval(reserveInterval);
@@ -1562,21 +1541,21 @@ function openDetailModal(code) {
   detailCode = code;
 
   const uni    = d.university || c?.org || '';
-  const color  = UNI_COLORS[uni] || '#152460';
+  const color  = UNI_COLORS[uni] || BRAND_HEX;
   const fields = d.field ? d.field.split(' · ') : [];
 
   // ── 컬러 헤더 ──
   const head = document.getElementById('d-head');
   head.style.background = `linear-gradient(135deg,${color}f0 0%,${color} 100%)`;
   const gRule = gradeRule(code);
-  const gradeBadgeHtml = gRule ? `<span class="d-chip" style="background:#fcd34d;color:#92400e;font-weight:700">⚠️ ${gradeRuleLabel(gRule)}</span>` : '';
+  const gradeBadgeHtml = gRule ? `<span class="d-chip is-grade">⚠️ ${gradeRuleLabel(gRule)}</span>` : '';
   const chips = [
     d.method       ? `<span class="d-chip">${d.method}</span>` : '',
     d.target       ? `<span class="d-chip">👨‍🎓 ${d.target}</span>` : '',
     gradeBadgeHtml,
   ].filter(Boolean).join('');
   head.innerHTML = `
-    <button class="btn-close" style="position:absolute;top:11px;right:12px;color:#fff;background:rgba(255,255,255,.18);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center" onclick="closeDetailModal()">✕</button>
+    <button class="btn-close d-close" aria-label="닫기" onclick="closeDetailModal()">✕</button>
     <div class="d-mh-top">
       <span class="d-region" style="color:${color}">● ${uni}</span>
       <span class="d-code">${code}</span>
@@ -1594,8 +1573,8 @@ function openDetailModal(code) {
   // ── 좌석 현황 ──
   let seatsHtml = '';
   if (c) {
-    if (c.is_full) seatsHtml = `<div class="d-seats-row" style="color:var(--red)">🔴 마감되었습니다</div>`;
-    else           seatsHtml = `<div class="d-seats-row" style="color:var(--mint)">🟢 잔여 ${c.remaining}석 · 정원 ${c.capacity}석</div>`;
+    if (c.is_full) seatsHtml = `<div class="d-seats-row is-full">🔴 마감되었습니다</div>`;
+    else           seatsHtml = `<div class="d-seats-row is-ok">🟢 잔여 ${c.remaining}석 · 정원 ${c.capacity}석</div>`;
   }
 
   // ── 신청 버튼 ──
@@ -1750,7 +1729,7 @@ async function checkMyEnrollment() {
     resultEl.style.display = 'block';
 
     if (!data || !data.ok) {
-      resultEl.innerHTML = `<div class="panel"><p style="color:var(--g400);font-size:14px">신청 내역이 없습니다.</p></div>`;
+      resultEl.innerHTML = `<div class="panel"><p class="panel-empty">신청 내역이 없습니다.</p></div>`;
       cancelEl.style.display = 'none';
     } else {
       const cname = (courses.find(c => c.code === data.course_code) || {}).name || data.course_code;
@@ -1879,9 +1858,37 @@ document.addEventListener('keydown', e => {
 init();
 </script>
 
-<!-- ── 온마당 푸터 ── -->
-<footer class="onmadang-footer">
-  <p>© 2026 충청남도교육청</p>
+<!-- ── 온마당 푸터 (common.js 푸터와 같은 마크업 — 바뀌면 함께 고칠 것) ── -->
+<footer>
+  <div class="ft-inner">
+    <div class="ft-top">
+      <div class="ft-org"><a class="ft-name" href="../index.html">온마당</a>
+        <p>충남 고교학점제 종합지원 포털</p>
+        <address><b>충청남도교육청</b>중등교육과 고등학교 교육과정지원센터<br><span class="nw">041-640-7224,7221,7211</span><br>(32255) 충청남도 홍성군 홍북읍 선화로 22</address>
+      </div>
+      <nav class="ft-sitemap" aria-label="사이트맵">
+        <div class="ft-col"><b>고교학점제</b><a href="../about/what-is.html">고교학점제란?</a><a href="../about/student-agency.html">학생 주도성과 고교학점제</a><a href="../about/kkukku-club.html">꾸꾸클럽</a></div>
+        <div class="ft-col"><b>진로·학업 설계</b><a href="../design/compass/">진로 나침반</a><a href="../design/majors/">학과·과목 탐색</a><a href="../design/selector/">과목 선택 실습</a><a href="../design/check/">내 선택 점검</a><a href="../design/outside/">학교에 없는 과목 듣는 법</a></div>
+        <div class="ft-col"><b>4대 안전망</b><a href="../safety/schoolcurriculum.html">학교 교육과정</a><a href="../safety/onlineschool.html">충남온라인학교</a><a href="../safety/jointcurricula.html">공동교육과정</a><a href="../safety/off-campus_courses.html">학교 밖 교육</a></div>
+        <div class="ft-col"><b>알림·소통 마당</b><a href="../board/">공지사항</a><a href="../board/resources.html">자료실</a></div>
+      </nav>
+    </div>
+    <div class="ft-bottom">
+      <div class="ft-legal">
+        <a href="../policy/privacy.html"><b>개인정보처리방침</b></a>
+        <a href="../policy/email.html">이메일무단수집거부</a>
+        <span>Copyright © Chungcheongnam-do Office of Education. All rights reserved.</span>
+      </div>
+      <details class="ft-related"><summary>관련 사이트</summary><ul>
+          <li><a href="https://www.cne.go.kr" target="_blank" rel="noopener">충청남도교육청<span class="ft-sr"> (새 창)</span></a></li>
+          <li><a href="http://www.cnonlineschool.cnehs.kr" target="_blank" rel="noopener">충남온라인학교<span class="ft-sr"> (새 창)</span></a></li>
+          <li><a href="https://www.hscredit.kr" target="_blank" rel="noopener">고교학점제 지원센터<span class="ft-sr"> (새 창)</span></a></li>
+          <li><a href="https://www.career.go.kr" target="_blank" rel="noopener">커리어넷<span class="ft-sr"> (새 창)</span></a></li>
+          <li><a href="https://ncic.re.kr" target="_blank" rel="noopener">국가교육과정정보센터<span class="ft-sr"> (새 창)</span></a></li>
+          <li><a href="https://www.adiga.kr" target="_blank" rel="noopener">대입정보포털 어디가<span class="ft-sr"> (새 창)</span></a></li>
+      </ul></details>
+    </div>
+  </div>
 </footer>
 
 </body>

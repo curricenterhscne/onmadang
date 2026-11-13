@@ -95,7 +95,7 @@
 
 | 파일 | 성격 | 공통 헤더 | 비고 |
 |---|---|---|---|
-| `app.html` | 수강신청 앱 본체 (약 1,576줄) | ❌ 미사용 — 자체 헤더 인라인 | 독립 앱 |
+| `app.html` | 수강신청 앱 본체 (약 1,870줄) | ❌ `common.js` 미사용 — 헤더·푸터 마크업을 직접 둔다. **`common.css`는 연결**(2026-11-13 리뉴얼) | 독립 앱 |
 | `index.html` | 기간 외 안내 (약 60줄) | ✅ **사용** (`common.css` + `common.js`, `data-active="safety"`) | 정적 페이지. **사이트 내 링크 없음** — 직접 URL 접근용 |
 
 - 다음 신청 기간이 열리면 `index.html`을 `app.html` 내용으로 되돌리거나 리다이렉트를 건다. 이때 **어느 쪽이 앱인지 이 표를 먼저 갱신할 것.**
@@ -116,7 +116,7 @@
 ```
 apply/
 ├─ index.html       ← 마감 안내 페이지 (약 60줄, 공통 헤더 사용)
-├─ app.html         ← 수강신청 앱 전체 (약 1,576줄, 스타일·로직 인라인, 독립 헤더)
+├─ app.html         ← 수강신청 앱 전체 (약 1,870줄, 앱 스타일·로직 인라인, common.css 연결, 헤더·푸터 마크업 직접)
 ├─ _embed_data.js   ← 정적 데이터 (SCHOOLS 122개, COURSE_DETAILS 66개)
 │                     ⚠️ 파일 전체가 3줄. 한 줄에 거대 배열이 들어 있어 수동 편집 위험
 └─ admin/
@@ -246,15 +246,16 @@ _embed_data.js (정적)          Supabase RPC (실시간)
 1. **_embed_data.js에 제어문자 금지** — `creditRecognition` 등 멀티라인 필드에 실제 줄바꿈(U+000A)이 들어가면 JS 파싱 실패 → 사이트 먹통. 반드시 JSON `\n` 이스케이프 사용. Python `json.dumps()`로 재직렬화하면 자동 처리됨.
 2. **Supabase 접속 정보** — `SUPABASE_URL`과 `SUPABASE_ANON_KEY`가 **`app.html`**에 하드코딩됨 (anon key이므로 RLS로 보호).
 3. **serverTimeDiff** — 클라이언트-서버 시간차 보정. 모든 카운트다운은 `Date.now() + serverTimeDiff` 사용.
-4. **z-index 계층** (실측) — `.onmadang-header` 9000 · backdrop 9100 · 학교 자동완성 9200 · 토스트 9300 · `.om-mobile-menu` 9500.
+4. **z-index 계층** (2026-11-13) — 공통 헤더 100(`common.css`) · GNB 드롭다운 110 · 모바일 메뉴 200 · backdrop 9100 · 학교 자동완성 9200 · 토스트 9300.
    새 오버레이는 이 사이 값을 쓰고 목록을 갱신할 것.
 5. **학번 형식** — `학년-반(2자리)-번호(2자리)`, e.g. `"2-01-15"`.
 6. **학년 제한** — 현재 66강좌 전부 **1~3학년** 대상이라 학년 선택에 **3학년이 있다**(`app.html`의 `my-grade`·`r-grade` 두 곳). `gradeRestricted` 로직은 남아 있으나 현재 해당 강좌가 없다. 학년 제한 강좌가 생기면 `gradeRestricted:true` + `target`에 「N학년」 표기를 넣으면 확정 시 자동 차단된다.
    **2026-11-12 — `target`의 학년은 운영 학년도 기준이다.** 다음 학년도 강좌를 올해 받으므로(2027학년도 3학년 대상 → 2026년 현재 2학년이 신청) `gradeRule()`이 학년차만큼 빼서 현재 학년으로 환산한다. 운영 학년도는 `start_date`(3월 기준, 1·2월은 전년도) → 없으면 자동 부여 코드의 학년도 2자리로 정한다. `target`은 「3학년」「2~3학년」「2·3학년」을 모두 읽는다(예전에는 첫 숫자 하나만 읽어 「2~3학년」이 2학년 전용으로 막혔다). 검사는 학생 화면에서만 하며 RPC에는 학년 검사가 없다.
 7. **강좌 안내 링크** — `../dual_credit/`로 연결 (off-campus_courses 아님).
-8. **`app.html`의 GNB는 손으로 관리한다** — `common.js`를 안 쓰므로 GNB가 자동 동기화되지 않는다. 온마당 메뉴가 바뀌면 `app.html`의 데스크톱 nav(`.onmadang-links`)와 모바일 nav(`.om-mobile-nav`) **양쪽을 직접 고쳐야 한다.** (2026-08-13에 `알림·소통 마당`이 홈으로 가던 오류와 `고교학점제` 메뉴 누락을 이 방식으로 정정했다.)
+8. **`app.html`의 GNB·푸터는 손으로 관리한다** — `common.js`를 안 쓰므로 자동 동기화되지 않는다. 마크업은 `common.js`가 만드는 것을 그대로 옮겨 두었으니(2026-11-13), 온마당 메뉴가 바뀌면 `app.html`의 데스크톱 nav(`.nav-links`)·모바일 nav(`.mobile-menu-nav`)·푸터 사이트맵(`.ft-sitemap`) **세 곳을 직접 고쳐야 한다.** (2026-08-13에 `알림·소통 마당`이 홈으로 가던 오류와 `고교학점제` 메뉴 누락을 이 방식으로 정정했다.)
 9. **상단 안내 배너는 2026-08-20에 제거됨** — 「리디자인 작업 중」 문구를 3곳(`assets/js/common.js`, **`apply/app.html`**, `design/selector/guide.html`)에서 모두 지웠다. 다시 띄울 때도 **3곳 동시 작업**이다: `common.js`는 `var banner`에 HTML을 채우고, `app.html`·`guide.html`은 `common.js`를 안 쓰므로 `<div class="renewal-banner" role="note">`를 인라인으로 직접 넣는다. (`apply/index.html`은 `common.js`가 주입하므로 별도 수정 불필요.)
-10. **GoatCounter 미적용** — `index.html`(마감 안내)에는 있으나 `app.html`·`admin/`에는 없다. 루트 `CLAUDE.md`의 접속 통계 절 참조.
+10. **디자인 리뉴얼(DS v2.0) 반영(2026-11-13)** — 머리 영역은 `common.css`의 `.page-hero.is-light`(앱 성격 페이지의 밝은 머리, 캐릭터 3인)이고 `<html data-section="enroll">`을 직접 둔다(없으면 `:root:not([data-section])` 규칙이 이겨 파란 단색 머리가 된다). 앱 스타일은 DS 토큰만 쓰고, DS에 없는 상태색만 앱 `:root`에 둔다(`--ok`·`--warn`·`--danger`·`--info-bg` 등). 옛 `--navy`·`--blue`·`--mint`(초록) 등은 없다 — 특히 `--mint`는 이제 `common.css`의 옅은 민트 바탕색이다. 본문 래퍼는 `.app-main`이다(`common.css`의 `.wrap`과 겹치지 않게). JS가 쓰는 클래스(`.hero h1`·`.hero p`·`.hero-stat .val`·`.hero-open-tag`·`.hero-links`·`.hero-crumb`)는 머리 영역에 그대로 있다.
+11. **GoatCounter 미적용** — `index.html`(마감 안내)에는 있으나 `app.html`·`admin/`에는 없다. 루트 `CLAUDE.md`의 접속 통계 절 참조.
 
 ## 관리자 페이지 (admin/)
 
@@ -297,7 +298,7 @@ UPDATE courses SET enrolled_count = (
 
 ## 하지 말 것
 
-- **`app.html`에** 온마당 공통 헤더/푸터(`common.js`) 적용 ❌ — 독립 앱이다
+- **`app.html`에** 온마당 공통 헤더/푸터(`common.js`) 적용 ❌ — 독립 앱이다 (`common.css` 연결은 2026-11-13부터 한다)
   (반대로 `index.html`은 공통 헤더를 **쓴다.** 여기서 걷어내지 말 것)
 - 앱을 고치라는 요청에 `index.html`을 열기 ❌ — 앱은 `app.html`이다
 - Supabase RPC 함수 시그니처 변경 ❌ — DB 함수와 일치해야 함
