@@ -91,11 +91,15 @@ body{background:var(--soft)}
 .region-btn:hover:not(:disabled){background:var(--bg);border-color:var(--brand)}
 .region-btn:disabled{background:var(--inactive);border-color:var(--inactive);color:var(--ink);cursor:default}
 .region-btn:disabled small{color:var(--ink)}
-.region-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;font-size:14px;color:var(--ink-soft)}
-.region-bar strong{color:var(--ink)}
-.region-change{border:1.5px solid var(--brand);background:var(--surface);color:var(--brand-d);padding:3px 12px;
-  border-radius:var(--radius-pill);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
-.region-change:hover{background:var(--bg)}
+.region-bar{display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap;margin:-4px -6px 14px;padding:12px 16px;
+  background:var(--bg);border:2px solid var(--brand);border-radius:var(--radius-sm)}
+.rb-label{font-size:13px;font-weight:700;color:var(--brand-d);flex-basis:100%;line-height:1.2}
+.rb-name{font-size:clamp(22px,2.4vw,28px);font-weight:900;letter-spacing:-.5px;line-height:1.2}
+.rb-count{font-size:15px;font-weight:600;color:var(--ink-soft)}
+.region-change{margin-left:auto;display:inline-flex;align-items:center;gap:6px;border:2px solid var(--brand);background:var(--brand);color:#fff;
+  padding:8px 18px;border-radius:var(--radius-pill);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:.16s}
+.region-change:hover{background:var(--surface);color:var(--brand-d)}
+@media(max-width:500px){.region-change{margin-left:0;width:100%;justify-content:center}}
 
 /* ── 검색·필터 ── */
 .filter-section{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px}
@@ -581,10 +585,14 @@ body{background:var(--soft)}
     </div>
     <div class="filter-section">
       <div class="region-bar" id="region-bar" style="display:none"></div>
-      <div class="filter-search-row">
-        <input class="search-box" type="search" placeholder="강좌명, 기관명 검색" oninput="setNameFilter(this.value)" autocomplete="off" role="searchbox"/>
+      <!-- 검색 칸은 따로 form에 둔다. 취소비번 칸과 한 묶음으로 보이면 브라우저 비밀번호 관리자가
+           이 칸을 아이디 칸으로 보고 관리 화면(apply/admin/)에 저장된 아이디를 채워 강좌가 모두 걸러진다 (2026-11-13) -->
+      <form class="filter-search-row" role="search" autocomplete="off" onsubmit="return false">
+        <input class="search-box" id="course-search" name="course_keyword" type="search" placeholder="강좌명, 기관명 검색" aria-label="강좌명, 기관명 검색"
+          oninput="setNameFilter(this.value)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+          data-lpignore="true" data-1p-ignore data-bwignore data-form-type="other"/>
         <span id="poll-ts"></span>
-      </div>
+      </form>
       <div class="filter-group">
         <div class="filter-label">계열</div>
         <div class="filter-chips" id="field-chips"></div>
@@ -633,7 +641,7 @@ body{background:var(--soft)}
       <h3>신청 취소</h3>
       <div class="form-group">
         <label for="my-pin">취소비번 (숫자 4자리)</label>
-        <input id="my-pin" class="form-input pin-input" type="password" maxlength="4" placeholder="••••" inputmode="numeric"/>
+        <input id="my-pin" name="cancel_pin_check" class="form-input pin-input" type="password" maxlength="4" placeholder="••••" inputmode="numeric" autocomplete="one-time-code" data-lpignore="true" data-1p-ignore data-bwignore/>
       </div>
       <button class="btn-primary btn-danger" onclick="cancelEnrollment()">취소하기</button>
     </div>
@@ -684,7 +692,7 @@ body{background:var(--soft)}
         </div>
         <div class="form-group">
           <label for="r-name">이름 <span class="req">*</span></label>
-          <input id="r-name" class="form-input" type="text" placeholder="홍길동"/>
+          <input id="r-name" name="student_name" class="form-input" type="text" placeholder="홍길동" autocomplete="off"/>
         </div>
         <div class="form-group">
           <label for="r-phone">연락처 <span class="req">*</span></label>
@@ -692,7 +700,7 @@ body{background:var(--soft)}
         </div>
         <div class="form-group">
           <label for="r-pin">취소비번 (숫자 4자리) <span class="req">*</span></label>
-          <input id="r-pin" class="form-input pin-input" type="password" maxlength="4" placeholder="••••" inputmode="numeric"/>
+          <input id="r-pin" name="cancel_pin_new" class="form-input pin-input" type="password" maxlength="4" placeholder="••••" inputmode="numeric" autocomplete="one-time-code" data-lpignore="true" data-1p-ignore data-bwignore/>
           <div class="form-hint">취소 시 필요합니다. 기억하기 쉬운 번호로 설정하세요.</div>
         </div>
         <button class="btn-primary" id="r-submit-btn" onclick="submitConfirm()">신청 완료</button>
@@ -1010,8 +1018,10 @@ function renderRegionGate() {
   gate.style.display = 'none';
   filters.style.display = '';
   bar.style.display = '';
-  bar.innerHTML = `📍 <strong>${shortRegion(filterRegion)}</strong> 개설 강좌 ${counts[filterRegion] || 0}개
-    <button class="region-change" onclick="setRegion('')">지역 바꾸기</button>`;
+  bar.innerHTML = `<span class="rb-label">선택한 교육지원청</span>
+    <strong class="rb-name">📍 ${shortRegion(filterRegion)}</strong>
+    <span class="rb-count">개설 강좌 ${counts[filterRegion] || 0}개</span>
+    <button type="button" class="region-change" onclick="setRegion('')"><span aria-hidden="true">⇄</span> 지역 바꾸기</button>`;
   return true;
 }
 

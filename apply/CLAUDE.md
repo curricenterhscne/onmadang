@@ -70,7 +70,7 @@
   - `settings.preview_at`(NULL = `open_at` 7일 전). `supabase/sql/preview_period.sql`이 칸을 더하고 `get_open_status_region`이 `preview_at`·`preview_set`·`is_preview`를 돌려주게 교체한다(시그니처 그대로). **SQL 실행·`admin-periods` 재배포는 사용자가 직접**.
   - 화면은 응답에 `preview_at`이 없으면 `open_at - 7일`로 계산하므로 SQL 실행 전에도 「1주일 전 공개」로 동작한다.
   - `app.html`: 공개 전(`before_open` + 공개 시각 전)에는 목록 대신 「강좌 목록은 ○에 공개합니다」. 공개 후에는 목록·상세는 보이고 신청 단추만 막힌다.
-  - `assets/js/enroll-status.js`가 `isPreview`·`previewAt`을 주고, 입구(`enroll/`) 칸은 `isOpen || isPreview`면 신청 화면으로 연결한다. 입구는 기본 기간만 본다(지역 기간 무관).
+  - `assets/js/enroll-status.js`가 `isPreview`·`previewAt`을 주고, 입구(`enroll/`) 칸은 `isOpen || isPreview`면 신청 화면으로 연결한다. 입구는 기본 기간만 본다(지역 기간 무관). **단 지역연계 칸은 2026-11-13부터 기간과 관계없이 늘 `app.html?program=joint_regional`로 연결한다**(`data-always-app`) — 지원청마다 기간이 달라 기본 기간으로 판단하면 먼저 여는 지원청 학생이 막힌다.
   - 관리 화면 「신청 기간」 표에 「강좌 공개(선택)」 열. `admin-periods`는 `preview_at < open_at`을 검사한다.
 - ✅ **웹 매뉴얼(2026-11-12)** — `apply/admin/guide/region.html`(지역청 담당자) · `province.html`(도교육청) · `guide.css` · `index.html`(region으로 이동). 관리 화면 로그인 창과 머리글 「매뉴얼」 단추(역할별로 주소가 바뀜)에서 연결. noindex. **공개 저장소이므로 지역청 아이디 목록·비밀번호 보관 위치는 싣지 않는다**(docx 2판 `G:\26\(4)온마당 고도화\…_운영매뉴얼_2026-11-12.docx`에만 있다). 관리 화면 기능이 바뀌면 두 페이지를 함께 고칠 것.
 - ❌ 아직 안 한 것: GNB에 지역연계·고교대학연계로 가는 공개 링크/안내 페이지 연결(`safety/jointcurricula.html` 등), 14개 지역청 실제 계정 발급·강좌 입력, `dual_credit/enroll.js`의 신청 링크 제어를 `settings`/`cycles` 기반으로 전환.
@@ -255,7 +255,8 @@ _embed_data.js (정적)          Supabase RPC (실시간)
 8. **`app.html`의 GNB·푸터는 손으로 관리한다** — `common.js`를 안 쓰므로 자동 동기화되지 않는다. 마크업은 `common.js`가 만드는 것을 그대로 옮겨 두었으니(2026-11-13), 온마당 메뉴가 바뀌면 `app.html`의 데스크톱 nav(`.nav-links`)·모바일 nav(`.mobile-menu-nav`)·푸터 사이트맵(`.ft-sitemap`) **세 곳을 직접 고쳐야 한다.** (2026-08-13에 `알림·소통 마당`이 홈으로 가던 오류와 `고교학점제` 메뉴 누락을 이 방식으로 정정했다.)
 9. **상단 안내 배너는 2026-08-20에 제거됨** — 「리디자인 작업 중」 문구를 3곳(`assets/js/common.js`, **`apply/app.html`**, `design/selector/guide.html`)에서 모두 지웠다. 다시 띄울 때도 **3곳 동시 작업**이다: `common.js`는 `var banner`에 HTML을 채우고, `app.html`·`guide.html`은 `common.js`를 안 쓰므로 `<div class="renewal-banner" role="note">`를 인라인으로 직접 넣는다. (`apply/index.html`은 `common.js`가 주입하므로 별도 수정 불필요.)
 10. **디자인 리뉴얼(DS v2.0) 반영(2026-11-13)** — 머리 영역은 `common.css`의 `.page-hero.is-light`(앱 성격 페이지의 밝은 머리, 캐릭터 3인)이고 `<html data-section="enroll">`을 직접 둔다(없으면 `:root:not([data-section])` 규칙이 이겨 파란 단색 머리가 된다). 앱 스타일은 DS 토큰만 쓰고, DS에 없는 상태색만 앱 `:root`에 둔다(`--ok`·`--warn`·`--danger`·`--info-bg` 등). 옛 `--navy`·`--blue`·`--mint`(초록) 등은 없다 — 특히 `--mint`는 이제 `common.css`의 옅은 민트 바탕색이다. 본문 래퍼는 `.app-main`이다(`common.css`의 `.wrap`과 겹치지 않게). JS가 쓰는 클래스(`.hero h1`·`.hero p`·`.hero-stat .val`·`.hero-open-tag`·`.hero-links`·`.hero-crumb`)는 머리 영역에 그대로 있다.
-11. **GoatCounter 미적용** — `index.html`(마감 안내)에는 있으나 `app.html`·`admin/`에는 없다. 루트 `CLAUDE.md`의 접속 통계 절 참조.
+11. **검색창 자동 채움 방지(2026-11-13)** — 취소비번 칸(`type="password"`) 때문에 크롬 비밀번호 관리자가 이 화면을 로그인 폼으로 보고, 관리 화면에 저장된 아이디를 강좌 검색창에 채워 강좌가 모두 걸러진 일이 있었다(`autocomplete="off"`는 비밀번호 관리자가 무시한다). 그래서 검색창은 따로 `<form role="search">`에 두고 고유 이름(`course-search`/`course_keyword`)과 비밀번호 관리자 무시 속성을 붙였으며, 취소비번 칸은 `autocomplete="one-time-code"`다. **새 입력 칸을 더할 때 이 묶음을 깨지 말 것.**
+12. **GoatCounter 미적용** — `index.html`(마감 안내)에는 있으나 `app.html`·`admin/`에는 없다. 루트 `CLAUDE.md`의 접속 통계 절 참조.
 
 ## 관리자 페이지 (admin/)
 

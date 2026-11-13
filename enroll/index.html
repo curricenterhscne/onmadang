@@ -47,11 +47,11 @@
         <span class="nt-desc">실시간 쌍방향 온라인 수업으로 운영하는 공동교육과정</span>
         <span class="nt-go">수강신청 기간이 아닙니다</span>
       </a>
-      <a class="net-tile p-regional" href="./closed.html?p=regional" data-program="joint_regional">
+      <a class="net-tile p-regional is-open" href="../apply/app.html?program=joint_regional" data-program="joint_regional" data-always-app>
         <span class="ic" aria-hidden="true"></span>
         <strong class="nt-logo"><span class="nt-pre">참학력 공동교육과정</span><span class="nt-name">지역연계 공동교육과정</span></strong>
         <span class="nt-desc">교육지원청이 주관하여 지역 고등학교와 함께 운영하는 공동교육과정</span>
-        <span class="nt-go">수강신청 기간이 아닙니다</span>
+        <span class="nt-go">교육지원청별 신청 화면</span>
       </a>
       <a class="net-tile p-dual" href="./closed.html?p=dual" data-program="dual_credit">
         <span class="ic" aria-hidden="true"></span>
@@ -75,7 +75,10 @@
 <script>
 // 신청 기간(관리 화면에서 입력)을 읽어 칸의 주소와 상태 문구를 바꾼다.
 // 온라인 공동교육과정은 이 앱으로 신청하지 않아 항상 안내 페이지로 간다.
+// 지역연계(data-always-app)는 교육지원청마다 기간이 달라 늘 신청 화면으로 보낸다(2026-11-13).
+// 신청 화면이 지원청 선택 → 그 지원청 기간·공개 시각에 맞춰 목록·안내를 보여 준다.
 document.querySelectorAll('.net-tile[data-program]').forEach(function (a) {
+  if (a.hasAttribute('data-always-app')) return;
   OM_ENROLL_STATUS.get(a.dataset.program).then(function (s) {
     a.querySelector('.nt-go').textContent = s.label;
     // 신청 중이거나 강좌 공개(미리 보기) 기간이면 신청 화면으로 연결한다
