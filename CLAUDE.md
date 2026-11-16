@@ -192,7 +192,7 @@
 |---|---|---|
 | ① 대학 학과·권장 과목 | `design/majors/` (폴더 통합) | 내부 상대경로 |
 | ② 과목 선택 실습 | `design/selector/` (폴더 통합) | 내부 상대경로 |
-| ③ 공동교육과정 수강신청 | 외부 (신규 개발 중) → 현재 `safety/enrollment-closed.html`로 안내 | 외부 링크 |
+| ③ 공동교육과정 수강신청 | 온라인: 외부 사이트 `enrollment-cne.vercel.app`(형제 레포 `enrollment_cne`) · 지역연계: `apply/app.html?program=joint_regional` — 둘 다 `enroll/` 입구에서 연결 | 외부 링크 / 내부 상대경로 |
 | ④ 고교-대학 연계 과목 교육과정 | `dual_credit/curriculum.html` (원본 문서 이식) | 내부 상대경로 |
 | ⓪ 디자인 시스템 | CDN (`curricenterhscne/cne-design-system`) | CDN 참조 |
 
@@ -236,7 +236,7 @@
 | `design/selector/` | 과목 선택 실습 (자산②) | ✅ 사용 + CDN DS | `index.html`, `guide.html` | 기존 로직 유지 |
 | `policy/` | 개인정보처리방침·이메일무단수집거부 | ✅ 사용 | `privacy.html` `email.html` `policy.css` | 푸터에서 연결. 수집 항목이 바뀌면 `privacy.html`도 수정 |
 | `safety/` | 4대 안전망 페이지들 | ✅ 사용 | HTML 6개 (`index` + 4대 안전망 4개 + `enrollment-closed`) | 정적 콘텐츠. 기획 메모 `.md` 1개 동거 |
-| `enroll/` | **수강신청 입구**(2026-11-11) — 헤더 「수강신청」 단추(과목 선택 실습 왼쪽, 보라)로 들어온다 | ✅ 사용 | `index.html`(프로그램 4개 칸) · `closed.html?p=online\|regional\|dual\|dreamup`(공통 「기간 아님」) | **칸은 DB 신청 기간(관리 화면 「신청 기간」)을 `assets/js/enroll-status.js`로 읽어, 기간 중이면 `../apply/app.html?program=…`로 저절로 바뀐다.** 온라인 공동교육과정은 이 앱을 쓰지 않아 늘 안내 페이지. **지역연계는 지원청마다 기간이 달라 늘 신청 화면으로 연결**(2026-11-13, `data-always-app`). **모든 수강신청 진입점은 이 입구로 모은다**(꿈키움 `dream_up/`·고교-대학 연계 `dual_credit/`·공동교육과정 페이지 단추 → `../enroll/`, 2026-11-11). `dual_credit/enroll.js`도 날짜 배열 대신 DB 상태를 읽는다. 4대 안전망 첫 화면과 같은 `.net-tiles` 틀 |
+| `enroll/` | **수강신청 입구**(2026-11-11) — 헤더 「수강신청」 단추(과목 선택 실습 왼쪽, 보라)로 들어온다 | ✅ 사용 | `index.html`(프로그램 4개 칸) · `closed.html?p=online\|regional\|dual\|dreamup`(공통 「기간 아님」) | **칸은 DB 신청 기간(관리 화면 「신청 기간」)을 `assets/js/enroll-status.js`로 읽어, 기간 중이면 `../apply/app.html?program=…`로 저절로 바뀐다.** 온라인 공동교육과정은 이 앱이 아니라 **별도 신청 사이트**(`enrollment-cne.vercel.app`, 형제 레포 `enrollment_cne`, Supabase 프로젝트도 따로)를 쓴다 — `enroll-status.js`의 `get('online')`이 그 사이트의 `get_enroll_status()`를 읽어, 강좌 공개~마감 기간에만 그 사이트로 연결하고 그 밖에는 「기간 아님」 안내 페이지로 보낸다(2026-11-16). 기간은 그 사이트 관리 화면에서 정한다. **지역연계는 지원청마다 기간이 달라 늘 신청 화면으로 연결**(2026-11-13, `data-always-app`). **모든 수강신청 진입점은 이 입구로 모은다**(꿈키움 `dream_up/`·고교-대학 연계 `dual_credit/`·공동교육과정 페이지 단추 → `../enroll/`, 2026-11-11). `dual_credit/enroll.js`도 날짜 배열 대신 DB 상태를 읽는다. 4대 안전망 첫 화면과 같은 `.net-tiles` 틀 |
 
 ### ⚠️ 링크되지 않는 부속 페이지 (직접 URL 배포용)
 

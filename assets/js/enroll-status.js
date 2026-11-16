@@ -61,5 +61,49 @@
     return cache[program];
   }
 
-  window.OM_ENROLL_STATUS = { get: get, fmt: fmt };
+  /* ── 온라인 공동교육과정 (2026-11-16) ──────────────────────────
+     선착순이 아닌 별도 신청 사이트(enrollment-cne.vercel.app, 다른 Supabase 프로젝트)다.
+     그 사이트 관리 화면 「신청 기간」의 현재 회차를 get_enroll_status()로 읽어 같은 모양으로 돌려준다.
+     phase: idle(강좌 공개 전) · before(강좌 공개) · open(신청 중) · closed(마감), 회차가 없으면 null.
+     재신청 회차가 신청 중이면 재신청 화면으로 연결한다. anon 키는 공개용(RLS로 보호). */
+  var ON_URL = 'https://jrndddwypckotcpipsjc.supabase.co';
+  var ON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpybmRkZHd5cGNrb3RjcGlwc2pjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MDc4MDAsImV4cCI6MjA5NjA4MzgwMH0.J8kNkkSbOgQRBYl6Byk9AAI_4--R6R-SFT9LkAEiTb0';
+  var ON_APP = 'https://enrollment-cne.vercel.app/';
+
+  function getOnline() {
+    if (cache.online) return cache.online;
+    cache.online = fetch(ON_URL + '/rest/v1/rpc/get_enroll_status', {
+      method: 'POST',
+      headers: { apikey: ON_KEY, Authorization: 'Bearer ' + ON_KEY, 'Content-Type': 'application/json' },
+      body: '{}'
+    }).then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; })
+      .then(function (d) {
+        var s = { program: 'online', isOpen: false, isPreview: false, phase: 'unknown', previewAt: null, openAt: null, closeAt: null, appUrl: ON_APP };
+        if (!d) { s.label = '신청 상태를 확인하지 못했습니다'; return s; }
+        var m = d.main, re = d.reapply;
+        if (m && m.phase === 'open') {
+          s.isOpen = true; s.phase = 'open'; s.closeAt = m.ends_at;
+          s.label = '신청 중 · ' + fmt(m.ends_at) + ' 마감';
+        } else if (re && re.phase === 'open') {
+          s.isOpen = true; s.phase = 'reapply'; s.closeAt = re.ends_at; s.appUrl = ON_APP + 'reapply';
+          s.label = '재신청 중 · ' + fmt(re.ends_at) + ' 마감';
+        } else if (m && m.phase === 'before') {
+          s.isPreview = true; s.phase = 'before'; s.openAt = m.starts_at; s.previewAt = m.preview_at;
+          s.label = '강좌 미리 보기 · ' + fmt(m.starts_at) + ' 신청 시작';
+        } else {
+          // 강좌 공개 전(idle)·마감(closed)·회차 없음 — 입구에서는 「기간 아님」
+          s.phase = m ? m.phase : 'none';
+          if (m && m.phase === 'idle') { s.openAt = m.starts_at; s.previewAt = m.preview_at; }
+          s.label = '수강신청 기간이 아닙니다';
+        }
+        return s;
+      });
+    return cache.online;
+  }
+
+  window.OM_ENROLL_STATUS = {
+    get: function (program) { return program === 'online' ? getOnline() : get(program); },
+    fmt: fmt
+  };
 })();

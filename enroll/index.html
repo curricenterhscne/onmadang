@@ -41,7 +41,7 @@
   </div>
   <div class="wrap is-wide">
     <nav class="net-tiles" aria-label="수강신청 프로그램">
-      <a class="net-tile p-online" href="./closed.html?p=online">
+      <a class="net-tile p-online" href="./closed.html?p=online" data-program="online">
         <span class="ic" aria-hidden="true"></span>
         <strong class="nt-logo"><span class="nt-pre">참학력 공동교육과정</span><span class="nt-name">온라인 공동교육과정</span></strong>
         <span class="nt-desc">실시간 쌍방향 온라인 수업으로 운영하는 공동교육과정</span>
@@ -74,7 +74,8 @@
 <script src="../assets/js/enroll-status.js"></script>
 <script>
 // 신청 기간(관리 화면에서 입력)을 읽어 칸의 주소와 상태 문구를 바꾼다.
-// 온라인 공동교육과정은 이 앱으로 신청하지 않아 항상 안내 페이지로 간다.
+// 온라인 공동교육과정은 별도 신청 사이트를 쓴다 — 그 사이트의 강좌 공개~마감 기간에만 연결하고,
+// 그 밖에는 「기간 아님」 안내 페이지로 간다(enroll-status.js의 'online').
 // 지역연계(data-always-app)는 교육지원청마다 기간이 달라 늘 신청 화면으로 보낸다(2026-11-13).
 // 신청 화면이 지원청 선택 → 그 지원청 기간·공개 시각에 맞춰 목록·안내를 보여 준다.
 document.querySelectorAll('.net-tile[data-program]').forEach(function (a) {

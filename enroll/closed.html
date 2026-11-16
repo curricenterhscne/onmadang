@@ -44,7 +44,7 @@
     dual:     '고교-대학 연계 학점 인정 학교 밖 교육 과목',
     dreamup:  '꿈키움 학교 밖 교육 창의적체험활동'
   };
-  var PROG = { regional: 'joint_regional', dual: 'dual_credit', dreamup: 'dream_up' };
+  var PROG = { online: 'online', regional: 'joint_regional', dual: 'dual_credit', dreamup: 'dream_up' };
   var p = new URLSearchParams(location.search).get('p');
   if (PROG[p]) OM_ENROLL_STATUS.get(PROG[p]).then(function (s) {
     var el = document.getElementById('next-open');
