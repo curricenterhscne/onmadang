@@ -185,6 +185,11 @@ body{background:var(--soft)}
   font-size:15px;font-family:inherit;transition:border-color .16s;background:var(--surface);color:var(--ink)}
 .form-input:focus{border-color:var(--brand)}
 .form-hint{font-size:13px;color:var(--ink-soft);margin-top:4px}
+.consent-box{border:1px solid var(--line);background:var(--soft);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.7}
+.consent-box ul{margin:4px 0 8px 18px;color:var(--ink-soft)}
+.consent-box a{display:inline-block;margin-top:6px;color:var(--brand);text-decoration:underline}
+.consent-check{display:flex;align-items:flex-start;gap:8px;font-size:14px;font-weight:700;cursor:pointer}
+.consent-check input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--brand)}
 
 /* ── 학교 검색 ── */
 .school-wrap{position:relative}
@@ -702,6 +707,21 @@ body{background:var(--soft)}
           <label for="r-pin">취소비번 (숫자 4자리) <span class="req">*</span></label>
           <input id="r-pin" name="cancel_pin_new" class="form-input pin-input" type="password" maxlength="4" placeholder="••••" inputmode="numeric" autocomplete="one-time-code" data-lpignore="true" data-1p-ignore data-bwignore/>
           <div class="form-hint">취소 시 필요합니다. 기억하기 쉬운 번호로 설정하세요.</div>
+        </div>
+        <!-- 개인정보 수집·이용 동의 — 내용은 policy/privacy.html과 같게 유지한다 -->
+        <div class="consent-box">
+          <b>개인정보 수집·이용 안내</b>
+          <ul>
+            <li>수집 항목: 학교, 학번(학년·반·번호), 이름, 연락처, 취소 비밀번호</li>
+            <li>이용 목적: 수강신청 접수, 신청 내용 확인과 취소, 수강 안내</li>
+            <li>보유 기간: 해당 과정 종료 시까지 (온마당 사이트에는 수강신청 기간에만 유지)</li>
+            <li>동의하지 않을 수 있으며, 동의하지 않으면 신청할 수 없음</li>
+          </ul>
+          <label class="consent-check" for="r-consent">
+            <input type="checkbox" id="r-consent"/>
+            <span>위 내용을 확인하였으며 개인정보 수집·이용에 동의합니다. <span class="req">*</span></span>
+          </label>
+          <a href="../policy/privacy.html" target="_blank" rel="noopener">개인정보처리방침 전체 보기 (새 창)</a>
         </div>
         <button class="btn-primary" id="r-submit-btn" onclick="submitConfirm()">신청 완료</button>
         <button class="btn-secondary" onclick="closeReserveModal()">취소 (좌석 반납)</button>
@@ -1468,6 +1488,8 @@ function resetEnrollForm() {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
+  const consent = document.getElementById('r-consent');
+  if (consent) consent.checked = false;
 }
 
 async function submitConfirm() {
@@ -1483,6 +1505,7 @@ async function submitConfirm() {
   if (!name)                          { showToast('이름을 입력해 주세요.', 'error'); return; }
   if (!/^0\d{9,10}$/.test(phone))     { showToast('올바른 연락처를 입력해 주세요. (예: 01012345678)', 'error'); return; }
   if (!/^\d{4}$/.test(pin))           { showToast('취소비번은 숫자 4자리입니다.', 'error'); return; }
+  if (!document.getElementById('r-consent').checked) { showToast('개인정보 수집·이용에 동의해 주세요.', 'error'); return; }
 
   // Grade restriction enforcement
   const gRule = gradeRule(currentCode);
