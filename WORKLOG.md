@@ -4,6 +4,12 @@
 
 ---
 
+## 2026-11-16 (3): 저장소 정리, 수강신청 화면 문체, 노트북 인계
+
+- **저장소 정리**: `main`에 모두 들어간 브랜치 4개(`enrollment-multiprogram`·`content-feedback-2026-11`·`selector-result-table`·`design-renewal-preview`)를 로컬·원격에서 지웠다. 워크트리 `../onmadang-preview`·`../onmadang-content`도 없앴다. 이제 작업은 `main` 하나에서 한다. `design-source/`(업체 원본, git 제외)는 그대로 둔다.
+- **문체**: `apply/app.html`의 안내 문구를 규칙 5-2에 맞췄다(「~하세요」 → 「~하십시오」, 「~해 주세요」 → 「~해 주십시오」, 느낌표 제거). 입력 칸 placeholder 2곳(「학교명을 입력하세요」)은 입력 안내라 그대로 뒀다. 기능은 바꾸지 않았다.
+- **문서**: `CLAUDE.md`의 「2단계 진행 현황」을 지금 상태로 고쳤다(디자인 리뉴얼은 11-11에 `main` 병합됨). 노트북에서 이어 가기 위한 인계 문서 `docs/handoff/2026-11-17-laptop.md`를 만들었다.
+
 ## 2026-11-16 (2): 수강신청 입구 — 온라인 공동교육과정 칸 연결
 
 - **배경**: 온라인 공동교육과정(선착순 아님)은 별도 신청 사이트를 쓴다 — 형제 레포 `enrollment_cne`(React, `https://enrollment-cne.vercel.app`, Supabase 프로젝트가 따로 있다). 같은 날 그 사이트에 관리 화면(신청 기간·강좌 관리·엑셀 일괄 등록), 강좌 공개 시각, 학년 자동 환산, 온마당 리뉴얼 디자인을 넣었다(그 레포 `HANDOFF.md` 맨 위 절).
