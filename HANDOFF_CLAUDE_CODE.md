@@ -176,7 +176,7 @@ design: [
 
 ### ③ CDN이 `@main`으로 고정되어 있지 않다
 
-`majors`·`selector`에서 `cne-design-system@main`을 6곳 참조한다. 마스터플랜에서 `@b851419` 핀 고정을 결정했으나 미적용이다. (7/30 polish 항목)
+`majors`·`selector`의 `cne-design-system` 참조 8곳은 2026-11-18에 커밋 `b851419`(전체 해시)로 고정했다.
 
 ### ④ 기타
 

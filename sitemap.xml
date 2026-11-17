@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 온마당 사이트맵 (2026-11-18). 도메인을 바꾸면 주소 앞부분을 모두 바꾼다. 공개 메뉴에서 닿는 페이지만 넣었다 -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://onmadang.or.kr/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/about/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/about/what-is.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/about/student-agency.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/about/kkukku-club.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/design/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/design/compass/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/design/majors/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/design/selector/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/design/selector/guide.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/design/check/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/design/outside/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/safety/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/safety/schoolcurriculum.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/safety/onlineschool.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/safety/jointcurricula.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/safety/off-campus_courses.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/board/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/board/notices.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/board/resources.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/enroll/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/dual_credit/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/dual_credit/curriculum.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/policy/privacy.html</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://onmadang.or.kr/policy/email.html</loc><lastmod>2026-11-18</lastmod></url>
+</urlset>

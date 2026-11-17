@@ -1,0 +1,7 @@
+# 온마당 — onmadang.or.kr
+User-agent: *
+Disallow: /board/admin/
+Disallow: /apply/admin/
+Disallow: /design/_dev/
+
+Sitemap: https://onmadang.or.kr/sitemap.xml
