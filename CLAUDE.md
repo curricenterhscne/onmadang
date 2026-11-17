@@ -41,7 +41,7 @@
 - **`main`에 반영됨(2026-11-11 병합, 이후 `main`에서 작업).** 홈, 헤더·GNB·푸터, 서브페이지(고교학점제·진로·학업 설계·4대 안전망·알림·소통 마당), 시안 없는 화면, 모바일 시안 3장, 업체 디자인 가이드(11-11), 수강신청 입구 `enroll/`, 학생 수강신청 화면 `apply/app.html`(11-13)까지 들어가 있다.
 - `design-renewal-preview` 브랜치와 워크트리(`../onmadang-preview`)는 **옛 작업 자리**다. `main`보다 뒤처져 있으니 거기서 작업하지 말 것.
 - 업체 일정: **납품 2026-11-20, 검수 11-30.** 납품물이 오면 반영하고 검수 대조표를 만든다.
-- **아직 안 한 것**: 업체 추가 납품분(모바일 서체·입력 칸 상태·오류/경고 색·공동교육과정 유형 아이콘·캐릭터 추가본) 반영, DS CDN `@main` 핀 고정.
+- **아직 안 한 것**: sub01(고교학점제란?·학생 주도성) 아이콘 SVG 반영(파일 수령 대기), 업체 추가 납품분(공동교육과정 유형 아이콘·캐릭터 추가본·`04_요소`) 반영, DS CDN `@main` 핀 고정.
 - `--brand-d`·`--accent-d`·`--shadow*`는 여전히 임시값이다(위 「디자인 토큰」 절).
 - 온라인 공동교육과정 신청 사이트(형제 레포 `enrollment_cne`)에도 같은 색·서체·머리글을 입혔다(2026-11-16). 온마당 토큰 값을 바꾸면 그쪽 `src/index.css`의 `--om-*`도 맞춘다.
 
@@ -85,14 +85,16 @@
 ```
 --bg #D7F3FF   --brand #526ADC   --brand-d #3F54C4   --brand-l #6d8ad6
 --accent #78F8A3   --accent-d #3C7C52   --online #61DFFF   --online-d #2a8db5
---plum #946AD7   --plum-d #7C52B8
+--plum #8B5ED4   --plum-d #7C52B8
 --sunny #FFFFC4   --char-blue #4B6FB6
 --ink #000000   --ink-menu #333333   --ink-soft #51607d   --ink-faint #8597ad
 --line #c5dcef   --surface #fff   --soft #ECF9FF
---radius 18px   --radius-sm 12px   --radius-pill 999px
+--radius 20px   --radius-sm 12px   --radius-pill 999px   --radius-btn 15px   --radius-input 30px
+--error #FF2B2E   --warn-bg #FFDDC8   --inactive #C8C8C8   --nav-current #78F8A3
 --shadow / --shadow-sm / --shadow-lg   --maxw 860px
 ```
 
+- **2026-11-18 디자인 가이드 PDF(최종) 반영**: `--plum` #946AD7 → #8B5ED4, 단추는 `--radius-btn`(15), 입력 칸은 `--radius-input`(30), 카드 제목 PC 최대 20px. 배지·태그·메뉴는 그대로 `--radius-pill`. `--error`는 테두리 전용이다(흰 바탕 글자 대비 3.7:1).
 - `--plum-d` `--sunny` `--char-blue`는 이번에 **새로 추가**된 토큰 (기존 토큰 삭제·개명 없음).
 - `--brand-d` `--accent-d`는 시안에 실제 쓰임(호버·그라데이션 어두운 쪽)이 없어 **임시값**이다. 업체 색 가이드 수령 시 덮어쓸 것 (`docs/design-renewal/디자이너_요청사항.md` 6번).
 - `--shadow*`의 rgba 기준색은 구 브랜드(`79,110,190`) 그대로 **미반영 상태**다 — 다음 폴리싱 때 정리.

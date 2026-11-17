@@ -36,7 +36,7 @@
 .jn-btn{
   display:inline-flex;align-items:center;gap:6px;
   font-family:inherit;font-size:14.5px;font-weight:700;
-  padding:11px 20px;border-radius:var(--radius-pill);
+  padding:11px 20px;border-radius:var(--radius-btn);
   border:1.5px solid var(--brand);background:var(--brand);color:#fff;
   cursor:pointer;transition:.18s;
 }
@@ -128,8 +128,9 @@
 .jn-inputs label{white-space:nowrap}
 .jn-field input{
   flex:1 1 auto;min-width:0;font-family:inherit;font-size:14px;padding:9px 12px;
-  border:1.5px solid var(--line);border-radius:var(--radius-sm);background:#fff;color:var(--ink);
+  border:1.5px solid var(--line);border-radius:var(--radius-input);background:#fff;color:var(--ink);
 }
+.jn-field input:hover{border-color:var(--brand)}
 .jn-field input:focus-visible{outline:3px solid var(--online-d);outline-offset:2px}
 
 /* 화면 읽기 프로그램 전용 텍스트 */

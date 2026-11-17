@@ -10,7 +10,7 @@
 :root{
   --bg:#D7F3FF; --brand:#526ADC; --brand-d:#3F54C4; --brand-l:#6d8ad6;
   --accent:#78F8A3; --accent-d:#3C7C52; --online:#61DFFF; --online-d:#2a8db5;
-  --plum:#946AD7; --plum-d:#7C52B8; /* 신규 — plum 글자용 (흰 배경 대비 5.6:1), 기존 brand-d/accent-d/online-d와 짝 맞춤 */
+  --plum:#8B5ED4; /* 가이드 11-17: 퍼플 #8B5ED4 (흰 글자 4.52:1, 이전 #946AD7은 3.96:1) */ --plum-d:#7C52B8; /* plum 글자용 (흰 배경 대비 5.6:1) */
   --sunny:#FFFFC4; /* 신규 — 히어로 상단 필 배경 (시안 실측) */
   --char-blue:#4B6FB6; /* 신규 — 캐릭터 장식 전용 (볼·코 등), 정보 전달에 쓰지 않음 */
   --ink:#000000; --ink-menu:#333333; /* 업체 가이드: 본문 #000000·메뉴 #333333 */ --ink-soft:#51607d; --ink-faint:#727272; /* 가이드 11-11: 비활성 글자 #727272 (흰 바탕 4.8:1) */
@@ -20,6 +20,10 @@
   --sub-w:1000px; /* 서브 본문 폭 (시안 본문 약 950px + 좌우 여백) */
   --hero-shade:rgba(20,28,84,.5); /* 서브 머리 사진 위 어두운 막 */
   --radius:20px; /* 가이드: 카드 모서리 20 */ --radius-sm:12px; --radius-pill:999px;
+  --radius-btn:15px; /* 가이드 11-17: 단추(Button01~04) 모서리 15 — 배지·태그·메뉴는 --radius-pill */
+  --radius-input:30px; /* 가이드 11-17: 입력 칸 모서리 30 */
+  --error:#FF2B2E; /* 가이드 11-17: 오류 — 테두리 전용(흰 바탕 글자 대비 3.7:1이라 글자색으로 쓰지 않는다) */
+  --warn-bg:#FFDDC8; /* 가이드 11-17: 경고 바탕 (검정 글자 16:1) */
   --shadow:0 4px 7px rgba(0,0,0,.3); /* 가이드: 카드 마우스오버 그림자 y4·흐림7·30% */
   --shadow-sm:0 2px 10px rgba(79,110,190,.10);
   --shadow-lg:0 14px 40px rgba(79,110,190,.18);
@@ -255,7 +259,7 @@ header{
   background:var(--sub-tint);border-radius:var(--radius);text-align:center;transition:transform .2s,box-shadow .2s}
 a.sub-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
 a.sub-card:focus-visible,a.sub-wide:focus-visible,a.net-tile:focus-visible{outline:3px solid var(--brand);outline-offset:3px}
-.sub-card strong{display:block;font-size:clamp(19px,1.8vw,25px);font-weight:700;line-height:1.35;margin-bottom:clamp(20px,4vw,72px);word-break:keep-all}
+.sub-card strong{display:block;font-size:clamp(18px,1.6vw,20px);font-weight:800;line-height:1.35;margin-bottom:clamp(20px,4vw,72px);word-break:keep-all}
 .sub-card span{font-size:15px;line-height:1.65;word-break:keep-all}
 .sub-card .ext{display:inline-block;margin-left:4px;font-size:.8em}
 /* 넓은 바로가기 (한 줄 링크) */
@@ -332,7 +336,7 @@ a.sub-wide:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .state-page p{font-size:clamp(15px,1.3vw,18px);line-height:1.8;word-break:keep-all}
 .state-page .sub-lead{width:100%;padding:20px 24px;border-radius:var(--radius);margin-top:clamp(20px,2.4vw,32px);font-size:clamp(15px,1.3vw,18px);font-weight:700}
 .state-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:clamp(24px,3vw,40px)}
-.btn-pill{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:var(--radius-pill);font-size:15px;font-weight:700;background:var(--brand);color:#fff;border:2px solid var(--brand);transition:transform .15s}
+.btn-pill{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:var(--radius-btn);font-size:15px;font-weight:700;background:var(--brand);color:#fff;border:2px solid var(--brand);transition:transform .15s}
 .btn-pill.is-line{background:var(--surface);color:var(--brand-d)}
 .btn-pill:hover{background:var(--bg);color:var(--brand);border-color:var(--brand)}
 .btn-pill:focus-visible{outline:3px solid var(--brand);outline-offset:3px}
