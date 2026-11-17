@@ -82,7 +82,8 @@
     var p = String(f.path || '').split('/').map(encodeURIComponent).join('/');
     return SB_URL + '/storage/v1/object/public/' + BUCKET + '/' + p + '?download=' + encodeURIComponent(f.name || 'file');
   }
-  /* 그림 첨부 — 본문 아래에 그림으로 보인다(2026-11-18). 첨부 목록에서도 원본을 내려받을 수 있다.
+  /* 그림 첨부 — 본문 위(기본) 또는 아래에 그림으로 보인다(2026-11-18). 위치는 그림마다 pos('top'|'bottom'), 없으면 위.
+     첨부 목록에서도 원본을 내려받을 수 있다.
      w·h(올릴 때 잰 크기)가 있으면 자리를 미리 잡아 화면 밀림을 막는다. alt는 관리 화면 「그림 설명」, 없으면 파일 이름 */
   var IMG_EXT = /\.(png|jpe?g|gif|webp)$/i;
   function isImage(f) {
@@ -93,8 +94,10 @@
     if (f.url) return fileUrl(f);
     return SB_URL + '/storage/v1/object/public/' + BUCKET + '/' + String(f.path).split('/').map(encodeURIComponent).join('/');
   }
-  function imagesHtml(files) {
-    return (files || []).filter(isImage).map(function (f) {
+  function imagesHtml(files, where) {
+    return (files || []).filter(function (f) {
+      return isImage(f) && (!where || (f.pos === 'bottom' ? 'bottom' : 'top') === where);
+    }).map(function (f) {
       var alt = f.alt || String(f.name || '').replace(/\.[^.]+$/, '');
       var wh = (f.w > 0 && f.h > 0) ? ' width="' + (f.w | 0) + '" height="' + (f.h | 0) + '"' : '';
       return '<figure class="bd-fig"><img src="' + esc(imageSrc(f)) + '" alt="' + esc(alt) + '"' + wh + ' loading="lazy" decoding="async"></figure>';
@@ -263,7 +266,7 @@
       var body = renderMarkdown(p.body);
       root.innerHTML = '<article class="bd-card">' +
         (board === 'resource' ? filesHtml : '') +
-        '<div class="bd-body">' + (body || (imagesHtml(files) ? '' : '<p class="bd-empty-body">본문이 없습니다.</p>')) + imagesHtml(files) + '</div>' +
+        '<div class="bd-body">' + imagesHtml(files, 'top') + (body || (imagesHtml(files) ? '' : '<p class="bd-empty-body">본문이 없습니다.</p>')) + imagesHtml(files, 'bottom') + '</div>' +
         (board === 'resource' ? '' : filesHtml) +
         (p.author ? '<p class="bd-by">등록 ' + esc(p.author) + '</p>' : '') +
         '<nav class="bd-adj" aria-label="다른 글"><div class="adj prev"></div><a class="btn-pill" href="./' + cfg.list + '">목록으로</a><div class="adj next"></div></nav>' +
