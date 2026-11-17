@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>게시판 관리 · 알림·소통 마당 · 온마당</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../../assets/css/common.css">
+<link rel="stylesheet" href="../css/board.css">
+<style>
+  /* 관리 화면 전용 — 토큰만 쓴다 */
+  [hidden]{display:none!important}
+  body{background:var(--soft)}
+  .adm-bar{background:var(--surface);border-bottom:1px solid var(--line)}
+  .adm-bar .wrap{display:flex;align-items:center;gap:12px;min-height:64px;flex-wrap:wrap;max-width:1000px}
+  .adm-bar h1{font-size:18px;font-weight:800;color:var(--brand)}
+  .adm-bar .who{margin-left:auto;font-size:13px;color:var(--ink-soft);display:flex;gap:10px;align-items:center}
+  .adm-main{padding:28px 0 80px}
+  .adm-main .wrap{max-width:1000px}
+  .adm-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:28px}
+  .adm-card+.adm-card{margin-top:20px}
+  .adm-card h2{font-size:18px;font-weight:800;margin-bottom:6px}
+  .adm-card .lead{font-size:14px;color:var(--ink-soft);margin-bottom:18px;line-height:1.7}
+
+  .adm-tabs{display:flex;gap:4px;margin-bottom:-1px;flex-wrap:wrap}
+  .adm-tabs button{font:inherit;font-size:14px;font-weight:700;padding:10px 20px;border:1px solid var(--line);border-bottom:none;border-radius:var(--radius-sm) var(--radius-sm) 0 0;background:var(--soft);color:var(--ink-soft);cursor:pointer}
+  .adm-tabs button[aria-selected="true"]{background:var(--surface);color:var(--brand)}
+  .adm-tabs button:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+  .adm-panel{border-top-left-radius:0}
+
+  .fld{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+  .fld>label,.fld>.lbl{font-size:14px;font-weight:700}
+  .fld .hint{font-size:12.5px;color:var(--ink-soft);line-height:1.6}
+  .fld input[type=text],.fld input[type=password],.fld input[type=url],.fld select,.fld textarea{font:inherit;font-size:15px;padding:11px 16px;border:1.5px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);color:var(--ink);width:100%}
+  .fld input:hover,.fld select:hover,.fld textarea:hover{border-color:var(--brand)}
+  .fld input:focus-visible,.fld select:focus-visible,.fld textarea:focus-visible{outline:3px solid var(--brand);outline-offset:1px}
+  .fld textarea{min-height:280px;line-height:1.7;resize:vertical}
+  .row{display:flex;gap:16px;flex-wrap:wrap}
+  .row>.fld{flex:1 1 220px}
+  .seg{display:flex;gap:8px;flex-wrap:wrap}
+  .seg label{display:flex;align-items:center;gap:6px;font-size:15px;font-weight:600;padding:9px 16px;border:1.5px solid var(--line);border-radius:var(--radius-btn);cursor:pointer;background:var(--surface)}
+  .seg label:has(input:checked){border-color:var(--brand);background:var(--bg);color:var(--brand-d)}
+  .chk{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600}
+  .chk input{width:18px;height:18px}
+
+  .btn{font:inherit;display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:700;padding:11px 22px;border-radius:var(--radius-btn);border:2px solid var(--brand);background:var(--brand);color:#fff;cursor:pointer}
+  .btn:hover{background:var(--brand-d);border-color:var(--brand-d)}
+  .btn.is-line{background:var(--surface);color:var(--brand-d)}
+  .btn.is-line:hover{background:var(--bg)}
+  .btn.is-danger{background:var(--surface);color:var(--ink);border-color:var(--error)}
+  .btn.is-sm{font-size:13px;padding:6px 12px;border-width:1.5px}
+  .btn:disabled{background:var(--inactive);border-color:var(--inactive);color:var(--ink);cursor:default}
+  .btn:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+  .msg{border-radius:var(--radius-sm);padding:12px 16px;font-size:14px;line-height:1.6;margin-bottom:16px}
+  .msg.is-err{background:var(--surface);border:2px solid var(--error);color:var(--ink)}
+  .msg.is-ok{background:var(--accent-l);color:var(--ink)}
+  .msg.is-warn{background:var(--warn-bg);color:var(--ink)}
+  .msg a{color:var(--brand-d);text-decoration:underline;font-weight:700}
+
+  .drop{border:2px dashed var(--line);border-radius:var(--radius);padding:22px;text-align:center;color:var(--ink-soft);font-size:14px;background:var(--soft)}
+  .drop.is-over{border-color:var(--brand);background:var(--bg)}
+  .drop button{margin-top:10px}
+  .files{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:8px}
+  .files li{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:14px;background:var(--surface)}
+  .files .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .files .s{font-size:12.5px;color:var(--ink-soft);white-space:nowrap}
+  .files progress{width:90px}
+
+  .preview{border:1.5px solid var(--line);border-radius:var(--radius-sm);min-height:280px}
+  .preview .bd-body{padding:20px}
+
+  .tbl{width:100%;border-collapse:collapse;font-size:14px}
+  .tbl th,.tbl td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+  .tbl th{font-size:12.5px;color:var(--ink-soft);background:var(--soft)}
+  .tbl td.t{max-width:420px}
+  .tbl td.t a{color:var(--ink)}
+  .tbl td.t a:hover{color:var(--brand);text-decoration:underline}
+  .tbl .acts{white-space:nowrap;text-align:right}
+  .tbl-wrap{overflow-x:auto}
+  .help{font-size:14px;line-height:1.8}
+  .help li{margin-left:20px;margin-bottom:6px}
+  .help code{background:var(--soft);padding:1px 6px;border-radius:5px}
+  .login{max-width:420px;margin:40px auto}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+</head>
+<body>
+
+<header class="adm-bar" role="banner">
+  <div class="wrap">
+    <h1>알림·소통 마당 게시판 관리</h1>
+    <div class="who" id="who" hidden>
+      <span id="who-role"></span>
+      <button type="button" class="btn is-line is-sm" id="logout">로그아웃</button>
+    </div>
+  </div>
+</header>
+
+<main class="adm-main">
+  <div class="wrap">
+
+    <!-- 로그인 -->
+    <section class="adm-card login" id="login-box" aria-labelledby="login-h">
+      <h2 id="login-h">로그인</h2>
+      <p class="lead">담당자에게 공유된 게시판 암호를 넣으십시오.<br>로그인은 이 탭을 닫으면 풀립니다.</p>
+      <div class="msg is-err" id="login-err" role="alert" hidden></div>
+      <form id="login-form">
+        <div class="fld">
+          <label for="pw">게시판 암호</label>
+          <input type="password" id="pw" autocomplete="current-password" required>
+        </div>
+        <button class="btn" type="submit">로그인</button>
+      </form>
+      <p class="lead" style="margin-top:18px;margin-bottom:0"><a href="../" style="color:var(--brand-d);text-decoration:underline">알림·소통 마당으로 돌아가기</a></p>
+    </section>
+
+    <!-- 로그인 뒤 -->
+    <div id="app" hidden>
+      <div class="adm-tabs" role="tablist" aria-label="관리 메뉴">
+        <button type="button" role="tab" id="tab-write" aria-controls="p-write" aria-selected="true">글쓰기</button>
+        <button type="button" role="tab" id="tab-list" aria-controls="p-list" aria-selected="false">올린 글</button>
+        <button type="button" role="tab" id="tab-help" aria-controls="p-help" aria-selected="false">사용 안내</button>
+        <button type="button" role="tab" id="tab-master" aria-controls="p-master" aria-selected="false" hidden>마스터 관리</button>
+      </div>
+
+      <!-- 글쓰기 / 고치기 -->
+      <section class="adm-card adm-panel" role="tabpanel" id="p-write" aria-labelledby="tab-write">
+        <h2 id="write-h">새 글 쓰기</h2>
+        <p class="lead" id="write-lead">게시판을 고르고 제목·본문을 적은 뒤 「올리기」를 누르십시오. 파일은 아래 상자에 끌어다 놓으면 올라갑니다.</p>
+        <div class="msg" id="write-msg" role="status" hidden></div>
+        <form id="post-form" novalidate>
+          <div class="fld">
+            <span class="lbl" id="board-lbl">게시판</span>
+            <div class="seg" role="radiogroup" aria-labelledby="board-lbl">
+              <label><input type="radio" name="board" value="notice" checked> 공지사항</label>
+              <label><input type="radio" name="board" value="resource"> 자료실</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="fld" id="cat-fld" hidden>
+              <label for="category">분류</label>
+              <select id="category"></select>
+            </div>
+            <div class="fld" id="imp-fld">
+              <span class="lbl">표시</span>
+              <label class="chk"><input type="checkbox" id="important"> 중요 공지로 목록 맨 위에 고정</label>
+            </div>
+          </div>
+          <div class="fld">
+            <label for="title">제목 <span aria-hidden="true">*</span></label>
+            <input type="text" id="title" maxlength="200" required>
+          </div>
+          <div class="fld">
+            <label for="body">본문</label>
+            <span class="hint" id="body-hint">적은 그대로 줄이 바뀝니다. 인터넷 주소는 자동으로 링크가 됩니다. 굵게 쓰려면 <code>**글자**</code>, 목록은 줄 앞에 <code>- </code>를 붙입니다.</span>
+            <div class="actions" style="margin:4px 0">
+              <button type="button" class="btn is-line is-sm" id="preview-btn" aria-pressed="false">미리 보기</button>
+            </div>
+            <textarea id="body" aria-describedby="body-hint" maxlength="50000"></textarea>
+            <div class="preview" id="preview" hidden><div class="bd-body"></div></div>
+          </div>
+          <div class="fld">
+            <span class="lbl">첨부</span>
+            <div class="drop" id="drop">
+              <p>파일을 여기에 끌어다 놓으십시오. (파일당 50MB까지 · pdf, hwp, hwpx, 오피스 문서, zip, 그림, mp4)</p>
+              <input type="file" id="file-input" multiple hidden>
+              <button type="button" class="btn is-line is-sm" id="file-pick">파일 고르기</button>
+              <button type="button" class="btn is-line is-sm" id="link-add">구글 드라이브 등 링크 첨부</button>
+            </div>
+            <ul class="files" id="files" aria-label="첨부 목록"></ul>
+          </div>
+          <div class="fld" style="max-width:320px">
+            <label for="author">작성 담당자 <span aria-hidden="true">*</span></label>
+            <input type="text" id="author" maxlength="40" required placeholder="예: 천안교육지원청 홍길동">
+            <span class="hint">글 아래에 작은 글씨로 표시됩니다. 이 컴퓨터에 기억해 둡니다.</span>
+          </div>
+          <div class="actions">
+            <button class="btn" type="submit" id="save-btn">올리기</button>
+            <button class="btn is-line" type="button" id="cancel-edit" hidden>고치기 그만두기</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 올린 글 -->
+      <section class="adm-card adm-panel" role="tabpanel" id="p-list" aria-labelledby="tab-list" hidden>
+        <h2>올린 글</h2>
+        <p class="lead">글을 고치거나 지울 수 있습니다. 지운 글은 화면에서만 사라지고, 마스터가 되살릴 수 있습니다.</p>
+        <div class="seg" role="radiogroup" aria-label="게시판" style="margin-bottom:14px">
+          <label><input type="radio" name="lboard" value="notice" checked> 공지사항</label>
+          <label><input type="radio" name="lboard" value="resource"> 자료실</label>
+        </div>
+        <div class="msg" id="list-msg" role="status" hidden></div>
+        <div class="tbl-wrap" id="list-area"></div>
+        <div class="actions" style="margin-top:14px;justify-content:center">
+          <button type="button" class="btn is-line is-sm" id="more-btn" hidden>더 보기</button>
+        </div>
+      </section>
+
+      <!-- 사용 안내 -->
+      <section class="adm-card adm-panel" role="tabpanel" id="p-help" aria-labelledby="tab-help" hidden>
+        <h2>사용 안내</h2>
+        <div class="help">
+          <ol>
+            <li><strong>글쓰기</strong>: 공지사항·자료실 중 하나를 고르고 제목과 본문을 적습니다. 「올리기」를 누르면 바로 사이트에 보입니다.</li>
+            <li><strong>파일</strong>: 첨부 상자에 끌어다 놓거나 「파일 고르기」를 누릅니다. 올라가는 동안 막대가 찹니다. 50MB가 넘는 파일은 구글 드라이브에 올리고 「링크 첨부」로 주소를 넣습니다.</li>
+            <li><strong>고치기·지우기</strong>: 「올린 글」 탭에서 합니다. 다른 담당자가 올린 글도 고칠 수 있으니 자기 소관 글만 고치십시오.</li>
+            <li><strong>중요 공지</strong>: 체크하면 공지 목록 맨 위에 고정됩니다. 기간이 지나면 체크를 푸십시오.</li>
+            <li><strong>개인정보</strong>: 학생 이름·연락처가 들어간 파일은 올리지 마십시오. 이 게시판은 누구나 읽을 수 있습니다. 교사만 봐야 하는 자료는 다른 경로로 공유합니다.</li>
+            <li><strong>암호</strong>: 게시판 암호는 담당자끼리만 공유합니다. 바뀌면 도교육청 담당자가 다시 알려 드립니다.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 마스터 -->
+      <section class="adm-card adm-panel" role="tabpanel" id="p-master" aria-labelledby="tab-master" hidden>
+        <h2>담당자 암호</h2>
+        <p class="lead">지원청·도교육청 담당자가 함께 쓰는 암호입니다. 바꾸면 기존 암호는 바로 쓸 수 없습니다.</p>
+        <div class="msg" id="pw-msg" role="status" hidden></div>
+        <form id="pw-form" class="row" style="align-items:flex-end">
+          <div class="fld"><label for="npw1">새 담당자 암호 (8자 이상)</label><input type="password" id="npw1" autocomplete="new-password" minlength="8" required></div>
+          <div class="fld"><label for="npw2">한 번 더</label><input type="password" id="npw2" autocomplete="new-password" minlength="8" required></div>
+          <div class="fld" style="flex:0 0 auto"><button class="btn" type="submit">암호 정하기</button></div>
+        </form>
+      </section>
+      <section class="adm-card" id="p-master-2" hidden>
+        <h2>지운 글</h2>
+        <p class="lead">최근 지운 글 100건입니다. 「되살리기」를 누르면 다시 보입니다.</p>
+        <div class="tbl-wrap" id="deleted-area"></div>
+      </section>
+      <section class="adm-card" id="p-master-3" hidden>
+        <h2>기록</h2>
+        <p class="lead">로그인·쓰기 기록 최근 200건입니다. 암호를 틀린 기록이 많으면 암호를 바꾸십시오.</p>
+        <div class="actions" style="margin-bottom:10px"><button type="button" class="btn is-line is-sm" id="log-btn">기록 불러오기</button></div>
+        <div class="tbl-wrap" id="log-area"></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<script src="../js/board.js"></script>
+<script>
+(function () {
+  'use strict';
+  var B = window.OM_BOARD;
+  var FN = B.SB_URL + '/functions/v1/board-admin';
+  var esc = B.esc;
+  var $ = function (id) { return document.getElementById(id); };
+  var S = { pw: null, role: null, editing: null, files: [], uploading: 0, dirty: false, listPage: 1 };
+  var MIME = { pdf:'application/pdf', hwp:'application/x-hwp', hwpx:'application/vnd.hancom.hwpx', doc:'application/msword',
+    docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document', xls:'application/vnd.ms-excel',
+    xlsx:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', ppt:'application/vnd.ms-powerpoint',
+    pptx:'application/vnd.openxmlformats-officedocument.presentationml.presentation', zip:'application/zip',
+    png:'image/png', jpg:'image/jpeg', jpeg:'image/jpeg', gif:'image/gif', webp:'image/webp', txt:'text/plain', csv:'text/csv', mp4:'video/mp4' };
+
+  function store(k, v) { try { v == null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); } catch (e) {} }
+  function load(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+  function lstore(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function lload(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+
+  function call(action, extra) {
+    var body = Object.assign({ action: action, password: S.pw }, extra || {});
+    return fetch(FN, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: B.SB_KEY }, body: JSON.stringify(body) })
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (d) {
+          if (!r.ok) {
+            if (r.status === 401 && action !== 'login') { logout('암호가 바뀌었거나 맞지 않습니다. 다시 로그인하십시오.'); }
+            throw new Error(d.error || ('요청 실패 (' + r.status + ')'));
+          }
+          return d;
+        });
+      }, function () { throw new Error('서버에 연결하지 못했습니다. 인터넷 연결을 확인하십시오.'); });
+  }
+  function msg(el, kind, html) { el.className = 'msg is-' + kind; el.innerHTML = html; el.hidden = false; }
+
+  /* ── 로그인 ── */
+  function enter(role, info) {
+    S.role = role;
+    $('login-box').hidden = true; $('app').hidden = false; $('who').hidden = false;
+    $('who-role').textContent = role === 'master' ? '마스터로 로그인함' : '담당자로 로그인함';
+    $('tab-master').hidden = role !== 'master';
+    $('author').value = lload('om_board_author') || '';
+    if (role === 'master' && info && info.editorPasswordSet === false) {
+      msg($('write-msg'), 'warn', '아직 담당자 암호를 정하지 않았습니다. 「마스터 관리」에서 정하면 담당자들이 글을 쓸 수 있습니다.');
+    }
+  }
+  function logout(reason) {
+    S.pw = null; S.role = null; store('om_board_pw', null);
+    $('app').hidden = true; $('who').hidden = true; $('login-box').hidden = false;
+    if (reason) { $('login-err').textContent = reason; $('login-err').hidden = false; }
+    $('pw').value = ''; $('pw').focus();
+  }
+  $('login-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    $('login-err').hidden = true;
+    S.pw = $('pw').value;
+    call('login').then(function (d) { store('om_board_pw', S.pw); enter(d.role, d); })
+      .catch(function (err) { S.pw = null; $('login-err').textContent = err.message; $('login-err').hidden = false; });
+  });
+  $('logout').addEventListener('click', function () {
+    if (S.dirty && !window.confirm('쓰던 글이 저장되지 않았습니다. 로그아웃할까요?')) return;
+    S.dirty = false; logout();
+  });
+
+  /* ── 탭 ── */
+  var tabs = ['write', 'list', 'help', 'master'];
+  function showTab(name) {
+    tabs.forEach(function (t) {
+      $('tab-' + t).setAttribute('aria-selected', String(t === name));
+      $('p-' + t).hidden = t !== name;
+    });
+    $('p-master-2').hidden = $('p-master-3').hidden = name !== 'master';
+    if (name === 'list') loadList(true);
+    if (name === 'master') loadDeleted();
+  }
+  tabs.forEach(function (t) { $('tab-' + t).addEventListener('click', function () { showTab(t); }); });
+
+  /* ── 글쓰기 폼 ── */
+  function curBoard() { return document.querySelector('input[name=board]:checked').value; }
+  function syncBoardFields() {
+    var cfg = B.BOARDS[curBoard()];
+    var sel = $('category'), keep = sel.value;
+    sel.innerHTML = '<option value="">(분류 없음)</option>' + cfg.categories.map(function (c) { return '<option>' + esc(c) + '</option>'; }).join('');
+    sel.value = cfg.categories.indexOf(keep) > -1 ? keep : '';
+    $('cat-fld').hidden = !cfg.categories.length;
+    $('imp-fld').hidden = !cfg.importantFilter;
+  }
+  document.querySelectorAll('input[name=board]').forEach(function (r) { r.addEventListener('change', function () { syncBoardFields(); S.dirty = true; }); });
+  ['title', 'body', 'category', 'important'].forEach(function (id) { $(id).addEventListener('input', function () { S.dirty = true; }); });
+  syncBoardFields();
+
+  $('preview-btn').addEventListener('click', function () {
+    var on = $('preview').hidden;
+    $('preview').hidden = !on; $('body').hidden = on;
+    this.setAttribute('aria-pressed', String(on));
+    this.textContent = on ? '고쳐 쓰기' : '미리 보기';
+    if (on) $('preview').firstElementChild.innerHTML = B.renderMarkdown($('body').value) || '<p class="bd-empty-body">본문이 없습니다.</p>';
+  });
+
+  /* ── 첨부 ── */
+  function renderFiles() {
+    $('files').innerHTML = S.files.map(function (f, i) {
+      var state = f.uploading ? '<progress max="100" value="' + (f.pct || 0) + '" aria-label="' + esc(f.name) + ' 올리는 중"></progress>'
+        : f.error ? '<span class="s">실패: ' + esc(f.error) + '</span>'
+        : '<span class="s">' + (f.url ? '링크' : B.fmtSize(f.size)) + '</span>';
+      return '<li><span aria-hidden="true">' + (f.url ? '🔗' : '📎') + '</span><span class="n">' + esc(f.name) + '</span>' + state +
+        '<button type="button" class="btn is-line is-sm" data-rm="' + i + '" aria-label="' + esc(f.name) + ' 빼기">빼기</button></li>';
+    }).join('');
+  }
+  $('files').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-rm]'); if (!b) return;
+    S.files.splice(+b.dataset.rm, 1); S.dirty = true; renderFiles();
+  });
+  function upload(file) {
+    var item = { name: file.name, size: file.size, uploading: true, pct: 0 };
+    S.files.push(item); S.uploading++; S.dirty = true; renderFiles();
+    call('upload_url', { name: file.name, size: file.size }).then(function (d) {
+      return new Promise(function (resolve, reject) {
+        var ext = (file.name.split('.').pop() || '').toLowerCase();
+        var xhr = new XMLHttpRequest();
+        xhr.open('PUT', d.signedUrl);
+        xhr.setRequestHeader('Content-Type', MIME[ext] || 'application/octet-stream');
+        xhr.upload.onprogress = function (ev) { if (ev.lengthComputable) { item.pct = Math.round(ev.loaded / ev.total * 100); renderFiles(); } };
+        xhr.onload = function () { xhr.status < 300 ? resolve(d.path) : reject(new Error('저장소 오류 ' + xhr.status)); };
+        xhr.onerror = function () { reject(new Error('연결 끊김')); };
+        xhr.send(file);
+      });
+    }).then(function (path) { item.path = path; item.uploading = false; })
+      .catch(function (err) { item.uploading = false; item.error = err.message; })
+      .then(function () { S.uploading--; renderFiles(); });
+  }
+  function addFiles(list) { Array.prototype.forEach.call(list, upload); }
+  $('file-pick').addEventListener('click', function () { $('file-input').click(); });
+  $('file-input').addEventListener('change', function () { addFiles(this.files); this.value = ''; });
+  var drop = $('drop');
+  ['dragenter', 'dragover'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add('is-over'); }); });
+  ['dragleave', 'drop'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.remove('is-over'); }); });
+  drop.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files.length) addFiles(e.dataTransfer.files); });
+  $('link-add').addEventListener('click', function () {
+    var url = window.prompt('링크 주소를 붙여 넣으십시오. (https://로 시작)');
+    if (!url) return;
+    url = url.trim();
+    if (!/^https:\/\//i.test(url)) { msg($('write-msg'), 'err', '링크는 https:// 로 시작해야 합니다.'); return; }
+    var name = window.prompt('목록에 보일 이름을 적으십시오.', '자료 내려받기 (구글 드라이브)');
+    if (!name) return;
+    S.files.push({ name: name.trim().slice(0, 200), url: url }); S.dirty = true; renderFiles();
+  });
+
+  /* ── 저장 ── */
+  function resetForm() {
+    S.editing = null; S.files = []; S.dirty = false;
+    $('post-form').reset(); $('author').value = lload('om_board_author') || '';
+    syncBoardFields(); renderFiles();
+    $('write-h').textContent = '새 글 쓰기'; $('save-btn').textContent = '올리기'; $('cancel-edit').hidden = true;
+    document.querySelectorAll('input[name=board]').forEach(function (r) { r.disabled = false; });
+  }
+  $('cancel-edit').addEventListener('click', function () { resetForm(); $('write-msg').hidden = true; });
+
+  $('post-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var wm = $('write-msg');
+    if (S.uploading) { msg(wm, 'warn', '파일이 아직 올라가는 중입니다. 막대가 다 찬 뒤 다시 누르십시오.'); return; }
+    if (S.files.some(function (f) { return f.error; })) { msg(wm, 'err', '올리지 못한 파일이 있습니다. 「빼기」를 누른 뒤 다시 올리십시오.'); return; }
+    var title = $('title').value.trim(), author = $('author').value.trim();
+    if (!title) { msg(wm, 'err', '제목을 적으십시오.'); $('title').focus(); return; }
+    if (!author) { msg(wm, 'err', '작성 담당자를 적으십시오.'); $('author').focus(); return; }
+    var board = curBoard();
+    var post = {
+      board: board, title: title, body: $('body').value, author: author,
+      category: B.BOARDS[board].categories.length ? ($('category').value || null) : null,
+      is_important: B.BOARDS[board].importantFilter ? $('important').checked : false,
+      attachments: S.files.map(function (f) { return f.url ? { name: f.name, url: f.url } : { name: f.name, path: f.path, size: f.size }; })
+    };
+    lstore('om_board_author', author);
+    $('save-btn').disabled = true;
+    var upd = Object.assign({}, post); delete upd.author; delete upd.board; /* 고칠 때 원래 작성자는 그대로 두고, 고친 사람은 기록에만 남긴다 */
+    var p = S.editing ? call('update', { id: S.editing, post: upd, editor: author }).then(function () { return S.editing; })
+                      : call('create', { post: post }).then(function (d) { return d.id; });
+    p.then(function (id) {
+      var view = '../' + B.BOARDS[board].view + '?id=' + id;
+      var was = S.editing;
+      resetForm();
+      msg(wm, 'ok', (was ? '고쳤습니다. ' : '올렸습니다. ') + '<a href="' + view + '" target="_blank" rel="noopener">사이트에서 보기 (새 창)</a>');
+      wm.scrollIntoView({ block: 'center' });
+    }).catch(function (err) { msg(wm, 'err', esc(err.message)); })
+      .then(function () { $('save-btn').disabled = false; });
+  });
+
+  function startEdit(id) {
+    B.getPost(id).then(function (p) {
+      if (!p) throw new Error('글을 찾을 수 없습니다.');
+      if (S.dirty && !window.confirm('쓰던 글이 저장되지 않았습니다. 이 글을 고칠까요?')) return;
+      showTab('write');
+      S.editing = p.id;
+      document.querySelector('input[name=board][value=' + p.board + ']').checked = true;
+      document.querySelectorAll('input[name=board]').forEach(function (r) { r.disabled = true; });
+      syncBoardFields();
+      $('category').value = p.category || '';
+      $('important').checked = !!p.is_important;
+      $('title').value = p.title; $('body').value = p.body || '';
+      $('author').value = lload('om_board_author') || p.author || '';
+      S.files = (p.attachments || []).map(function (f) { return Object.assign({}, f); });
+      renderFiles(); S.dirty = false;
+      $('write-h').textContent = p.id + '번 글 고치기'; $('save-btn').textContent = '고친 내용 저장';
+      $('cancel-edit').hidden = false; $('write-msg').hidden = true;
+      $('title').focus();
+    }).catch(function (err) { msg($('list-msg'), 'err', esc(err.message)); });
+  }
+
+  /* ── 올린 글 ── */
+  var listRows = [];
+  function lboard() { return document.querySelector('input[name=lboard]:checked').value; }
+  document.querySelectorAll('input[name=lboard]').forEach(function (r) { r.addEventListener('change', function () { loadList(true); }); });
+  function loadList(reset) {
+    if (reset) { S.listPage = 1; listRows = []; }
+    var area = $('list-area');
+    if (reset) area.innerHTML = '<p class="lead">불러오는 중입니다.</p>';
+    B.list(lboard(), { page: S.listPage, per: 30, pinFirst: false }).then(function (r) {
+      listRows = listRows.concat(r.data);
+      var cfg = B.BOARDS[lboard()];
+      area.innerHTML = listRows.length ? '<table class="tbl"><thead><tr><th scope="col">번호</th><th scope="col">제목</th><th scope="col">날짜</th><th scope="col"><span class="sr-only">작업</span></th></tr></thead><tbody>' +
+        listRows.map(function (p) {
+          return '<tr><td>' + p.id + '</td><td class="t">' + (p.is_important ? '<span class="bd-badge is-imp">중요</span> ' : '') +
+            '<a href="../' + cfg.view + '?id=' + p.id + '" target="_blank" rel="noopener">' + esc(p.title) + '</a></td>' +
+            '<td>' + B.fmtFull(p.created_at) + '</td><td class="acts">' +
+            '<button type="button" class="btn is-line is-sm" data-edit="' + p.id + '">고치기</button> ' +
+            '<button type="button" class="btn is-danger is-sm" data-del="' + p.id + '" data-title="' + esc(p.title) + '">지우기</button></td></tr>';
+        }).join('') + '</tbody></table>' : '<p class="lead">올린 글이 없습니다.</p>';
+      $('more-btn').hidden = listRows.length >= (r.total || 0);
+    }).catch(function (err) { area.innerHTML = ''; msg($('list-msg'), 'err', esc(err.message)); });
+  }
+  $('more-btn').addEventListener('click', function () { S.listPage++; loadList(false); });
+  $('list-area').addEventListener('click', function (e) {
+    var ed = e.target.closest('[data-edit]'); if (ed) { startEdit(+ed.dataset.edit); return; }
+    var dl = e.target.closest('[data-del]'); if (!dl) return;
+    if (!window.confirm('「' + dl.dataset.title + '」 글을 지울까요?\n사이트에서 바로 사라집니다. 마스터가 되살릴 수 있습니다.')) return;
+    call('delete', { id: +dl.dataset.del }).then(function () { msg($('list-msg'), 'ok', '지웠습니다.'); loadList(true); })
+      .catch(function (err) { msg($('list-msg'), 'err', esc(err.message)); });
+  });
+
+  /* ── 마스터 ── */
+  $('pw-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var a = $('npw1').value, b = $('npw2').value, m = $('pw-msg');
+    if (a.length < 8) { msg(m, 'err', '8자 이상으로 정하십시오.'); return; }
+    if (a !== b) { msg(m, 'err', '두 칸의 암호가 다릅니다.'); return; }
+    call('set_editor_password', { new_password: a }).then(function () {
+      $('pw-form').reset(); msg(m, 'ok', '담당자 암호를 정했습니다. 담당자들에게 새 암호를 알려 주십시오.');
+    }).catch(function (err) { msg(m, 'err', esc(err.message)); });
+  });
+  function loadDeleted() {
+    call('list_deleted').then(function (d) {
+      $('deleted-area').innerHTML = d.rows.length ? '<table class="tbl"><thead><tr><th scope="col">번호</th><th scope="col">게시판</th><th scope="col">제목</th><th scope="col">지운 때</th><th scope="col"><span class="sr-only">작업</span></th></tr></thead><tbody>' +
+        d.rows.map(function (p) {
+          return '<tr><td>' + p.id + '</td><td>' + esc(B.BOARDS[p.board].name) + '</td><td class="t">' + esc(p.title) + '</td><td>' + B.fmtFull(p.deleted_at) +
+            '</td><td class="acts"><button type="button" class="btn is-line is-sm" data-restore="' + p.id + '">되살리기</button></td></tr>';
+        }).join('') + '</tbody></table>' : '<p class="lead">지운 글이 없습니다.</p>';
+    }).catch(function (err) { $('deleted-area').innerHTML = '<p class="msg is-err">' + esc(err.message) + '</p>'; });
+  }
+  $('deleted-area').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-restore]'); if (!b) return;
+    call('restore', { id: +b.dataset.restore }).then(loadDeleted).catch(function (err) { window.alert(err.message); });
+  });
+  $('log-btn').addEventListener('click', function () {
+    var ACT = { login: '로그인', create: '새 글', update: '고침', delete: '지움', restore: '되살림', set_editor_password: '담당자 암호 변경' };
+    call('log').then(function (d) {
+      $('log-area').innerHTML = '<table class="tbl"><thead><tr><th scope="col">때</th><th scope="col">결과</th><th scope="col">누구</th><th scope="col">한 일</th><th scope="col">글</th><th scope="col">IP</th></tr></thead><tbody>' +
+        d.rows.map(function (r) {
+          var t = new Date(r.at);
+          return '<tr><td>' + B.fmtFull(r.at) + ' ' + String(t.getHours()).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0') + '</td>' +
+            '<td>' + (r.ok ? '성공' : '<strong>암호 틀림</strong>') + '</td><td>' + (r.role === 'master' ? '마스터' : r.role === 'editor' ? '담당자' : '-') + (r.author ? ' · ' + esc(r.author) : '') + '</td>' +
+            '<td>' + esc(ACT[r.action] || r.action) + '</td><td>' + (r.post_id || '') + '</td><td>' + esc(r.ip || '') + '</td></tr>';
+        }).join('') + '</tbody></table>';
+    }).catch(function (err) { $('log-area').innerHTML = '<p class="msg is-err">' + esc(err.message) + '</p>'; });
+  });
+
+  /* ── 떠나기 전 확인 ── */
+  window.addEventListener('beforeunload', function (e) { if (S.dirty || S.uploading) { e.preventDefault(); e.returnValue = ''; } });
+
+  /* ── 탭 안에서 다시 열면 로그인 유지 ── */
+  var saved = load('om_board_pw');
+  if (saved) {
+    S.pw = saved;
+    call('login').then(function (d) { enter(d.role, d); }).catch(function () { logout(); });
+  } else { $('pw').focus(); }
+})();
+</script>
+</body>
+</html>

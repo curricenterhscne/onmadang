@@ -70,7 +70,7 @@
       { label: '학교 밖 교육',     href: base + 'safety/off-campus_courses.html' }
     ],
     board: [
-      { label: '공지사항', href: L.board },
+      { label: '공지사항', href: base + 'board/notices.html' },
       { label: '자료실',   href: base + 'board/resources.html' }
     ]
   };

@@ -1,60 +1,60 @@
 # CLAUDE.md — 알림·소통 마당 (board/)
 
-> 온마당 공통 헤더/푸터 사용. **GitHub Issues를 CMS로** 쓴다.
-> 최종 검증 2026-07-24 (실측)
+> 온마당 공통 헤더/푸터 사용. **2026-11-18부터 Supabase 게시판**이다(이전: GitHub Issues).
+> 최종 검증 2026-11-18 (코드 실측)
 
 ## 구조
 
 ```
 board/
-├─ index.html          공지사항 목록
-├─ notice.html         공지 상세
-├─ resources.html      자료실 목록
-└─ resource-view.html  자료 상세
+├─ index.html          첫 화면 (공지사항·자료실 카드 2장, 시안 sub04_00)
+├─ notices.html        공지 목록      ← 2026-11-18 이전에는 index.html이 공지 목록이었다
+├─ notice.html         공지 상세 (?id=)
+├─ resources.html      자료 목록
+├─ resource-view.html  자료 상세 (?id=)
+├─ admin/index.html    담당자 글쓰기 화면 (noindex, 공통 헤더 없음)
+├─ css/board.css       공용 스타일 (목록·상세·첫 화면·배지·첨부)
+└─ js/board.js         읽기·화면 모듈 window.OM_BOARD
 ```
 
-> 루트 `CLAUDE.md` 레지스트리에 `index.html`·`resources.html`만 적혀 있었다. **상세 페이지 2개가 빠져 있었다.**
+- 목록·상세 HTML은 틀만 있다. `data-board-list="notice|resource"`, `data-board-view="…"` 요소를 `board.js`가 채운다(`mountList` · `mountView`).
+- 홈(`index.html`) 알림·소통 마당의 최근 공지 5건도 `OM_BOARD.latest('notice', 5)`를 쓴다.
+- 상세 페이지는 `marked@12.0.2` + `dompurify 3.1.6`을 먼저 불러온다. **본문은 신뢰하지 않는 입력이다.** `renderMarkdown()`이 정화하므로 우회하지 말 것.
 
-## 데이터 소스 — GitHub Issues API
+## 데이터 — Supabase (`yhrgvnttjlitukrxdfdo`, 수강신청과 같은 프로젝트)
 
-- 대상 레포 상수: `const REPO = 'curricenterhscne/onmadang'` (4개 파일에 각각 선언)
-- 엔드포인트: `https://api.github.com/repos/${REPO}/issues`
-- **라벨로 게시판을 구분한다**
-
-| 게시판 | 라벨 | 비고 |
+| 표 | 내용 | 접근 |
 |---|---|---|
-| 공지사항 | `공지` | 카테고리 라벨을 추가로 붙여 필터 (`labels=공지,${label}`) |
-| 자료실 | `자료` | |
+| `board_posts` | id, board(`notice`/`resource`), title, body(마크다운), category, is_important, attachments(jsonb), author, created_at, updated_at, deleted_at | 읽기: 누구나(RLS가 `deleted_at`이 있는 글을 숨긴다). 쓰기: 정책 없음 |
+| `board_settings` | `editor_password` = `salt$sha256` | 막힘 |
+| `board_log` | 로그인·쓰기 기록(ip, role, ok, action, post_id, author) | 막힘 |
+| 버킷 `board-files` | 첨부 파일. 공개 읽기, 파일당 50MB | 올리기는 서명 주소로만 |
 
-- 인증 없이 호출한다 → **비인증 rate limit(시간당 60회)** 을 공유한다. 이것이 캐시를 쓰는 이유다.
+- SQL: `supabase/sql/board.sql`(표·RLS·버킷), `supabase/sql/board_import_github.sql`(옛 GitHub 이슈 11건, 번호 유지).
+- **attachments 원소**: 올린 파일 `{name, path, size}` 또는 외부 링크 `{name, url}`. 파일 주소는 `OM_BOARD.fileUrl()`이 `…/object/public/board-files/{path}?download={name}`로 만든다(원래 이름으로 내려받기).
+- 분류: `board.js`의 `BOARDS`와 Edge Function의 `CATEGORIES`가 **같아야 한다.** 공지는 분류 없음 + 「중요」 고정, 자료는 서식·매뉴얼·연수자료·홍보자료.
 
-## 캐시 — `cachedFetch`
+## 쓰기 — Edge Function `board-admin`
 
-`assets/js/common.js:203`에 전역으로 정의된 공유 유틸이다. board 전용이 아니다.
-
-```js
-window.cachedFetch = function (url, ttlMs) { … }   // 기본 TTL 60000ms (1분)
-```
-
-- sessionStorage에 저장. 탭을 닫으면 사라진다
-- 게시글을 올린 뒤 바로 반영되지 않으면 TTL을 기다리거나 탭을 새로 연다
-- TTL을 늘리면 rate limit에 여유가 생기지만 반영이 느려진다 (5분 → 1분으로 단축한 이력 있음)
-
-## 주요 함수 (실측)
-
-`fetchIssues` `fetchTotal` `fetchAdjacentIssues` `loadPage` `renderList` `renderNotice` `renderResource` `renderPagination` `setFilter` `extractAttachments` `countAttachments` `hasAttachment` `stripAttachmentLinks` `fileIcon` `getBadges` `getCatBadge` `getIssueId` `fmtDate` `fmtDateFull` `escHtml` `escUrl` `showError` `load`
-
-- 첨부파일은 이슈 본문의 링크를 파싱해 추출한다 (`extractAttachments`) → 본문에서 링크를 지우고(`stripAttachmentLinks`) 별도 영역에 표시
-- `escHtml` / `escUrl`로 이스케이프한다. **이슈 본문은 신뢰할 수 없는 입력으로 취급할 것**
+- `supabase/functions/board-admin/index.ts`. 모든 요청은 `POST { action, password, … }`.
+- 배포: `npx supabase functions deploy board-admin --no-verify-jwt --project-ref yhrgvnttjlitukrxdfdo`
+- **권한은 암호 두 개다.**
+  - 마스터: 비밀값 `BOARD_MASTER_PASSWORD`(대시보드 Edge Functions → Secrets). 저장소·대화에 적지 않는다.
+  - 담당자 공용 암호: 마스터가 관리 화면 「마스터 관리」에서 정한다. 마스터는 지운 글 되살리기와 기록 보기도 한다.
+- 같은 IP에서 15분 안에 10번 틀리면 15분 동안 막는다(`board_log` 기준).
+- 지우기는 `deleted_at`만 채운다(첨부 파일은 남긴다). 고치기는 작성자(author)를 바꾸지 않고, 고친 사람은 `board_log.author`에만 남긴다.
+- 업로드: `upload_url`이 `YYYYMM/uuid.확장자` 경로의 서명 주소를 주고, 브라우저가 그 주소로 PUT 한다. 확장자 허용 목록은 함수의 `EXT`와 `board.sql`의 MIME 목록이다.
 
 ## 운영
 
-게시글 등록 = **GitHub Issue 작성 + 라벨 부여**. 중등교육팀이 직접 등록한다.
-첨부파일은 Issue 본문에 드래그해 업로드하면 GitHub이 URL을 만들어 준다.
+- 담당자는 `board/admin/`에서 공용 암호로 로그인해 글을 쓴다. 사용 안내가 화면 안에 있다.
+- 로그인 암호는 그 탭의 sessionStorage에만 둔다(탭을 닫으면 사라짐). 작성자 이름은 그 컴퓨터의 localStorage에 기억한다.
+- 학생 개인정보가 든 파일을 올리지 않는다(읽기 제한 없음). 교사 전용 자료는 다른 사이트로 공유한다.
 
 ## 하지 말 것
 
-- `REPO` 상수를 한 파일만 고치기 ❌ (4개 파일에 각각 있다)
-- 인증 토큰을 프론트엔드에 넣기 ❌ (공개 레포이므로 불필요하고 위험)
-- `cachedFetch`를 우회해 직접 `fetch` ❌ (rate limit 소진)
-- 이슈 본문을 이스케이프 없이 innerHTML에 삽입 ❌
+- 본문을 `renderMarkdown()` 없이 innerHTML에 넣기 ❌
+- `board_posts`에 쓰기 RLS 정책 추가 ❌ → 쓰기는 `board-admin`만
+- 분류를 `board.js`·함수 중 한 곳만 고치기 ❌
+- 공지 목록 주소를 `board/index.html`로 되돌리기 ❌ → 첫 화면이다. 목록은 `notices.html`
+- 마스터·담당자 암호를 코드·문서·대화에 적기 ❌

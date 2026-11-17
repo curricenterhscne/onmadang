@@ -8,18 +8,20 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="../../assets/css/common.css">
 <style>
-  /* 시안 없음 — 서브 공통 부품(.sub-title·.sub-cards)과 4대 안전망 색·아이콘으로 구성 */
+  /* 최종 시안 sub02_05(11-17): 4대 안전망 대표색 카드 + 흰 막대 단추(가이드 Button02). 글자는 검정(퍼플 바탕 4.65:1) */
   .out-cards{margin-top:clamp(32px,4vw,56px);grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
   .out-cards .sub-card{justify-content:flex-start;text-align:left;min-height:clamp(280px,26vw,360px)}
-  .out-cards .sub-card:nth-child(1){background:var(--online-l)}
-  .out-cards .sub-card:nth-child(2){background:var(--plum-l)}
-  .out-cards .sub-card:nth-child(3){background:var(--accent-l)}
-  .out-ic{width:64px;height:60px;margin-bottom:auto;background:currentColor;-webkit-mask:var(--ic) left center/contain no-repeat;mask:var(--ic) left center/contain no-repeat}
+  .out-cards .sub-card:nth-child(1){background:var(--online)}
+  .out-cards .sub-card:nth-child(2){background:var(--plum)}
+  .out-cards .sub-card:nth-child(3){background:var(--accent)}
+  .out-ic{width:64px;height:60px;margin-bottom:0;background:currentColor;-webkit-mask:var(--ic) left center/contain no-repeat;mask:var(--ic) left center/contain no-repeat}
   .out-cards .sub-card:nth-child(1) .out-ic{--ic:url("../../assets/img/sub/icon-net-online.svg")}
   .out-cards .sub-card:nth-child(2) .out-ic{--ic:url("../../assets/img/sub/icon-net-joint.svg")}
   .out-cards .sub-card:nth-child(3) .out-ic{--ic:url("../../assets/img/sub/icon-net-outside.svg")}
   .out-cards .sub-card strong{margin:28px 0 10px;font-size:clamp(18px,1.5vw,21px)}
-  .out-cards .sub-card .more{display:inline-block;margin-top:16px;font-weight:700;font-size:14.5px}
+  .out-cards .sub-card .more{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding:10px 18px;background:var(--surface);color:var(--ink);border-radius:var(--radius-btn);font-weight:700;font-size:14.5px;transition:background .15s}
+  .out-cards .sub-card>span:not(.more):not(.out-ic){margin-bottom:24px}
+  a.sub-card:hover .more{background:var(--bg)}
 </style>
 </head>
 <body>

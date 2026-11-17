@@ -66,7 +66,7 @@
    - 본문 문장은 **「~합니다.」** 로 끝낸다. 안내·권유도 「~해 보세요.」가 아니라 **「~해 보십시오.」**
    - 표·목록·카드 안의 짧은 항목은 **명사형으로 끝내고 마침표를 찍지 않는다.** 한 칸에 두 문장이 필요하면 둘 다 「~합니다.」로 쓴다.
    - 예외: 학생의 말로 쓴 제목·질문(「뭘 골라야 할지 모르겠어요」, FAQ 질문), 버튼·입력 안내 같은 UI 문구, 원본을 이식한 문서(`dual_credit/curriculum.html`의 참고문헌 등)
-6. **회원가입·서버 저장 0** — 학생 개인정보를 서버로 보내지 않는다. `apply/`의 Supabase는 수강신청 전용이며 다른 기능에서 접근 금지.
+6. **회원가입·서버 저장 0** — 학생 개인정보를 서버로 보내지 않는다. Supabase(`yhrgvnttjlitukrxdfdo`)는 **수강신청(`apply/`)과 알림·소통 마당 게시판(`board/`, 표 `board_*`, 2026-11-18~)만** 쓴다. 다른 기능에서 접근 금지. 게시판에는 학생 개인정보를 두지 않는다.
 7. **2022 개정 교육과정 단일 기준** — 2015 개정 데이터·분기를 새로 만들지 않는다.
 8. **★ 추정하지 말고 실측할 것** — 토큰 이름, 데이터 구조, 내보내기 스키마는 **문서가 아니라 실제 파일을 열어 확인한다.** 이 문서의 기술도 시간이 지나면 어긋날 수 있다. (2026-07 시점에 실제로 토큰 이름과 데이터 신뢰도가 문서와 달랐던 전례가 있다.)
 
@@ -145,7 +145,7 @@
 
 | 전역 | 위치 | 역할 |
 |---|---|---|
-| `window.cachedFetch(url, ttlMs)` | `common.js:203` | sessionStorage 캐시 fetch. 기본 TTL 1분. GitHub API rate limit(비인증 60회/시간) 보호용 |
+| `window.cachedFetch(url, ttlMs)` | `common.js` | sessionStorage 캐시 fetch. 기본 TTL 1분. GitHub API용이었으나 게시판이 Supabase로 바뀌어(2026-11-18) **지금 쓰는 곳이 없다** |
 | `#clv` SVG symbol | `common.js` | 인라인 클로버. `<use href="#clv"/>`로 사용 |
 
 ---
@@ -159,7 +159,7 @@
 | 1 | **고교학점제** | `about/` | 고교학점제란? / 학생 주도성과 고교학점제 / 꾸꾸클럽 | ✅ 완료 |
 | 2 | **진로·학업 설계** | `design/` | 아래 참조 | ✅ 3관문 재편 완료 |
 | 3 | **4대 안전망** | `safety/` | 학교 교육과정 / 충남온라인학교 / 공동교육과정 / 학교 밖 교육 | ✅ 완료 |
-| 4 | **알림·소통 마당** | `board/` | 공지사항 / 자료실 | ✅ 기능 완료 (게시글 입력만 남음) |
+| 4 | **알림·소통 마당** | `board/` | 공지사항 / 자료실 | ✅ Supabase 게시판(2026-11-18). 담당자는 `board/admin/`에서 쓴다 |
 
 > GNB 표기는 `common.js` 기준 **「고교학점제」**다(「고교학점제 안내」가 아니다).
 
@@ -230,7 +230,7 @@
 | `about/` | 고교학점제 안내 | ✅ 사용 | `index.html` `what-is.html` `student-agency.html` `kkukku-club.html` | ✅ 구축 완료. `kkukku-club.html`은 2026-10-21 신설(캐릭터 소개, 콘텐츠는 업체 중간보고 PDF 원문) |
 | `apply/` | 수강신청 | 파일별로 다름 ⚠️ | **`app.html`**(앱, ❌독립) · `index.html`(마감 안내, ✅사용) · `_embed_data.js` | **앱은 `app.html`이다** — `apply/CLAUDE.md` 필독 |
 | `apply/admin/` | 수강신청 관리자 대시보드 | ❌ 독립 | `index.html` | Edge Functions API |
-| `board/` | 공지·자료실 | ✅ 사용 | `index.html` `notice.html` `resources.html` `resource-view.html` | GitHub Issues API (라벨 `공지`/`자료`) |
+| `board/` | 알림·소통 마당 | ✅ 사용 (`admin/` 제외) | `index.html`(첫 화면) `notices.html` `notice.html` `resources.html` `resource-view.html` `admin/` | Supabase `board_posts` + Edge Function `board-admin`. `board/CLAUDE.md` 필독 |
 | `dual_credit/` | 고교-대학 연계 안내 + 신청 개폐 | ✅ 사용 | `index.html`(제도 안내), `curriculum.html`(과목 교육과정) | 신청 링크는 `enroll.js`가 제어. `courses.html`은 **링크 비노출** |
 | `design/` | 진로·학업 설계 허브 | ✅ 사용 | `index.html` | ✅ 3관문 재편 완료 |
 | `design/check/` | 내 선택 점검 | ✅ 사용 | `index.html` | 판정 7종 · A4 인쇄 |
@@ -282,7 +282,7 @@
         async src="//gc.zgo.at/count.js"></script>
 ```
 
-- 적용됨(26개): `index.html`, `enroll/`(2), `policy/`(2), `about/`(3), `apply/index.html`, `board/`(4), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `dual_credit/curriculum.html`, `safety/`(6), `dream_up/attendance/`, `dream_up/check/`
+- 적용됨(27개): `index.html`, `enroll/`(2), `policy/`(2), `about/`(3), `apply/index.html`, `board/`(5, `admin/` 제외), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `dual_credit/curriculum.html`, `safety/`(6), `dream_up/attendance/`, `dream_up/check/`
 - **미적용**: `apply/app.html`, `apply/admin/`, `design/check/`, `design/majors/`, `design/selector/`(+`guide.html`), `dual_credit/courses.html`, 위 「링크되지 않는 부속 페이지」 전부 (`dream_up/attendance/`·`dream_up/check/` 제외 — 만료 후 유입 확인용으로 넣었다)
 - 새 페이지를 만들면 **직접 넣어야 한다.** 관리자 페이지(`apply/admin/`)에는 넣지 않는다.
 
