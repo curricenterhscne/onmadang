@@ -47,7 +47,7 @@
   /* ── 상단 안내 배너 ──
      띄울 문구가 있을 때만 banner를 '<div class="renewal-banner" role="note">…</div>' 형태로 채운다.
      빈 문자열이면 배너가 렌더링되지 않는다. (.renewal-banner 스타일은 common.css에 남겨 두었다.)
-     ⚠️ 다시 쓸 때는 apply/app.html·design/selector/guide.html의 인라인 배너도 함께 볼 것. */
+     ⚠️ 다시 쓸 때는 apply/app.html의 인라인 배너도 함께 볼 것. */
   var banner = '';
 
   /* ── 서브메뉴 데이터 ── */

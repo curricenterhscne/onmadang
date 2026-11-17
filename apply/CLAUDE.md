@@ -1,294 +1,130 @@
-# CLAUDE.md — 수강신청 앱 (apply/)
+# CLAUDE.md — 수강신청 (apply/)
 
-> 폴더 안에 **성격이 다른 두 페이지**가 있다. 헤더 규칙이 서로 다르니 아래 표를 먼저 볼 것.
-> 최종 검증 2026-08-13 (실측)
-
-## ⚠️ 2026-10-21~ 멀티프로그램 확장 진행 중 (`enrollment-multiprogram` 브랜치)
-
-이 문서 본문은 **아직 단일 프로그램(꿈키움) 전제로 작성된 과거 상태**다. 지역연계 공동교육과정·고교-대학 연계까지 `app.html` 하나로 같이 서빙하도록 확장하는 작업이 진행 중이며, 완료 전까지 아래와 실제 코드가 어긋날 수 있다. **설계 전체는 `.claude/plans/cheerful-soaring-sparkle.md`(Track B) 참고.**
-
-진행 상황 — **2026-11-11 `main`에 병합**(지역연계 2026-11-21 신청 시작 대비). 테스트 사본 `apply/admin-test/`·`apply/app-test.html`은 정식 주소로 넘기는 이동 페이지가 됐다:
-- ✅ `supabase/sql/rpc_backup_query.sql` — RPC 7개 실제 정의 백업 완료(2026-10-21, 하단에 전문 보관).
-- ✅ `supabase/sql/program_column_migration.sql` — **실행 완료 + 검증 완료(2026-10-21)**. `courses`(새 컬럼 전부 포함, 기존 66강좌 전부 `program='dream_up'` 확인)/`enrollments`에 `program` 컬럼, `programs` 3행(`dream_up`/`dual_credit`/`joint_regional`)·빈 `staff_profiles` 테이블 생성, 기존 `settings` 1행에 `program='dream_up'` 백필까지 전부 확인됨.
-  **설계 변경**: 처음 계획했던 신규 `cycles` 테이블은 쓰지 않는다 — 실제 RPC가 이미 `settings`(1차/2차 2단계 모델: `open_at/close1_at/open2_at/close2_at`)를 쓰고 있어, 검증된 로직을 유지하는 쪽으로 바꿨다.
-- ✅ `supabase/sql/rpc_multiprogram.sql` + `rpc_multiprogram_fix_overload.sql` — **실행 완료 + 검증 완료(2026-10-21)**. RPC 7개 중 6개(`release_reservation` 제외)를 `p_program` 파라미터 포함해 재정의.
-  ⚠️ **함정 발견**: `CREATE OR REPLACE FUNCTION`은 인자 개수가 바뀌면 "교체"가 아니라 "오버로드 추가"로 처리된다 — 그래서 처음 실행 후 구 시그니처(인자 적음)와 신 시그니처가 동시에 남아 `get_open_status() is not unique` 등 모호성 에러가 났다. `rpc_multiprogram_fix_overload.sql`로 구 시그니처 6개를 `DROP FUNCTION`해서 해결(신 시그니처만 남음, `pg_get_function_arguments`로 확인). **앞으로 함수 시그니처를 바꾸는 재정의는 반드시 구 시그니처 DROP을 같이 해야 한다.**
-  **버그 수정 포함**: 기존 `confirm_enrollment`/`get_my_enrollment`/`cancel_enrollment`는 중복신청·조회·취소를 **프로그램 구분 없이 전체 테이블**에서 검사했다(학교+학번 OR 전화 매칭) — 그대로 두면 같은 학생이 두 프로그램에 동시 신청하는 것 자체가 막힌다. 재정의 버전은 프로그램 단위로 스코프하고, `programs.term_subject_limit`이 있는 프로그램은 (지역연계는 2였다가 2026-11-11 담당자 결정으로 NULL = 1인 1강좌, `joint_regional_limit_1.sql`) "개수 상한" 체크로, 없는 프로그램(꿈키움/고교대학연계)은 기존과 동일한 "1건만" 체크로 분기한다. `cancel_enrollment`의 취소 UPDATE도 "식별자 일치 전부"가 아니라 "찾아낸 신청 1건(course_code 일치)"만 취소하도록 좁혔다(다건-활성 신청 시 전부 취소되는 잠재 버그 예방). `p_program` 생략 시(꿈키움 기존 호출) 전부 예전과 동일하게 동작 — `get_open_status()` 회귀 테스트로 확인됨(`phase:closed`, 신청접수 9/15 마감 후 상태 그대로 재현, 꿈키움 운영에 영향 없음).
-- ✅ `supabase/functions/_shared/authz.ts` 신설 — 기존 `ADMIN_PASSWORD` 공유 비밀번호 인증을 Supabase Auth 개인 계정(`staff_profiles.role: province|region|org`) 기반으로 바꾸는 공용 헬퍼. **기존 공유 비밀번호도 당분간 그대로 동작**(과도기 호환, `legacyPasswordProfile()`).
-- ✅ 기존 Edge Function 5개(`admin-courses`·`admin-enrollments`·`admin-set-capacity`·`admin-toggle-close`·`admin-delete-enrollment`)에 scope 필터링 추가 — province는 전체, region/org는 자기 소관(`courses.region`/`courses.org`)만.
-- ✅ 신규 Edge Function 6개 작성 + 배포 완료(2026-10-21): `admin-upsert-course`(강좌 등록/수정, `_embed_data.js` 편집 워크플로를 대체), `admin-delete-course`, `register-staff`(지역청/기관 담당자 셀프 가입 신청), `admin-approve-staff`/`admin-list-staff`(도교육청 승인), `admin-whoami`(로그인 계정 본인 정보 조회 — admin UI가 역할·소관 표시 및 승인화면 노출 여부 판단에 씀).
-- ✅ **11개 Edge Function 전부 배포 완료(2026-10-21)** — 기존 5개(scope 필터 추가분) + 신규 6개. `npx supabase login --token`은 비대화형 환경이라 개인 액세스 토큰으로 로그인(대시보드 > Account > Access Tokens에서 발급).
-- ✅ 레거시 공유 비밀번호 경로 회귀 확인됨(배포 직후 기존 관리자 비밀번호로 로그인해 강좌/신청자 목록 정상 확인).
-- ✅ 도교육청(`province`) `staff_profiles` 계정 1개 생성 완료(Supabase 대시보드 Auth에서 수동 생성 + SQL INSERT).
-- ✅ `apply/admin/index.html` 전면 개편(B2) 완료, 로컬 HTTP 서버로 렌더링·콘솔 에러 없음 확인:
-  - 로그인: 이메일+비밀번호(Supabase Auth) 기본, "공유 비밀번호로 로그인" 토글로 레거시 방식 유지, "지역청/기관 담당자 가입 신청" 링크(브라우저 prompt 연속 입력 → `register-staff` 호출 — V1은 간단한 prompt 기반, 정교한 폼은 아님)
-  - JWT 만료 시 `refresh_token`으로 1회 자동 재시도하는 `authFetch()` 래퍼 추가(레거시 비밀번호는 refresh_token이 없어 그냥 재로그인)
-  - 로그인 후 `admin-whoami` 호출 결과를 헤더 배지로 표시(이름·역할·소관), `role==='province'`일 때만 "가입 승인" 버튼 노출
-  - 프로그램 탭(전체/꿈키움/고교-대학 연계/지역연계, `programs` 테이블을 anon key로 직접 조회해 구성) — 탭 클릭 시 `admin-courses?program=`으로 재조회
-  - "+ 강좌 등록"/"수정" 모달 — `admin-upsert-course` 호출. `instructors`/`sessions`는 반복 입력 행(추가/삭제 버튼), `learning_goals`는 줄바꿈 textarea, `schedule_by_day`는 고급 옵션으로 raw JSON textarea(비워도 됨) — **V1 간소화**, 추후 전용 서브 UI로 교체 가능
-  - "삭제" 버튼 — `admin-delete-course` 호출(신청자 있으면 409로 거부, 서버 메시지 그대로 표시)
-  - region/org 역할 로그인 시 강좌 등록 폼의 지역/기관 필드를 본인 `scope_value`로 잠금(다른 지역 강좌를 실수로 못 만듦)
-  - "가입 승인" 모달 — `admin-list-staff` 조회 + 대기중 계정에 승인/거부 버튼(`admin-approve-staff`)
-  - **엑셀 일괄 등록** — "엑셀 양식 다운로드"(SheetJS `buildTemplateWorkbook()`)·"엑셀 일괄 등록"(`parseBulkWorkbook()`로 검증 → 행별로 `admin-upsert-course` 순차 호출 → 부여된 코드·실패 내역 요약).
-    **2026-11-02 지역청 1차 피드백으로 개편** — 양식이 시트 4개(`강좌목록`·`강사진`·`차시계획`·`작성안내`)가 됐다. 강사진·차시계획 행은 강좌목록의 「번호」로 강좌에 묶는다(코드는 저장 시 부여되므로 작성 시점에 모름). 학습목표는 `학습목표1~3` 열. 차시계획의 날짜·시간으로 `schedule_by_day`를 자동 계산한다(`deriveSchedule()`, 시작 시각만 있으면 +50분 — 아래 「scheduleByDay의 종료시각」과 같은 규칙). 「코드」에 기존 코드를 적으면 수정이고, 그 번호의 강사진·차시 행이 없으면 기존 값을 건드리지 않는다. 날짜 칸은 엑셀 일련번호로 읽히므로 `XLSX.SSF.parse_date_code`로 푼다(시간대 영향 없음).
-    정적 사본 `apply/admin/course_template.xlsx`(로그인 없이 배포용)는 **`buildTemplateWorkbook()`과 내용을 맞춰 둔다** — 양식을 바꾸면 이 파일도 다시 만들 것.
-  - **강좌 코드 자동 부여(2026-11-02)** — `admin-upsert-course`에 `code`를 비워 보내면 서버가 `{프로그램 2자}{학년도 2자}{운영 기간 1자}{지원청 2자}{순번 2자}`로 부여한다(예: `JR27SCA01` = 지역연계·2027학년도 여름방학·천안·1번). **운영 기간은 1년 4구간** — `1` 1학기 · `S` 여름방학 · `2` 2학기 · `W` 겨울방학(`TERM_CODES`). 바디의 `term`을 우선하고(admin 화면의 「운영 기간」 선택, 엑셀 「운영기간」 칸), 없으면 `start_date` 월로 정한다(3~6월 1, 7~8월 S, 9~12월 2, 1~2월 W). 학년도는 3월에 바뀌므로 1·2월은 전년도(2028-01 → `27W`), 단 1·2월 시작을 `1`로 명시하면 그해. `term`은 코드 생성에만 쓰고 DB에 저장하지 않는다. 접두어 표 `PROGRAM_PREFIX`·`REGION_CODE`(14개 지원청, 미등록 지역은 `ZZ`)는 함수 안에 있다. 순번 충돌 시 덮어쓰지 않도록 merge 없이 INSERT하고 409면 다시 계산한다. 등록 모달의 코드 칸은 도교육청 계정만 직접 입력할 수 있다.
-  - **지역청 계정은 지역연계만 보인다(2026-11-02)** — `REGION_PROGRAMS = ['joint_regional']`(admin 페이지와 `admin-upsert-course` 양쪽에 같은 값). 로그인 시 프로그램 탭이 지역연계 하나로 고정되고 「전체」 탭이 없다. 서버도 region 계정의 다른 프로그램 등록을 403으로 막는다.
-  - **수정 요청의 소관 확인 보강(2026-11-02)** — 예전에는 바디의 `region`만 검사해서, 지역청 계정이 다른 지원청 강좌 코드를 넣으면 그 강좌를 덮어쓸 수 있었다. 이제 기존 강좌의 `region`/`org`·`program`도 확인한다(`admin-delete-course`와 같은 방식).
-- ✅ **꿈키움·고교-대학 연계 기존 데이터 전체 삭제(2026-10-21)** — 사용자 요청으로 실행(사전 백업 완료 확인됨). `admin-reset-program` Edge Function 신설(province 전용, 대상 프로그램의 `display_name`을 정확히 입력해야 실행되는 2단계 확인) + admin UI에 "위험 구역" 패널 추가. 이 기능으로 꿈키움/고교-대학 연계의 `courses`/`enrollments`를 전부 지움 — `programs`/`settings` 메타는 남겨서 다음 회차에 강좌만 다시 등록하면 되게 함. 삭제 후 `courses` 테이블 0건 확인됨.
-- ✅ **`apply/app.html`(학생용 신청 화면) 멀티프로그램 대응 완료(B3, 2026-10-21)**:
-  - `?program=` URL 파라미터(생략 시 `dream_up` — 기존 공유 링크 전부 무수정 동작)
-  - RPC 6개 호출에 `p_program` 전달(`release_reservation`은 시그니처 안 바뀌어서 그대로)
-  - `fetchDbCourseDetails()` 신설 — `courses` 테이블을 anon key로 직접 조회해 강좌 상세(소개·일정·강사진 등)를 가져옴. 꿈키움은 기존처럼 `_embed_data.js`(`COURSE_DETAILS`)도 같이 쓰되 **DB 값이 있으면 우선**. 신규 프로그램은 `_embed_data.js` 없이 admin-upsert-course로 입력한 내용이 그대로 보임
-  - `applyProgramBranding()` — `dream_up` 외 프로그램은 히어로 문구·안내문을 `programs.display_name` 기반 범용 문구로 교체(꿈키움 전용 안내문이 다른 프로그램에 노출되지 않음). 강좌 수 통계도 하드코딩(66/15) 대신 실제 로드된 목록 기준으로 계산하도록 바꿈
-  - 상세보기 모달의 `if (!d) return;`(DETAIL_MAP 없으면 조용히 아무 반응 없던 버그)를 `d = DETAIL_MAP[code] || {}`로 수정 — 상세 데이터가 일부만 있어도 모달이 열림
-  - ⚠️ **`settings` 테이블의 숨은 싱글톤 제약 발견·수정** — 원래 "행 1개(id=1)만 허용"하도록 `CHECK(id=1)` + 상수 기본값으로 만들어진 테이블이었다. B0에서 `program` 컬럼만 추가하고 이 제약을 같이 풀지 않아서, 두 번째 프로그램(`joint_regional`)의 신청기간 행을 넣을 때 막혔다. `app_multiprogram_prep_fix.sql`로 제약 제거 + 정상 auto-increment 시퀀스로 교체(실행 완료, 검증됨). **앞으로 비슷한 "원래 싱글톤이었던 테이블"에 멀티테넌시를 추가할 때는 PK/CHECK 제약까지 같이 확인할 것.**
-  - 지역연계(`joint_regional`)에 데모 강좌 2건(`JR26DEMO1`/`JR26DEMO2`) + 신청기간(지금부터 90일) 시딩 완료 — 실제 지역청 데이터 입력 전 admin UI "전체 초기화"로 지워야 함
-  - **지역 관문(2026-11-02)** — `programs.scope_type='region'`인 프로그램(현재 지역연계)은 강좌 목록 전에 14개 교육지원청 선택 화면을 띄우고, 고른 지역(`courses.region` 일치) 강좌만 보여 준다. 선택은 주소의 `?region=`에 약칭으로 남아(`&region=천안`) 지역청이 자기 지역 링크를 직접 배포할 수 있다. 약칭·전체 이름 모두 받으며(`normalizeRegion()`), 목록에 없는 값이면 관문으로 돌아간다. 지원청 순서는 `REGIONS` 상수. 기관 칩도 선택 지역 기준으로 세고, 이 프로그램들에서는 필터 이름을 「운영 기관」으로 바꾼다. **신청 자체를 지역으로 제한하지는 않는다**(지역 바꾸기로 다른 지역 강좌도 신청 가능).
-  - `courses` 테이블에 공개 읽기(anon) RLS 정책 추가(`courses_public_read`) — 강좌 상세는 개인정보가 아니라 이미 RPC로 일부 공개되어 있던 것과 노출 수준이 같음
-- 🔧 **지역청별 신청 기간(2026-11-11, 작성 완료 · 실행/배포 대기)** — 지원청마다 신청 기간이 달라져 `settings`에 `region` 칸을 더했다.
-  - **기간을 고르는 규칙**:
-    1. 그 프로그램 + 그 지역 행이 있으면 그 기간을 쓴다.
-    2. 없으면 프로그램 기본 행(`region IS NULL`)을 쓴다.
-    3. 둘 다 없으면 `not_configured`(신청 불가)다.
-  - **고유 제약**: `UNIQUE(program)`을 지우고 `(program, coalesce(region,''))` 고유 인덱스로 바꿨다. 그래서 PostgREST `on_conflict`를 못 쓰고 찾아서 PATCH, 없으면 POST로 저장한다.
-  - **SQL**(`supabase/sql/region_periods.sql`, 대시보드 SQL Editor에서 실행):
-    - 내부 함수 `_period_for(program, region)`와 학생 화면용 `get_open_status_region(p_program, p_region)`을 **새로 추가**했다.
-    - `get_open_status(p_program)`·`reserve_course`·`cancel_enrollment`는 **시그니처를 그대로 두고 교체**했다. 오버로드 함정을 피하려는 것이다.
-    - 예약·취소는 학생이 보낸 값이 아니라 **강좌의 `courses.region`**으로 기간을 찾는다.
-    - 기존 허점도 고쳤다: 1차만 있는 기간(`open2_at` NULL)은 1차 마감 뒤에도 예약·취소가 막히지 않았다.
-  - **Edge Function `admin-periods`**:
-    - GET `?program=`로 조회한다(지역청은 기본 행 + 자기 지역 행만).
-    - POST로 저장한다(시작·1차 마감 필수, 2차는 시작·마감을 함께, 순서 검증). `action:"delete"`는 지역 행을 지운다.
-    - 권한: province는 전부, region은 `REGION_PROGRAMS`의 자기 지역 행만 쓴다. 기본 기간은 읽기만 한다.
-  - **관리 화면**: 헤더 「신청 기간」 버튼 → 프로그램별 표(기본 기간 + 14개 지원청 행, 지역청 계정은 자기 행만)를 띄운다. 입력은 KST `datetime-local`이고 `+09:00`을 붙여 보낸다.
-  - **학생 화면**:
-    - 지역 관문 프로그램은 `get_open_status_region`을 쓰고, 지역을 바꾸면 다시 불러온다.
-    - 상태줄 아래에 「○○ 신청 기간 11. 20.(목) 09:00 ~ …」을 표시한다.
-    - 기간 미설정 지역은 안내 문구를 띄운다.
-- 🔧 **강좌 공개(미리 보기) 시각(2026-11-12)** — 신청 시작 전에 학생이 강좌 목록을 먼저 본다.
-  - `settings.preview_at`(NULL = `open_at` 7일 전). `supabase/sql/preview_period.sql`이 칸을 더하고 `get_open_status_region`이 `preview_at`·`preview_set`·`is_preview`를 돌려주게 교체한다(시그니처 그대로). **SQL 실행·`admin-periods` 재배포는 사용자가 직접**.
-  - 화면은 응답에 `preview_at`이 없으면 `open_at - 7일`로 계산하므로 SQL 실행 전에도 「1주일 전 공개」로 동작한다.
-  - `app.html`: 공개 전(`before_open` + 공개 시각 전)에는 목록 대신 「강좌 목록은 ○에 공개합니다」. 공개 후에는 목록·상세는 보이고 신청 단추만 막힌다.
-  - `assets/js/enroll-status.js`가 `isPreview`·`previewAt`을 주고, 입구(`enroll/`) 칸은 `isOpen || isPreview`면 신청 화면으로 연결한다. 입구는 기본 기간만 본다(지역 기간 무관). **단 지역연계 칸은 2026-11-13부터 기간과 관계없이 늘 `app.html?program=joint_regional`로 연결한다**(`data-always-app`) — 지원청마다 기간이 달라 기본 기간으로 판단하면 먼저 여는 지원청 학생이 막힌다.
-  - 관리 화면 「신청 기간」 표에 「강좌 공개(선택)」 열. `admin-periods`는 `preview_at < open_at`을 검사한다.
-- ✅ **웹 매뉴얼(2026-11-12)** — `apply/admin/guide/region.html`(지역청 담당자) · `province.html`(도교육청) · `guide.css` · `index.html`(region으로 이동). 관리 화면 로그인 창과 머리글 「매뉴얼」 단추(역할별로 주소가 바뀜)에서 연결. noindex. **공개 저장소이므로 지역청 아이디 목록·비밀번호 보관 위치는 싣지 않는다**(docx 2판 `G:\26\(4)온마당 고도화\…_운영매뉴얼_2026-11-12.docx`에만 있다). 관리 화면 기능이 바뀌면 두 페이지를 함께 고칠 것.
-- ❌ 아직 안 한 것: GNB에 지역연계·고교대학연계로 가는 공개 링크/안내 페이지 연결(`safety/jointcurricula.html` 등), 14개 지역청 실제 계정 발급·강좌 입력, `dual_credit/enroll.js`의 신청 링크 제어를 `settings`/`cycles` 기반으로 전환.
-
-**지금 운영 중이던 꿈키움(2026-10-17~11-29) 데이터는 백업 후 삭제됨** — 다음 회차부터는 새 관리자 도구로 강좌를 다시 등록한다. 레거시 `ADMIN_PASSWORD` 경로는 계속 유지되고 있어 운영 전환 자체는 지장 없음(배포 직후·삭제 전 각각 정상 동작 확인함).
+> 최종 검증 2026-11-17 (코드 실측). 날짜별 경위는 루트 `WORKLOG.md`.
+> 줄 수·개수는 바뀌므로 "약"으로 적는다. 함수명·필드명은 코드를 열어 대조한 뒤 고칠 것.
 
 ## 개요
 
-**수강신청 웹앱.** 선착순 좌석 예약 → 3분 타이머 → 정보 입력 → 확정 흐름.
+**선착순 수강신청 앱 하나(`app.html`)가 여러 프로그램을 함께 받는다.** 좌석 예약 → 3분 타이머 → 정보 입력·개인정보 동의 → 확정.
+프로그램은 주소의 `?program=`으로 고른다(생략하면 `dream_up`).
 
-**현재 운영 대상 (2026-09-03 전환)** — 2026학년도 2학기 **꿈키움 학교 밖 교육 창의적체험활동(진로활동)**.
-원천 데이터는 `dream_up/index.html`의 `DATA`(66강좌)이며, 이전의 고교-대학 연계 14강좌는 대체되었다.
+| 코드 (`programs.code`) | 이름 | 범위 (`scope_type`) | 지금 상태 (2026-11-17) |
+|---|---|---|---|
+| `joint_regional` | 지역연계 공동교육과정 | `region` — 지원청 선택 관문이 먼저 뜬다 | **2026-11-21(토) 09:00 신청 시작.** 지원청마다 기간이 다르다. 1인 1강좌 |
+| `dream_up` | 꿈키움 창의적체험활동 | `province` | 2026-2학기 운영 종료. DB 강좌·신청 자료는 2026-10-21에 백업 후 삭제 |
+| `dual_credit` | 고교-대학 연계 학점 인정 | `org` | 다음 회차 대기. 강좌 0건 |
 
-- 66강좌 · 15개 기관 · 7개 지역 · 14개 계열 · 강좌당 16차시 · **정원 일괄 15명**
-- 운영 2026-10-17 ~ 11-29 · 대상 **고등학교 1~3학년** (학년 제한 강좌 없음)
-- ⚠️ **학점이 아니라 창의적체험활동 시수 인정이다.** `creditRecognition` 필드는 쓰지 않는다 (아래 참조)
+- **온라인 공동교육과정은 이 앱이 아니다.** 선착순이 아닌 별도 사이트(형제 레포 `enrollment_cne`, Supabase 프로젝트도 다르다)이며, 온마당은 입구 칸만 연결한다(`assets/js/enroll-status.js`의 `ON_*`).
+- 이 앱의 Supabase 프로젝트는 `yhrgvnttjlitukrxdfdo`다. anon 키는 `app.html`·`enroll-status.js`에 공개되어 있고 RLS로 보호한다.
 
-## ★ index.html ≠ 앱 (2026-07-31 이후)
+## 진입 경로
 
-수강신청이 마감되면서 **앱을 `app.html`로 옮기고, `index.html`은 마감 안내 페이지로 교체**했다.
-"apply 앱을 고쳐 달라"는 요청을 받으면 **`app.html`을 열 것.** `index.html`이 아니다.
+모든 수강신청은 **입구 `enroll/`**에서 시작한다(2026-11-11~). 다른 페이지의 「신청」 단추도 입구로 보낸다(`dual_credit/enroll.js`, `dream_up/index.html`의 `goSignup()`).
+
+| 입구 칸 | 연결 |
+|---|---|
+| 지역연계 | 기간과 관계없이 늘 `../apply/app.html?program=joint_regional` (`data-always-app`). 지원청별 기간은 앱이 처리한다 |
+| 고교-대학 연계 · 꿈키움 | `OM_ENROLL_STATUS.get(code)`가 기본 기간을 읽어, 신청 중이거나 강좌 공개 중이면 앱으로, 아니면 `enroll/closed.html?p=…` |
+| 온라인 | 형제 레포 사이트의 `get_enroll_status()`를 읽는다 |
+
+- 지역청은 `app.html?program=joint_regional&region=천안`처럼 자기 지역 주소를 직접 배포할 수 있다(관리자 매뉴얼에 안내).
+- **`assets/js/enroll-status.js`가 `get_open_status(p_program)`의 반환 모양에 기대고 있다.** RPC 반환값을 바꾸면 이 파일도 함께 고친다.
+
+## 파일
 
 | 파일 | 성격 | 공통 헤더 | 비고 |
 |---|---|---|---|
-| `app.html` | 수강신청 앱 본체 (약 1,870줄) | ❌ `common.js` 미사용 — 헤더·푸터 마크업을 직접 둔다. **`common.css`는 연결**(2026-11-13 리뉴얼) | 독립 앱 |
-| `index.html` | 기간 외 안내 (약 60줄) | ✅ **사용** (`common.css` + `common.js`, `data-active="safety"`) | 정적 페이지. **사이트 내 링크 없음** — 직접 URL 접근용 |
+| **`app.html`** | 학생 신청 앱 (약 1,930줄, 스타일·로직 인라인) | ❌ `common.js` 미사용. `common.css`는 연결, 헤더·푸터 마크업을 직접 둔다 | **"수강신청 앱을 고쳐 달라" = 이 파일** |
+| `index.html` | 고교-대학 연계 신청 기간 외 안내 (약 40줄) | ✅ `common.js` 사용 (`data-active="safety"`) | 사이트 안에서 링크되지 않는다. 예전에 배포된 주소 보호용. GoatCounter 있음 |
+| `admin/index.html` | 관리 화면 (약 1,730줄) | ❌ 독립 | Edge Functions 호출. noindex |
+| `admin/guide/` | 관리자 웹 매뉴얼 — `region.html`(지역청) · `province.html`(도교육청) · `guide.css` · `index.html`(region으로 이동) | ❌ | 관리 화면 기능이 바뀌면 **두 매뉴얼을 함께** 고친다 |
+| `admin/course_template.xlsx` | 강좌 엑셀 양식 정적 사본 | — | 관리 화면 `buildTemplateWorkbook()`과 내용을 맞춘다. 양식을 바꾸면 다시 만든다 |
+| `admin-test/index.html` · `app-test.html` | 시범 운영 때 배포한 주소 → 정식 주소로 이동 (각 약 15줄) | — | 지우지 말 것(배포된 주소). 쿼리·해시를 그대로 넘긴다 |
+| `_embed_data.js` | `SCHOOLS`(학교 자동완성) + 꿈키움 `COURSE_DETAILS`(66강좌) | — | **2줄짜리 파일.** 손으로 고치지 말 것. 아래 「꿈키움 정적 데이터」 |
+| `_tools/gen_embed.py` | `dream_up/index.html`의 `DATA` → `_embed_data.js`·강좌 SQL 생성 | — | 꿈키움 전용 |
 
-- 다음 신청 기간이 열리면 `index.html`을 `app.html` 내용으로 되돌리거나 리다이렉트를 건다. 이때 **어느 쪽이 앱인지 이 표를 먼저 갱신할 것.**
-
-### ⚠️ 2026-08-20 변경 — 신청 링크는 `dual_credit/enroll.js`가 제어한다
-
-`dual_credit/`에 흩어져 있던 "수강 신청하기" 링크 4곳(`../apply/index.html` 하드코딩)을 **전부 걷어냈다.**
-지금은 `dual_credit/enroll.js`의 `OM_ENROLL.periods`가 현재 시각으로 상태를 판정해,
-
-- 신청 기간 안 → 버튼이 **`../apply/app.html`**로 연결
-- 기간 밖 → 버튼이 눌리지 않고 「지금은 수강 신청 기간이 아닙니다」로 바뀜
-
-**신청 기간을 열 때 할 일은 `enroll.js`에 기간 한 줄을 추가하는 것뿐이다.** `apply/` 쪽 파일을 옮기거나 이름을 바꿀 필요가 없다.
-`apply/index.html`은 이제 사이트 내에서 링크되지 않는 **직접 URL 접근용 안내 페이지**다 (과거에 배포된 URL 보호용). 문구도 특정 학기에 매이지 않게 일반화했다.
-
-## 폴더 구조
+## 데이터 흐름 (`app.html`)
 
 ```
-apply/
-├─ index.html       ← 마감 안내 페이지 (약 60줄, 공통 헤더 사용)
-├─ app.html         ← 수강신청 앱 전체 (약 1,870줄, 앱 스타일·로직 인라인, common.css 연결, 헤더·푸터 마크업 직접)
-├─ _embed_data.js   ← 정적 데이터 (SCHOOLS 122개, COURSE_DETAILS 66개)
-│                     ⚠️ 파일 전체가 3줄. 한 줄에 거대 배열이 들어 있어 수동 편집 위험
-└─ admin/
-   └─ index.html    ← 관리자 대시보드 (약 600줄)
-                       ※ admin/ 전용 CLAUDE.md는 두지 않는다 — 이 문서 하단에 통합
+programs 표 (anon 직접 조회)  → applyProgramBranding(): 이름·scope_type(지역 관문 여부)
+courses 표  (anon 직접 조회)  → fetchDbCourseDetails(): 강좌 상세. DB 값이 _embed_data.js보다 우선
+_embed_data.js                → SCHOOL_MAP(학교 검색), DETAIL_MAP(꿈키움 상세 보충)
+
+RPC (모두 p_program 포함, release_reservation 제외)
+  get_open_status_region(p_program, p_region) ← 지역 관문 프로그램
+  get_open_status(p_program)                  ← 그 밖의 프로그램
+  get_course_status(p_program)    좌석 현황 (폴링)
+  reserve_course(p_code, p_program)  3분 좌석 확보
+  release_reservation(p_rid)
+  confirm_enrollment(…)           확정
+  get_my_enrollment(…) / cancel_enrollment(…)  내 신청 조회·취소(취소비번)
 ```
 
-## 데이터 흐름
+- 강좌 목록·정원·잔여석은 `get_course_status()`가 준다. 상세 설명은 코드(`code`)로 붙인다.
+- 중복 신청 검사는 **프로그램 단위**다. `programs.term_subject_limit`이 있으면 개수 상한, NULL이면 1건(지역연계는 2026-11-11부터 NULL = 1인 1강좌, `joint_regional_limit_1.sql`).
+- 지역 관문: 14개 지원청(`REGIONS` 상수) 중 하나를 고르면 `courses.region`이 같은 강좌만 보인다. 선택은 `?region=`에 남고 `normalizeRegion()`이 약칭·전체 이름을 받는다. **신청 자체를 지역으로 제한하지는 않는다.**
 
-```
-_embed_data.js (정적)          Supabase RPC (실시간)
-  ├─ SCHOOLS → SCHOOL_MAP       ├─ get_open_status()   → 신청 기간 상태
-  └─ COURSE_DETAILS → DETAIL_MAP├─ get_course_status()  → 좌석 현황 (12~18초 폴링)
-                                 ├─ reserve_course()     → 좌석 임시 확보 (3분)
-                                 ├─ confirm_enrollment() → 신청 확정
-                                 ├─ release_reservation()→ 예약 해제
-                                 ├─ get_my_enrollment()  → 내 신청 조회
-                                 └─ cancel_enrollment()  → 신청 취소 (PIN 검증)
-```
+## 신청 기간
 
-## COURSE_DETAILS 필드 명세
+저장 위치는 `public.settings` 표다. 열은 `program`, `region`, `open_at`, `close1_at`, `open2_at`, `close2_at`, `preview_at`이고 시각은 `timestamptz`다. 입력은 **관리 화면 「신청 기간」**에서 한다. SQL로 직접 넣지 않는다.
 
-| 필드 | 타입 | 설명 |
-|------|------|------|
-| `code` | string | 강좌 코드 (PK), e.g. `"DC26C001"` |
-| `field` | string | 계열 (필터용), e.g. `"생명·자연과학"` |
-| `target` | string | 수강 대상 |
-| `period` | string | 기간·시간 요약 텍스트 |
-| `place` | string | 수업 장소 |
-| `intro` | string | 한줄 소개 |
-| `method` | string | 수업 방식 |
-| `supply` | string | 준비물 |
-| `university` | string | 대학명 |
-| `gradeRestricted` | boolean | 학년 제한 여부. **현재 66강좌 전부 `false`** |
-| ~~`creditRecognition`~~ | — | **2026-09-03부터 쓰지 않는다.** 창의적체험활동은 학점이 아니라 시수 인정이고 원천 데이터에 해당 값이 없다. 지어내지 말 것 |
-| `activityArea` | string | 창의적체험활동 영역, 현재 전부 `"진로활동"` |
-| `region` | string | 지역 (7종) |
-| `sessionCount` | number | 총 차시 수 (현재 전부 16) |
-| `recommendedFor` | string | 추천 대상 |
-| `learningGoals` | array\<string\> | 학습 목표 |
-| `instructorBio` | string | 강사 약력 |
-| `instructors` | array | `[{name, affiliation, major}]` |
-| `startDate` | string | 시작일 (YYYY-MM-DD) |
-| `endDate` | string | 종료일 (YYYY-MM-DD) |
-| `scheduleByDay` | array | `[{date, weekday, start, end, sessionCount}]` |
-| `sessions` | array | `[{no, date, time, content, instructor}]` |
+- **기간 고르기** (`_period_for(program, region)`):
+  1. 그 프로그램 + 그 지역 행이 있으면 그 기간을 쓴다.
+  2. 없으면 프로그램 기본 행(`region IS NULL`)을 쓴다.
+  3. 둘 다 없으면 `not_configured`(신청 불가)다.
+- 고유 인덱스는 `(program, coalesce(region,''))`다. 그래서 PostgREST `on_conflict`를 못 쓰고, `admin-periods`가 찾아서 PATCH, 없으면 POST한다.
+- 예약·취소는 학생이 보낸 값이 아니라 **강좌의 `courses.region`**으로 기간을 찾는다.
+- `phase`: `before_open` → `open1` → `between`(1차 마감~2차 시작, 카운트다운) → `open2` → `closed`, 그리고 `not_configured`. 2차를 비우면 1차만 운영한다.
+- **강좌 공개(미리 보기)**: `preview_at`(비우면 `open_at` 7일 전). 공개 전에는 목록 대신 공개 시각을 안내하고, 공개 뒤에는 목록·상세는 보이고 신청 단추만 막힌다.
+- 화면 문구는 DB 값으로 그린다(「○○ 신청 기간 11. 21.(토) 09:00 ~ …」). 예전처럼 `app.html`에 일정을 하드코딩하지 않는다.
 
-## 원천 데이터: `dream_up/index.html`
+## 관리 화면 (`admin/`)
 
-`COURSE_DETAILS`는 손으로 쓰지 않는다. **`dream_up/index.html`의 `DATA`(66강좌)에서 생성한다.**
-필드명이 한글이라 아래처럼 매핑된다.
+### 로그인과 권한
+- 기본은 **Supabase Auth 개인 계정**(이메일+비밀번호)이다. 역할은 `staff_profiles.role`이다.
+  - `province`(도교육청): 모든 권한을 가진다.
+  - `region`(지역청): 자기 지원청만 다룬다. **지역연계만 다룬다**(`REGION_PROGRAMS = ['joint_regional']`, 관리 화면·`admin-periods`·`admin-upsert-course` 세 곳에 같은 값).
+  - `org`(기관): 자기 기관만 다룬다.
+- 「공유 비밀번호로 로그인」은 과도기 호환용이다(`ADMIN_PASSWORD` 환경변수, `_shared/authz.ts`의 `legacyPasswordProfile()` → province와 같은 권한).
+- JWT가 만료되면 `authFetch()`가 `refresh_token`으로 한 번 다시 시도한다.
+- 지역청 담당자는 가입 신청(`register-staff`) → 도교육청 승인(`admin-approve-staff`) 순서로 계정을 받는다.
 
-| dream_up `DATA` | `COURSE_DETAILS` | 비고 |
-|---|---|---|
-| `강좌코드` | `code` | 동일 값 |
-| `분야` (배열) | `field` | **`' · '`로 join.** 앱이 `d.field.split(' · ')`로 되쪼갠다. 분야값 자체의 `·`는 공백이 없어 충돌하지 않는다 |
-| `학습목표1`·`학습목표2` | `learningGoals` (배열) | 빈 값은 제외 |
-| `강사` `[{성명,소속,전공}]` | `instructors` `[{name,affiliation,major}]` | |
-| `차시` `[{차시,일자,시작시간,내용,담당강사}]` | `sessions` `[{no,date,time,content,instructor}]` | |
-| (파생) | `scheduleByDay` | 원천에 없다 — 아래 참조 |
+### Edge Functions (`supabase/functions/`, 13개 + `_shared/authz.ts`)
 
-### ⚠️ `scheduleByDay`의 종료시각은 파생값이다
-
-원천 `차시`에는 **시작시간만 있고 종료시간이 없다.** 그래서 `end = 마지막 차시 시작 + 50분`으로 계산한다.
-
-근거(실측): 차시 간격은 60분이 대부분(737건)이라 **수업 50분 + 휴식 10분** 구조다. DC26C001은 `16:30 + 50 = 17:20`으로 원천 `수업요일시간` 선언값과 정확히 일치하고, DC26C004는 50분 간격으로 붙어 있다.
-
-> **`수업요일시간`을 시간 범위 근거로 쓰지 말 것.** 66개 중 시:분~시:분 범위를 담은 것은 **2개뿐**이고, 표기가 26가지로 제각각이다(`매주 토 / 4시간`, `토,일,토/6,5,5`, `매주 토 ~일/ 4시간`). `period` 필드에 원문 그대로 담아 두되 계산에는 쓰지 않는다.
-
-**원천 데이터 자체의 불일치 2건** (고칠 때 원천을 먼저 확인할 것):
-- `DC26C005` — 선언 `14:00~16:50`인데 실제 차시는 `14:00·15:00·16:00·17:00`(4차시). 차시 쪽이 맞다고 보고 계산했다
-- `DC26C001` — 11/14 차시 시작이 `13:30`인데 선언은 `14:30`
-
-점심시간이 있는 강좌(`DC26C055`·`DC26C056`, 차시 간격 120분)는 `scheduleByDay`가 하루 1행이라 `09:00~15:50`처럼 점심을 포함한 전체 구간으로 보인다. 정확한 시각은 모달의 차시별 표에서 확인된다.
-
-### 재생성 방법
-
-수정은 **`dream_up/index.html`의 `DATA`를 고친 뒤 재생성**한다. `_embed_data.js`를 직접 편집하지 말 것 (파일 전체가 3줄이라 수동 편집이 위험하다).
-
-생성 스크립트는 `dream_up`의 `DATA`를 괄호 균형으로 파싱해 `SCHOOLS`는 그대로 두고 `COURSE_DETAILS`만 교체하며, `json.dumps`로 직렬화해 제어문자 혼입을 막는다. 생성 후 **제어문자 0건·3줄 구조**를 반드시 확인한다.
-
-## Supabase courses 테이블 교체
-
-**강좌 목록·정원·잔여석은 `_embed_data.js`가 아니라 `get_course_status()` RPC가 공급한다.**
-`_embed_data.js`는 코드(`code`)로 매칭되는 설명文만 덧붙인다. 따라서 **강좌를 바꾸려면 DB를 반드시 함께 바꿔야 한다.**
-코드가 어긋나면 카드가 제목만 남고 내용이 빈 채로 렌더링된다.
-
-- 교체 SQL: **`supabase/sql/courses_2026_2_creative.sql`** (66행 INSERT, 정원 15, 트랜잭션). `gen_embed.py`가 생성하므로 직접 편집하지 말 것
-- 실행은 Supabase 대시보드 SQL Editor에서 한다 (레포에 마이그레이션 체계가 없다)
-
-### `courses` 테이블 컬럼 (2026-09-03 `information_schema` 실측)
-
-| 컬럼 | 타입 | NULL | 기본값 |
-|---|---|---|---|
-| `code` `name` `org` `region` | text | NO | — |
-| `capacity` | integer | NO | 15 |
-| `enrolled_count` | integer | NO | 0 |
-| `min_open` | integer | NO | 5 |
-| `is_registerable` | boolean | NO | true |
-| `is_closed_manual` | boolean | NO | false |
-
-- `min_open`은 **폐강 기준 인원**이다. 관리자 대시보드의 「폐강 위험」이 이 값을 쓴다. **테이블 기본값은 5지만 2026-2학기는 8로 상향**되어 INSERT에 명시했다. 바뀌면 `gen_embed.py`의 `MIN_OPEN`을 고쳐 재생성할 것
-- ⚠️ **RLS가 스키마 노출을 막아 anon 키로는 이 표를 다시 확인할 수 없다.** `get_course_status()` RPC 반환값은 여기에 계산 필드(`remaining`·`is_full`)가 더 붙은 것이며 테이블 컬럼과 같지 않다
-- SQL은 `reservations` 테이블이 있을 때만 지우도록 `DO $$` 블록으로 방어해 두었다
-
-## 신청 기간 (2026-2학기)
-
-| 구분 | 일시 (KST) |
+| 함수 | 역할 |
 |---|---|
-| 1차 신청 | 2026. 9. 10.(목) 18:00 ~ 9. 13.(일) 15:00 |
-| 2차 신청 | 2026. 9. 15.(화) 18:00 ~ 22:00 |
-| 개설강좌 확정 안내 | 2026. 9. 17.(목) |
+| `admin-whoami` | 로그인 계정의 이름·역할·소관 |
+| `admin-courses` | 강좌 조회 (`?program=`, 소관 필터) |
+| `admin-upsert-course` | 강좌 등록·수정. `code`를 비우면 자동 부여 |
+| `admin-delete-course` | 강좌 삭제 (신청자가 있으면 409) |
+| `admin-set-capacity` · `admin-toggle-close` | 정원 수정 · 수동 마감 |
+| `admin-enrollments` · `admin-delete-enrollment` | 신청 명단 · 신청 1건 삭제(`enrolled_count` 차감) |
+| `admin-periods` | 신청 기간 조회(GET `?program=`)·저장(POST)·지역 행 삭제(`action:"delete"`). `preview_at < open_at` 검사 |
+| `admin-reset-program` | 프로그램의 강좌·신청 전체 삭제 (province 전용, `display_name`을 그대로 입력해야 실행) |
+| `register-staff` · `admin-list-staff` · `admin-approve-staff` | 담당자 가입 신청 · 목록 · 승인 |
 
-**개폐 판정은 `get_open_status()` RPC가 한다.** 반환 필드는 `phase` `is_open` `open_at` `open2_at` `close1_at` `close2_at` `server_now`이며 **시각은 UTC**다 (`09:00Z` = `18:00 KST`).
+- 수정·삭제 요청은 바디 값만이 아니라 **기존 강좌의 `region`/`org`/`program`**으로 소관을 확인한다.
+- 배포: `npx supabase functions deploy <함수명> --no-verify-jwt --project-ref yhrgvnttjlitukrxdfdo`
+  - `--no-verify-jwt`는 꼭 붙인다. 함수가 `authz.ts`로 직접 검사한다. 이 플래그가 없으면 공유 비밀번호 요청이 게이트웨이에서 401이 된다.
+  - 로그인은 `npx supabase login`(대시보드 Account > Access Tokens)으로 한다.
+- 프론트엔드는 `main`에 푸시하면 GitHub Pages가 배포한다.
 
-- 저장 위치: **`public.settings`** 테이블의 `open_at` `close1_at` `open2_at` `close2_at` (2026-09-03 확인)
-- 설정 SQL: **`supabase/sql/open_schedule_2026_2.sql`**
-- 컬럼이 `timestamptz`라 **KST 시각에 `+09`를 붙여 그대로 넣으면 된다** (`'2026-09-10 18:00:00+09'`)
-- ⚠️ `settings`가 2행 이상이면 `UPDATE`에 `WHERE`를 붙일 것. SQL [1단계]에서 행 수를 먼저 확인한다
-- `phase` 값: `before_open` → `open1` → `between` → `open2` → `closed`. `between`은 1차 마감~2차 오픈 대기 구간이며 앱이 2차 시작 카운트다운을 띄운다
-- **화면 문구는 `app.html` 안내 박스에 하드코딩되어 있다.** 일정이 바뀌면 **DB와 `app.html`을 함께** 고쳐야 한다 (히어로 태그 + 안내 ⑤ 일정, 총 2곳)
-
-> `dual_credit/enroll.js`의 `periods`는 **고교-대학 연계**용이며 이 앱과 무관하다. 창의적체험활동 진입점은 `dream_up/index.html`의 「수강신청 바로가기」 버튼(`goSignup()` → `../apply/app.html`)이다.
-
-## 핵심 주의사항
-
-1. **_embed_data.js에 제어문자 금지** — `creditRecognition` 등 멀티라인 필드에 실제 줄바꿈(U+000A)이 들어가면 JS 파싱 실패 → 사이트 먹통. 반드시 JSON `\n` 이스케이프 사용. Python `json.dumps()`로 재직렬화하면 자동 처리됨.
-2. **Supabase 접속 정보** — `SUPABASE_URL`과 `SUPABASE_ANON_KEY`가 **`app.html`**에 하드코딩됨 (anon key이므로 RLS로 보호).
-3. **serverTimeDiff** — 클라이언트-서버 시간차 보정. 모든 카운트다운은 `Date.now() + serverTimeDiff` 사용.
-4. **z-index 계층** (2026-11-13) — 공통 헤더 100(`common.css`) · GNB 드롭다운 110 · 모바일 메뉴 200 · backdrop 9100 · 학교 자동완성 9200 · 토스트 9300.
-   새 오버레이는 이 사이 값을 쓰고 목록을 갱신할 것.
-5. **학번 형식** — `학년-반(2자리)-번호(2자리)`, e.g. `"2-01-15"`.
-6. **학년 제한** — 현재 66강좌 전부 **1~3학년** 대상이라 학년 선택에 **3학년이 있다**(`app.html`의 `my-grade`·`r-grade` 두 곳). `gradeRestricted` 로직은 남아 있으나 현재 해당 강좌가 없다. 학년 제한 강좌가 생기면 `gradeRestricted:true` + `target`에 「N학년」 표기를 넣으면 확정 시 자동 차단된다.
-   **2026-11-12 — `target`의 학년은 운영 학년도 기준이다.** 다음 학년도 강좌를 올해 받으므로(2027학년도 3학년 대상 → 2026년 현재 2학년이 신청) `gradeRule()`이 학년차만큼 빼서 현재 학년으로 환산한다. 운영 학년도는 `start_date`(3월 기준, 1·2월은 전년도) → 없으면 자동 부여 코드의 학년도 2자리로 정한다. `target`은 「3학년」「2~3학년」「2·3학년」을 모두 읽는다(예전에는 첫 숫자 하나만 읽어 「2~3학년」이 2학년 전용으로 막혔다). 검사는 학생 화면에서만 하며 RPC에는 학년 검사가 없다.
-7. **강좌 안내 링크** — `../dual_credit/`로 연결 (off-campus_courses 아님).
-8. **`app.html`의 GNB·푸터는 손으로 관리한다** — `common.js`를 안 쓰므로 자동 동기화되지 않는다. 마크업은 `common.js`가 만드는 것을 그대로 옮겨 두었으니(2026-11-13), 온마당 메뉴가 바뀌면 `app.html`의 데스크톱 nav(`.nav-links`)·모바일 nav(`.mobile-menu-nav`)·푸터 사이트맵(`.ft-sitemap`) **세 곳을 직접 고쳐야 한다.** (2026-08-13에 `알림·소통 마당`이 홈으로 가던 오류와 `고교학점제` 메뉴 누락을 이 방식으로 정정했다.)
-9. **상단 안내 배너는 2026-08-20에 제거됨** — 「리디자인 작업 중」 문구를 3곳(`assets/js/common.js`, **`apply/app.html`**, `design/selector/guide.html`)에서 모두 지웠다. 다시 띄울 때도 **3곳 동시 작업**이다: `common.js`는 `var banner`에 HTML을 채우고, `app.html`·`guide.html`은 `common.js`를 안 쓰므로 `<div class="renewal-banner" role="note">`를 인라인으로 직접 넣는다. (`apply/index.html`은 `common.js`가 주입하므로 별도 수정 불필요.)
-10. **디자인 리뉴얼(DS v2.0) 반영(2026-11-13)** — 머리 영역은 `common.css`의 `.page-hero.is-light`(앱 성격 페이지의 밝은 머리, 캐릭터 3인)이고 `<html data-section="enroll">`을 직접 둔다(없으면 `:root:not([data-section])` 규칙이 이겨 파란 단색 머리가 된다). 앱 스타일은 DS 토큰만 쓰고, DS에 없는 상태색만 앱 `:root`에 둔다(`--ok`·`--warn`·`--danger`·`--info-bg` 등). 옛 `--navy`·`--blue`·`--mint`(초록) 등은 없다 — 특히 `--mint`는 이제 `common.css`의 옅은 민트 바탕색이다. 본문 래퍼는 `.app-main`이다(`common.css`의 `.wrap`과 겹치지 않게). JS가 쓰는 클래스(`.hero h1`·`.hero p`·`.hero-stat .val`·`.hero-open-tag`·`.hero-links`·`.hero-crumb`)는 머리 영역에 그대로 있다.
-11. **검색창 자동 채움 방지(2026-11-13)** — 취소비번 칸(`type="password"`) 때문에 크롬 비밀번호 관리자가 이 화면을 로그인 폼으로 보고, 관리 화면에 저장된 아이디를 강좌 검색창에 채워 강좌가 모두 걸러진 일이 있었다(`autocomplete="off"`는 비밀번호 관리자가 무시한다). 그래서 검색창은 따로 `<form role="search">`에 두고 고유 이름(`course-search`/`course_keyword`)과 비밀번호 관리자 무시 속성을 붙였으며, 취소비번 칸은 `autocomplete="one-time-code"`다. **새 입력 칸을 더할 때 이 묶음을 깨지 말 것.**
-12. **GoatCounter 미적용** — `index.html`(마감 안내)에는 있으나 `app.html`·`admin/`에는 없다. 루트 `CLAUDE.md`의 접속 통계 절 참조.
-
-## 관리자 페이지 (admin/)
-
-`apply/admin/index.html` — 수강신청 현황 모니터링 및 관리 대시보드.
-
-### 기능
-- 비밀번호 로그인 (sessionStorage 저장, 자동 로그인)
-- 대시보드 요약 카드 (전체 신청자, 마감 강좌, 폐강 위험)
-- 강좌 테이블 (코드, 강좌명, 기관, 지역, 신청/정원, 잔여, 강제마감 토글, 정원수정)
-- 신청자 명단 모달 + 개별 삭제
-- 강좌별/전체 엑셀 다운로드 (클라이언트 SheetJS)
-
-### API (Supabase Edge Functions)
-
-| 함수 | 메서드 | 역할 |
-|------|--------|------|
-| `admin-courses` | GET | courses 테이블 전체 조회 |
-| `admin-enrollments` | GET | enrollments 조회 (code 필터, includeSchool 옵션) |
-| `admin-set-capacity` | POST | courses.capacity 업데이트 |
-| `admin-toggle-close` | POST | courses.is_closed_manual 토글 |
-| `admin-delete-enrollment` | POST | enrollment 삭제 + enrolled_count 차감 |
-
-Edge Functions 소스: `supabase/functions/admin-*/index.ts`
-인증: `Authorization: Bearer {ADMIN_PASSWORD}` (환경변수)
-
-### 배포
-- Edge Functions: `npx supabase functions deploy {함수명} --no-verify-jwt` (5개 각각)
-- **`--no-verify-jwt` 필수** — 없으면 Supabase가 Authorization 헤더를 JWT로 검증하여 401 발생
-- 프론트엔드: git push → GitHub Pages 자동 배포
+### 강좌 등록
+- 화면에서 한 건씩 등록하거나, **엑셀 일괄 등록**을 쓴다.
+  - 엑셀 양식은 시트 4개다(`강좌목록`·`강사진`·`차시계획`·`작성안내`).
+  - 강사진·차시 행은 강좌목록의 「번호」로 강좌에 묶는다.
+  - `parseBulkWorkbook()`이 검증한 뒤 행마다 `admin-upsert-course`를 부른다.
+  - 차시의 날짜·시간으로 `schedule_by_day`를 계산한다(`deriveSchedule()`, 끝 시각 = 마지막 시작 + 50분).
+  - 날짜 칸은 엑셀 일련번호라 `XLSX.SSF.parse_date_code`로 푼다.
+  - 「코드」에 기존 코드를 적으면 수정이다. 그 번호의 강사진·차시 행이 없으면 기존 값을 건드리지 않는다.
+- **강좌 코드 자동 부여**: `{프로그램 2자}{학년도 2자}{운영 기간 1자}{지원청 2자}{순번 2자}` (예: `JR27SCA01`).
+  - 운영 기간은 `1`·`S`·`2`·`W`다(`TERM_CODES`).
+  - 바디의 `term`을 먼저 쓰고, 없으면 `start_date`의 월로 정한다. 학년도는 3월에 바뀐다.
+  - 접두어 표 `PROGRAM_PREFIX`·`REGION_CODE`는 함수 안에 있다.
+  - 순번이 충돌하면 409를 받고 다시 계산한다. 코드 칸에 직접 입력하는 것은 도교육청 계정만 할 수 있다.
+- 학년 제한은 `target`의 학년(「3학년」「2~3학년」「2·3학년」)을 **운영 학년도 기준**으로 읽는다. 다음 학년도 강좌라면 `gradeRule()`이 학년차만큼 빼서 현재 학년으로 환산한다. 검사는 학생 화면에서만 한다(RPC에는 학년 검사가 없다).
 
 ### enrolled_count 보정
-신청 삭제 등으로 `courses.enrolled_count`가 실제와 불일치할 경우 SQL로 보정:
 ```sql
 UPDATE courses SET enrolled_count = (
   SELECT COUNT(*) FROM enrollments
@@ -296,11 +132,72 @@ UPDATE courses SET enrolled_count = (
     AND enrollments.status IN ('active', 'pending')
 );
 ```
+프로그램이 여럿이므로 필요하면 `WHERE courses.program = '…'`를 붙인다.
+
+## DB 변경 (`supabase/sql/`)
+
+**레포에 마이그레이션 체계가 없다. 담당자가 대시보드 SQL Editor에서 직접 실행한다.**
+
+| 파일 | 내용 |
+|---|---|
+| `rpc_backup_query.sql` | 멀티프로그램 전 RPC 7개 원래 정의 백업 |
+| `program_column_migration.sql` | `programs` 표, `courses`/`enrollments`/`settings`의 `program` 칸, `staff_profiles` 표 |
+| `rpc_multiprogram.sql` · `rpc_multiprogram_fix_overload.sql` | RPC 6개에 `p_program` 추가 · 구 시그니처 DROP |
+| `app_multiprogram_prep.sql` · `…_fix.sql` | `settings` 싱글톤 제약 제거, 데모 시딩 |
+| `region_periods.sql` | 지역별 기간(`settings.region`, `_period_for`, `get_open_status_region`) |
+| `preview_period.sql` | `settings.preview_at` |
+| `joint_regional_limit_1.sql` | 지역연계 1인 1강좌 |
+| `courses_2026_2_creative.sql` · `open_schedule_2026_2.sql` | 2026-2학기 꿈키움 강좌·기간 (지난 회차 기록) |
+
+**함정 두 가지 — 다시 밟지 말 것**
+1. **`CREATE OR REPLACE FUNCTION`으로 인자 개수를 바꾸면 교체가 아니라 오버로드가 추가된다.** 그러면 `… is not unique` 오류가 난다. 시그니처를 바꿀 때는 옛 함수를 먼저 `DROP`한다. 바꿀 필요가 없으면 시그니처를 그대로 두고 본문만 교체한다.
+2. **원래 싱글톤이던 표에 프로그램 구분을 더할 때는 PK·CHECK 제약까지 확인한다.** `settings`에 `CHECK(id=1)`이 숨어 있어 두 번째 프로그램 행을 넣지 못했던 전례가 있다.
+
+## 개인정보
+
+- 신청 폼에는 개인정보 수집·이용 안내와 필수 동의 체크가 있다(2026-11-16). 체크하지 않으면 `submitConfirm()`이 막고, 폼을 열 때마다 `resetEnrollForm()`이 체크를 푼다.
+  **문구는 `policy/privacy.html`과 같게 유지한다.** 수집 항목이 바뀌면 두 곳을 함께 고친다.
+- `docs/privacy/register.json`의 수강신청 항목은 이번 기간이 `2026-11-21 ~ 11-30`이다. **기간이 끝나면 신청 자료를 지우거나 상태를 바꾸지 않으면 주간 검사가 실패한다.** 신청 기간을 새로 열 때 `end`를 적는다.
+
+## `app.html` 주의사항
+
+1. **헤더·모바일 메뉴·푸터는 손으로 관리한다.** 마크업은 `common.js` 출력을 옮겨 둔 것이다. 온마당 메뉴가 바뀌면 다음 세 곳을 직접 고친다.
+   - 데스크톱 nav(`.nav-links`)
+   - 모바일 nav(`.mobile-menu-nav`)
+   - 푸터 사이트맵(`.ft-sitemap`)
+2. **상단 안내 배너**를 다시 띄울 때는 `common.js`의 `var banner`와 `app.html`의 인라인 `<div class="renewal-banner" role="note">`, 두 곳을 함께 고친다.
+3. **디자인(DS v2.0, 2026-11-13)**:
+   - `<html data-section="enroll">`을 직접 둔다. 없으면 파란 단색 머리 영역이 된다.
+   - 머리 영역은 `.page-hero.is-light`다.
+   - 본문 래퍼는 `.app-main`이다(`common.css`의 `.wrap`과 겹치지 않게).
+   - 앱 `:root`에는 DS에 없는 상태색만 둔다(`--ok`·`--warn`·`--danger`·`--info-bg` 등). `--mint`는 `common.css`의 옅은 바탕색이다(예전 초록이 아니다).
+   - JS가 쓰는 클래스(`.hero h1`·`.hero-stat .val`·`.hero-open-tag`·`.hero-links`·`.hero-crumb`)를 지우지 말 것.
+4. **z-index 계층**: 공통 헤더 100 · GNB 드롭다운 110 · 모바일 메뉴 200 · backdrop 9100 · 학교 자동완성 9200 · 토스트 9300.
+5. **검색창 자동 채움 방지**:
+   - 강좌 검색창은 따로 `<form role="search">`에 두고 `id="course-search"`·`name="course_keyword"`와 비밀번호 관리자 무시 속성을 붙였다.
+   - 취소비번 칸은 `autocomplete="one-time-code"`다.
+   - 새 입력 칸을 더할 때 이 묶음을 깨지 말 것. 크롬이 관리 화면 아이디를 검색창에 채워 강좌가 모두 걸러진 전례가 있다.
+6. `serverTimeDiff`로 서버 시각을 보정한다. 카운트다운은 모두 `Date.now() + serverTimeDiff`를 쓴다.
+7. 학번 형식은 `학년-반(2자리)-번호(2자리)`(예: `2-01-15`)다.
+8. 문체는 루트 규칙 5-2를 따른다(「~하십시오」, 2026-11-16 적용). 입력 칸 placeholder는 예외다.
+9. GoatCounter는 `app.html`·`admin/`에 넣지 않는다.
+
+## 꿈키움 정적 데이터 (`_embed_data.js`, 지난 회차)
+
+꿈키움 강좌 상세는 `dream_up/index.html`의 `DATA`(66강좌)에서 `_tools/gen_embed.py`로 만든다. **`_embed_data.js`를 직접 고치지 말 것.** 파일이 2줄이라 손으로 고치면 깨지기 쉽고, 문자열에 실제 줄바꿈이 들어가면 JS 파싱이 실패해 앱 전체가 멈춘다(`json.dumps`로 직렬화한다).
+
+- 매핑: `강좌코드`→`code`, `분야`(배열)→`field`(`' · '`로 join), `학습목표1·2`→`learningGoals`, `강사`→`instructors`, `차시`→`sessions`.
+- `scheduleByDay`는 원천에 없는 파생값이다. 끝 시각 = 마지막 차시 시작 + 50분(수업 50분 + 휴식 10분). 원천의 `수업요일시간`은 표기가 제각각이라 계산에 쓰지 않는다.
+- 창의적체험활동은 학점이 아니라 시수 인정이다. `creditRecognition` 필드를 지어 넣지 말 것.
+- 새 프로그램은 `_embed_data.js` 없이 관리 화면에서 넣은 DB 값만으로 상세가 보인다.
 
 ## 하지 말 것
 
-- **`app.html`에** 온마당 공통 헤더/푸터(`common.js`) 적용 ❌ — 독립 앱이다 (`common.css` 연결은 2026-11-13부터 한다)
-  (반대로 `index.html`은 공통 헤더를 **쓴다.** 여기서 걷어내지 말 것)
-- 앱을 고치라는 요청에 `index.html`을 열기 ❌ — 앱은 `app.html`이다
-- Supabase RPC 함수 시그니처 변경 ❌ — DB 함수와 일치해야 함
-- _embed_data.js를 수동 편집할 때 제어문자 삽입 ❌
+- 앱을 고치라는 요청에 `index.html`을 열기 ❌ → 앱은 `app.html`이다
+- `app.html`에 `common.js` 적용 ❌ → 독립 앱이다(`common.css` 연결은 한다). 반대로 `index.html`의 공통 헤더는 걷어내지 말 것
+- `admin-test/`·`app-test.html` 삭제 ❌ → 배포된 주소가 깨진다
+- RPC 시그니처를 바꾸면서 옛 함수를 남겨 두기 ❌ (오버로드 함정)
+- `get_open_status` 반환 모양을 `enroll-status.js` 확인 없이 바꾸기 ❌
+- `REGION_PROGRAMS`를 한 곳만 고치기 ❌ → 세 곳이 같아야 한다
+- `_embed_data.js` 손 편집 ❌
+- 신청 자료·계정·비밀번호를 저장소나 매뉴얼에 적기 ❌ → 공개 저장소다
