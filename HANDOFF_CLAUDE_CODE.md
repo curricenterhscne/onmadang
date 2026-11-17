@@ -176,7 +176,7 @@ design: [
 
 ### ③ CDN이 `@main`으로 고정되어 있지 않다
 
-`majors`·`selector`의 `cne-design-system` 참조 8곳은 2026-11-18에 커밋 `b851419`(전체 해시)로 고정했다.
+`majors`·`selector`의 `cne-design-system` 참조 8곳은 커밋 `18b0232`(v2.0, 2026-11-18, 전체 해시)로 고정했다.
 
 ### ④ 기타
 

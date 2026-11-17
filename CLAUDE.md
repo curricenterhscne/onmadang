@@ -110,7 +110,7 @@
 
 - 서체: **Pretendard** (`@v1.3.9` 버전 핀 고정됨). 2026-11-18부터 사이트 전체가 **`variable/pretendardvariable-dynamic-subset.min.css`**를 쓴다 — 전체 파일(`pretendardvariable.min.css`, 2MB)로 되돌리지 말 것
 - 배지 규칙: ★권장=그린 / ◆핵심=진블루 / 온라인=스카이
-- DS CDN은 2026-11-18부터 커밋 `b851419`(전체 해시)로 고정이다. DS를 갱신하면 `majors/index.html`·`selector/index.html`·`selector/guide.html`의 해시 8곳을 함께 바꾼다.
+- DS CDN은 커밋 `18b0232`(**v2.0**, 업체 가이드 반영, 2026-11-18, 전체 해시)로 고정이다. 바뀐 값은 `cne-design-system/CHANGELOG.md`. DS를 갱신하면 `majors/index.html`·`selector/index.html`·`selector/guide.html`의 해시 8곳을 함께 바꾼다.
 
 ---
 
