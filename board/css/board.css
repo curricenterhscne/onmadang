@@ -5,7 +5,8 @@
    ============================================================ */
 
 /* ── 머리 영역: 자료실은 노트북 팬더(시안 sub04_02) ── */
-[data-section="board"] .page-hero[data-board="resource"]{--hero-icon:url("../../assets/img/sub/char-panda-laptop.svg")}
+/* --hero-icon 은 common.css가 쓰므로 경로는 common.css(assets/css/) 기준이다 */
+[data-section="board"] .page-hero[data-board="resource"]{--hero-icon:url("../img/sub/char-panda-laptop.svg")}
 .page-hero .bd-meta{font-size:13.5px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
 .page-hero.is-post h1{font-size:clamp(22px,3vw,34px);letter-spacing:-.6px;word-break:keep-all}
 
@@ -30,8 +31,12 @@
 .bd-total{margin-left:auto;font-size:13px;color:var(--ink-faint)}
 
 /* ── 목록 ── */
+/* 화면 밀림(CLS) 방지: 틀은 board.js가 그리므로, 그리기 전에 바깥 자리부터 잡아 둔다.
+   비어 있으면 바닥글이 위로 올라왔다가 한 번에 밀린다(2026-11-18 측정 0.25) */
+[data-board-list]{min-height:600px}
+[data-board-view]{min-height:600px}
 .bd-table{width:100%;border-collapse:collapse}
-.bd-table thead th{font-size:12.5px;font-weight:700;color:var(--ink-faint);padding:12px 16px;background:var(--soft);text-align:left;border-bottom:1px solid var(--line)}
+.bd-table thead th{font-size:12.5px;font-weight:700;color:var(--ink-soft);padding:12px 16px;background:var(--soft);text-align:left;border-bottom:1px solid var(--line)}
 .bd-table .c-num{width:64px;text-align:center}
 .bd-table .c-date{width:96px;text-align:center}
 .bd-table tbody tr{border-bottom:1px solid var(--line)}

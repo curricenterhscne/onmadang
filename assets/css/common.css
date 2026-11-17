@@ -225,8 +225,8 @@ header{
 /* 캐릭터를 왼쪽에 두는 밝은 머리 영역 (시안 sub01_03 꾸꾸클럽) */
 .page-hero.is-light.char-left .wrap{padding-left:calc(48px + clamp(220px,30vw,430px));padding-right:24px}
 .page-hero.is-light.char-left .wrap::before{left:24px;right:auto;width:clamp(220px,30vw,430px)}
-.page-hero.is-light .breadcrumb{color:var(--brand)}
-.page-hero.is-light .breadcrumb a{color:var(--brand)}
+.page-hero.is-light .breadcrumb{color:var(--brand-d)} /* 밝은 머리(#D7F3FF) 위 13px — --brand는 4.08:1이라 --brand-d(5.54:1) */
+.page-hero.is-light .breadcrumb a{color:var(--brand-d)}
 .page-hero.is-light h1{font-size:clamp(30px,3.9vw,56px);margin-bottom:clamp(20px,3vw,44px)}
 .page-hero.is-light p{font-size:clamp(15px,1.25vw,18px);line-height:1.75}
 @media(max-width:900px){

@@ -7,9 +7,10 @@
 <title>대학 학과와 권장 과목 안내 · 충청남도교육청</title>
 <meta name="description" content="2022 개정 교육과정 기반 10개 계열 170여 학과를 키워드와 선택과목으로 탐색하는 진로 가이드입니다.">
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/tokens/design-tokens.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/components/components.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- 꾸꾸클럽 디자인 시스템 v1.0 — 커밋 b851419로 고정(2026-11-18). DS를 갱신하면 이 파일의 해시를 모두 바꾼다 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@b85141938b76ea3f576cab6ef4258a0985f355f8/tokens/design-tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@b85141938b76ea3f576cab6ef4258a0985f355f8/components/components.css">
 <link rel="stylesheet" href="../../assets/css/common.css">
 
 <style>
@@ -137,7 +138,7 @@ input { font-family: inherit; }
   align-items: center;
 }
 .hero-text { flex: 1; min-width: 0; }
-.hero-crumb { font-size: 13px; color: var(--brand); margin-bottom: 12px; }
+.hero-crumb { font-size: 13px; color: var(--brand-d); margin-bottom: 12px; } /* 밝은 바탕 13px 대비 5.54:1 (--brand는 4.08) */
 .hero-crumb a:hover { text-decoration: underline; }
 .hero-crumb strong { font-weight: 600; }
 .hero-title {
@@ -268,7 +269,7 @@ input { font-family: inherit; }
   font-size: 12px;
   color: var(--ink-3);
 }
-.quick-label { color: var(--ink-4); }
+.quick-label { color: var(--ink-3); } /* --ink-4는 대비 부족 */
 .quick-chip {
   padding: 5px 12px;
   border-radius: var(--r-pill);
@@ -1039,7 +1040,7 @@ mark {
     <span class="stats-sep">·</span>
     <span class="stats-mode-pill" id="statsMode">전체 학과</span>
     <div class="loading" id="loading">
-      <img src="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/assets/characters/kkumi.svg"
+      <img src="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@b85141938b76ea3f576cab6ef4258a0985f355f8/assets/characters/kkumi.svg"
            alt="" aria-hidden="true" class="loading-char">
       꾸물꾸물 불러오는 중…
     </div>

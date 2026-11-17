@@ -41,7 +41,7 @@
 - **`main`에 반영됨(2026-11-11 병합, 이후 `main`에서 작업).** 홈, 헤더·GNB·푸터, 서브페이지(고교학점제·진로·학업 설계·4대 안전망·알림·소통 마당), 시안 없는 화면, 모바일 시안 3장, 업체 디자인 가이드(11-11), 수강신청 입구 `enroll/`, 학생 수강신청 화면 `apply/app.html`(11-13)까지 들어가 있다.
 - `design-renewal-preview` 브랜치와 워크트리(`../onmadang-preview`)는 **옛 작업 자리**다. `main`보다 뒤처져 있으니 거기서 작업하지 말 것.
 - 업체 일정: **납품 2026-11-20, 검수 11-30.** 납품물이 오면 반영하고 검수 대조표를 만든다.
-- **아직 안 한 것**: sub01(고교학점제란?·학생 주도성) 아이콘 SVG 반영(파일 수령 대기), 업체 추가 납품분(공동교육과정 유형 아이콘·캐릭터 추가본·`04_요소`) 반영, DS CDN `@main` 핀 고정.
+- **아직 안 한 것**: sub01(고교학점제란?·학생 주도성) 아이콘 SVG 반영(파일 수령 대기), 업체 추가 납품분(공동교육과정 유형 아이콘·캐릭터 추가본·`04_요소`) 반영.
 - `--brand-d`·`--accent-d`·`--shadow*`는 여전히 임시값이다(위 「디자인 토큰」 절).
 - 온라인 공동교육과정 신청 사이트(형제 레포 `enrollment_cne`)에도 같은 색·서체·머리글을 입혔다(2026-11-16). 온마당 토큰 값을 바꾸면 그쪽 `src/index.css`의 `--om-*`도 맞춘다.
 
@@ -52,6 +52,9 @@
 1. **빌드 도구 없는 순수 정적 사이트** — HTML/CSS/JS만. 프레임워크·번들러 도입 금지(요청 전까지).
 2. **커스텀 도메인 + GitHub Pages 배포** (`onmadang.or.kr`, CNAME 존재).
    - 내부 링크는 **반드시 상대경로** (`./about/`, `../safety/`). 절대경로(`/about/`) 금지.
+   - **CSS 변수 안의 `url()`은 그 변수를 쓰는 CSS 파일 기준으로 풀린다.** `common.css`가 쓰는 `--ic`·`--hero-icon`·`--hero-img`를 페이지에서 정할 때는 `../img/…`(assets/css 기준)로 쓴다(2026-11-18 수강신청 입구 아이콘 깨짐).
+   - **예외: 루트 `404.html`만 절대경로**를 쓴다. GitHub Pages가 없는 주소(`/a/b/c`)에서 이 파일을 그 주소 그대로 보여 주므로 상대경로가 깨진다.
+   - `sitemap.xml`·`robots.txt`(2026-11-18)에는 도메인이 박혀 있다. 도메인을 바꾸면 함께 고친다. sitemap에는 공개 메뉴에서 닿는 25쪽만 넣었다 — 새 공개 페이지를 만들면 추가한다.
    - 형제 레포로 가는 링크는 **풀 URL** 사용.
 3. **캐릭터 사용 가능** — 꾸꾸클럽 캐릭터(팬꾸미·토꾸미·꾸미)의 **저작재산권이 확보되어 사용 제한이 해제되었다.**
    - 출처: `cne-design-system/assets/characters/*.svg` (CDN 참조)
@@ -105,9 +108,9 @@
 
 `cne-design-system`의 `tokens/design-tokens.css` + `components/components.css`를 CDN으로 참조하며, 여기서만 **`--color-*`와 `.kk-*` 컴포넌트**를 쓴다. 두 폴더는 공통 헤더/푸터를 쓰지 않는다.
 
-- 서체: **Pretendard** (`@v1.3.9` 버전 핀 고정됨)
+- 서체: **Pretendard** (`@v1.3.9` 버전 핀 고정됨). 2026-11-18부터 사이트 전체가 **`variable/pretendardvariable-dynamic-subset.min.css`**를 쓴다 — 전체 파일(`pretendardvariable.min.css`, 2MB)로 되돌리지 말 것
 - 배지 규칙: ★권장=그린 / ◆핵심=진블루 / 온라인=스카이
-- ⚠️ **DS CDN이 아직 `@main`이다.** 커밋 해시 `@b851419`로 핀 고정 필요 (미적용, polish 항목).
+- DS CDN은 2026-11-18부터 커밋 `b851419`(전체 해시)로 고정이다. DS를 갱신하면 `majors/index.html`·`selector/index.html`·`selector/guide.html`의 해시 8곳을 함께 바꾼다.
 
 ---
 
@@ -145,7 +148,6 @@
 
 | 전역 | 위치 | 역할 |
 |---|---|---|
-| `window.cachedFetch(url, ttlMs)` | `common.js` | sessionStorage 캐시 fetch. 기본 TTL 1분. GitHub API용이었으나 게시판이 Supabase로 바뀌어(2026-11-18) **지금 쓰는 곳이 없다** |
 | `#clv` SVG symbol | `common.js` | 인라인 클로버. `<use href="#clv"/>`로 사용 |
 
 ---
