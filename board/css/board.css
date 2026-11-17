@@ -96,6 +96,9 @@
 .bd-body th{background:var(--soft);font-weight:700}
 .bd-body img{max-width:100%;height:auto;border-radius:var(--radius-sm);margin:10px 0}
 .bd-empty-body{color:var(--ink-faint)}
+/* 그림 첨부 — width·height 속성 + height:auto 로 비율대로 자리를 잡는다 */
+.bd-fig{margin:24px 0 0}
+.bd-fig img{display:block;max-width:100%;height:auto;margin:0 auto;border-radius:var(--radius-sm)}
 
 /* 첨부 */
 .bd-files{border-top:1px solid var(--line);padding:24px 40px;background:var(--soft)}

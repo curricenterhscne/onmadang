@@ -111,15 +111,21 @@ function cleanAttachments(v: unknown) {
   if (!Array.isArray(v) || v.length > 20) throw new Bad("첨부는 20개까지 넣을 수 있습니다.");
   return v.map((a: any) => {
     const name = str(a?.name, 200, "첨부 이름", true)!;
+    // 그림 첨부: alt(그림 설명)·w·h(올릴 때 잰 크기, 본문에서 자리 잡기용) — 모두 선택
+    const extra: Record<string, unknown> = {};
+    const alt = str(a?.alt, 200, "그림 설명");
+    if (alt) extra.alt = alt;
+    const w = Number(a?.w), h = Number(a?.h);
+    if (Number.isInteger(w) && Number.isInteger(h) && w > 0 && h > 0 && w <= 20000 && h <= 20000) { extra.w = w; extra.h = h; }
     if (a?.path) {
       if (typeof a.path !== "string" || !/^\d{6}\/[0-9a-f-]{36}\.[a-z0-9]{1,5}$/.test(a.path)) throw new Bad("첨부 파일 경로가 올바르지 않습니다.");
       const size = Number(a.size) || 0;
-      return { name, path: a.path, size };
+      return { name, path: a.path, size, ...extra };
     }
     let url: URL;
     try { url = new URL(String(a?.url || "")); } catch { throw new Bad(`링크 주소가 올바르지 않습니다: ${name}`); }
     if (url.protocol !== "https:") throw new Bad("링크는 https:// 로 시작해야 합니다.");
-    return { name, url: url.href };
+    return { name, url: url.href, ...extra };
   });
 }
 

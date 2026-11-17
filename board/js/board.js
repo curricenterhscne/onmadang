@@ -82,6 +82,25 @@
     var p = String(f.path || '').split('/').map(encodeURIComponent).join('/');
     return SB_URL + '/storage/v1/object/public/' + BUCKET + '/' + p + '?download=' + encodeURIComponent(f.name || 'file');
   }
+  /* 그림 첨부 — 본문 아래에 그림으로 보인다(2026-11-18). 첨부 목록에서도 원본을 내려받을 수 있다.
+     w·h(올릴 때 잰 크기)가 있으면 자리를 미리 잡아 화면 밀림을 막는다. alt는 관리 화면 「그림 설명」, 없으면 파일 이름 */
+  var IMG_EXT = /\.(png|jpe?g|gif|webp)$/i;
+  function isImage(f) {
+    if (f.path) return IMG_EXT.test(f.path);
+    try { return IMG_EXT.test(new URL(f.url).pathname); } catch (e) { return false; }
+  }
+  function imageSrc(f) {
+    if (f.url) return fileUrl(f);
+    return SB_URL + '/storage/v1/object/public/' + BUCKET + '/' + String(f.path).split('/').map(encodeURIComponent).join('/');
+  }
+  function imagesHtml(files) {
+    return (files || []).filter(isImage).map(function (f) {
+      var alt = f.alt || String(f.name || '').replace(/\.[^.]+$/, '');
+      var wh = (f.w > 0 && f.h > 0) ? ' width="' + (f.w | 0) + '" height="' + (f.h | 0) + '"' : '';
+      return '<figure class="bd-fig"><img src="' + esc(imageSrc(f)) + '" alt="' + esc(alt) + '"' + wh + ' loading="lazy" decoding="async"></figure>';
+    }).join('');
+  }
+
   function fileIcon(name, isLink) {
     if (isLink) return '🔗';
     var ext = (String(name).split('.').pop() || '').toLowerCase();
@@ -244,7 +263,7 @@
       var body = renderMarkdown(p.body);
       root.innerHTML = '<article class="bd-card">' +
         (board === 'resource' ? filesHtml : '') +
-        '<div class="bd-body">' + (body || '<p class="bd-empty-body">본문이 없습니다.</p>') + '</div>' +
+        '<div class="bd-body">' + (body || (imagesHtml(files) ? '' : '<p class="bd-empty-body">본문이 없습니다.</p>')) + imagesHtml(files) + '</div>' +
         (board === 'resource' ? '' : filesHtml) +
         (p.author ? '<p class="bd-by">등록 ' + esc(p.author) + '</p>' : '') +
         '<nav class="bd-adj" aria-label="다른 글"><div class="adj prev"></div><a class="btn-pill" href="./' + cfg.list + '">목록으로</a><div class="adj next"></div></nav>' +
@@ -269,6 +288,7 @@
   window.OM_BOARD = {
     BOARDS: BOARDS, SB_URL: SB_URL, SB_KEY: SB_KEY, BUCKET: BUCKET,
     list: list, getPost: getPost, latest: latest, fileUrl: fileUrl, renderMarkdown: renderMarkdown,
+    isImage: isImage, imagesHtml: imagesHtml,
     esc: esc, fmtShort: fmtShort, fmtFull: fmtFull, fmtSize: fmtSize,
     mountList: mountList, mountView: mountView
   };

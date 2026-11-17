@@ -31,7 +31,8 @@ board/
 | 버킷 `board-files` | 첨부 파일. 공개 읽기, 파일당 50MB | 올리기는 서명 주소로만 |
 
 - SQL: `supabase/sql/board.sql`(표·RLS·버킷), `supabase/sql/board_import_github.sql`(옛 GitHub 이슈 11건, 번호 유지).
-- **attachments 원소**: 올린 파일 `{name, path, size}` 또는 외부 링크 `{name, url}`. 파일 주소는 `OM_BOARD.fileUrl()`이 `…/object/public/board-files/{path}?download={name}`로 만든다(원래 이름으로 내려받기).
+- **attachments 원소**: 올린 파일 `{name, path, size}` 또는 외부 링크 `{name, url}`. 그림이면 `alt`(관리 화면 「그림 설명」)와 `w`·`h`(올릴 때 브라우저가 잰 크기)를 함께 둔다(모두 선택).
+- **그림 첨부(png·jpg·gif·webp)는 본문 아래에 그림으로도 보인다**(`OM_BOARD.imagesHtml`, 2026-11-18). `w`·`h`가 있으면 `width`·`height` 속성으로 자리를 미리 잡아 화면 밀림을 막는다. alt가 없으면 파일 이름(확장자 제외)을 쓴다. 첨부 목록에서도 원본을 내려받을 수 있다. 파일 주소는 `OM_BOARD.fileUrl()`이 `…/object/public/board-files/{path}?download={name}`로 만든다(원래 이름으로 내려받기).
 - 분류: `board.js`의 `BOARDS`와 Edge Function의 `CATEGORIES`가 **같아야 한다.** 공지는 분류 없음 + 「중요」 고정, 자료는 서식·매뉴얼·연수자료·홍보자료.
 
 ## 쓰기 — Edge Function `board-admin`
