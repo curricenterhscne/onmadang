@@ -9,6 +9,7 @@
 <!-- 꾸꾸클럽 디자인 시스템 v1.0 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/tokens/design-tokens.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@main/components/components.css">
+<link rel="stylesheet" href="../../assets/css/common.css">
 <style>
   :root {
     /* ── 꾸꾸클럽 디자인 시스템 브리지 레이어 ──────────────────────────────
@@ -70,31 +71,8 @@
   a { color: var(--brand); text-decoration: none; }
   a:hover { text-decoration: underline; }
 
-  /* ====== 상단 네비게이션 — .kk-header ====== */
-  /* 배경·sticky·shadow 는 components.css .kk-header 가 처리 */
-  /* 뒤로가기 버튼 — 진블루 배경 위 화이트 톤 */
-  .nav-back {
-    margin-left: auto;
-    padding: 7px 14px;
-    border: 1px solid rgba(255,255,255,0.35);
-    background: rgba(255,255,255,0.15);
-    color: #fff;
-    border-radius: var(--r);
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-flex; align-items: center; gap: 4px;
-    transition: all .15s;
-  }
-  .nav-back:hover {
-    background: rgba(255,255,255,0.28);
-    border-color: rgba(255,255,255,0.55);
-    color: #fff;
-    text-decoration: none;
-  }
-
   /* ====== 레이아웃 ====== */
-  .wrap {
+  .guide-wrap {
     max-width: 760px;
     margin: 0 auto;
     padding: 32px 24px 80px;
@@ -500,8 +478,7 @@
 
   /* ====== 모바일 반응형 ====== */
   @media (max-width: 640px) {
-    .nav-back { padding: 6px 11px; font-size: 12.5px; }
-    .wrap { padding: 20px 16px 60px; }
+    .guide-wrap { padding: 20px 16px 60px; }
     .hero { padding: 24px 20px; }
     .hero h1 { font-size: 24px; }
     .hero-sub { font-size: 14px; }
@@ -525,8 +502,8 @@
   /* 인쇄용 */
   @media print {
     body { background: #fff; }
-    header, .final-cta, .nav-back { display: none; }
-    .wrap { max-width: 100%; padding: 0; }
+    header, footer, .om-breadcrumb, .final-cta { display: none; }
+    .guide-wrap { max-width: 100%; padding: 0; }
     .faq-item .faq-a { display: block !important; }
     .faq-q-chevron { display: none; }
     .summary-card { background: var(--brand-soft); color: var(--ink); box-shadow: none; }
@@ -536,149 +513,25 @@
     .section { break-inside: avoid; }
   }
 
-  /* ── 온마당 공통 헤더/푸터/배너 ── */
-  .clover{display:inline-block;vertical-align:middle}
-  .renewal-banner{
-    background:#e8edf8;border-bottom:1px solid #c0cce8;
-    color:#3a539b;text-align:center;
-    font-size:13.5px;font-weight:600;padding:11px 20px;line-height:1.6;
-  }
-  .onmadang-header{
-    position:sticky;top:0;z-index:100;
-    background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line, #c5dcef);
-  }
-  .onmadang-nav{
-    display:flex;align-items:center;gap:16px;height:68px;
-    max-width:1180px;margin:0 auto;padding:0 24px;
-  }
-  .om-brand{display:flex;align-items:center;gap:11px;flex-shrink:0;text-decoration:none}
-  .brand-txt b{font-size:18px;color:#4F6EBE;font-weight:800;display:block;letter-spacing:-.4px;line-height:1.1}
-  .brand-txt span{font-size:10.5px;color:#51607d;font-weight:500}
-  .om-nav-links{display:flex;gap:4px;margin-left:20px;flex:1}
-  .om-nav-links a{
-    font-size:14px;font-weight:600;color:#51607d;
-    padding:8px 14px;border-radius:999px;transition:.18s;text-decoration:none;
-  }
-  .om-nav-links a:hover{background:#eef7fc;color:#4F6EBE}
-  .om-nav-links a.active{background:#4F6EBE;color:#fff}
-  .om-nav-disabled{
-    font-size:14px;font-weight:600;color:#bbc5d4;
-    padding:8px 13px;border-radius:999px;
-    cursor:default;pointer-events:none;user-select:none;
-  }
-  .head-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
-  .head-link{
-    display:flex;align-items:center;gap:5px;flex-shrink:0;
-    background:#fff;color:#4F6EBE;font-weight:700;font-size:13.5px;
-    padding:9px 16px;border-radius:999px;
-    border:1.5px solid #4F6EBE;transition:.18s;text-decoration:none;
-  }
-  .head-link:hover{background:#eef7fc}
-  .hamburger{
-    display:none;background:none;border:none;font-size:26px;
-    color:#4F6EBE;cursor:pointer;margin-left:auto;padding:4px;
-  }
-  .mobile-menu{
-    display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;
-    background:rgba(0,0,0,.4);opacity:0;transition:opacity .25s;
-  }
-  .mobile-menu.open{display:block;opacity:1}
-  .mobile-menu-panel{
-    position:absolute;top:0;right:0;width:min(320px,85vw);height:100%;
-    background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,.15);
-    padding:24px;overflow-y:auto;transform:translateX(100%);transition:transform .25s;
-  }
-  .mobile-menu.open .mobile-menu-panel{transform:translateX(0)}
-  .mobile-menu-close{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:none;background:#eef7fc;border-radius:50%;font-size:20px;cursor:pointer;margin-left:auto;margin-bottom:20px}
-  .mobile-menu-nav{display:flex;flex-direction:column;gap:4px}
-  .mobile-menu-nav a{display:block;font-size:15px;font-weight:600;color:#51607d;padding:12px 16px;border-radius:12px;transition:.15s;text-decoration:none}
-  .mobile-menu-nav a:hover{background:#eef7fc;color:#4F6EBE}
-  .mobile-menu-nav .disabled{color:#bbc5d4;padding:12px 16px;font-size:15px;font-weight:600}
-  .mobile-menu-divider{height:1px;background:#c5dcef;margin:12px 0}
-  .mobile-menu-shortcuts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
-  .mobile-menu-shortcuts a{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#4F6EBE;padding:10px 14px;background:#eef7fc;border-radius:12px;transition:.15s;text-decoration:none}
-  .mobile-menu-shortcuts a:hover{background:#c5dcef}
-
-  .om-breadcrumb{background:#fff;border-bottom:1px solid #c5dcef;padding:10px 0;font-size:13px;color:#51607d}
+  /* ── 이동 경로 띠 (공통 헤더·푸터는 common.js가 넣는다) ── */
+  .om-breadcrumb{background:var(--panel);border-bottom:1px solid var(--line);padding:10px 0;font-size:13px;color:var(--ink-2)}
   .om-breadcrumb-inner{max-width:1180px;margin:0 auto;padding:0 28px}
-  .om-breadcrumb a{color:#4F6EBE;text-decoration:none}
+  .om-breadcrumb a{color:var(--brand)}
   .om-breadcrumb a:hover{text-decoration:underline}
-
-  .onmadang-footer{background:#3a539b;color:rgba(255,255,255,.7);padding:32px 0;text-align:center;font-size:13px}
-
-  @media(max-width:900px){
-    .head-link span{display:none}
-  }
-  @media(max-width:680px){
-    .om-nav-links,.om-nav-disabled,.head-tools{display:none}
-    .hamburger{display:block}
-  }
 </style>
 </head>
 <body>
 
-<!-- ── 클로버 SVG 심볼 ── -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-  <symbol id="clv" viewBox="0 0 100 100">
-    <circle cx="50" cy="32" r="17" fill="#7BCE7C"/>
-    <circle cx="32" cy="50" r="17" fill="#7BCE7C"/>
-    <circle cx="68" cy="50" r="17" fill="#7BCE7C"/>
-    <circle cx="50" cy="68" r="17" fill="#5fb260"/>
-    <circle cx="50" cy="50" r="8.5" fill="#4F6EBE"/>
-    <path d="M50 66 Q53 82 59 90" stroke="#5fb260" stroke-width="5" fill="none" stroke-linecap="round"/>
-  </symbol>
-</defs></svg>
-
-<!-- ── 온마당 헤더 ── -->
-<header class="onmadang-header">
-  <div class="onmadang-nav">
-    <a href="../../index.html" class="om-brand">
-      <svg class="clover" width="38" height="38"><use href="#clv"/></svg>
-      <span class="brand-txt"><b>온마당</b><span>충남 고교학점제 종합지원</span></span>
-    </a>
-    <nav class="om-nav-links" aria-label="주 메뉴">
-      <span class="om-nav-disabled" aria-disabled="true" title="준비 중">고교학점제 안내</span>
-      <a href="../">진로·학업 설계</a>
-      <a href="../../safety/">4대 안전망</a>
-      <a href="../../index.html">알림·소통 마당</a>
-    </nav>
-    <div class="head-tools">
-      <a href="./" class="nav-back" style="font-size:13px;font-weight:700;color:#4F6EBE;text-decoration:none;">
-        ← 실습으로 돌아가기
-      </a>
-    </div>
-    <button class="hamburger" aria-label="메뉴 열기">☰</button>
-  </div>
-</header>
-
-<!-- 모바일 메뉴 -->
-<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-  <div class="mobile-menu-panel">
-    <button class="mobile-menu-close" aria-label="메뉴 닫기">✕</button>
-    <nav class="mobile-menu-nav" aria-label="모바일 메뉴">
-      <span class="disabled">고교학점제 안내</span>
-      <a href="../">진로·학업 설계</a>
-      <a href="../../safety/">4대 안전망</a>
-      <a href="../../index.html">알림·소통 마당</a>
-    </nav>
-    <div class="mobile-menu-divider"></div>
-    <div class="mobile-menu-shortcuts">
-      <a href="./">
-        <svg class="clover" width="15" height="15"><use href="#clv"/></svg> 과목 선택 실습으로 돌아가기
-      </a>
-    </div>
-  </div>
-</div>
+<div id="om-header" data-active="design"></div>
 
 <!-- breadcrumb -->
-<div class="om-breadcrumb">
+<nav class="om-breadcrumb" aria-label="이동 경로">
   <div class="om-breadcrumb-inner">
     <a href="../../index.html">홈</a> › <a href="../">진로·학업 설계</a> › <a href="./">과목 선택 실습</a> › <strong>사용 설명서</strong>
   </div>
-</div>
+</nav>
 
-<div class="wrap">
+<div class="guide-wrap">
 
   <!-- ====== 히어로 ====== -->
   <div class="hero kk-card">
@@ -1059,24 +912,7 @@
 
 </div>
 
-<!-- ── 푸터 ── -->
-<footer class="onmadang-footer">
-  <p>© 2026 충청남도교육청</p>
-</footer>
-
-<script>
-// 모바일 메뉴 토글
-(function(){
-  var menu=document.getElementById('mobileMenu');
-  var openBtn=document.querySelector('.hamburger');
-  var closeBtn=menu.querySelector('.mobile-menu-close');
-  function open(){menu.classList.add('open');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
-  function close(){menu.classList.remove('open');menu.setAttribute('aria-hidden','true');document.body.style.overflow=''}
-  openBtn.addEventListener('click',open);
-  closeBtn.addEventListener('click',close);
-  menu.addEventListener('click',function(e){if(e.target===menu)close()});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open'))close()});
-})();
-</script>
+<div id="om-footer"></div>
+<script src="../../assets/js/common.js"></script>
 </body>
 </html>

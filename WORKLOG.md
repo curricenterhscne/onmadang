@@ -4,6 +4,14 @@
 
 ---
 
+## 2026-11-17: 노트북 이어 받기, 과목 선택 실습 사용 설명서 헤더·푸터 교체
+
+- **노트북 저장소 정리**: 노트북 폴더가 2026-09-02 상태로 원격과 갈라져 있었다(원격 이력이 다시 쓰여 같은 커밋이 다른 해시로 남음). 로컬 `main`을 `backup/laptop-2026-09` 브랜치로 남기고, 커밋하지 않은 변경 2건을 stash로 보관한 뒤 `origin/main`으로 맞췄다. `enrollment_cne`는 최신이었고 `.env` 작성·`npm install`·빌드를 확인했다.
+- **`design/selector/guide.html`**: 파일 안에 따로 들고 있던 옛 헤더(클로버 로고, 「고교학점제 안내」 비활성 메뉴)·모바일 메뉴·푸터와 그 CSS·스크립트를 지우고 `common.css` + `#om-header`/`#om-footer` + `common.js`로 바꿨다(`selector/index.html`과 같은 방식).
+  - 이동 경로 띠(`.om-breadcrumb`)는 남기고 `<nav aria-label="이동 경로">`로 바꿨다. 색은 페이지 토큰으로 다시 썼다.
+  - `common.css`의 `.wrap`과 겹치지 않게 본문 래퍼를 `.guide-wrap`으로 바꿨다. 쓰이지 않던 `.nav-back` 스타일을 지웠다. 인쇄 때 공통 푸터·이동 경로도 숨긴다.
+  - **확인**: 1280px 화면에서 바꾸기 전과 본문이 같다. 390px(iframe) 화면에서 햄버거 메뉴가 나오고 본문이 잘리지 않는다.
+
 ## 2026-11-16 (3): 저장소 정리, 수강신청 화면 문체, 노트북 인계
 
 - **저장소 정리**: `main`에 모두 들어간 브랜치 4개(`enrollment-multiprogram`·`content-feedback-2026-11`·`selector-result-table`·`design-renewal-preview`)를 로컬·원격에서 지웠다. 워크트리 `../onmadang-preview`·`../onmadang-content`도 없앴다. 이제 작업은 `main` 하나에서 한다. `design-source/`(업체 원본, git 제외)는 그대로 둔다.
