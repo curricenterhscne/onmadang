@@ -28,7 +28,7 @@
 
 ### ⚠️ CDN 핀 고정 미적용
 
-`majors`·`selector`의 `cne-design-system` 참조 8곳은 **커밋 `18b0232`(v2.0, 2026-11-18, 전체 해시)로 고정**했다. DS를 갱신하면 세 파일의 해시를 함께 바꾼다. (Pretendard는 `@v1.3.9`로 고정)
+`majors`·`selector`의 `cne-design-system` 참조 8곳은 **커밋 `d095eef`(v2.1, 2026-11-18, 전체 해시)로 고정**했다. DS를 갱신하면 세 파일의 해시를 함께 바꾼다. (Pretendard는 `@v1.3.9`로 고정)
 
 ---
 
