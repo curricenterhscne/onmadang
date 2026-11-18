@@ -31,7 +31,9 @@
   var active = headerEl.getAttribute('data-active') || '';
   if (active) document.documentElement.setAttribute('data-section', active); /* 서브 머리 영역의 사진·아이콘 선택용 */
 
-  var CLV15 = '<svg class="clover" width="15" height="15"><use href="#clv"/></svg>';
+  /* 머리글 단추 아이콘 — 업체 menu_icon01(과목 선택 실습)·02(수강신청), 11-18 */
+  var IC_SEL = '<img class="head-ic" src="' + base + 'assets/img/common/menu-selector.svg" width="22" height="15" alt="">';
+  var IC_ENR = '<img class="head-ic" src="' + base + 'assets/img/common/menu-enroll.svg" width="22" height="15" alt="">';
 
   /* ── 클로버 SVG 심볼 (defs) ── */
   var svgDefs = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>'
@@ -127,8 +129,8 @@
     + '</a>'
     + '<nav class="nav-links" aria-label="주 메뉴">' + gnbItems() + '</nav>'
     + '<div class="head-tools">'
-    +   '<a href="' + L.enroll + '" class="head-link is-enroll"' + (active === 'enroll' ? ' aria-current="page"' : '') + '>' + CLV15 + '<span>수강신청</span></a>'
-    +   '<a href="' + L.selector + '" class="head-link"' + (/design\/selector\//.test(location.pathname) ? ' aria-current="page"' : '') + '>' + CLV15 + '<span>과목 선택 실습</span></a>'
+    +   '<a href="' + L.enroll + '" class="head-link is-enroll"' + (active === 'enroll' ? ' aria-current="page"' : '') + '>' + IC_ENR + '<span>수강신청</span></a>'
+    +   '<a href="' + L.selector + '" class="head-link"' + (/design\/selector\//.test(location.pathname) ? ' aria-current="page"' : '') + '>' + IC_SEL + '<span>과목 선택 실습</span></a>'
     + '</div>'
     + '<button class="hamburger" aria-label="메뉴 열기">\u2630</button>'
     + '</div></header>';
@@ -140,8 +142,8 @@
     + '<nav class="mobile-menu-nav" aria-label="모바일 메뉴">' + mobileMenuItems() + '</nav>'
     + '<div class="mobile-menu-divider"></div>'
     + '<div class="mobile-menu-shortcuts">'
-    +   '<a href="' + L.enroll + '">' + CLV15 + ' 수강신청</a>'
-    +   '<a href="' + L.selector + '">' + CLV15 + ' 과목 선택 실습</a>'
+    +   '<a href="' + L.enroll + '">' + IC_ENR + ' 수강신청</a>'
+    +   '<a href="' + L.selector + '">' + IC_SEL + ' 과목 선택 실습</a>'
     + '</div>'
     + '</div></div>';
 

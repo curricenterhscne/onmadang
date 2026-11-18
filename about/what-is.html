@@ -15,7 +15,7 @@
   .vs-card{padding:clamp(28px,3vw,40px) 20px;border-radius:40px;background:var(--surface);text-align:center}
   .vs-after{background:var(--plum-l)}
   .vs-card h3{font-size:clamp(16px,1.4vw,20px);font-weight:500;margin-bottom:2px}
-  .vs-card h3 .ar{display:block;font-size:18px;margin-bottom:10px}
+  .vs-card h3 .ar{margin:0 auto 10px;--card-ic:clamp(40px,3.4vw,48px)}
   .vs-card ul{list-style:none}
   .vs-card li{font-size:clamp(16px,1.4vw,20px);line-height:2}
   /* 배경 6카드 — 하늘·보라 엇갈림 (시안) */
@@ -24,6 +24,7 @@
   .bg-card:nth-child(2),.bg-card:nth-child(4),.bg-card:nth-child(6){background:var(--plum-l)}
   .bg-card h3{font-size:clamp(16px,1.4vw,20px);font-weight:700;margin-bottom:4px}
   .bg-card p{font-size:clamp(13px,1vw,14.5px);line-height:1.55}
+  .bg-card .card-ic{--card-ic:clamp(32px,3vw,44px);margin-bottom:auto;padding-bottom:12px;box-sizing:content-box}
   /* 타임라인 */
   .tl{list-style:none;max-width:860px;margin:0 auto}
   .tl li{display:grid;grid-template-columns:clamp(48px,5.5vw,80px) 28px 1fr;gap:clamp(8px,1.4vw,20px);align-items:baseline;padding:6px 0;font-size:clamp(14px,1.3vw,18px);line-height:1.6}
@@ -109,7 +110,7 @@
       </div>
       <div class="vs">
         <div class="vs-card">
-          <h3><span class="ar" aria-hidden="true">↓</span>고교학점제 이전</h3>
+          <h3><img class="card-ic ar" src="../assets/img/sub/icon-before.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async">고교학점제 이전</h3>
           <ul>
             <li>출석하면 진급·졸업</li>
             <li>시간의 경과 = 이수</li>
@@ -118,7 +119,7 @@
           </ul>
         </div>
         <div class="vs-card vs-after">
-          <h3><span class="ar" aria-hidden="true">↑</span>고교학점제 이후</h3>
+          <h3><img class="card-ic ar" src="../assets/img/sub/icon-after.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async">고교학점제 이후</h3>
           <ul>
             <li>이수해야 학점 취득·졸업</li>
             <li>출석과 학업성취 기준을 충족해야 이수</li>
@@ -139,12 +140,12 @@
         <p>사회·학습자·교육 환경의 변화가 맞물리며 등장했습니다.</p>
       </div>
       <div class="bg-grid">
-        <div class="bg-card"><h3>4차 산업혁명</h3><p>제조업 등 사회적 요구의 진화</p></div>
-        <div class="bg-card"><h3>학습자 변화</h3><p>학습자 존재의 변화와 요구 다양화</p></div>
-        <div class="bg-card"><h3>역량 강조</h3><p>지식 축적에서 수행력(역량) 중심으로 전환</p></div>
-        <div class="bg-card"><h3>학령인구 감소</h3><p>학생 수 감소에 따른 학교 여건 변화</p></div>
-        <div class="bg-card"><h3>교육 불평등</h3><p>소득 격차·사회 양극화·교육 격차 심화</p></div>
-        <div class="bg-card"><h3>학습 환경 변화</h3><p>정규교육 외 수요 증가, 사이버 학습 콘텐츠 확대</p></div>
+        <div class="bg-card"><img class="card-ic" src="../assets/img/sub/bg-industry.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><h3>4차 산업혁명</h3><p>제조업 등 사회적 요구의 진화</p></div>
+        <div class="bg-card"><img class="card-ic" src="../assets/img/sub/bg-learner.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><h3>학습자 변화</h3><p>학습자 존재의 변화와 요구 다양화</p></div>
+        <div class="bg-card"><img class="card-ic" src="../assets/img/sub/bg-competency.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><h3>역량 강조</h3><p>지식 축적에서 수행력(역량) 중심으로 전환</p></div>
+        <div class="bg-card"><img class="card-ic" src="../assets/img/sub/bg-population.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><h3>학령인구 감소</h3><p>학생 수 감소에 따른 학교 여건 변화</p></div>
+        <div class="bg-card"><img class="card-ic" src="../assets/img/sub/bg-inequality.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><h3>교육 불평등</h3><p>소득 격차·사회 양극화·교육 격차 심화</p></div>
+        <div class="bg-card"><img class="card-ic" src="../assets/img/sub/bg-environment.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><h3>학습 환경 변화</h3><p>정규교육 외 수요 증가, 사이버 학습 콘텐츠 확대</p></div>
       </div>
     </div>
   </section>

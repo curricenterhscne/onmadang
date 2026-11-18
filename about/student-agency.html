@@ -34,6 +34,12 @@
   .tc{display:flex;flex-direction:column;justify-content:flex-end;min-height:clamp(110px,12vw,172px);padding:20px 16px;background:var(--bg);border-radius:var(--radius);text-align:center}
   .tc h3{font-size:clamp(16px,1.4vw,20px);font-weight:700;color:var(--brand-d);margin-bottom:4px}
   .tc p{font-size:clamp(13px,1vw,14.5px);line-height:1.55;word-break:keep-all}
+  /* 카드 아이콘 (업체 sub01_02_icon_02~13) */
+  .tc .card-ic,.aar-node .card-ic{--card-ic:clamp(32px,3vw,44px);margin:0 auto auto;padding-bottom:10px;box-sizing:content-box}
+  .dims-update .card-ic{--card-ic:clamp(32px,3vw,40px);margin-bottom:14px}
+  .axis .card-ic{--card-ic:clamp(32px,3vw,44px);margin-bottom:auto;padding-bottom:12px;box-sizing:content-box}
+  .co-note.has-ic{display:flex;align-items:center;justify-content:center;gap:clamp(12px,2vw,24px);text-align:left}
+  .co-note.has-ic .card-ic{--card-ic:clamp(36px,3.4vw,48px)}
 
   .band.is-overlap{padding-bottom:0;position:relative;z-index:1}
   /* 학생 주도성이란 — 파랑에서 보라로 */
@@ -163,9 +169,9 @@
       </div>
       <p class="lead-p">미래를 이끌 학생에게 OECD가 요구하는 것은<br><span class="t-plum">세 가지 변혁적 역량(Transformative Competencies)</span>입니다.<br>모두 ‘주어진 것을 받는’ 능력이 아니라 <span class="t-plum">스스로 만들어내는 능력</span>입니다.</p>
       <div class="tc-grid">
-        <div class="tc"><h3>새로운 가치 창출</h3><p>정해진 답을 넘어 새로운 것을 만들어내기</p></div>
-        <div class="tc"><h3>긴장과 딜레마 조정</h3><p>서로 다른 관점·이해의 갈등을 조율하기</p></div>
-        <div class="tc"><h3>책임감 갖기</h3><p>자기 행동의 결과를 성찰하고 책임지기</p></div>
+        <div class="tc"><img class="card-ic" src="../assets/img/sub/agency-value.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><h3>새로운 가치 창출</h3><p>정해진 답을 넘어 새로운 것을 만들어내기</p></div>
+        <div class="tc"><img class="card-ic" src="../assets/img/sub/agency-dilemma.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><h3>긴장과 딜레마 조정</h3><p>서로 다른 관점·이해의 갈등을 조율하기</p></div>
+        <div class="tc"><img class="card-ic" src="../assets/img/sub/agency-responsibility.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><h3>책임감 갖기</h3><p>자기 행동의 결과를 성찰하고 책임지기</p></div>
       </div>
     </div>
   </section>
@@ -212,11 +218,11 @@
         <p>OECD 학습 나침반은 주도성이 자라는 과정을 예상(Anticipation) → 행동(Action) → 성찰(Reflection)이 반복되는 순환,<br>곧 AAR 사이클로 봅니다. 이 사이클은 누가 대신 돌려줄 수 없습니다. 학생이 직접 실천해야 돌아갑니다.</p>
       </div>
       <div class="aar">
-        <div class="aar-node"><span class="en" lang="en">ANTICIPATION</span><h3>예상</h3><p>내 선택이 가져올 결과를 내다보기</p></div>
+        <div class="aar-node"><img class="card-ic" src="../assets/img/sub/aar-anticipation.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><span class="en" lang="en">ANTICIPATION</span><h3>예상</h3><p>내 선택이 가져올 결과를 내다보기</p></div>
         <span class="aar-arrow" aria-hidden="true">→</span>
-        <div class="aar-node"><span class="en" lang="en">ACTION</span><h3>행동</h3><p>목표를 향해 실제로 선택하고 실행하기</p></div>
+        <div class="aar-node"><img class="card-ic" src="../assets/img/sub/aar-action.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><span class="en" lang="en">ACTION</span><h3>행동</h3><p>목표를 향해 실제로 선택하고 실행하기</p></div>
         <span class="aar-arrow" aria-hidden="true">→</span>
-        <div class="aar-node"><span class="en" lang="en">REFLECTION</span><h3>성찰</h3><p>결과를 돌아보고 다음 선택을 다듬기</p></div>
+        <div class="aar-node"><img class="card-ic" src="../assets/img/sub/aar-reflection.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><span class="en" lang="en">REFLECTION</span><h3>성찰</h3><p>결과를 돌아보고 다음 선택을 다듬기</p></div>
         <p class="aar-loop">이 반복 속에서 주도성이 자랍니다</p>
       </div>
     </div>
@@ -230,11 +236,11 @@
         <p>OECD는 이 프로젝트를 「Future of Education and Skills 2030/2040」으로 이어 가고 있습니다.<br>2025년에는 학습 나침반을 교사 쪽에서 실천하기 위한 「OECD 교수 나침반(Teaching Compass)」을 발표했습니다.<br>이 보고서는 학습 나침반의 핵심을 다음과 같이 다시 정리합니다.</p>
       </div>
       <div class="dims dims-update">
-        <div class="dim"><h3>여러 층위의 주도성</h3><p>학생 주도성, 협력적 주도성, 집단적 주도성을 함께 다룹니다. 학생 개인의 선택뿐 아니라 함께 목표를 세우고 실행하는 능력도 주도성에 포함됩니다.<span class="en" lang="en">student agency · co-agency · collective agency</span></p></div>
-        <div class="dim"><h3>협력적 주도성의 확장</h3><p>교사와 학생의 관계를 협력적 주도성의 중심으로 보되, 학업 성취뿐 아니라 웰빙까지 그 범위에 넣습니다. 교실에 AI가 함께하는 상황도 새로운 협력 관계로 다룹니다.<span class="en" lang="en">teacher-student · teacher-AI co-agency</span></p></div>
-        <div class="dim"><h3>세 가지 웰빙</h3><p>교육이 지향하는 웰빙을 개인의 웰빙, 공동체의 웰빙, 환경의 웰빙으로 나누고, 셋이 서로 연결되어 있다고 봅니다.<span class="en" lang="en">individual · collective · environmental well-being</span></p></div>
+        <div class="dim"><img class="card-ic" src="../assets/img/sub/upd-levels.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><h3>여러 층위의 주도성</h3><p>학생 주도성, 협력적 주도성, 집단적 주도성을 함께 다룹니다. 학생 개인의 선택뿐 아니라 함께 목표를 세우고 실행하는 능력도 주도성에 포함됩니다.<span class="en" lang="en">student agency · co-agency · collective agency</span></p></div>
+        <div class="dim"><img class="card-ic" src="../assets/img/sub/upd-coagency.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><h3>협력적 주도성의 확장</h3><p>교사와 학생의 관계를 협력적 주도성의 중심으로 보되, 학업 성취뿐 아니라 웰빙까지 그 범위에 넣습니다. 교실에 AI가 함께하는 상황도 새로운 협력 관계로 다룹니다.<span class="en" lang="en">teacher-student · teacher-AI co-agency</span></p></div>
+        <div class="dim"><img class="card-ic" src="../assets/img/sub/upd-wellbeing.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><h3>세 가지 웰빙</h3><p>교육이 지향하는 웰빙을 개인의 웰빙, 공동체의 웰빙, 환경의 웰빙으로 나누고, 셋이 서로 연결되어 있다고 봅니다.<span class="en" lang="en">individual · collective · environmental well-being</span></p></div>
       </div>
-      <p class="co-note">고교학점제에서 학생의 과목 선택도 같은 관점으로 볼 수 있습니다. 학생이 혼자 정하는 것이 아니라,<br>교사의 진로·학업 상담, 학부모와의 대화, 학교의 교육과정 편성이 함께 작동할 때 선택이 의미를 가집니다.</p>
+      <p class="co-note has-ic"><img class="card-ic" src="../assets/img/sub/upd-choice.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><span>고교학점제에서 학생의 과목 선택도 같은 관점으로 볼 수 있습니다. 학생이 혼자 정하는 것이 아니라,<br>교사의 진로·학업 상담, 학부모와의 대화, 학교의 교육과정 편성이 함께 작동할 때 선택이 의미를 가집니다.</span></p>
     </div>
   </section>
 
@@ -246,8 +252,8 @@
         <p>주도성을 기르려면 학생이 직접 선택하고 책임지는 실천의 장이 필요합니다.<br>고교학점제는 학생이 과목을 선택하고 이수하는 과정 자체를 학교 교육과정 운영 방식으로 만든 제도입니다.<br>그래서 학생에게 권한과 책임을 함께 줍니다.</p>
       </div>
       <div class="axes">
-        <div class="axis auth"><span class="a-label">권한 · <span lang="en">AUTHORITY</span></span><h3>과목 선택권</h3><p>학생이 자신의 진로와 흥미에 따라 무엇을 배울지 스스로 고릅니다.<br>학교가 짜준 시간표를 받는 것이 아니라, 나의 교육과정을 내가 설계합니다.</p></div>
-        <div class="axis resp"><span class="a-label">책임 · <span lang="en">RESPONSIBILITY</span></span><h3>과목 이수 책임</h3><p>선택한 과목을 스스로 이수해야 학점을 얻고 졸업합니다.<br>선택에는 책임이 따르고, 그 책임이 학습의 동기를 끌어냅니다.</p></div>
+        <div class="axis auth"><img class="card-ic" src="../assets/img/sub/axis-authority.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><span class="a-label">권한 · <span lang="en">AUTHORITY</span></span><h3>과목 선택권</h3><p>학생이 자신의 진로와 흥미에 따라 무엇을 배울지 스스로 고릅니다.<br>학교가 짜준 시간표를 받는 것이 아니라, 나의 교육과정을 내가 설계합니다.</p></div>
+        <div class="axis resp"><img class="card-ic" src="../assets/img/sub/axis-responsibility.svg" alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async"><span class="a-label">책임 · <span lang="en">RESPONSIBILITY</span></span><h3>과목 이수 책임</h3><p>선택한 과목을 스스로 이수해야 학점을 얻고 졸업합니다.<br>선택에는 책임이 따르고, 그 책임이 학습의 동기를 끌어냅니다.</p></div>
       </div>
       <p class="equation">과목 선택<span class="k">(권한)</span> + 과목 이수<span class="r">(책임)</span> = 학교 일상에서 돌아가는 AAR 사이클</p>
       <p class="so-p">선택은 곧 목표 설정이고, 이수의 과정은 곧 행동과 성찰, 그리고 책임입니다. 고교학점제는 학생 주도성의 순환을 학교 생활 그 자체로 만들어, 주도성을 ‘가르치는’ 것이 아니라 ‘견인’합니다.</p>

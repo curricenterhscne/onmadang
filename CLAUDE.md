@@ -93,11 +93,11 @@
 --ink #000000   --ink-menu #333333   --ink-soft #51607d   --ink-faint #8597ad
 --line #c5dcef   --surface #fff   --soft #ECF9FF
 --radius 20px   --radius-sm 12px   --radius-pill 999px   --radius-btn 15px   --radius-input 30px
---error #FF2B2E   --warn-bg #FFDDC8   --inactive #C8C8C8   --nav-current #78F8A3
+--error #ED0202   --brand-ink #354AAA   --warn-bg #FFDDC8   --inactive #C8C8C8   --nav-current #78F8A3
 --shadow / --shadow-sm / --shadow-lg   --maxw 860px
 ```
 
-- **2026-11-18 디자인 가이드 PDF(최종) 반영**: `--plum` #946AD7 → #8B5ED4, 단추는 `--radius-btn`(15), 입력 칸은 `--radius-input`(30), 카드 제목 PC 최대 20px. 배지·태그·메뉴는 그대로 `--radius-pill`. `--error`는 테두리 전용이다(흰 바탕 글자 대비 3.7:1).
+- **2026-11-18 디자인 가이드 PDF(최종) 반영**: `--plum` #946AD7 → #8B5ED4, 단추는 `--radius-btn`(15), 입력 칸은 `--radius-input`(30), 카드 제목 PC 최대 20px. 배지·태그·메뉴는 그대로 `--radius-pill`. `--error`는 11-18 수정본에서 #ED0202로 바뀌어 글자로도 쓸 수 있다(흰 4.55). `--brand-ink`는 밝은 바탕 위 이동 경로 글자다.
 - `--plum-d` `--sunny` `--char-blue`는 이번에 **새로 추가**된 토큰 (기존 토큰 삭제·개명 없음).
 - `--brand-d` `--accent-d`는 시안에 실제 쓰임(호버·그라데이션 어두운 쪽)이 없어 **임시값**이다. 업체 색 가이드 수령 시 덮어쓸 것 (`docs/design-renewal/디자이너_요청사항.md` 6번).
 - `--shadow*`의 rgba 기준색은 구 브랜드(`79,110,190`) 그대로 **미반영 상태**다 — 다음 폴리싱 때 정리.
@@ -110,7 +110,7 @@
 
 - 서체: **Pretendard** (`@v1.3.9` 버전 핀 고정됨). 2026-11-18부터 사이트 전체가 **`variable/pretendardvariable-dynamic-subset.min.css`**를 쓴다 — 전체 파일(`pretendardvariable.min.css`, 2MB)로 되돌리지 말 것
 - 배지 규칙: ★권장=그린 / ◆핵심=진블루 / 온라인=스카이
-- DS CDN은 커밋 `18b0232`(**v2.0**, 업체 가이드 반영, 2026-11-18, 전체 해시)로 고정이다. 바뀐 값은 `cne-design-system/CHANGELOG.md`. DS를 갱신하면 `majors/index.html`·`selector/index.html`·`selector/guide.html`의 해시 8곳을 함께 바꾼다.
+- DS CDN은 커밋 `d095eef`(**v2.1**, 업체 가이드 수정본 반영, 2026-11-18, 전체 해시)로 고정이다. 바뀐 값은 `cne-design-system/CHANGELOG.md`. DS를 갱신하면 `majors/index.html`·`selector/index.html`·`selector/guide.html`의 해시 8곳을 함께 바꾼다.
 
 ---
 
