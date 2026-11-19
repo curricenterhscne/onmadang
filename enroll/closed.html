@@ -8,6 +8,14 @@
 <title>수강신청 기간이 아닙니다 · 온마당</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="../assets/css/common.css">
+<style>
+  /* 시안 sub05_02(11-19): 이름표 → 말풍선 제목 → 엎드린 팬꾸미. 말풍선은 업체 SVG를 제목 뒤 그림으로 깐다(글자는 실제 제목) */
+  .state-page.is-closed .sec-badge{order:1;margin-bottom:12px}
+  .state-page.is-closed h1{order:2;display:flex;align-items:center;justify-content:center;width:min(100%,438px);aspect-ratio:438/110;padding:0 16px 5.5%;margin-bottom:clamp(12px,1.6vw,20px);
+    background:url("../assets/img/sub/bubble-closed.svg") center/100% 100% no-repeat;font-size:clamp(22px,2.4vw,32px);font-weight:900;letter-spacing:-.04em;white-space:nowrap}
+  .state-page.is-closed > img{order:3;width:clamp(170px,17vw,244px);margin-bottom:clamp(24px,3vw,40px)}
+  .state-page.is-closed > :not(.sec-badge):not(h1):not(img){order:4}
+</style>
 </head>
 <body>
 
@@ -19,15 +27,15 @@
      이 페이지에도 같은 상태를 읽어 「다음 신청 시작」을 보여 준다(assets/js/enroll-status.js). -->
 <main class="sub-body">
   <div class="wrap">
-    <div class="state-page">
-      <img src="../assets/img/sub/char-panda-think.svg" alt="" aria-hidden="true">
+    <div class="state-page is-closed">
+      <img src="../assets/img/sub/char-panda-lying.svg" alt="" aria-hidden="true" width="244" height="169">
       <p class="sec-badge" id="prog-name">수강신청</p>
       <h1>수강신청 기간이 아닙니다</h1>
       <p>신청 기간이 열리면 수강신청 첫 화면에서 신청 화면으로 들어갈 수 있습니다.<br>신청 일정은 공지사항으로 안내합니다.</p>
       <p class="sub-lead" id="next-open" hidden></p>
       <div class="state-actions">
-        <a class="btn-pill" href="../board/notices.html">공지사항 보기 <span aria-hidden="true">→</span></a>
         <a class="btn-pill is-line" href="./"><span aria-hidden="true">←</span> 수강신청 첫 화면</a>
+        <a class="btn-pill is-line" href="../board/notices.html">공지사항 보기 <span aria-hidden="true">→</span></a>
       </div>
     </div>
   </div>

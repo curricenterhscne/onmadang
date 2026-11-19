@@ -189,7 +189,11 @@ header{
 [data-section="about"] .page-hero{--hero-img:url("../img/sub/hero-about.jpg");--hero-icon:url("../img/sub/icon-about.svg")}
 [data-section="design"] .page-hero{--hero-img:url("../img/sub/hero-design.jpg");--hero-icon:url("../img/sub/icon-design.svg")}
 [data-section="safety"] .page-hero{--hero-img:url("../img/sub/hero-safety.jpg");--hero-icon:url("../img/sub/icon-safety.svg")}
-[data-section="enroll"] .page-hero{--hero-img:url("../img/sub/hero-design.jpg");--hero-icon:url("../img/sub/icon-design.svg")} /* 수강신청 입구 */
+/* 수강신청 입구 (시안 sub05_00, 11-19) — 흑백 사진 위 라이트 블루 곱하기 + 어두운 막. 4대 안전망 online 머리와 같은 값(흰 글자 4.8:1 이상) */
+[data-section="enroll"] .page-hero{--hero-img:url("../img/sub/hero-enroll.jpg");--hero-icon:url("../img/sub/icon-enroll.svg");--hero-tint:var(--online);--hero-shade:rgba(11,63,92,.62);
+  background:linear-gradient(var(--hero-shade),var(--hero-shade)),linear-gradient(var(--hero-tint),var(--hero-tint)),var(--hero-img) center/cover no-repeat,var(--brand);
+  background-blend-mode:normal,multiply,normal,normal}
+[data-section="enroll"] .page-hero .wrap::before{width:clamp(150px,16vw,230px);height:auto;aspect-ratio:188/131}
 [data-section="board"] .page-hero{--hero-icon:url("../img/sub/char-board.svg");background:var(--plum-d);min-height:clamp(220px,31vw,450px)}
 [data-section="board"] .page-hero .wrap::before{left:24px;top:0;width:clamp(200px,24vw,342px);height:auto;aspect-ratio:342/282}
 /* 메뉴에 속하지 않는 페이지(방침 등)는 낮은 단색 머리 영역을 쓴다 */

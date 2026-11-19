@@ -12,12 +12,21 @@
   /* 4대 안전망 첫 화면(safety/index.html)과 같은 틀 — 칸 4장이 본문 폭보다 넓다 */
   .sub-body > .wrap.is-wide{max-width:1136px}
   .net-tiles{margin-top:clamp(48px,5vw,70px)}
-  /* 칸 색은 공통 순서(파랑·하늘·보라·초록)를 쓰고, 아이콘만 프로그램에 맞춘다 */
-  /* --ic 는 common.css의 .net-tile::before가 쓰므로 경로는 common.css(assets/css/) 기준이다 */
-  .net-tile.p-online{--ic:url("../img/sub/icon-net-online.svg")}
-  .net-tile.p-regional{--ic:url("../img/sub/icon-net-joint.svg")}
-  .net-tile.p-dual{--ic:url("../img/sub/icon-net-school.svg")}
-  .net-tile.p-dreamup{--ic:url("../img/sub/icon-net-outside.svg")}
+  /* 시안 sub05_00(11-19): 공동교육과정 두 칸은 연보라, 학교 밖 교육 두 칸은 연초록. 글자는 모두 검정.
+     아이콘은 업체 다색 SVG라 마스크 대신 그림으로 넣는다. 지역연계 아이콘(sub05_00_icon_03)은 아직 받지 못해 기존 단색 아이콘을 보라로 쓴다 */
+  .net-tiles .net-tile{color:var(--ink)}
+  .net-tile.p-online,.net-tile.p-regional{background:var(--plum-l);--pre-bg:var(--plum);--pre-ink:#fff}
+  .net-tile.p-dual,.net-tile.p-dreamup{background:var(--accent-l);--pre-bg:var(--accent);--pre-ink:var(--ink)}
+  .net-tiles .net-tile .ic{background:var(--ic) center/contain no-repeat;-webkit-mask:none;mask:none}
+  .net-tile.p-online{--ic:url("../assets/img/sub/enroll-online.svg")}
+  .net-tile.p-dual{--ic:url("../assets/img/sub/enroll-dual.svg")}
+  .net-tile.p-dreamup{--ic:url("../assets/img/sub/enroll-dreamup.svg")}
+  .net-tiles .net-tile.p-regional .ic{background:var(--plum);-webkit-mask:url("../assets/img/sub/icon-net-joint.svg") center/contain no-repeat;mask:url("../assets/img/sub/icon-net-joint.svg") center/contain no-repeat}
+  .net-tile .nt-pre{background:var(--pre-bg);color:var(--pre-ink);border-color:var(--pre-bg)}
+  /* 시안처럼 아이콘·이름표 줄을 맞추고 상태 단추는 칸 바닥에 둔다 */
+  .net-tiles .net-tile{justify-content:flex-start;gap:clamp(14px,1.6vw,22px)}
+  .net-tiles .net-tile .nt-name{font-size:clamp(20px,1.9vw,26px)}
+  .net-tiles .net-tile .nt-go{margin-top:auto}
   .net-tile .nt-go{font-size:14px;font-weight:700;padding:3px 12px;border-radius:var(--radius-pill);background:var(--surface);color:var(--ink)}
   .net-tile.is-open .nt-go::after{content:" →"}
 </style>
@@ -37,7 +46,7 @@
 </div>
 
 <main class="sub-body">
-  <div class="wrap">
+  <div class="wrap is-wide">
     <p class="sub-lead">신청할 프로그램을 고르십시오.<br>프로그램마다 신청 기간이 다릅니다. 신청 기간에는 신청 화면이, 그 밖에는 안내 페이지가 열립니다.</p>
   </div>
   <div class="wrap is-wide">

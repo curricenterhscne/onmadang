@@ -30,7 +30,10 @@
   .kk-bubble::before,.kk-bubble::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border-style:solid;border-color:transparent}
   .kk-bubble::before{border-width:18px 7px 0;border-top-color:var(--ink)}
   .kk-bubble::after{margin-top:-3px;border-width:15px 5px 0;border-top-color:var(--surface)}
-  .kk-card h2{font-size:clamp(26px,2.8vw,40px);font-weight:900;letter-spacing:2px;margin-bottom:clamp(14px,2vw,28px)}
+  .kk-card h2{margin-bottom:clamp(14px,2vw,28px);line-height:0}
+  /* 이름 제목은 업체 손글씨 SVG(sub01_03_title_02~04). 시안은 viewBox 1:1(높이 약 46px) */
+  .kk-name{display:inline-block;width:auto;height:clamp(32px,3.2vw,46px)}
+  .c-kku .kk-name{height:clamp(29px,2.85vw,41px)}
   .kk-card p{font-size:clamp(14px,1.2vw,17px);line-height:1.95;word-break:keep-all}
   .kk-art{display:block;width:min(100%,846px);height:auto;margin:clamp(80px,9vw,140px) auto 0}
 
@@ -67,7 +70,7 @@
           <img src="../assets/img/kkukku/toki.svg" alt="" aria-hidden="true" loading="lazy" decoding="async">
         </div>
         <div>
-          <h2>토꾸미</h2>
+          <h2><img class="kk-name" src="../assets/img/kkukku/name-toki.svg" alt="토꾸미" width="136" height="46"></h2>
           <p>
             그야말로 갓생살이. 자기 루틴과 계획을 지킨다.<br>
             열심히 듣다가 귀가 길어졌다.<br>
@@ -83,7 +86,7 @@
           <img src="../assets/img/kkukku/pan.svg" alt="" aria-hidden="true" loading="lazy" decoding="async">
         </div>
         <div>
-          <h2>팬꾸미</h2>
+          <h2><img class="kk-name" src="../assets/img/kkukku/name-pan.svg" alt="팬꾸미" width="139" height="48"></h2>
           <p>
             잠이 많지만 해야 하니까 그냥 한다.<br>
             원래 곰인데 다크서클 때문에 팬더처럼 보인다.<br>
@@ -100,7 +103,7 @@
           <img src="../assets/img/kkukku/kku.svg" alt="" aria-hidden="true" loading="lazy" decoding="async">
         </div>
         <div>
-          <h2>꾸미</h2>
+          <h2><img class="kk-name" src="../assets/img/kkukku/name-kku.svg" alt="꾸미" width="85" height="41"></h2>
           <p>
             자기만의 속도로 꾸물꾸물 열심히 하는 꾸미.<br>
             학교 가는데 30일 걸려서 수업에는 온라인으로 참여한다.
