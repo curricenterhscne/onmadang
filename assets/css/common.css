@@ -242,7 +242,7 @@ header{
   .page-hero .wrap,.page-hero.is-light .wrap,.page-hero.is-light.char-left .wrap{padding-left:24px;padding-right:24px}
   /* 모바일 시안(11-06·09): 아이콘·캐릭터를 제목 위에 작게 */
   .page-hero .wrap::before{position:static;display:block;width:96px;height:90px;margin:0 0 14px;transform:none}
-  .page-hero.is-light .wrap::before,.page-hero.is-light.char-left .wrap::before{width:200px;height:auto;aspect-ratio:542/392}
+  .page-hero.is-light .wrap::before,.page-hero.is-light.char-left .wrap::before{width:200px;height:auto;aspect-ratio:542/392;transform:none} /* 데스크톱 translateY(-50%)가 이겨 캐릭터 위가 잘리던 것 (11-19) */
   [data-section="board"] .page-hero .wrap::before{width:150px;height:auto;aspect-ratio:342/282}
 }
 

@@ -20,7 +20,8 @@
     background-image:linear-gradient(100deg,rgba(47,63,168,.88),rgba(62,82,196,.72) 55%,rgba(62,82,196,.6));
   }
   /* 교육청 사진(간행물 표지, 초상권 동의 완료) — 6초마다 바뀌고 가운데를 중심으로 천천히 확대·축소
-     원본은 세로 사진이라 가로 2:1 띠로 잘라 썼다(assets/img/home/slides/, 1600×800 WebP) */
+     원본은 세로 사진이라 가로 2:1 띠로 잘라 썼다(assets/img/home/slides/, 1600×800 WebP).
+     폭 520px 이하는 가운데 600×800을 자른 *-m.webp를 쓴다(휴대폰 머리는 세로로 길어 어차피 가운데만 보인다, 2026-11-19) */
   .hero-slides{position:absolute;inset:0;z-index:-2;overflow:hidden;background:var(--brand-d)}
   .hero-slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0;transition:opacity 1.2s ease}
   .hero-slides img.is-on{opacity:1}
@@ -237,7 +238,7 @@
 <!-- ═══ 히어로 ═══ -->
 <section class="hero">
   <div class="hero-slides" aria-hidden="true">
-    <img src="./assets/img/home/slides/01-yehwa-cheer.webp" alt="" class="is-on kb-in" data-cap="예화여고 치어리딩 동아리" fetchpriority="high">
+    <picture><source media="(max-width:520px)" srcset="./assets/img/home/slides/01-yehwa-cheer-m.webp"><img src="./assets/img/home/slides/01-yehwa-cheer.webp" alt="" class="is-on kb-in" data-cap="예화여고 치어리딩 동아리" fetchpriority="high"></picture>
     <img data-src="./assets/img/home/slides/02-gongju-meister.webp" alt="" data-cap="공주마이스터고">
     <img data-src="./assets/img/home/slides/03-chungnam-arts-dance.webp" alt="" data-cap="충남예고 무용과">
     <img data-src="./assets/img/home/slides/04-yehwa-baking.webp" alt="" data-cap="예화여고 제과제빵">
@@ -426,7 +427,8 @@
   var cap = document.getElementById('hero-cap'), btn = document.getElementById('hero-pause');
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var i = 0, timer = null;
-  function load(img) { if (img && img.dataset.src) { img.src = img.dataset.src; img.removeAttribute('data-src'); } }
+  var small = window.matchMedia && window.matchMedia('(max-width:520px)').matches;
+  function load(img) { if (img && img.dataset.src) { img.src = small ? img.dataset.src.replace(/\.webp$/, '-m.webp') : img.dataset.src; img.removeAttribute('data-src'); } }
   function show(n) {
     var cur = imgs[i]; i = (n + imgs.length) % imgs.length; var nx = imgs[i];
     load(nx); load(imgs[(i + 1) % imgs.length]);

@@ -283,8 +283,9 @@
         async src="//gc.zgo.at/count.js"></script>
 ```
 
-- 적용됨(27개): `index.html`, `enroll/`(2), `policy/`(2), `about/`(3), `apply/index.html`, `board/`(5, `admin/` 제외), `design/index.html`, `design/compass/`, `design/outside/`, `dual_credit/index.html`, `dual_credit/curriculum.html`, `safety/`(6), `dream_up/attendance/`, `dream_up/check/`
-- **미적용**: `apply/app.html`, `apply/admin/`, `design/check/`, `design/majors/`, `design/selector/`(+`guide.html`), `dual_credit/courses.html`, 위 「링크되지 않는 부속 페이지」 전부 (`dream_up/attendance/`·`dream_up/check/` 제외 — 만료 후 유입 확인용으로 넣었다)
+- **2026-11-19부터 공개 페이지 전부에 적용**(38개). 빠진 것은 관리 화면(`apply/admin/`·`board/admin/`·`apply/admin/guide/`), 바로 넘기는 이동 페이지(`2015/`·`apply/app-test.html`·`apply/admin-test/`), 틀 파일 `tools/lookup/template.html`뿐이다.
+- `design/selector/`는 고른 과목을 주소(`?y=&s=&p=`)에 적으므로 `window.goatcounter.path`로 **경로만** 보낸다. 다른 쪽은 기본값(경로+쿼리)이다.
+- 통계 보는 법은 `apply/admin/guide/province.html` 11절(운영 담당용).
 - 새 페이지를 만들면 **직접 넣어야 한다.** 관리자 페이지(`apply/admin/`)에는 넣지 않는다.
 
 ### 공유 모듈 (`design/`)

@@ -41,7 +41,8 @@
         <li><a href="#p8">8. 계정 관리와 문제 해결</a></li>
         <li><a href="#p9">9. 회차 종료 후 정리</a></li>
         <li><a href="#p10">10. Supabase 요금제</a></li>
-        <li><a href="#p11">11. 하지 말아야 할 것</a></li>
+        <li><a href="#p11">11. 접속 통계 보기</a></li>
+        <li><a href="#p12">12. 하지 말아야 할 것</a></li>
       </ol>
     </nav>
 
@@ -50,7 +51,7 @@
         <a href="./region.html">지역청 담당자</a>
         <a href="./province.html" aria-current="page">도교육청 담당자</a>
       </div>
-      <p class="guide-meta">2026. 11. 12. 기준 · 강좌 등록·기간 입력·명단 관리 같은 화면 조작은 <a class="txt-link" href="./region.html">지역청 담당자 매뉴얼</a>과 같습니다. 이 문서는 도교육청만 하는 일을 중심으로 적었습니다.</p>
+      <p class="guide-meta">2026. 11. 19. 기준 · 강좌 등록·기간 입력·명단 관리 같은 화면 조작은 <a class="txt-link" href="./region.html">지역청 담당자 매뉴얼</a>과 같습니다. 이 문서는 도교육청만 하는 일을 중심으로 적었습니다.</p>
 
       <section class="guide-sec" id="p1">
         <h2>1. 시스템 한눈에 보기</h2>
@@ -308,7 +309,56 @@ UPDATE staff_profiles SET status = 'approved'
       </section>
 
       <section class="guide-sec" id="p11">
-        <h2>11. 하지 말아야 할 것</h2>
+        <h2>11. 접속 통계 보기 (GoatCounter)</h2>
+        <p>온마당 전체의 방문 수는 GoatCounter로 집계합니다. 쿠키를 쓰지 않고 학생 개인정보를 모으지 않으며, 수강신청 앱이나 Supabase와는 관계가 없습니다.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">항목</th><th scope="col">내용</th></tr></thead>
+          <tbody>
+            <tr><td>주소</td><td><code>https://onmadang.goatcounter.com</code> (로그인 필요)</td></tr>
+            <tr><td>계정</td><td>담당자끼리 직접 인계합니다. 이 문서에는 적지 않습니다</td></tr>
+            <tr><td>집계 범위</td><td>공개 페이지 전부와 직접 배포하는 안내 문서. 관리 화면(<code>apply/admin/</code>·<code>board/admin/</code>)과 이 매뉴얼은 집계하지 않습니다</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>보는 방법</h3>
+        <ol>
+          <li>위 주소에 접속해 로그인합니다(Sign in).</li>
+          <li>첫 화면(Dashboard) 위쪽에서 볼 기간을 고릅니다.</li>
+          <li><b>Pages</b> 목록에서 페이지별 방문 수와 날짜별 막대그래프를 봅니다.</li>
+          <li>목록 위 검색 칸에 주소 일부(예: <code>enroll</code>, <code>joint_regional</code>)를 넣으면 그 페이지만 추려 볼 수 있습니다.</li>
+          <li>아래쪽 <b>Top referrers</b>는 어디서 들어왔는지(검색·메신저·학교 홈페이지 등), <b>Browsers · Systems · Sizes</b>는 브라우저·기기·화면 크기, <b>Locations</b>는 지역입니다.</li>
+        </ol>
+
+        <h3>숫자 읽는 법</h3>
+        <ul>
+          <li><b>Visits(방문)</b>는 같은 사람(같은 기기·브라우저)이 8시간 안에 같은 페이지를 다시 열면 한 번으로 셉니다. <b>Pageviews</b>는 열 때마다 셉니다. 보고에는 방문 수를 쓰십시오.</li>
+          <li>광고 차단 기능을 쓰는 기기는 집계되지 않습니다. 실제보다 적게(GoatCounter 안내 기준 3분의 1 안팎) 나올 수 있으니 「최소 이 정도」로 읽으십시오.</li>
+          <li>검색 로봇은 대부분 빠지지만 전부 걸러지지는 않습니다.</li>
+        </ul>
+
+        <h3>주요 페이지 주소</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">통계에 보이는 주소</th><th scope="col">페이지</th></tr></thead>
+          <tbody>
+            <tr><td><code>/</code></td><td>홈</td></tr>
+            <tr><td><code>/enroll/</code></td><td>수강신청 첫 화면</td></tr>
+            <tr><td><code>/enroll/closed.html?p=…</code></td><td>「수강신청 기간이 아닙니다」 안내(<code>p</code> 값이 프로그램)</td></tr>
+            <tr><td><code>/apply/app.html?program=joint_regional&amp;region=…</code></td><td>지역연계 신청 화면. <code>region</code>은 지원청 주소로 들어온 경우만 붙습니다</td></tr>
+            <tr><td><code>/apply/app.html?program=dual_credit</code> · <code>dream_up</code></td><td>고교-대학 연계 · 꿈키움 신청 화면</td></tr>
+            <tr><td><code>/design/selector/</code></td><td>과목 선택 실습. 고른 과목은 주소에서 빼고 집계합니다</td></tr>
+            <tr><td><code>/design/majors/</code> · <code>/design/check/</code> · <code>/design/compass/</code></td><td>학과·과목 탐색 · 내 선택 점검 · 진로 나침반</td></tr>
+            <tr><td><code>/board/notices.html</code> · <code>/board/notice.html?id=…</code></td><td>공지사항 목록 · 공지 상세(번호별)</td></tr>
+            <tr><td>목록에 없는 낯선 주소</td><td>없는 주소로 들어와 「페이지를 찾을 수 없습니다」 화면을 본 경우입니다. 그 주소가 그대로 남으므로, 잘못 배포된 주소를 찾는 데 씁니다</td></tr>
+          </tbody>
+        </table></div>
+        <div class="note is-info">
+          <strong>온라인 공동교육과정 신청 사이트는 따로입니다</strong>
+          <p>별도 사이트(<code>enrollment-cne.vercel.app</code>)는 이 통계에 들어 있지 않습니다. 온마당에서 그 사이트로 넘어간 횟수는 <code>/enroll/</code> 방문으로 짐작할 수 있습니다.</p>
+        </div>
+      </section>
+
+      <section class="guide-sec" id="p12">
+        <h2>12. 하지 말아야 할 것</h2>
         <ul>
           <li>SQL 편집기에서 이 문서에 없는 문(특히 DELETE · DROP · TRUNCATE)을 실행하지 마십시오.</li>
           <li>settings 표(신청 기간)를 SQL이나 Table Editor로 직접 고치지 마십시오. 1판 매뉴얼의 기간 설정 SQL(<code>INSERT … ON CONFLICT</code>)은 이제 오류가 납니다.</li>

@@ -1943,5 +1943,11 @@ loadSchools();
 
 <div id="om-footer"></div>
 <script src="../../assets/js/common.js"></script>
+<script>
+// 접속 통계: 이 화면은 고른 과목을 주소(?y=&s=&p=)에 적으므로, 주소마다 따로 집계되지 않게 경로만 보낸다
+window.goatcounter = { path: function () { return location.pathname; } };
+</script>
+<script data-goatcounter="https://onmadang.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
