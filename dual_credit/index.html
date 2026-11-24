@@ -9,52 +9,64 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="../assets/css/common.css">
 <style>
-
-  /* 시안 없음 — 학교 밖 교육(sub03_04) 하위 페이지로 보고 같은 머리 영역·강조색(data-net=outside)을 쓴다 */
-  .content-card + .content-card{margin-top:clamp(56px,7vw,100px)}
-  .content-card h2{font-size:clamp(24px,2.4vw,34px);font-weight:800;letter-spacing:-.6px;margin-bottom:16px}
-  .content-card h2::before{content:"";display:block;width:36px;height:5px;border-radius:3px;background:var(--sub-key);margin-bottom:14px}
-  .content-card h3{font-size:clamp(17px,1.5vw,20px);font-weight:700;color:var(--ink);margin:32px 0 12px}
-  .content-card h3:first-of-type{margin-top:20px}
+  /* 시안 sub03_04_01(11-24 업체 메일). 학교 밖 교육 하위라 머리 영역·강조색은 data-net=outside.
+     본문 폭 942(시안 실측, 좌우 여백 24 더해 990), 제목·도입 문단 가운데, 숫자 칸 아이콘, 번호 목록·바로가기·신청 상태는 하늘색 상자, 문답은 하늘색 띠 */
+  .sub-body > .wrap{max-width:990px}
+  .content-card + .content-card{margin-top:clamp(64px,8vw,110px)}
+  .content-card h2{font-size:clamp(26px,2.4vw,34px);font-weight:800;letter-spacing:-.6px;margin-bottom:clamp(18px,2vw,28px);text-align:center}
+  .content-card h3{font-size:clamp(18px,1.5vw,20px);font-weight:800;color:var(--ink);margin:clamp(44px,5vw,64px) 0 16px;text-align:center}
   .content-card p{font-size:clamp(15px,1.2vw,17px);line-height:1.8;margin-bottom:18px;word-break:keep-all}
-  .content-card .fine{font-size:14px}
+  .content-card > h2 + p{text-align:center;font-size:clamp(15px,1.4vw,19px);margin-bottom:clamp(28px,3vw,40px)}
+  .content-card .fine{font-size:13.5px;text-align:center}
   .content-card p:last-child{margin-bottom:0}
 
-  /* 표 */
+  /* 표: 머리 줄은 연초록 탭, 세로 선 없음 */
   .table-wrap{overflow-x:auto;margin-bottom:24px;-webkit-overflow-scrolling:touch}
-  .table-wrap table{width:100%;border-collapse:collapse;min-width:520px;font-size:14px}
-  .table-wrap th,.table-wrap td{border:1px solid var(--line);padding:12px 14px;text-align:left;vertical-align:top}
-  .table-wrap th{background:var(--sub-tint);font-weight:700;color:var(--ink);white-space:nowrap}
+  .table-wrap table{width:100%;border-collapse:separate;border-spacing:0;min-width:520px;font-size:14px}
+  .table-wrap th,.table-wrap td{border-bottom:1px solid var(--line);padding:13px 16px;text-align:left;vertical-align:top}
+  .table-wrap thead th{background:var(--sub-tint);font-weight:700;color:var(--ink);white-space:nowrap;border-bottom:0;border-radius:16px 16px 0 0}
+  .table-wrap tbody th{font-weight:700;color:var(--ink);white-space:nowrap}
   .table-wrap td{line-height:1.65}
-  .table-wrap td a{color:var(--brand-d);font-weight:600;text-decoration:underline;text-underline-offset:2px}
-  .table-wrap td a:hover{color:var(--brand)}
-  .col-univ{white-space:nowrap;font-weight:600;color:var(--ink)}
+  .table-wrap td a{color:var(--ink);font-weight:500;text-decoration:underline;text-underline-offset:3px}
+  .table-wrap td a:hover{color:var(--brand-d)}
+  .table-wrap.is-center :is(th,td){text-align:center}
+  .col-univ{white-space:nowrap;font-weight:700;color:var(--ink)}
   .col-grade{white-space:nowrap}
+  /* 신청 조건: 가운데 연초록 상자 */
+  .table-wrap.is-box{max-width:540px;margin:0 auto 24px;background:var(--sub-tint);border-radius:var(--radius);padding:10px 24px}
+  .table-wrap.is-box table{min-width:0}
+  .table-wrap.is-box :is(th,td){border-bottom-color:var(--surface);padding:13px 8px}
+  .table-wrap.is-box tr:last-child :is(th,td){border-bottom:0}
+  .table-wrap.is-box th{width:7.5em}
 
-  /* 번호 목록 · 점검 목록 */
-  .steps{list-style:none;counter-reset:s;margin:0 0 24px;padding:0}
-  .steps li{counter-increment:s;position:relative;padding:12px 0 12px 44px;border-bottom:1px solid var(--soft);
+  /* 번호 목록 · 유의 사항 */
+  .steps{list-style:none;counter-reset:s;margin:0 0 24px;padding:8px clamp(16px,2.4vw,28px);background:var(--bg);border-radius:var(--radius)}
+  .steps li{counter-increment:s;position:relative;padding:13px 0 13px 44px;border-bottom:1px solid var(--surface);
     font-size:14.5px;color:var(--ink-soft);line-height:1.75;word-break:keep-all}
   .steps li:last-child{border-bottom:0}
   .steps li::before{content:counter(s);position:absolute;left:0;top:13px;
-    width:26px;height:26px;border-radius:var(--radius-pill);background:var(--soft);border:1px solid var(--line);
-    color:var(--brand-d);font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center}
+    width:28px;height:28px;border-radius:var(--radius-pill);background:var(--surface);border:1px solid var(--brand);
+    color:var(--brand-ink);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
   .steps li b{color:var(--ink);font-weight:700}
 
-  .notes{list-style:none;margin:0 0 24px;padding:0}
-  .notes li{position:relative;padding:10px 0 10px 20px;border-bottom:1px solid var(--soft);
-    font-size:14.5px;color:var(--ink-soft);line-height:1.75;word-break:keep-all}
-  .notes li:last-child{border-bottom:0}
-  .notes li::before{content:'';position:absolute;left:2px;top:19px;width:5px;height:5px;border-radius:50%;background:var(--ink-faint)}
+  .notes{list-style:none;margin:0 0 24px;padding:0;text-align:center}
+  .notes li{padding:7px 0;font-size:14.5px;color:var(--ink-soft);line-height:1.75;word-break:keep-all}
+  .notes li::before{content:"•";margin-right:8px;color:var(--ink-faint)}
 
-  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
-  .fact{background:var(--sub-tint);border-radius:var(--radius);padding:20px 22px}
-  .fact dt{font-size:13px;font-weight:600;margin-bottom:4px}
+  /* 숫자 칸: 왼쪽 아이콘 */
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:24px}
+  .fact{display:grid;grid-template-columns:40px 1fr;column-gap:12px;align-items:center;background:var(--sub-tint);border-radius:var(--radius);padding:20px 16px 20px 20px}
+  .fact::before{content:"";grid-row:1 / 3;width:40px;height:40px;background:center/contain no-repeat}
+  .fact.f-univ::before{background-image:url("../assets/img/sub/dc-univ.svg")}
+  .fact.f-course::before{background-image:url("../assets/img/sub/dc-course.svg")}
+  .fact.f-credit::before{background-image:url("../assets/img/sub/dc-credit.svg")}
+  .fact.f-people::before{background-image:url("../assets/img/sub/dc-people.svg")}
+  .fact dt{font-size:13px;font-weight:600;margin-bottom:2px}
   .fact dd{font-size:clamp(17px,1.5vw,21px);font-weight:800;line-height:1.4;word-break:keep-all}
 
   /* 신청 상태 패널 */
-  .enroll-panel{background:var(--sub-tint);border-radius:var(--radius);
-    padding:22px 24px;margin-bottom:24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .enroll-panel{background:var(--bg);border-radius:var(--radius);
+    padding:22px clamp(20px,3vw,40px);margin-bottom:14px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
   .enroll-panel .ep-body{flex:1;min-width:220px}
   .enroll-panel .ep-label{font-size:13px;font-weight:600;margin-bottom:4px}
   .enroll-panel .ep-state{font-size:15px;font-weight:700;color:var(--ink);line-height:1.6;word-break:keep-all}
@@ -62,14 +74,16 @@
     font-size:14px;font-weight:700;padding:12px 24px;border-radius:var(--radius-btn);
     border:1.5px solid var(--brand);background:var(--brand);color:#fff;transition:.18s}
   .om-btn:hover{background:var(--brand-d);border-color:var(--brand-d)}
-  .om-btn.enroll-shut{background:var(--inactive);border-color:var(--inactive);color:var(--ink);cursor:default} /* 가이드: 비활성 #C8C8C8 */
-  .om-btn.enroll-shut:hover{background:var(--inactive);border-color:var(--inactive)}
+  /* 기간 아님: 시안은 흰 바탕 알약. 누를 수 없음은 문구로 알린다 */
+  .om-btn.enroll-shut{background:var(--surface);border-color:var(--surface);color:var(--ink);border-radius:var(--radius-pill);padding:8px 18px;cursor:default}
+  .om-btn.enroll-shut:hover{background:var(--surface);border-color:var(--surface)}
   .om-btn-ghost{background:var(--surface);color:var(--brand)}
   .om-btn-ghost:hover{background:var(--brand);color:#fff}
 
-  /* 바로가기 */
-  .link-box{display:flex;align-items:center;gap:14px;background:var(--sub-tint);
-    border-radius:var(--radius);padding:clamp(20px,2.4vw,30px) clamp(20px,3vw,40px);margin-bottom:12px;transition:transform .2s,box-shadow .2s}
+  /* 바로가기: 하늘색 상자 + 파란 아이콘 */
+  .link-box{display:flex;align-items:center;gap:18px;background:var(--bg);
+    border-radius:var(--radius);padding:clamp(20px,2.4vw,30px) clamp(20px,3vw,40px);margin-top:clamp(28px,3vw,40px);transition:transform .2s,box-shadow .2s}
+  .link-box::before{content:"";flex-shrink:0;width:44px;height:44px;background:url("../assets/img/sub/dc-curriculum.svg") center/contain no-repeat}
   .link-box:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
   .link-box:focus-visible{outline:3px solid var(--brand-d);outline-offset:3px}
   .link-box .lb-body{flex:1;min-width:0}
@@ -77,8 +91,9 @@
   .link-box .lb-desc{font-size:14px;line-height:1.6;word-break:keep-all}
   .link-box .lb-arrow{font-size:18px;font-weight:700;flex-shrink:0}
 
-  /* 문답 */
-  .qa{border:1px solid var(--line);border-radius:var(--radius-sm);margin-bottom:8px;background:var(--surface);overflow:hidden}
+  /* 문답: 화면 너비 하늘색 띠 */
+  .content-card.is-band{border-image:conic-gradient(var(--bg) 0 0) fill 0 / / 0 100vw;padding:clamp(56px,6vw,80px) 0}
+  .qa{border:1px solid var(--surface);border-radius:var(--radius-sm);margin-bottom:10px;background:var(--surface);overflow:hidden}
   .qa[open]{border-color:var(--brand-l)}
   .qa summary{list-style:none;cursor:pointer;padding:16px 20px;
     font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.6;
@@ -91,13 +106,17 @@
   .qa .qa-a strong{color:var(--ink)}
 
   .txt-link{color:var(--brand-d);font-weight:700;text-decoration:underline}
-  .contact{font-size:14.5px;color:var(--ink-soft);line-height:1.9}
-  .contact b{color:var(--ink)}
+  .content-card .contact{font-size:clamp(15px,1.3vw,18px);color:var(--ink-soft);line-height:1.8;text-align:center}
+  .contact b{color:var(--ink);font-size:clamp(16px,1.5vw,20px)}
 
   @media(max-width:680px){
-    .content-card{padding:24px 20px}
     .enroll-panel{padding:18px 16px}
     .om-btn{width:100%;justify-content:center}
+    .table-wrap.is-box{padding:6px 16px}
+    .facts{grid-template-columns:1fr 1fr;gap:10px}
+    .fact{grid-template-columns:1fr;row-gap:2px;padding:16px}
+    .fact::before{grid-row:auto;margin-bottom:6px}
+    .notes{text-align:left}
   }
 </style>
 </head>
@@ -125,10 +144,10 @@
       <p>충청남도교육청과 협약을 맺은 지역 대학이 고등학생을 대상으로 심화 과목을 개설·운영하는 제도입니다. 과목을 이수한 학생에게 고등학교 학점을 인정하며, 해당 과목을 개설한 대학에 진학하는 경우 그 대학의 학칙에 따라 대학 학점을 추가로 인정합니다.</p>
 
       <dl class="facts">
-        <div class="fact"><dt>협약 대학</dt><dd>5개교</dd></div>
-        <div class="fact"><dt>개설 과목</dt><dd>14개 과목</dd></div>
-        <div class="fact"><dt>이수 학점</dt><dd>과목당 2학점</dd></div>
-        <div class="fact"><dt>수강 인원</dt><dd>과목당 5~15명</dd></div>
+        <div class="fact f-univ"><dt>협약 대학</dt><dd>5개교</dd></div>
+        <div class="fact f-course"><dt>개설 과목</dt><dd>14개 과목</dd></div>
+        <div class="fact f-credit"><dt>이수 학점</dt><dd>과목당 2학점</dd></div>
+        <div class="fact f-people"><dt>수강 인원</dt><dd>과목당 5~15명</dd></div>
       </dl>
 
       <h3>학점 인정 방식</h3>
@@ -139,7 +158,7 @@
       </ol>
 
       <h3>학교 개설 선택과목과의 차이</h3>
-      <div class="table-wrap">
+      <div class="table-wrap is-center">
         <table>
           <thead>
             <tr><th scope="col">구분</th><th scope="col">학교 개설 선택과목</th><th scope="col">고교-대학 연계 과목</th></tr>
@@ -209,7 +228,7 @@
       <p class="fine" data-enroll="closed-only" hidden>다음 수강 신청 일정은 <a class="txt-link" href="../board/notices.html">공지사항</a>에 게시합니다. 신청 기간이 아니어도 과목 교육과정은 확인할 수 있습니다.</p>
 
       <h3>신청 조건</h3>
-      <div class="table-wrap">
+      <div class="table-wrap is-box">
         <table>
           <tbody>
             <tr><th scope="row">신청 대상</th><td>충청남도 관내 고등학교 1·2학년 (과목에 따라 2학년으로 제한)</td></tr>
@@ -243,7 +262,7 @@
     </section>
 
     <!-- ── 문답 ── -->
-    <section class="content-card">
+    <section class="content-card is-band">
       <h2>자주 묻는 질문</h2>
 
       <details class="qa">
