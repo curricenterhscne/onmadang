@@ -238,3 +238,17 @@
     })(toggles[i]));
   }
 })();
+
+/* ── 비교표(.cmp-table) 휴대폰 카드용 칸 이름 ──
+   휴대폰(680px 이하)에서는 비교표를 유형별 카드로 쌓는다(시안 sub03_03·04 mobile, common.css).
+   줄 머리(대상·운영시기 …)가 칸마다 보이도록 각 칸에 data-label로 옮겨 둔다. */
+(function () {
+  var rows = document.querySelectorAll('.cmp-table tbody tr');
+  for (var i = 0; i < rows.length; i++) {
+    var head = rows[i].querySelector('th[scope="row"]');
+    if (!head) continue;
+    var label = head.textContent.replace(/\s+/g, ' ').trim();
+    var cells = rows[i].querySelectorAll('td');
+    for (var j = 0; j < cells.length; j++) cells[j].setAttribute('data-label', label);
+  }
+})();

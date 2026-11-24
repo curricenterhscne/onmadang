@@ -205,7 +205,7 @@ header{
 .page-hero .breadcrumb{font-size:13px;margin-bottom:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .page-hero .breadcrumb a{color:#fff}
 .page-hero .breadcrumb a:hover{text-decoration:underline}
-.page-hero h1{font-size:clamp(26px,3.8vw,55px);font-weight:800;line-height:1.25;letter-spacing:-1px;margin-bottom:14px;word-break:keep-all}
+.page-hero h1{font-size:clamp(40px,3.8vw,55px); /* 휴대폰 40 — 시안 sub03 mobile(11-23) 실측, 가이드에는 PC 55만 있다 */font-weight:800;line-height:1.25;letter-spacing:-1px;margin-bottom:14px;word-break:keep-all}
 .page-hero p{font-size:clamp(15px,1.4vw,20px);line-height:1.6;word-break:keep-all}
 /* 하위 페이지 머리 영역 — 색을 넣지 않은 원본 사진(업체 sub03_00_bg_01.jpg) 위에 대표색을 곱하기로 얹는다
    (시안 sub03_01~04 배경 SVG의 multiply 재현). .page-hero에 data-net을 붙인 페이지만 해당.
@@ -302,6 +302,24 @@ a.sub-wide:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .cmp-table :is(thead th,tfoot td):nth-child(2){background:var(--c1)}
 .cmp-table :is(thead th,tfoot td):nth-child(3){background:var(--c2)}
 .cmp-table :is(thead th,tfoot td):nth-child(4){background:var(--c3)}
+/* 휴대폰 — 표를 유형별 카드로 쌓는다(시안 sub03_03·04 mobile 11-23). 열 순서대로 order를 주어
+   [유형 머리 → 각 줄 → 아래 띠]가 한 카드가 된다. 시안에는 줄 이름이 없으나 뜻이 흐려지므로
+   common.js가 넣는 data-label을 칸 위에 작게 보인다. */
+@media(max-width:680px){
+  .cmp-wrap{overflow:visible}
+  .cmp-wrap .cmp-table{display:flex;flex-direction:column;min-width:0}
+  .cmp-table :is(thead,tbody,tfoot,tr){display:contents}
+  .cmp-table tr > :first-child{display:none}
+  .cmp-table :is(th,td){display:block}
+  .cmp-table :is(th,td):nth-child(2){order:1}
+  .cmp-table :is(th,td):nth-child(3){order:2}
+  .cmp-table :is(th,td):nth-child(4){order:3}
+  .cmp-table tbody td{padding:12px 16px;border-top:0}
+  .cmp-table tbody td[data-label]::before{content:attr(data-label);display:block;margin-bottom:2px;font-size:12.5px;font-weight:700;color:var(--ink-soft)}
+  .cmp-table thead th{padding:12px 16px}
+  .cmp-table tfoot td{height:32px;margin-bottom:24px}
+  .cmp-table tfoot td:last-child{margin-bottom:0}
+}
 
 /* 4대 안전망 첫 화면 칸 — 세로 카드 4장. 글자는 검정(가장 낮은 brand 칸 4.45:1, 25px 굵은 글씨 기준 통과) */
 .net-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -378,7 +396,7 @@ a.sub-wide:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
   .sec-head{align-items:center;text-align:center}
 }
 @media(max-width:900px){
-  .net-tiles{grid-template-columns:repeat(2,1fr)}
+  .net-tiles{grid-template-columns:repeat(2,minmax(0,1fr))} /* 1fr은 긴 이름(충남온라인학교) 칸만 넓어졌다 — 시안은 같은 폭 */
   .type-cards{grid-template-columns:1fr}
   .type-card{min-height:0}
 }
@@ -388,6 +406,11 @@ a.sub-wide:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
   .sub-card{min-height:0}
   .sub-card strong{margin-bottom:12px}
   .net-tile{min-height:200px;border-radius:var(--radius)}
+}
+@media(max-width:380px){ /* 320px 휴대폰에서 「충남온라인학교」가 칸 끝에 닿던 것 */
+  .net-tiles{gap:10px}
+  .net-tile{padding:28px 10px}
+  .net-tile .nt-name{font-size:19px}
 }
 
 /* ── 푸터 ── */
