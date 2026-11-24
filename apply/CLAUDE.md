@@ -1,6 +1,6 @@
 # CLAUDE.md — 수강신청 (apply/)
 
-> 최종 검증 2026-11-17 (코드 실측). 날짜별 경위는 루트 `WORKLOG.md`.
+> 최종 검증 2026-11-17 (코드 실측). 2026-11-24 GoatCounter 항목만 다시 대조. 날짜별 경위는 루트 `WORKLOG.md`.
 > 줄 수·개수는 바뀌므로 "약"으로 적는다. 함수명·필드명은 코드를 열어 대조한 뒤 고칠 것.
 
 ## 개요
@@ -34,7 +34,7 @@
 
 | 파일 | 성격 | 공통 헤더 | 비고 |
 |---|---|---|---|
-| **`app.html`** | 학생 신청 앱 (약 1,930줄, 스타일·로직 인라인) | ❌ `common.js` 미사용. `common.css`는 연결, 헤더·푸터 마크업을 직접 둔다 | **"수강신청 앱을 고쳐 달라" = 이 파일** |
+| **`app.html`** | 학생 신청 앱 (약 1,950줄, 스타일·로직 인라인) | ❌ `common.js` 미사용. `common.css`는 연결, 헤더·푸터 마크업을 직접 둔다 | **"수강신청 앱을 고쳐 달라" = 이 파일**. GoatCounter 있음 |
 | `index.html` | 고교-대학 연계 신청 기간 외 안내 (약 40줄) | ✅ `common.js` 사용 (`data-active="safety"`) | 사이트 안에서 링크되지 않는다. 예전에 배포된 주소 보호용. GoatCounter 있음 |
 | `admin/index.html` | 관리 화면 (약 1,730줄) | ❌ 독립 | Edge Functions 호출. noindex |
 | `admin/guide/` | 관리자 웹 매뉴얼 — `region.html`(지역청) · `province.html`(도교육청) · `guide.css` · `index.html`(region으로 이동) | ❌ | 관리 화면 기능이 바뀌면 **두 매뉴얼을 함께** 고친다 |
@@ -180,7 +180,8 @@ UPDATE courses SET enrolled_count = (
 6. `serverTimeDiff`로 서버 시각을 보정한다. 카운트다운은 모두 `Date.now() + serverTimeDiff`를 쓴다.
 7. 학번 형식은 `학년-반(2자리)-번호(2자리)`(예: `2-01-15`)다.
 8. 문체는 루트 규칙 5-2를 따른다(「~하십시오」, 2026-11-16 적용). 입력 칸 placeholder는 예외다.
-9. GoatCounter는 `app.html`·`admin/`에 넣지 않는다.
+9. **GoatCounter는 `app.html`에 있다**(2026-11-19 공개 페이지 전체 적용, `</footer>` 뒤 인라인 스니펫). 기본값(경로+쿼리)으로 보내며, 주소에 남는 것은 `?program=`·`&region=`뿐이라 개인정보가 없다. 학생 입력값을 주소에 올리는 기능을 더하면 `design/selector/`처럼 `window.goatcounter.path`로 경로만 보내게 바꿀 것.
+   관리 화면 `admin/`(매뉴얼 `admin/guide/` 포함)에는 넣지 않는다.
 
 ## 꿈키움 정적 데이터 (`_embed_data.js`, 지난 회차)
 
