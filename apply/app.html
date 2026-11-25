@@ -110,6 +110,17 @@ body{background:var(--soft)}
 .region-change{margin-left:auto;display:inline-flex;align-items:center;gap:6px;border:2px solid var(--brand);background:var(--brand);color:#fff;
   padding:8px 18px;border-radius:var(--radius-btn);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:.16s}
 .region-change:hover{background:var(--surface);color:var(--brand-d)}
+/* 고른 교육지원청의 문의처 */
+.region-contact{flex-basis:100%;margin:4px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:15px;line-height:1.6;color:var(--ink-menu);word-break:keep-all}
+.region-contact a{font-weight:800;color:var(--brand-d);text-decoration:underline;white-space:nowrap}
+/* 지역 선택 화면 아래 전체 연락처 */
+.region-tels{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);text-align:left}
+.region-tels h4{font-size:16px;font-weight:800;margin-bottom:4px}
+.region-tels p{margin-bottom:10px;word-break:keep-all}
+.region-tels ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.region-tels li{display:flex;justify-content:space-between;gap:8px;padding:9px 14px;background:var(--bg);border-radius:var(--radius-sm);font-size:15px;color:var(--ink-menu)}
+.region-tels a{font-weight:800;color:var(--brand-d);text-decoration:underline;white-space:nowrap}
+.region-tels a:focus-visible,.region-contact a:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
 @media(max-width:500px){.region-change{margin-left:0;width:100%;justify-content:center}}
 
 /* ── 검색·필터 ── */
@@ -598,6 +609,7 @@ body{background:var(--soft)}
       <h3>지역을 선택하십시오</h3>
       <p>선택한 교육지원청에서 개설한 강좌만 표시됩니다.<br>다른 지역 강좌는 [지역 바꾸기]로 볼 수 있습니다.</p>
       <div class="region-grid" id="region-grid"></div>
+      <div class="region-tels" id="region-tels"></div>
     </div>
     <div class="filter-section">
       <div class="region-bar" id="region-bar" style="display:none"></div>
@@ -865,6 +877,13 @@ let nameFilter   = '';
 // 값은 courses.region과 같은 「○○교육지원청」 전체 이름이다(약칭으로 들어와도 맞춰 준다).
 const REGIONS = ['천안','공주','보령','아산','서산','논산계룡','당진','금산','부여','서천','청양','홍성','예산','태안']
   .map(n => n + '교육지원청');
+// 지역연계 공동교육과정 교육지원청별 담당자 연락처 (2026-11-25 담당자 제공). 번호가 바뀌면 여기만 고친다
+const REGION_TEL = {
+  '천안': '041-529-0574', '공주': '041-850-2314', '보령': '041-930-6334', '아산': '041-539-2413',
+  '서산': '041-660-0317', '논산계룡': '041-730-7176', '당진': '041-351-2522', '금산': '041-750-8841',
+  '부여': '041-830-8253', '서천': '041-950-6016', '청양': '041-940-4414', '홍성': '041-630-5535',
+  '예산': '041-330-3625', '태안': '041-670-8214',
+};
 let regionGate   = false;
 let filterRegion = '';
 
@@ -1040,6 +1059,10 @@ function renderRegionGate() {
       const n = counts[r] || 0;
       return `<button class="region-btn" ${n ? '' : 'disabled'} onclick="setRegion('${r.replace(/'/g, "\\'")}')">${shortRegion(r)}<small>${n ? `강좌 ${n}개` : '개설 강좌 없음'}</small></button>`;
     }).join('');
+    document.getElementById('region-tels').innerHTML = PROGRAM === 'joint_regional'
+      ? `<h4>교육지원청별 문의전화</h4><p>지역연계 공동교육과정에 대한 문의는 해당 지역 교육지원청으로 해 주시기 바랍니다.</p><ul>${
+          Object.entries(REGION_TEL).map(([n, t]) => `<li><span>${n}</span><a href="tel:${t}">${t}</a></li>`).join('')}</ul>`
+      : '';
     gate.style.display = '';
     filters.style.display = 'none';
     bar.style.display = 'none';
@@ -1049,10 +1072,12 @@ function renderRegionGate() {
   gate.style.display = 'none';
   filters.style.display = '';
   bar.style.display = '';
+  const tel = PROGRAM === 'joint_regional' ? REGION_TEL[shortRegion(filterRegion)] : '';
   bar.innerHTML = `<span class="rb-label">선택한 교육지원청</span>
     <strong class="rb-name">📍 ${shortRegion(filterRegion)}</strong>
     <span class="rb-count">개설 강좌 ${counts[filterRegion] || 0}개</span>
-    <button type="button" class="region-change" onclick="setRegion('')"><span aria-hidden="true">⇄</span> 지역 바꾸기</button>`;
+    <button type="button" class="region-change" onclick="setRegion('')"><span aria-hidden="true">⇄</span> 지역 바꾸기</button>
+    ${tel ? `<p class="region-contact">지역연계 공동교육과정에 대한 문의는 ${filterRegion}으로 해 주시기 바랍니다.<br>문의전화 : <a href="tel:${tel}">${tel}</a></p>` : ''}`;
   return true;
 }
 
