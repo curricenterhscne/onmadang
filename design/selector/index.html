@@ -679,6 +679,7 @@
 <div class="sheet-backdrop" id="sheet-bg" onclick="toggleSheet()"></div>
 <div class="toast" id="toast"></div>
 
+<script src="../js/jinro-plan.js"></script>
 <script>
 // 추천 적용 시 지킬 선수 과목 — design/data/subject-hierarchy.json 의 수학·과학 edges 와 같은 내용(공통과목 선수는 지정이라 생략)
 const PRESET_PREREQ = {
@@ -803,7 +804,7 @@ function serializeStateToUrl() {
 function deserializeUrl() {
   const p = new URLSearchParams(window.location.search);
   const parseCsv = key => p.get(key) ? p.get(key).split(',').map(s => s.trim()).filter(Boolean) : [];
-  const out = { year: p.get('y') || '2026', schoolBase: p.get('s'), dept: p.get('d'), picks: [],
+  const out = { year: /^\d{4}$/.test(p.get('y') || '') ? p.get('y') : '2026', schoolBase: p.get('s'), dept: p.get('d'), picks: [],
                 pendingSubjects: [...parseCsv('want'), ...parseCsv('core')],
                 pendingMajorId: decodeURIComponent(p.get('majorId') || '') };
   if (p.get('p')) {
@@ -830,7 +831,7 @@ async function loadSchools() {
 
   // majors에서 넘어온 경우 플레이스홀더를 토꾸미 안내로 교체
   if (state.pendingSubjects.length) {
-    const label = state.pendingMajorId ? `<strong>${state.pendingMajorId}</strong> 관련 ` : '';
+    const label = state.pendingMajorId ? `<strong>${escapeHtml(state.pendingMajorId)}</strong> 관련 ` : '';
     document.getElementById('placeholder').innerHTML = `
       <img class="kk-empty__char" src="https://cdn.jsdelivr.net/gh/curricenterhscne/cne-design-system@d095eefec84bc3608d8f4ee9539d7371ccb60c33/assets/characters/tokkumi.svg" alt="토꾸미">
       <p class="kk-empty__title">학교를 선택해 주세요</p>
@@ -929,7 +930,7 @@ async function loadCurriculum(code, preselectPicks) {
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error('not found');
-    state.curriculum = await res.json();
+    state.curriculum = JinroPlan.normalizeCatalog(await res.json(), state.year);
     state.selectedCode = code;
     state.userSelections = new Set(preselectPicks || []);
     state.activePreset = null;
@@ -980,7 +981,7 @@ async function loadCurriculum(code, preselectPicks) {
     pushUrl();
   } catch (e) {
     document.getElementById('curriculum-area').innerHTML =
-      `<div class="kk-empty"><p class="kk-empty__title">편제표를 불러오지 못했습니다</p><p class="kk-empty__body">해당 학교의 ${state.year}학년도 데이터를 찾지 못했습니다.<br><small>code: ${code}</small></p></div>`;
+      `<div class="kk-empty"><p class="kk-empty__title">편제표를 불러오지 못했습니다</p><p class="kk-empty__body">해당 학교의 ${escapeHtml(state.year)}학년도 데이터를 찾지 못했습니다.<br><small>code: ${escapeHtml(code)}</small></p></div>`;
     document.getElementById('counter-panel').style.display = 'none';
     document.getElementById('presets').style.display = 'none';
   }
@@ -1061,7 +1062,7 @@ function render() {
     if (state.selectedDept) metaParts.push(`<span style="color:var(--accent);">[${state.selectedDept}]</span>`);
     metaParts.push(school.지역);
   } else {
-    metaParts.push(state.selectedCode);
+    metaParts.push(escapeHtml(state.selectedCode));
   }
   document.getElementById('school-meta').innerHTML = metaParts.join(' · ');
 
@@ -1360,7 +1361,12 @@ function onMobileRowClick(e) {
   if (state.userSelections.has(key)) state.userSelections.delete(key);
   else state.userSelections.add(key);
   state.activePreset = null;
+  // 화면을 다시 그려도 보고 있던 학기 탭과 접어 둔 학년을 그대로 둔다
+  const activeTabs = [...document.querySelectorAll('.sem-tab.active')].map(t => t.id);
+  const closed = [1, 2, 3].filter(g => document.getElementById(`grade-body-${g}`)?.style.display === 'none');
   render();
+  activeTabs.forEach(id => { const [, , g, s] = id.split('-'); switchSem(+g, +s); });
+  closed.forEach(toggleGrade);
   pushUrl();
 }
 

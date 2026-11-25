@@ -89,6 +89,10 @@ groups.forEach((group, gi) => {
 키가 편성표 `subject.group` 값이라 **한국사가 사회에 섞여 있다.** 그대로 쓰면 사회(8학점)·한국사(6학점) 판정이 **동시에** 틀린다.
 → `selections` + 편성표로 직접 재집계하고 `design/data/group-alias.json`으로 매핑한다. `summary`는 교차검증용으로만.
 
+## 학점이 다른 선택군 (`isElectiveDiff`, 2026-11-25 추가)
+
+`semesters`·`groupCredit` 없이 과목별 `semCredits`만 있는 선택군이다. 2026학년도 이후 편성표는 읽을 때 `design/js/jinro-plan.js`의 `normalizeCatalog()`가 일반 선택군 모양으로 맞춘다(selector·check 공용). 2025는 적용하지 않는다(담당자 결정). 편성표 파일은 고치지 않는다.
+
 ## ③ check 로 넘기기 — 「결과표 만들기」 (2026-11 추가)
 
 툴바의 `#result-btn` → `../check/?` + `serializeStateToUrl()` (+ `major=<pendingMajorId>`).

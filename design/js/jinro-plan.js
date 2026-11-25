@@ -32,6 +32,31 @@
     return base + '/curriculum_' + year + '/' + encodeURIComponent(code) + '.json';
   }
 
+  /**
+   * 과목마다 학점이 다른 선택군(isElectiveDiff)을 일반 선택군 모양으로 맞춘다.
+   * 이 선택군은 semesters·groupCredit 이 없고 과목별 semCredits 만 있다.
+   * 2025 편성표에는 적용하지 않는다(2026 입학생부터). 여러 번 불러도 결과가 같다.
+   */
+  function normalizeCatalog(catalog, year) {
+    if (!catalog || !Array.isArray(catalog.groups) || !(parseInt(year, 10) >= 2026)) return catalog;
+    catalog.groups.forEach(function (group) {
+      if (!group.isElectiveDiff || group.isSoonjeung || group.division === '지정' || group.semesters) return;
+      var subjects = group.subjects || [];
+      group.semesters = SEM_LABEL.map(function (_, i) {
+        return subjects.some(function (s) { return num((s.semCredits || [])[i]) > 0; });
+      });
+      var seen = [];
+      subjects.forEach(function (s) {
+        var c = (s.semCredits || []).filter(function (v) { return num(v) > 0; })[0];
+        if (!s.opCredit) s.opCredit = c || '0';
+        if (seen.indexOf(num(s.opCredit)) < 0) seen.push(num(s.opCredit));
+      });
+      seen.sort(function (a, b) { return a - b; });
+      group.groupCredit = seen.join('·');   // 표시용 (집계는 과목별 opCredit)
+    });
+    return catalog;
+  }
+
   function validate(plan) {
     if (!plan || typeof plan !== 'object') return '파일을 읽을 수 없습니다.';
     if (plan.schema !== SCHEMA) return '과목 선택 실습에서 내보낸 파일이 아닙니다.';
@@ -91,6 +116,7 @@
       };
     }
 
+    catalog = normalizeCatalog(catalog, plan.year);
     var sel = {};
     plan.selections.forEach(function (k) { sel[k] = true; });
 
@@ -209,6 +235,7 @@
     parseKey: parseKey,
     catalogUrl: catalogUrl,
     catalogCode: catalogCode,
+    normalizeCatalog: normalizeCatalog,
     validate: validate,
     resolve: resolve,
     firstSemOf: firstSemOf
